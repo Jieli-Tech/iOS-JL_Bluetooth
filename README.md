@@ -48,7 +48,8 @@
 ​ 
 ​ 能的实现。
 ​ 
-​ ​4、本工程可Build出的ipa需要iPhone手机系统版本在iOS10.0以上。
+
+4、本工程可Build出的ipa需要iPhone手机系统版本在iOS10.0以上。
 
 ## 2、使用自定义的蓝牙API接入SDK
 
