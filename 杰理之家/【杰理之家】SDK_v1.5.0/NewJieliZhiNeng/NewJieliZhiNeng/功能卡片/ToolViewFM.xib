@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ToolViewFM">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K56-4t-geS">
+                    <rect key="frame" x="12" y="10" width="390" height="180"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="87.5" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pc-Ry-yAb">
+                            <rect key="frame" x="109.5" y="10" width="101" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="101" id="2Yg-hc-y7w"/>
+                                <constraint firstAttribute="height" constant="20" id="40A-WW-4db"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <color key="textColor" red="0.50061482189999995" green="0.35681891440000002" blue="0.92276060579999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MHz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uol-Sy-dgb">
+                            <rect key="frame" x="218" y="13" width="50" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="1PZ-TO-kBP"/>
+                                <constraint firstAttribute="height" constant="20" id="Tsv-ek-BKo"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ze-Bc-PzN">
+                            <rect key="frame" x="175" y="115" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="Y7O-rR-9Xg"/>
+                                <constraint firstAttribute="width" constant="40" id="ppK-MJ-AEx"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_pause.png"/>
+                            <connections>
+                                <action selector="btn_tap_pp:" destination="iN0-l3-epB" eventType="touchUpInside" id="iCD-fd-fa1"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdp-PH-oR4">
+                            <rect key="frame" x="105" y="115" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="0xx-Ge-5e2"/>
+                                <constraint firstAttribute="height" constant="40" id="etS-d7-A1E"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_next.png"/>
+                            <connections>
+                                <action selector="btn_tap_before:" destination="iN0-l3-epB" eventType="touchUpInside" id="D2y-LP-Gau"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGZ-A3-Iqa">
+                            <rect key="frame" x="57" y="115" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="cKM-9H-zrc"/>
+                                <constraint firstAttribute="height" constant="40" id="wo8-Dv-qC0"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_last_02.png"/>
+                            <connections>
+                                <action selector="btn_lastPoint:" destination="iN0-l3-epB" eventType="touchUpInside" id="x9n-bm-5Y3"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYc-wG-yPL">
+                            <rect key="frame" x="245" y="115" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="FO8-LI-IVl"/>
+                                <constraint firstAttribute="height" constant="40" id="nzn-wV-TvR"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_last.png"/>
+                            <connections>
+                                <action selector="btn_tap_next:" destination="iN0-l3-epB" eventType="touchUpInside" id="mIg-7e-ezB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1wi-UO-A4t">
+                            <rect key="frame" x="293" y="115" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="eZv-ed-q1R"/>
+                                <constraint firstAttribute="width" constant="40" id="rPK-wr-gNp"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_next_02.png"/>
+                            <connections>
+                                <action selector="btn_nextPoint:" destination="iN0-l3-epB" eventType="touchUpInside" id="zUf-tc-YQI"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="on6-fj-omz">
+                            <rect key="frame" x="15" y="9" width="30" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="GPX-2B-q7u"/>
+                                <constraint firstAttribute="height" constant="30" id="lec-bJ-XnB"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_fm_search.png"/>
+                            <connections>
+                                <action selector="btn_to_search:" destination="iN0-l3-epB" eventType="touchUpInside" id="xBN-kp-hqf"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="12A-fb-nX7">
+                            <rect key="frame" x="346" y="9" width="30" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="cYL-Eo-ryR"/>
+                                <constraint firstAttribute="height" constant="30" id="pso-tY-NJV"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_add.png"/>
+                            <connections>
+                                <action selector="btn_to_Add:" destination="iN0-l3-epB" eventType="touchUpInside" id="YEn-Pf-u3n"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hqe-vG-gF0">
+                            <rect key="frame" x="153" y="157" width="84" height="23"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="84" id="2E1-96-T03"/>
+                                <constraint firstAttribute="height" constant="23" id="gTJ-KJ-YHH"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/mul_icon_down.png"/>
+                            <connections>
+                                <action selector="btn_more:" destination="iN0-l3-epB" eventType="touchUpInside" id="jmb-7K-SE6"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Cl-DA-uvu">
+                            <rect key="frame" x="140" y="5" width="75" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="75" id="jcg-nW-Tt7"/>
+                                <constraint firstAttribute="height" constant="30" id="rzK-YO-lWz"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                            <state key="normal">
+                                <color key="titleColor" red="0.50061482189999995" green="0.35681891440000002" blue="0.92276060579999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="btn_input_Fm:" destination="iN0-l3-epB" eventType="touchUpInside" id="DDZ-DZ-bXA"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="vdp-PH-oR4" firstAttribute="top" secondItem="6Pc-Ry-yAb" secondAttribute="bottom" constant="85" id="3TH-kn-RmG"/>
+                        <constraint firstItem="Uol-Sy-dgb" firstAttribute="leading" secondItem="2Cl-DA-uvu" secondAttribute="trailing" constant="3" id="94G-QV-KAF"/>
+                        <constraint firstItem="1wi-UO-A4t" firstAttribute="leading" secondItem="RYc-wG-yPL" secondAttribute="trailing" constant="8" id="AM6-LI-Evu"/>
+                        <constraint firstAttribute="bottom" secondItem="hqe-vG-gF0" secondAttribute="bottom" id="AYg-t7-xmH"/>
+                        <constraint firstItem="1wi-UO-A4t" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="115" id="Bfm-40-Bmd"/>
+                        <constraint firstItem="Uol-Sy-dgb" firstAttribute="leading" secondItem="6Pc-Ry-yAb" secondAttribute="trailing" constant="7.5" id="EbR-Wh-Uza"/>
+                        <constraint firstItem="2Cl-DA-uvu" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="5" id="P5M-qg-dyC"/>
+                        <constraint firstItem="6Pc-Ry-yAb" firstAttribute="centerX" secondItem="K56-4t-geS" secondAttribute="centerX" constant="-35" id="U5J-mW-NC1"/>
+                        <constraint firstItem="on6-fj-omz" firstAttribute="leading" secondItem="K56-4t-geS" secondAttribute="leading" constant="15" id="U7G-sh-WPG"/>
+                        <constraint firstItem="hqe-vG-gF0" firstAttribute="centerX" secondItem="K56-4t-geS" secondAttribute="centerX" id="XVJ-4j-Pi9"/>
+                        <constraint firstItem="Uol-Sy-dgb" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="13" id="Y24-1H-RaW"/>
+                        <constraint firstItem="on6-fj-omz" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="9" id="Zhs-CU-6bU"/>
+                        <constraint firstItem="vdp-PH-oR4" firstAttribute="leading" secondItem="oGZ-A3-Iqa" secondAttribute="trailing" constant="8" id="a1a-S9-XGC"/>
+                        <constraint firstItem="RYc-wG-yPL" firstAttribute="leading" secondItem="6Ze-Bc-PzN" secondAttribute="trailing" constant="30" id="aYm-Ng-fBP"/>
+                        <constraint firstItem="RYc-wG-yPL" firstAttribute="top" secondItem="Uol-Sy-dgb" secondAttribute="bottom" constant="82" id="b91-po-klL"/>
+                        <constraint firstItem="6Pc-Ry-yAb" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="10" id="bBY-uA-KJn"/>
+                        <constraint firstItem="12A-fb-nX7" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="9" id="g5A-zW-OlV"/>
+                        <constraint firstItem="6Ze-Bc-PzN" firstAttribute="centerX" secondItem="K56-4t-geS" secondAttribute="centerX" id="jQC-5q-dgA"/>
+                        <constraint firstItem="6Ze-Bc-PzN" firstAttribute="leading" secondItem="vdp-PH-oR4" secondAttribute="trailing" constant="30" id="nPv-6a-y6G"/>
+                        <constraint firstAttribute="trailing" secondItem="12A-fb-nX7" secondAttribute="trailing" constant="14" id="rP1-MK-Pdy"/>
+                        <constraint firstItem="6Ze-Bc-PzN" firstAttribute="top" secondItem="6Pc-Ry-yAb" secondAttribute="bottom" constant="85" id="rfZ-ck-q1L"/>
+                        <constraint firstItem="oGZ-A3-Iqa" firstAttribute="top" secondItem="K56-4t-geS" secondAttribute="top" constant="115" id="uNM-Mj-1ur"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="K56-4t-geS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="Zh2-Y0-yiM"/>
+                <constraint firstItem="K56-4t-geS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="drJ-Dj-O36"/>
+                <constraint firstAttribute="bottom" secondItem="K56-4t-geS" secondAttribute="bottom" constant="10" id="pvL-ot-Vg0"/>
+                <constraint firstAttribute="trailing" secondItem="K56-4t-geS" secondAttribute="trailing" constant="12" id="uBV-Rt-het"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnMore" destination="hqe-vG-gF0" id="yLy-4d-yEj"/>
+                <outlet property="btn_PP" destination="6Ze-Bc-PzN" id="DH6-vY-FLg"/>
+                <outlet property="fmBtn" destination="2Cl-DA-uvu" id="xiE-jB-HdZ"/>
+                <outlet property="fmLabel" destination="6Pc-Ry-yAb" id="ETt-bf-xgN"/>
+                <outlet property="searchBtn" destination="on6-fj-omz" id="heb-ke-ixo"/>
+                <outlet property="subView" destination="K56-4t-geS" id="PkG-BD-zNR"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="150"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Theme.bundle/mul_fm_search.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_add.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_down.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_last.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_last_02.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_next.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_next_02.png" width="128" height="128"/>
+        <image name="Theme.bundle/mul_icon_pause.png" width="128" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

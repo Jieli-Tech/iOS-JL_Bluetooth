@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="TransportView" id="iN0-l3-epB" customClass="TransportView">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h6m-bo-d0W">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qy6-yg-hQ6">
+                    <rect key="frame" x="6" y="722" width="402" height="160"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正在升级 0.0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBg-tr-6qT">
+                            <rect key="frame" x="102.5" y="22" width="197" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="197" id="N42-JA-UCY"/>
+                                <constraint firstAttribute="height" constant="28" id="rOI-r5-1NQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.28232496979999999" green="0.28237074610000001" blue="0.28231495620000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XjT-v4-CBB">
+                            <rect key="frame" x="51" y="78.5" width="300" height="3"/>
+                            <color key="tintColor" red="0.26756149530000001" green="0.55854439739999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="3" id="qK0-73-frr"/>
+                            </constraints>
+                        </progressView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="升级过程中，请保持蓝牙和网络打开状态 请勿关闭设备" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3rR-qY-7Vl">
+                            <rect key="frame" x="51" y="95" width="300" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="300" id="Vb0-mz-Oxd"/>
+                                <constraint firstAttribute="height" constant="60" id="hxY-ek-yJT"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" red="0.59602457279999999" green="0.59611296650000001" blue="0.59600526089999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="3rR-qY-7Vl" firstAttribute="centerX" secondItem="Qy6-yg-hQ6" secondAttribute="centerX" id="HMs-FF-pPN"/>
+                        <constraint firstItem="pBg-tr-6qT" firstAttribute="top" secondItem="Qy6-yg-hQ6" secondAttribute="top" constant="22" id="Nzc-3p-19y"/>
+                        <constraint firstAttribute="height" constant="160" id="VYx-ic-kfd"/>
+                        <constraint firstItem="XjT-v4-CBB" firstAttribute="centerY" secondItem="Qy6-yg-hQ6" secondAttribute="centerY" id="Yjo-kq-Z8A"/>
+                        <constraint firstItem="XjT-v4-CBB" firstAttribute="leading" secondItem="Qy6-yg-hQ6" secondAttribute="leading" constant="51" id="Z0J-MI-Uiz"/>
+                        <constraint firstAttribute="trailing" secondItem="XjT-v4-CBB" secondAttribute="trailing" constant="51" id="aNT-mh-zOZ"/>
+                        <constraint firstAttribute="bottom" secondItem="3rR-qY-7Vl" secondAttribute="bottom" constant="5" id="anl-iF-XLS"/>
+                        <constraint firstItem="pBg-tr-6qT" firstAttribute="centerX" secondItem="Qy6-yg-hQ6" secondAttribute="centerX" id="h5Y-f0-hTI"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="h6m-bo-d0W" secondAttribute="bottom" id="CX8-69-kZp"/>
+                <constraint firstAttribute="bottom" secondItem="Qy6-yg-hQ6" secondAttribute="bottom" constant="14" id="FSB-w3-OX0"/>
+                <constraint firstItem="Qy6-yg-hQ6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="6" id="Q2r-0z-95D"/>
+                <constraint firstAttribute="trailing" secondItem="Qy6-yg-hQ6" secondAttribute="trailing" constant="6" id="kQN-pj-AJe"/>
+                <constraint firstItem="h6m-bo-d0W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nUk-7s-ABp"/>
+                <constraint firstItem="h6m-bo-d0W" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="rJB-eA-l28"/>
+                <constraint firstItem="h6m-bo-d0W" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="zmR-hh-f5e"/>
+            </constraints>
+            <connections>
+                <outlet property="bgView" destination="h6m-bo-d0W" id="BG4-UG-3hE"/>
+                <outlet property="bottomHight" destination="FSB-w3-OX0" id="3To-zQ-X0f"/>
+                <outlet property="centerView" destination="Qy6-yg-hQ6" id="5Ft-hb-gMN"/>
+                <outlet property="progress" destination="XjT-v4-CBB" id="YAz-lr-UaR"/>
+                <outlet property="updateIngLab" destination="pBg-tr-6qT" id="GbN-lX-u0b"/>
+                <outlet property="updateTips" destination="3rR-qY-7Vl" id="jXl-5R-BUg"/>
+            </connections>
+            <point key="canvasLocation" x="-120.28985507246378" y="91.741071428571431"/>
+        </view>
+    </objects>
+</document>

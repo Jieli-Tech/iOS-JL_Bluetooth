@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="AlarmCVCell">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="46"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="46"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tp-sX-lzu">
+                        <rect key="frame" x="10" y="8" width="30" height="30"/>
+                        <color key="backgroundColor" red="0.50361198190000001" green="0.35833644869999998" blue="0.92001754049999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="Vi9-et-3W9"/>
+                            <constraint firstAttribute="width" constant="30" id="fMQ-Dm-Qd3"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="六" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbh-4g-vvD">
+                        <rect key="frame" x="15" y="13" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="KZ5-fC-fDb"/>
+                            <constraint firstAttribute="height" constant="20" id="YSI-6t-dDx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="7Tp-sX-lzu" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="51t-iQ-x3u"/>
+                <constraint firstItem="bbh-4g-vvD" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="QH5-L8-qI6"/>
+                <constraint firstItem="7Tp-sX-lzu" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="YTd-fi-G9H"/>
+                <constraint firstItem="bbh-4g-vvD" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="c4O-e2-5aJ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="50" height="46"/>
+            <connections>
+                <outlet property="bgView" destination="7Tp-sX-lzu" id="ClW-sd-J7R"/>
+                <outlet property="textlab" destination="bbh-4g-vvD" id="qFg-5Q-Pdj"/>
+            </connections>
+            <point key="canvasLocation" x="22" y="62"/>
+        </collectionViewCell>
+    </objects>
+</document>

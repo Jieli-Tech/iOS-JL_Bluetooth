@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="DeviceListCell">
+            <rect key="frame" x="0.0" y="0.0" width="326" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="326" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="gam-lD-OoF">
+                        <rect key="frame" x="66" y="6.5" width="216" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="31" id="Bvg-iA-Unk"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.14116021989999999" green="0.14118680359999999" blue="0.14115440849999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VI3-KV-JxQ">
+                        <rect key="frame" x="312" y="0.0" width="44" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="VMp-zm-KQZ"/>
+                            <constraint firstAttribute="width" constant="44" id="aLr-dF-PVf"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DyM-3y-zxt">
+                        <rect key="frame" x="16" y="0.0" width="44" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="iZR-Ac-IVS"/>
+                            <constraint firstAttribute="width" constant="44" id="l7k-BG-Oyy"/>
+                        </constraints>
+                    </imageView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="QMN-y8-v3i">
+                        <rect key="frame" x="292" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="KpM-X1-IMo"/>
+                            <constraint firstAttribute="width" constant="20" id="OtG-FS-8eR"/>
+                        </constraints>
+                        <color key="color" red="0.14116021989999999" green="0.14118680359999999" blue="0.14115440849999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </activityIndicatorView>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="DyM-3y-zxt" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="0Og-Jo-3o9"/>
+                    <constraint firstItem="VI3-KV-JxQ" firstAttribute="leading" secondItem="QMN-y8-v3i" secondAttribute="trailing" id="0PV-Cx-M6J"/>
+                    <constraint firstItem="DyM-3y-zxt" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DeK-P4-5Ob"/>
+                    <constraint firstItem="QMN-y8-v3i" firstAttribute="leading" secondItem="gam-lD-OoF" secondAttribute="trailing" constant="10" id="GqR-C9-2yG"/>
+                    <constraint firstAttribute="trailing" secondItem="VI3-KV-JxQ" secondAttribute="trailing" constant="-30" id="TZa-ZV-kxr"/>
+                    <constraint firstItem="VI3-KV-JxQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ahQ-WF-eZe"/>
+                    <constraint firstItem="gam-lD-OoF" firstAttribute="leading" secondItem="DyM-3y-zxt" secondAttribute="trailing" constant="6" id="bCp-Zf-mWf"/>
+                    <constraint firstItem="QMN-y8-v3i" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vRy-Gn-Trd"/>
+                    <constraint firstItem="gam-lD-OoF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="zHP-Dz-y5v"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activeView" destination="QMN-y8-v3i" id="4N0-Id-ZN5"/>
+                <outlet property="deviceImgv" destination="DyM-3y-zxt" id="bub-lT-qDy"/>
+                <outlet property="deviceNameLab" destination="gam-lD-OoF" id="Sqt-PA-9Jx"/>
+                <outlet property="statusImgv" destination="VI3-KV-JxQ" id="CA8-Ks-QRf"/>
+            </connections>
+            <point key="canvasLocation" x="-48" y="22"/>
+        </tableViewCell>
+    </objects>
+</document>

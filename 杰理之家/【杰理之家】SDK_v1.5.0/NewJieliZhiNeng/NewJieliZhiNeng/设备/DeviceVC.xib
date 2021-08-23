@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DeviceVC">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAu-hr-zKO">
+                    <rect key="frame" x="0.0" y="83" width="414" height="813"/>
+                    <connections>
+                        <action selector="onTapGesture:" destination="-1" eventType="touchUpInside" id="tey-gg-kS9"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.97239083049999997" green="0.98025351760000001" blue="0.98860317470000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="zAu-hr-zKO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="83" id="05G-1K-C4c"/>
+                <constraint firstAttribute="trailing" secondItem="zAu-hr-zKO" secondAttribute="trailing" id="e5r-vx-V2u"/>
+                <constraint firstItem="zAu-hr-zKO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rSN-jk-m6j"/>
+                <constraint firstAttribute="bottom" secondItem="zAu-hr-zKO" secondAttribute="bottom" id="wrd-Mm-ZAy"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="153.34821428571428"/>
+        </view>
+    </objects>
+</document>
