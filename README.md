@@ -1,10 +1,14 @@
-# iOS杰理蓝牙SDK接入基础
+# iOS杰理之家SDK接入
 
 [toc]
 
+
+
+# iOS杰理之家SDK接入
+
+- APP开发环境：iOS平台，iOS 10.0以上，Xcode 13.0以上
 - 对应的芯片类型：AC692x，AC693x，AC695x，BD29
-- APP开发环境：iOS平台，iOS 10.0以上，Xcode 11.0以上
-- 基于「杰理蓝牙控制库SDK v1.5.0 **(多设备版)**」 开发
+- 杰理之家对外开发文档：https://doc.zh-jieli.com/Apps/iOS/jielihome/zh-cn/master/index.html
 
 ## 声明
 
