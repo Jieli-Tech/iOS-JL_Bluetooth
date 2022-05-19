@@ -312,9 +312,6 @@ self.mCmdManager.delegate = self;
 ```
 
 #### 2.7.3、⼿表切换表盘(OTA功能)
-- 详情看【FAT_Demo】
-- 导⼊【FATApi】【FATTool】⽂件内代码;
-
 ##### STEP.1、设置命令中⼼类
 ```objective-c
         JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
