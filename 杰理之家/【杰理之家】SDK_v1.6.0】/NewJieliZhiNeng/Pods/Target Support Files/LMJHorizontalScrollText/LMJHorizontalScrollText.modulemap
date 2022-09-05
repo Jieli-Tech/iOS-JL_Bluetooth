@@ -1,0 +1,6 @@
+framework module LMJHorizontalScrollText {
+  umbrella header "LMJHorizontalScrollText-umbrella.h"
+
+  export *
+  module * { export * }
+}

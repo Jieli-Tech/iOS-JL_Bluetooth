@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlarmRingVC">
+            <connections>
+                <outlet property="bottomHeight" destination="1S4-1D-bJb" id="hVT-RC-hB3"/>
+                <outlet property="bottomView" destination="lcK-i4-LV4" id="maC-hi-LZk"/>
+                <outlet property="headViewH" destination="eaG-8s-uHv" id="HNg-zR-cTM"/>
+                <outlet property="titleLab" destination="7tu-ip-m6h" id="KOK-6W-CXV"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jcv-Sx-9E6">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WaR-MR-ew0">
+                            <rect key="frame" x="0.0" y="30" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="WVA-tH-mJW"/>
+                                <constraint firstAttribute="height" constant="44" id="ihj-gV-YbV"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/icon_return.png"/>
+                            <connections>
+                                <action selector="leftBtnAction:" destination="-1" eventType="touchUpInside" id="Sky-0B-3Ab"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="bell" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7tu-ip-m6h">
+                            <rect key="frame" x="123.5" y="39" width="167" height="26"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="26" id="e3w-vh-KFC"/>
+                                <constraint firstAttribute="width" constant="167" id="msh-Py-2GI"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                            <color key="textColor" red="0.14116021989999999" green="0.14118680359999999" blue="0.14115440849999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="7tu-ip-m6h" firstAttribute="centerX" secondItem="jcv-Sx-9E6" secondAttribute="centerX" id="GgU-7V-XK2"/>
+                        <constraint firstAttribute="bottom" secondItem="WaR-MR-ew0" secondAttribute="bottom" id="KVl-8X-mop"/>
+                        <constraint firstAttribute="bottom" secondItem="7tu-ip-m6h" secondAttribute="bottom" constant="9" id="PEr-cn-faG"/>
+                        <constraint firstAttribute="height" constant="74" id="eaG-8s-uHv"/>
+                        <constraint firstItem="WaR-MR-ew0" firstAttribute="leading" secondItem="jcv-Sx-9E6" secondAttribute="leading" id="t3s-l3-O3V"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lcK-i4-LV4">
+                    <rect key="frame" x="0.0" y="816" width="414" height="80"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="1S4-1D-bJb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" red="0.97239083049999997" green="0.98025351760000001" blue="0.98860317470000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="jcv-Sx-9E6" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="1uD-c4-dwB"/>
+                <constraint firstItem="jcv-Sx-9E6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Cbi-Xb-oQN"/>
+                <constraint firstItem="jcv-Sx-9E6" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Cdv-5A-lO5"/>
+                <constraint firstItem="lcK-i4-LV4" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="R3D-1W-99u"/>
+                <constraint firstItem="lcK-i4-LV4" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Tr8-79-M4y"/>
+                <constraint firstItem="lcK-i4-LV4" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="nqG-70-DNl"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="121.875"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Theme.bundle/icon_return.png" width="128" height="128"/>
+    </resources>
+</document>

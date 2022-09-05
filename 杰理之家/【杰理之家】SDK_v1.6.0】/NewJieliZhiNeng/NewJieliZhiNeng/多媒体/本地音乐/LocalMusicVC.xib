@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocalMusicVC">
+            <connections>
+                <outlet property="headHeight" destination="5mo-ti-17t" id="hDQ-Th-f65"/>
+                <outlet property="titleName" destination="YQf-Bx-Nic" id="Iup-Ah-NR4"/>
+                <outlet property="view" destination="gBF-Jv-hmX" id="VCy-bG-jxu"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="gBF-Jv-hmX">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Q9-0q-BKj">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="icV-pw-QuF">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQf-Bx-Nic">
+                            <rect key="frame" x="133.5" y="37" width="147" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="147" id="Sm6-yE-A1k"/>
+                                <constraint firstAttribute="height" constant="35" id="XHa-Fg-hzP"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xp6-sb-qaG">
+                            <rect key="frame" x="0.0" y="33" width="44" height="41"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="41" id="MvA-hu-IrG"/>
+                                <constraint firstAttribute="width" constant="44" id="ixz-vB-SJd"/>
+                            </constraints>
+                            <state key="normal" image="Theme.bundle/icon_return.png"/>
+                            <connections>
+                                <action selector="backExit:" destination="-1" eventType="touchUpInside" id="YMf-bl-6nu"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.97239083049999997" green="0.98025351760000001" blue="0.98860317470000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="xp6-sb-qaG" secondAttribute="bottom" id="0GQ-ZT-sPf"/>
+                        <constraint firstAttribute="height" constant="74" id="5mo-ti-17t"/>
+                        <constraint firstAttribute="bottom" secondItem="icV-pw-QuF" secondAttribute="bottom" id="E5b-ab-b4m"/>
+                        <constraint firstAttribute="bottom" secondItem="YQf-Bx-Nic" secondAttribute="bottom" constant="2" id="S4W-p4-GU7"/>
+                        <constraint firstItem="icV-pw-QuF" firstAttribute="top" secondItem="4Q9-0q-BKj" secondAttribute="top" id="TTc-31-hXI"/>
+                        <constraint firstItem="icV-pw-QuF" firstAttribute="leading" secondItem="4Q9-0q-BKj" secondAttribute="leading" id="d51-1w-6fe"/>
+                        <constraint firstItem="YQf-Bx-Nic" firstAttribute="centerX" secondItem="4Q9-0q-BKj" secondAttribute="centerX" id="h2b-yU-6Ql"/>
+                        <constraint firstAttribute="trailing" secondItem="icV-pw-QuF" secondAttribute="trailing" id="iiu-mC-TuR"/>
+                        <constraint firstItem="xp6-sb-qaG" firstAttribute="leading" secondItem="4Q9-0q-BKj" secondAttribute="leading" id="zaU-VX-Lap"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.97239083049999997" green="0.98025351760000001" blue="0.98860317470000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="4Q9-0q-BKj" firstAttribute="leading" secondItem="gBF-Jv-hmX" secondAttribute="leading" id="lOv-8e-x4Z"/>
+                <constraint firstAttribute="trailing" secondItem="4Q9-0q-BKj" secondAttribute="trailing" id="tIZ-VU-tVB"/>
+                <constraint firstItem="4Q9-0q-BKj" firstAttribute="top" secondItem="gBF-Jv-hmX" secondAttribute="top" id="vH0-re-wKF"/>
+            </constraints>
+            <point key="canvasLocation" x="2.8985507246376816" y="-92.410714285714278"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Theme.bundle/icon_return.png" width="128" height="128"/>
+    </resources>
+</document>
