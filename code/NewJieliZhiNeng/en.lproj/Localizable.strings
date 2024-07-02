@@ -798,7 +798,7 @@
 "device_is_disconected" = "The device is disconnected";
 "user_op_error_failed" = "The upgrade failed due to an abnormal operation!";
 "radio_cannot_play" = "Current station cannot play";
-"no_data_connect_first" = "No data, connect device";
+"no_data_connect_first" = "No data";
 "search_radio" = "Search radio station...";
 "loading" = "Loading in...";
 "key_func_setting" = "Key function settings";
@@ -875,7 +875,17 @@
 "name2" = "Bluetooth Name";
 "cancel_1" = "Cancel";
 "confirm_1" = "Confirm";
+"dual_device_connection" = "Dual device connection";
+"on" = "ON";
+"off" = "OFF";
+"dual_device_connect_tips" = "When turned on, the headset can support connection to two devices at the same time, and the audio output can be easily switched between devices.";
+"dual_devices_connected_device" = "Connected device";
+"this_machine" = " This machine ";
 
+"are_you_sure_trun_off_dual" = "Are you sure you want to turn off the dual device connection?";
+"dual_trun_off_tips" = "After turning off, the headset will be disconnected";
+"some_one_disconnected" = " ";
+"setting_failed_need_devices_all_online" = "Setting failed,need devices all online!";
 ////变声
 //"变声" = "Voice";
 //"正常" = "Normal";

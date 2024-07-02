@@ -1,0 +1,28 @@
+Testing Debugging
+===================
+1. Print file output
+-----------------------
+
+.. code-block:: objective-c
+
+ //To open the log, execute the following code in AppDegate.h
+ [JL_Tools openLogTextFile];
+
+2. print document
+-----------------------
+2.1 Print File Format
+| format： JL_LOG_[timestamp].txt
+for example：JL_LOG-2022-03-30-16-33-30.txt ==> Jieli Home SDK print document，creation time：2022/03/30 16:33:30
+
+The debug version enables printing by default, and the release version disables printing by default
+
+2.2 File storage path
+
+It is stored in the sandbox root directory of the APP.
+
+
+3. Exception handling steps
+------------------------------
+1. **Briefly describe the problem phenomenon (required)**
+2. **Provide the log file closest to the timestamp (required)**
+3. **Provide screenshots or videos of phenomena**

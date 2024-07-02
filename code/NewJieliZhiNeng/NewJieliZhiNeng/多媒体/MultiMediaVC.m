@@ -568,10 +568,11 @@ static void *cardCurrentCtx = &cardCurrentCtx;
     }
     
     JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
+    BOOL isOneDragTwo = entity.mCmdManager.mTwsManager.supports.isSupportDragWithMore;
     uint32_t function  = deviceModel.function;
     uint8_t  funcSt = deviceModel.funcOnlineStatus;
 
-    uint32_t fun_bt       = 1;//function&0x01;
+    uint32_t fun_bt       = isOneDragTwo ? 0:1;//function&0x01;
     uint32_t fun_music    = function>>1&0x01;
     uint32_t fun_rtc;
     uint32_t fun_linein   = function>>3&0x01;
@@ -579,7 +580,7 @@ static void *cardCurrentCtx = &cardCurrentCtx;
     uint32_t fun_light    = function>>5&0x01;
     uint32_t fun_fmtx;
     uint32_t fun_find_dev = 1;
-    uint32_t fun_net_radio= funcSt>>4&0x01;
+    uint32_t fun_net_radio= isOneDragTwo ? 1:funcSt>>4&0x01;
     uint32_t fun_karaoke  = 1;
     uint32_t fun_watch    = 0;
     uint32_t fun_usb = 0;
@@ -667,50 +668,80 @@ static void *cardCurrentCtx = &cardCurrentCtx;
 
     uint8_t fun_current = deviceModel.currentFunc;
     [self updateToolViewWithFuctionCode:fun_current];
+    
 }
 
 -(void)updateToolViewWithFuctionCode:(uint8_t)fun_current{
+    
+   
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    BOOL isOneDragTwo = entity.mCmdManager.mTwsManager.supports.isSupportDragWithMore;
+    
     if (fun_current == JL_FunctionCodeBT){
-        CorePlayer *cp = [CorePlayer shareInstanced];
-        if (cp.status == DFNetPlayer_STATUS_PLAY
-            || cp.status == DFNetPlayer_STATUS_PENDING) {
-            [self showToolViewWithBit:0x0020];
+        if (!isOneDragTwo){
+            CorePlayer *cp = [CorePlayer shareInstanced];
+            if (cp.status == DFNetPlayer_STATUS_PLAY
+                || cp.status == DFNetPlayer_STATUS_PENDING) {
+                [self showToolViewWithBit:0x0020];
+            }else{
+                [self showToolViewWithBit:0x0002];
+            }
         }else{
-            [self showToolViewWithBit:0x0002];
+            [self showToolViewWithBit:0x0001];
         }
+        [functionsView setFunctionsViewSelectIndex:0];
     }
     
     if (fun_current == JL_FunctionCodeMUSIC) {
-        [self showToolViewWithBit:0x0002];
+        if (!isOneDragTwo){
+            [self showToolViewWithBit:0x0002];
+        }else{
+            [self showToolViewWithBit:0x0001];
+        }
+        [functionsView setFunctionsViewSelectIndex:1];
     }
     
     if (fun_current == JL_FunctionCodeFM){
         [self showToolViewWithBit:0x0004];
+        [functionsView setFunctionsViewSelectIndex:4];
     }
     
     if (fun_current == JL_FunctionCodeFMTX) {
         [self showToolViewWithBit:0x0008];
+        [functionsView setFunctionsViewSelectIndex:3];
     }
     
     if (fun_current == JL_FunctionCodeLINEIN) {
         [self showToolViewWithBit:0x0010];
+        [functionsView setFunctionsViewSelectIndex:5];
     }
 }
 
 -(void)updateMToolViewWithFuctionCode:(uint8_t)fun_current{
  
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    BOOL isOneDragTwo = entity.mCmdManager.mTwsManager.supports.isSupportDragWithMore;
+    
     if (fun_current == JL_FunctionCodeBT){
-        CorePlayer *cp = [CorePlayer shareInstanced];
-        if (cp.status == DFNetPlayer_STATUS_PLAY || cp.status == DFNetPlayer_STATUS_STOP
-            || cp.status == DFNetPlayer_STATUS_PENDING) {
-            [self showToolViewWithBit:0x0020];
+        if (!isOneDragTwo){
+            CorePlayer *cp = [CorePlayer shareInstanced];
+            if (cp.status == DFNetPlayer_STATUS_PLAY
+                || cp.status == DFNetPlayer_STATUS_PENDING) {
+                [self showToolViewWithBit:0x0020];
+            }else{
+                [self showToolViewWithBit:0x0002];
+            }
         }else{
-            [self showToolViewWithBit:0x0002];
+            [self showToolViewWithBit:0x0001];
         }
     }
     
     if (fun_current == JL_FunctionCodeMUSIC) {
-        [self showToolViewWithBit:0x0002];
+        if (!isOneDragTwo){
+            [self showToolViewWithBit:0x0002];
+        }else{
+            [self showToolViewWithBit:0x0001];
+        }
     }
     
     if (fun_current == JL_FunctionCodeFM){
@@ -728,16 +759,22 @@ static void *cardCurrentCtx = &cardCurrentCtx;
 
 -(void)noteFunctionAction:(NSNotification*)note{
     NSInteger index = [[note object] intValue];
+    
     if (index == 0) {
         JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
         JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+        BOOL isOneDragTwo = entity.mCmdManager.mTwsManager.supports.isSupportDragWithMore;
         if (model.currentFunc == JL_FunctionCodeBT){
-            CorePlayer *cp = [CorePlayer shareInstanced];
-            if (cp.status == DFNetPlayer_STATUS_PLAY ||
-                cp.status == DFNetPlayer_STATUS_PENDING) {
-                [self showToolViewWithBit:0x0020];
+            if (!isOneDragTwo){
+                CorePlayer *cp = [CorePlayer shareInstanced];
+                if (cp.status == DFNetPlayer_STATUS_PLAY
+                    || cp.status == DFNetPlayer_STATUS_PENDING) {
+                    [self showToolViewWithBit:0x0020];
+                }else{
+                    [self showToolViewWithBit:0x0002];
+                }
             }else{
-                [self showToolViewWithBit:0x0002];
+                [self showToolViewWithBit:0x0001];
             }
         }
     }
@@ -747,12 +784,15 @@ static void *cardCurrentCtx = &cardCurrentCtx;
 
 
 -(void)showToolViewWithBit:(uint16_t)bit{
+   
+    
     uint16_t bit_0 = (bit>>0)&0x0001;
     uint16_t bit_1 = (bit>>1)&0x0001;
     uint16_t bit_2 = (bit>>2)&0x0001;
     uint16_t bit_3 = (bit>>3)&0x0001;
     uint16_t bit_4 = (bit>>4)&0x0001;
     uint16_t bit_5 = (bit>>5)&0x0001;
+    
     
     toolViewNull.hidden   = bit_0?NO:YES;
     toolViewMusic.hidden  = bit_1?NO:YES;
@@ -881,11 +921,11 @@ static void *cardCurrentCtx = &cardCurrentCtx;
 
 -(BOOL)isEdrOK{
     /*--- 判断有无连经典蓝牙 ---*/
-    NSDictionary *info = [JL_BLEMultiple outputEdrInfo];
-    NSString *addr = info[@"ADDRESS"];
+    NSArray *infoArray = [JL_BLEMultiple outputEdrList];
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    if (![addr isEqualToString:entity.mEdr]) {
+    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    if (![infoArray containsObject:model.btAddr]) {
         [DFUITools showText:kJL_TXT("connect_right_bluetooth") onView:self.view delay:1.0];
         return NO;
     }

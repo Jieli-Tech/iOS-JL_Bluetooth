@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_FunctionBaseManager.h"
-#import "JL_TypeEnum.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JL_TypeEnum.h>
+#import <JL_BLEKit/JL_Tools.h>
 
 
 typedef NS_ENUM(UInt8, JL_FCmdFM) {
@@ -35,6 +35,20 @@ typedef NS_ENUM(UInt8, JL_FMSearch) {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JL_FmManager : JL_FunctionBaseManager
+
+///Fm状态
+@property (assign,nonatomic) JL_FMStatus        fmStatus;
+
+///Fm 频段范围
+///76.5-108.0Mhz
+///87.5-108.0Mhz
+@property (assign,nonatomic) JL_FMMode          fmMode;
+
+///当前fm
+@property (strong,nonatomic) JLModel_FM          *currentFm;
+
+///Fm列表
+@property (strong,nonatomic) NSArray            *fmArray;
 
 #pragma mark ---> FM相关操作
 /**

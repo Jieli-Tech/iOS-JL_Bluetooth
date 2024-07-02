@@ -80,7 +80,7 @@
     
     /*--- 初始化UI ---*/
     [self setupUI];
-
+   
     
     if(kJL_UI_SERIES == 0){ //杰理之家
         /*--- 开启动画 ---*/
@@ -101,8 +101,7 @@
     [User_Http shareInstance];
 
     /*--- 网络监测 ---*/
-    AFNetworkReachabilityManager *net = [AFNetworkReachabilityManager sharedManager];
-    [net startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     [NetworkPlayer sharedMe];
     
@@ -114,6 +113,7 @@
     if (@available(iOS 15.0, *)) {
         [UITableView appearance].sectionHeaderTopPadding = 0;
     }
+
     
     return YES;
 }

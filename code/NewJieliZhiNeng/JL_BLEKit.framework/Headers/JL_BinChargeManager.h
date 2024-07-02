@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_FunctionBaseManager.h"
-#import "JL_TypeEnum.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JL_TypeEnum.h>
+#import <JL_BLEKit/JL_Tools.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -68,6 +68,8 @@ extern NSString *kJL_MANAGER_ID3_Title;
 extern NSString *kJL_MANAGER_ID3_Artist;
 extern NSString *kJL_MANAGER_ID3_Album;
 extern NSString *kJL_MANAGER_ID3_Time;
+extern NSString *kJL_MANAGER_ID3_Current;
+extern NSString *kJL_MANAGER_ID3_PlayPush;
 
 #pragma mark ---> 主动设置ID3播放状态
 -(void)setID3_Status:(uint8_t)st;
@@ -88,6 +90,12 @@ extern NSString *kJL_MANAGER_ID3_Time;
 -(void)cmdSetLowPitch:(int)p_low HighPitch:(int)p_high;
 
 #pragma mark ---> 设置混响值[深度和强度][0,100]、限幅值[-60,0]
+/// 设置混响值
+/// @param depthValue 深度 0-100
+/// @param intensityValue 强度 0-100
+/// @param dynamicLimiterValue 动态限幅值 -60 - 0
+/// @param reverOn 是否开启
+/// @param type 混响类型
 -(void)cmdSetReverberation:(int)depthValue
             IntensityValue:(int)intensityValue
        DynamicLimiterValue:(int)dynamicLimiterValue

@@ -27,6 +27,7 @@
 #import "HeadSetControlView2.h"
 #import "DhaFittingVC.h"
 #import "HeadSetANC.h"
+#import "MultiLinksViewController.h"
 
 
 @interface DeviceInfoVC ()<HeadSetControlDelegate,NormalSettingDelegate,ReNameViewDelegate,MofifyNameAlertDelegate,HeadsetDenoisePtl>{
@@ -36,13 +37,14 @@
     HeadSetANC *headSetAncView;
     NormalSettingView *settingView;
     NormalSettingView *dhaFittingView;
+    NormalSettingView *multiLinksView;
     NormalSettingView *updateView;
     UIButton *deleteBtn;
     ReNameView *rnameView;
     MofifyNameAlert *mofifyNameAlert;
     __weak IBOutlet UILabel *titleLab;
-    UIScrollView *scrollView;
     __weak IBOutlet NSLayoutConstraint *headHeight;
+    UIScrollView *scrollView;
     
     NSMutableArray *sortTouchArray;
     NSMutableArray *doubleTouchArray;
@@ -57,6 +59,7 @@
     JL_DeviceType  bleType;
     BOOL        isLoadImage;
     int         protrocolVersion;
+    BOOL        isKeySetting;
 }
 
 @end
@@ -71,13 +74,15 @@
     upgradeArray = [NSMutableArray new];
     [self addNote];
     
-    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Theme.bundle/icon_return.png"] style:UIBarButtonItemStyleDone target:self action:@selector(backBtnAction)];
+    UIImage *image = [[UIImage imageNamed:@"Theme.bundle/icon_return.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(backBtnAction)];
     leftBtn.tintColor = [UIColor grayColor];
     [self.navigationItem setLeftBarButtonItem:leftBtn];
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self requestData];
 }
 
@@ -98,11 +103,47 @@
     __weak typeof(self) wSelf = self;
     [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeadsetGetAdvFlag:0x3F
                                                               Result:^(NSDictionary * _Nullable dict) {
-        self.headsetDict = dict;
-        [wSelf initWithData];
-        [wSelf requestDeviceImage];
+        NSLog(@"headsetDict:%@",dict);
+        if (dict[@"KEY_SETTING"]){
+            self.headsetDict = dict;
+            [wSelf initWithData];
+            [wSelf requestDeviceImage];
+        }
     }];
     
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager addObserver:self forKeyPath:@"headSetInfoDict" options:NSKeyValueObservingOptionNew context:nil];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager addObserver:self forKeyPath:@"dragWithMore" options:NSKeyValueObservingOptionNew context:nil];
+    
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    @try {
+        [bleSDK.mBleEntityM.mCmdManager.mTwsManager removeObserver:self forKeyPath:@"headSetInfoDict"];
+        [bleSDK.mBleEntityM.mCmdManager.mTwsManager removeObserver:self forKeyPath:@"dragWithMore"];
+    } @catch (NSException *exception) {
+        
+    } @finally {
+        
+    }
+    
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"headSetInfoDict"]){
+        if ([change objectForKey:@"new"]) {
+            self.headsetDict = bleSDK.mBleEntityM.mCmdManager.mTwsManager.headSetInfoDict;
+            [self initWithData];
+            [self requestDeviceImage];
+            nameObject.detailStr = bleSDK.mBleEntityM.mCmdManager.mTwsManager.edrName;
+        }
+    }
+    if([keyPath isEqualToString:@"dragWithMore"]){
+        [self initWithUI];
+    }
 }
 
 -(void)requestDeviceImage{
@@ -125,6 +166,7 @@
         NSArray *itemArr = @[@"PRODUCT_MESSAGE"];
         isLoadImage = YES;
         __weak typeof(self) wSelf = self;
+        
         [bleSDK.mBleEntityM.mCmdManager cmdRequestDeviceImageVid:vidStr Pid:pidStr
                                                        ItemArray:itemArr Result:^(NSMutableDictionary * _Nullable dict) {
             if (dict) {
@@ -154,39 +196,96 @@
 }
 
 
--(NSDictionary*)localDeviceJson{
-    NSDictionary *myDic_1 = nil;
+-(void)localDeviceJson{
     
-    if (bleType == JL_DeviceTypeSoundBox) {
-        NSString *path = [JL_Tools find:@"ac696x_soundbox_json.txt"];
-        NSData *localData = [NSData dataWithContentsOfFile:path];
-        NSDictionary *totalDict_1 = [DFTools jsonWithData:localData];
-        myDic_1 = totalDict_1[@"device"];
-    }else if (bleType == JL_DeviceTypeTWS) {
-        NSDictionary *dict_1 = [bleSDK.mBleEntityM.mCmdManager localDeviceImage:@"setting_json.txt"];
-        NSData *data_1 = dict_1[@"PRODUCT_MESSAGE"][@"IMG"];
-        NSDictionary *totalDict_1 = [DFTools jsonWithData:data_1];
-        myDic_1 = totalDict_1[@"device"];
-    }else if (bleType == JL_DeviceTypeSoundCard) {
-        NSString *path = [JL_Tools find:@"ac695x_soundbox_json.txt"];
-        NSData *localData = [NSData dataWithContentsOfFile:path];
-        NSDictionary *totalDict_1 = [DFTools jsonWithData:localData];
-        myDic_1 = totalDict_1[@"device"];
-    }else{
-        NSString *path = [JL_Tools find:@"ac696x_soundbox_json.txt"];
-        NSData *localData = [NSData dataWithContentsOfFile:path];
-        NSDictionary *totalDict_1 = [DFTools jsonWithData:localData];
-        myDic_1 = totalDict_1[@"device"];
+    NSString *path;
+    JLModel_Device *devModel = [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager outputDeviceModel];
+    switch (devModel.sdkType) {
+        case JL_SDKTypeAI:
+            [self normalDeviceJson];
+            break;
+        case JL_SDKTypeST:
+            [self normalDeviceJson];
+            break;
+        case JL_SDKType693xTWS:{
+            path = [JL_Tools find:@"ac693x_headset_json.txt"];
+            if ([[JL_RunSDK sharedMe] mBleEntityM].mProtocolType == PTLVersion) {
+                path = [JL_Tools find:@"ac693x_headset_neck_json.txt"];
+            }
+        }break;
+        case JL_SDKType695xSDK:{
+            path = [JL_Tools find:@"ac695x_soundbox_json.txt"];
+        }break;
+        case JL_SDKType697xTWS:
+            path = [JL_Tools find:@"ac697x_headset_json.txt"];
+            break;
+        case JL_SDKType696xSB:
+            path = [JL_Tools find:@"ac696x_soundbox_json.txt"];
+            break;
+        case JL_SDKType696xTWS:
+            path = [JL_Tools find:@"ac696x_soundbox_tws_json.txt"];
+            break;
+        case JL_SDKType695xSC:
+            path = [JL_Tools find:@"ac695x_soundbox_json.txt"];
+            break;
+        case JL_SDKType695xWATCH:
+            [self normalDeviceJson];
+            break;
+        case JL_SDKType701xWATCH:
+            [self normalDeviceJson];
+            break;
+        case JL_SDKTypeManifestEarphone:
+            path = [JL_Tools find:@"manifest_headset_json.txt"];
+            break;
+        case JL_SDKTypeManifestSoundbox:
+            path = [JL_Tools find:@"manifest_soundbox_json.txt"];
+            break;
+        case JL_SDKTypeUnknown:
+            [self normalDeviceJson];
+            break;
     }
-    self->deviceDic = myDic_1;
-    [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setLedDic:myDic_1];
-    [self setTitleArray:myDic_1];
-    return myDic_1;
+    
+    NSData *localData = [NSData dataWithContentsOfFile:path];
+    if (localData.length == 0) {
+        NSLog(@"加载本地json描述失败，请查看是否存在对应json！！！！");
+        return;
+    }
+    NSDictionary *totalDict_1 = [DFTools jsonWithData:localData];
+    deviceDic = totalDict_1[@"device"];
+    
+    [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setLedDic:deviceDic];
+    [self setTitleArray:deviceDic];
+}
+
+-(void)normalDeviceJson{
+    NSString *path;
+    if (bleType == JL_DeviceTypeSoundBox) {
+        path = [JL_Tools find:@"ac696x_soundbox_json.txt"];
+        
+    }else if (bleType == JL_DeviceTypeTWS) {
+        path = [JL_Tools find:@"ac693x_headset_json.txt"];
+        
+    }else if (bleType == JL_DeviceTypeSoundCard) {
+        path = [JL_Tools find:@"ac695x_soundbox_json.txt"];
+        
+    }else{
+        path = [JL_Tools find:@"ac696x_soundbox_json.txt"];
+        
+    }
+    NSData *localData = [NSData dataWithContentsOfFile:path];
+    NSDictionary *totalDict_1 = [DFTools jsonWithData:localData];
+    deviceDic = totalDict_1[@"device"];
+    [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setLedDic:deviceDic];
+    [self setTitleArray:deviceDic];
 }
 
 
 -(void)setTitleArray:(NSDictionary *)dict{
-    
+    if(dict[@"key_settings"]!=nil){
+        isKeySetting = YES;
+    }else{
+        isKeySetting = NO;
+    }
     [headSetView setFuncDict:dict];
     
 }
@@ -195,6 +294,8 @@
 -(void)initWithData{
     
     [self.settingArray removeAllObjects];
+    
+    [self localDeviceJson];
     
     if (self.headsetDict) {
         //设备耳机的状态
@@ -246,7 +347,7 @@
     nameObject.img = [UIImage imageNamed:@"Theme.bundle/mes_icon_name"];
     nameObject.funcStr = kJL_TXT("named");
     nameObject.funType = -1;
-    nameObject.detailStr = bleName;
+    nameObject.detailStr = bleSDK.mBleEntityM.mCmdManager.mTwsManager.edrName;
     
     [self.settingArray addObject:nameObject];
     
@@ -256,7 +357,7 @@
         workModel.funcStr = kJL_TXT("work_mode");
         workModel.funType = 2;
         
-        NSLog(@"WORK_MODE:%@",_headsetDict[@"WORK_MODE"]);
+        //        NSLog(@"WORK_MODE:%@",_headsetDict[@"WORK_MODE"]);
         
         if ([_headsetDict[@"WORK_MODE"] intValue] == 1) {
             workModel.detailStr = kJL_TXT("normal_model");
@@ -342,7 +443,6 @@
 
 -(void)initWithUI{
     
-    
     if(noNetView == nil){
         noNetView = [[NoNetView alloc] initByFrame:CGRectMake(0,kJL_HeightNavBar, [UIScreen mainScreen].bounds.size.width, 40)];
         [self.view addSubview:noNetView];
@@ -376,6 +476,7 @@
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
     JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
     
+    //MARK: - ANC降噪UI
     if(bleType == JL_DeviceTypeTWS && deviceModel.ancType == JL_AncTypeYES){
         headSetAncView = [[HeadSetANC alloc] initWithFrame:CGRectMake(0, 0, width, 141)];
         headSetAncView.delegate = self;
@@ -384,11 +485,9 @@
         
         interval+=addHight+141;
     }
-#if(DHAUITest == 0)
+    //MARK: - DHA助听器UI
+
     if (bleType == JL_DeviceTypeTWS && deviceModel.isSupportDhaFitting) {
-#elif (DHAUITest == 1)
-    if (bleType == JL_DeviceTypeTWS) {
-#endif
         if(dhaFittingView){
             dhaFittingView.frame = CGRectMake(0, interval, width, 60);
             interval+=(60+addHight);
@@ -413,8 +512,36 @@
         }
     }
     
+    //MARK: - 双设备连接UI
+    if (bleType == JL_DeviceTypeTWS && bleSDK.mBleEntityM.mCmdManager.mTwsManager.supports.isSupportDragWithMore){
+        
+        NSMutableArray *multiArray = [NSMutableArray new];
+        NormalSettingObject *obj = [NormalSettingObject new];
+        obj.img = [UIImage imageNamed:@"Theme.bundle/function_icon_connection"];
+        obj.funcStr = kJL_TXT("dual_device_connection");
+        obj.detailStr = bleSDK.mBleEntityM.mCmdManager.mTwsManager.dragWithMore ? kJL_TXT("on"):kJL_TXT("off");
+        [multiArray addObject:obj];
+        
+        if (multiLinksView){
+            multiLinksView.frame = CGRectMake(0, interval, width, 60);
+            [multiLinksView config:multiArray];
+            interval+=(60+addHight);
+        }else{
+            multiLinksView = [[NormalSettingView alloc] initWithFrame:CGRectMake(0, interval, width, rowHight)];
+            multiLinksView.delegate = self;
+            multiLinksView.tag = 3;
+
+            [JLUI_Effect addShadowOnView:dhaFittingView];
+            [multiLinksView config:multiArray];
+            multiLinksView.layer.masksToBounds = YES;
+            [scrollView addSubview:multiLinksView];
+            interval+=(rowHight+addHight);
+        }
+    }
     
-    if (self.headsetDict) {
+    
+    //MARK: - 按钮设置UI
+    if (self.headsetDict && isKeySetting == YES) {
         
         if (protrocolVersion == PTLVersion) {
             eHeight = 45 + rowHight*sortTouchArray.count;
@@ -444,6 +571,8 @@
         interval+=addHight;
     }
     CGFloat sHeight = 0;
+    
+    //MARK: - 设置内容UI
     if (self.settingArray) {
         sHeight = rowHight*self.settingArray.count;
         if (settingView) {
@@ -500,8 +629,9 @@
     }
     
     CGFloat dHeight = rowHight;
+    
+    //MARK: - 断连按钮UI
     if (deleteBtn) {
-        
         if (bleType == JL_DeviceTypeSoundBox || bleType == JL_DeviceTypeSoundCard) {
             deleteBtn.frame = CGRectMake(0,[UIScreen mainScreen].bounds.size.height-185, width, dHeight);
         }
@@ -546,17 +676,16 @@
     scrollView.layer.shadowOpacity= 1;
     scrollView.layer.shadowOffset = CGSizeMake(0, 2);
     scrollView.layer.shadowColor  = kDF_RGBA(205, 230, 251, 0.2).CGColor;
-    
 }
 
 -(void)deleteBtnAction{
     
     JL_EntityM *entity = bleSDK.mBleEntityM;
     NSLog(@"---> 用户主动断开设备：%@",entity.mItem);
-    
+    [entity logProperties];
+    [[ElasticHandler sharedInstance] addToBackList:entity];
     [bleSDK.mBleMultiple disconnectEntity:entity Result:^(JL_EntityM_Status status) {
         if (status == JL_EntityM_StatusDisconnectOk) {
-            [[ElasticHandler sharedInstance] addToBackList:entity];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
@@ -675,7 +804,7 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-    
+
 -(void)noteDeviceClose:(NSNotification *)note{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -794,7 +923,10 @@
         
     }
     
-    
+    if([view isEqual:multiLinksView]){
+        MultiLinksViewController *vc = [[MultiLinksViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:true];
+    }
     
 }
 

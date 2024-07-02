@@ -379,14 +379,14 @@
 -(void)sendMessage{
     JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
     int type = -1; //0:支持混响和限幅器 1：只支持混响 2：只支持限幅器
-    if(model.reverberationTypes.count==2  && [model.reverberationTypes containsObject:@(0)] //支持混响和限幅器
+    if(model.reverberationTypes.count==2  && [model.reverberationTypes containsObject:@(JL_ReverberationAndDynamicType)] //支持混响和限幅器
        && [model.reverberationTypes containsObject:@(1)]){
         type = 0;
     }
-    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(0)]) {//只支持混响
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyReverberationType)]) {//只支持混响
         type = 1;
     }
-    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(1)]) {//只支持限幅器
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyDynamicLimiterType)]) {//只支持限幅器
         type = 2;
     }
     

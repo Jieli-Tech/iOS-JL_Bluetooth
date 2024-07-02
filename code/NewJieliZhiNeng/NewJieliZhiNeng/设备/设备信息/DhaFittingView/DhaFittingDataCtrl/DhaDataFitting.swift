@@ -35,7 +35,7 @@ import JL_BLEKit
         super.init()
     }
     
-    public init(info:DhaFittingInfo,channel:DhaChannel) {
+    @objc public init(info:DhaFittingInfo,channel:DhaChannel) {
         super.init()
         for item in info.ch_freq {
             let v = item as! NSNumber

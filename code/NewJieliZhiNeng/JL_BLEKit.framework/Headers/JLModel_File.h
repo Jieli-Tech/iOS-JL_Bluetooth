@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JL_TypeEnum.h"
+#import <JL_BLEKit/JL_TypeEnum.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +24,7 @@ typedef NS_ENUM(UInt8, JL_CardType) {
     JL_CardTypeFLASH2               = 5,    //FLASH2
 };
 
-@interface JLModel_File : NSObject<NSCopying>
+@interface JLModel_File : NSObject<NSCopying,NSCoding>
 @property (assign,nonatomic) JL_BrowseType  fileType;
 @property (assign,nonatomic) JL_CardType    cardType;
 @property (assign,nonatomic) uint32_t       fileClus;

@@ -76,7 +76,8 @@
     NSString *addr = info[@"ADDRESS"];
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    if (![addr isEqualToString:entity.mEdr]) {
+    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    if (![addr isEqualToString:model.btAddr]) {
         UIWindow *win = [DFUITools getWindow];
         [DFUITools showText:kJL_TXT("connect_match_edr") onView:win delay:1.0];
         return NO;

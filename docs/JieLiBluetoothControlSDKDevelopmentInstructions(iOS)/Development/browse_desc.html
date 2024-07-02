@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3 Directory Browse &mdash; Jieli Home Development Documentation(IOS) v1.6.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Testing Debugging" href="../Other/debug.html" />
+    <link rel="prev" title="2.Function Module Description" href="function.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Jieli Home Development Documentation(IOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Development framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development description</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import_desc.html">1.Access Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function.html">2.Function Module Description</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3 Directory Browse</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#function-description">3.1 Function description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sample-code">3.2 Sample code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#related-interfaces">3.2.1 Related interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#process-description">3.3 Process Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">3.3.1 initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interface-statement">3.3.2 Interface Statement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interface-implementation">3.3.3 Interface implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">Testing Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">Release Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/openSourceCommunity.html">Open Source Community</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Jieli Home Development Documentation(IOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>3 Directory Browse</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="directory-browse">
+<h1>3 Directory Browse<a class="headerlink" href="#directory-browse" title="Permalink to this headline"></a></h1>
+<section id="function-description">
+<h2>3.1 Function description<a class="headerlink" href="#function-description" title="Permalink to this headline"></a></h2>
+<blockquote>
+<div><p>Browse the SD card or USB flash disk on the device side</p>
+</div></blockquote>
+</section>
+<section id="sample-code">
+<h2>3.2 Sample code<a class="headerlink" href="#sample-code" title="Permalink to this headline"></a></h2>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="p">[[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleEntityM</span><span class="p">].</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdBrowseMonitorResult</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">array</span><span class="p">,</span><span class="w"> </span><span class="n">JL_BrowseReason</span><span class="w"> </span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonReading</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Reading:%lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonCommandEnd</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="o">-=</span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">request</span><span class="o">:</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;End of read command:%lu delegate:%@&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">,</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonFolderEnd</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">dmHandleWithItemModelArray</span><span class="o">:</span><span class="p">)])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="w"> </span><span class="n">dmHandleWithItemModelArray</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Directory Read End:%lu delegate:%@&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">,</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonBusy</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;The device is busy&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonDataFail</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Data read failed&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonPlaySuccess</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updatePlay</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Played successfully&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonUnknown</span><span class="p">:{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Unknown error&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">requestWith</span><span class="o">:</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqModel</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">10</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="related-interfaces">
+<h3>3.2.1 Related interfaces<a class="headerlink" href="#related-interfaces" title="Permalink to this headline"></a></h3>
+<div class="highlight-objectivec notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_FileOperationEnvironmentType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_FileOperationEnvironmentTypeBigFileTransmission</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="c1">//Large file transfer</span>
+<span class="w">    </span><span class="n">JL_FileOperationEnvironmentTypeDeleteFile</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="c1">//Delete File</span>
+<span class="w">    </span><span class="n">JL_FileOperationEnvironmentTypeFormatting</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="c1">//format</span>
+<span class="w">    </span><span class="n">JL_FileOperationEnvironmentTypeFatfsTransmission</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="c1">//FAT file transfer</span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_DeleteFileLastType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_DeleteFileLastTypeIsNotLast</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="c1">//Not the last file</span>
+<span class="w">    </span><span class="n">JL_DeleteFileLastTypeIsLast</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="c1">//Is the last file</span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_BrowseReason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_BrowseReasonCommandEnd</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="c1">//Read the file requested by the current command</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonFolderEnd</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">    </span><span class="c1">//Read the files in the current directory</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonPlaySuccess</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">    </span><span class="c1">//Successful on-demand</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonBusy</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">    </span><span class="c1">//Equipment busy</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonDataFail</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">    </span><span class="c1">//Failed to send directory data</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonReading</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="c1">//Reading</span>
+<span class="w">    </span><span class="n">JL_BrowseReasonUnknown</span><span class="p">,</span><span class="w">                 </span><span class="c1">//Unknown reason</span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_FileContentResult</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_FileContentResultStart</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="c1">//Start transfer</span>
+<span class="w">    </span><span class="n">JL_FileContentResultReading</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="c1">//Reading</span>
+<span class="w">    </span><span class="n">JL_FileContentResultEnd</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="c1">//End of reading</span>
+<span class="w">    </span><span class="n">JL_FileContentResultCancel</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="c1">//Cancel Read</span>
+<span class="w">    </span><span class="n">JL_FileContentResultFail</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="c1">//Read failure</span>
+<span class="w">    </span><span class="n">JL_FileContentResultNull</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="c1">//file does not exist</span>
+<span class="w">    </span><span class="n">JL_FileContentResultDataError</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="c1">//data error</span>
+<span class="w">    </span><span class="n">JL_FileContentResultCrcFail</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="c1">//Crc verification failed</span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_FileDataType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_FileDataTypeDo</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="c1">//Start transferring file data</span>
+<span class="w">    </span><span class="n">JL_FileDataTypeDone</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">    </span><span class="c1">//End transferring file data</span>
+<span class="w">    </span><span class="n">JL_FileDataTypeDoing</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">    </span><span class="c1">//Transferring file data</span>
+<span class="w">    </span><span class="n">JL_FileDataTypeCancel</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">    </span><span class="c1">//Cancel transfer of file data</span>
+<span class="w">    </span><span class="n">JL_FileDataTypeError</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">    </span><span class="c1">//Error transferring file data</span>
+<span class="w">    </span><span class="n">JL_FileDataTypeUnknown</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_BigFileTransferCode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCodeSuccess</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="c1">//success</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCodeFail</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="c1">//Write failed</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCodeOutOfRange</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="c1">//Data out of range</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCodeCrcFail</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="c1">//Crc verification failed</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCodeOutOfMemory</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="c1">//insufficient memory</span>
+<span class="p">};</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="kt">UInt8</span><span class="p">,</span><span class="w"> </span><span class="n">JL_BigFileResult</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_BigFileTransferStart</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="c1">//Start large file data transfer</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferDownload</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="c1">//Transfer valid data of large files</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferEnd</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="c1">//End large file data transfer</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferOutOfRange</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="c1">//Large file transfer data out of range</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferFail</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="c1">//Large file transfer failed</span>
+<span class="w">    </span><span class="n">JL_BigFileCrcError</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="c1">//Large file verification failed</span>
+<span class="w">    </span><span class="n">JL_BigFileOutOfMemory</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="c1">//Insufficient space</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferCancel</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="c1">//Cancel transfer</span>
+<span class="w">    </span><span class="n">JL_BigFileTransferNoResponse</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">0xF1</span><span class="p">,</span><span class="w"> </span><span class="c1">//The device is not responding</span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_FILE_BK</span><span class="p">)(</span><span class="bp">NSArray</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">array</span><span class="p">,</span><span class="n">JL_BrowseReason</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_FILE_CONTENT_BK</span><span class="p">)(</span><span class="n">JL_FileContentResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">progress</span><span class="p">);</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_FILE_DATA_BK</span><span class="p">)(</span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="bp">NSString</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">JL_FileDataType</span><span class="w"> </span><span class="n">type</span><span class="p">);</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_BIGFILE_BK</span><span class="p">)(</span><span class="bp">NSArray</span><span class="o">*</span><span class="w"> </span><span class="n">__nullable</span><span class="w"> </span><span class="n">array</span><span class="p">);</span><span class="w"></span>
+<span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">JL_BIGFILE_RT</span><span class="p">)(</span><span class="n">JL_BigFileResult</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">progress</span><span class="p">);</span><span class="w"></span>
+
+<span class="k">@interface</span> <span class="nc">JL_FileManager</span> : <span class="nc">JL_FunctionBaseManager</span><span class="w"></span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">closeTimer</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Listen to directory data</span>
+<span class="cm">/**</span>
+<span class="cm"> @param result Status reply</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdBrowseMonitorResult:</span><span class="p">(</span><span class="n">JL_FILE_BK</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Browse Directory</span>
+<span class="cm">/**</span>
+<span class="cm"> @param model File Model</span>
+<span class="cm"> @param number Number of reads</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdBrowseModel:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="w"></span>
+<span class="w">               </span><span class="nl">Number</span><span class="p">:(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="nv">number</span><span class="w"></span>
+<span class="w">               </span><span class="nl">Result</span><span class="p">:(</span><span class="n">JL_CMD_RESPOND</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Delete files (must be performed asynchronously)</span>
+<span class="cm">/**</span>
+<span class="cm"> @param array File Model Array</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">cmdDeleteFileModels:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">*</span><span class="p">)</span><span class="nv">array</span><span class="p">;</span><span class="w"></span>
+<span class="cm">/**</span>
+<span class="cm"> *  Delete a single JLModel_ File File</span>
+<span class="cm"> *  @param model JLModel_File object</span>
+<span class="cm"> *  @param last Last file or not</span>
+<span class="cm"> *  @param result Delete successful callback</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdDeleteFile:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="w"></span>
+<span class="w">             </span><span class="nl">IsLast</span><span class="p">:(</span><span class="n">JL_DeleteFileLastType</span><span class="p">)</span><span class="nv">last</span><span class="w"></span>
+<span class="w">             </span><span class="nl">Result</span><span class="p">:(</span><span class="n">JL_CMD_RESPOND</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark device Formatting</span>
+<span class="c1">//@param model device handle</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdDeviceFormat:</span><span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">handle</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_CMD_RESPOND</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Clear device music cache records</span>
+<span class="cm">/**</span>
+<span class="cm"> @param type Type of card</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdCleanCacheType:</span><span class="p">(</span><span class="n">JL_CardType</span><span class="p">)</span><span class="nv">type</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt;【File transfer firmware --&gt;APP】</span>
+<span class="cp">#pragma mark 1.Listen to file data</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileDataMonitorResult:</span><span class="p">(</span><span class="n">JL_FILE_DATA_BK</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark 2.Allow transfer of file data</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdAllowFileData</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark 3.Refuse to transfer file data</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdRejectFileData</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark 4.Stop transferring file data</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdStopFileData</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt;[File Transfer APP --&gt;Firmware]</span>
+<span class="cp">#pragma mark 5.Request to transfer files to the device</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileDataSize:</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="nv">size</span><span class="w"></span>
+<span class="w">              </span><span class="nl">SavePath</span><span class="p">:(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">path</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark 6.Push file data to the device</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdPushFileData:</span><span class="p">(</span><span class="bp">NSData</span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark 【Large file transfer App --&gt;firmware】</span>
+<span class="c1">// @param  path       Large file download file path</span>
+<span class="c1">// @param  fileName   Large file download file name</span>
+<span class="c1">// @param  result     Large file download results</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdBigFileData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">path</span><span class="w"> </span><span class="nf">WithFileName:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">fileName</span><span class="w"></span>
+<span class="w">               </span><span class="nl">Result</span><span class="p">:(</span><span class="n">JL_BIGFILE_RT</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark Cancel file transfer</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdStopBigFileData</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark Notify the firmware to prepare the environment</span>
+<span class="c1">// @param  environment 0: Large file transfer 1: Delete file 2: Format</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdPreEnvironment:</span><span class="p">(</span><span class="n">JL_FileOperationEnvironmentType</span><span class="p">)</span><span class="nv">environment</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_CMD_RESPOND</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark Delete files by name</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileDeleteWithName:</span><span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">name</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_CMD_RESPOND</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark Set file transfer handle</span>
+<span class="cm">/**</span>
+<span class="cm"> *  Large file transfer, set the current transfer handle for crc16</span>
+<span class="cm"> */</span><span class="w"></span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setCurrentFileHandleType:</span><span class="p">(</span><span class="n">JL_FileHandleType</span><span class="p">)</span><span class="nv">currentFileHandleType</span><span class="p">;</span><span class="w"></span>
+<span class="p">-</span> <span class="p">(</span><span class="n">JL_FileHandleType</span><span class="p">)</span><span class="nf">getCurrentFileHandleType</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Read the file contents of the external card</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileReadContentWithName:</span><span class="p">(</span><span class="bp">NSString</span><span class="o">*</span><span class="p">)</span><span class="nv">name</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_FILE_CONTENT_BK</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Read the file content of the external card in cluster number mode</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileReadContentWithFileClus:</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="nv">fileClus</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JL_FILE_CONTENT_BK</span><span class="w"> </span><span class="n">__nullable</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#pragma mark ---&gt; Cancel reading file contents of external card</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdFileReadContentCancel</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">@end</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="process-description">
+<h2>3.3 Process Description<a class="headerlink" href="#process-description" title="Permalink to this headline"></a></h2>
+<section id="initialization">
+<h3>3.3.1 initialization<a class="headerlink" href="#initialization" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">DMusicHandler</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    Hierarchy</span>
+<span class="cm">        {</span>
+<span class="cm">        &quot;uuid0&quot;: {//Device uuid</span>
+<span class="cm">            &quot;card&quot;: [</span>
+<span class="cm">            &quot;fm model0&quot;,</span>
+<span class="cm">            &quot;fm model1&quot;,</span>
+<span class="cm">            &quot;fm model2&quot;</span>
+<span class="cm">            ]</span>
+<span class="cm">        },</span>
+<span class="cm">        &quot;uuid1&quot;: {</span>
+<span class="cm">            &quot;card1&quot;: &quot;value&quot;,</span>
+<span class="cm">            &quot;usb&quot;: [</span>
+<span class="cm">            &quot;fm model0&quot;,</span>
+<span class="cm">            &quot;fm model1&quot;,</span>
+<span class="cm">            &quot;fm model2&quot;</span>
+<span class="cm">            ]</span>
+<span class="cm">        },</span>
+<span class="cm">        &quot;uuid2&quot;: {</span>
+<span class="cm">            &quot;card1&quot;: [</span>
+<span class="cm">            &quot;fm model0&quot;,</span>
+<span class="cm">            &quot;fm model1&quot;,</span>
+<span class="cm">            &quot;fm model2&quot;</span>
+<span class="cm">            ],</span>
+<span class="cm">            &quot;usb&quot;: &quot;usbq&quot;</span>
+<span class="cm">        }</span>
+<span class="cm">        }</span>
+<span class="cm">    */</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">saveDict</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">bleUuid</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_CardType</span><span class="w"> </span><span class="n">nowType</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">NSInteger</span><span class="w"> </span><span class="n">reqNum</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">reqModel</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w">    </span><span class="n">playItem</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">@end</span><span class="w"></span>
+
+<span class="k">@implementation</span> <span class="nc">DMusicHandler</span><span class="w"></span>
+
+<span class="k">static</span><span class="w"> </span><span class="n">dispatch_once_t</span><span class="w"> </span><span class="n">onceToken</span><span class="p">;</span><span class="w"></span>
+<span class="k">static</span><span class="w"> </span><span class="n">DMusicHandler</span><span class="w"> </span><span class="o">*</span><span class="n">_dmh</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">+(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">sharedInstance</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">_dmh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">DMusicHandler</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">_dmh</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">+(</span><span class="kt">void</span><span class="p">)</span><span class="nf">deallocDMusic</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">onceToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">_dmh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">super</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">saveDict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="n">new</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">handleFileMonitor</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">addNote</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#pragma mark </span><span class="c1">///Processing return array</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleFileMonitor</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">__weak</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="n">wself</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">[[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleEntityM</span><span class="p">].</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdBrowseMonitorResult</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">array</span><span class="p">,</span><span class="w"> </span><span class="n">JL_BrowseReason</span><span class="w"> </span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">reason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonReading</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Reading:%lu&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonCommandEnd</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">                </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">shouldDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shouldDown</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">request</span><span class="o">:</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;End of read command:%lu delegate:%@&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">,</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonFolderEnd</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updateData</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">dmHandleWithItemModelArray</span><span class="o">:</span><span class="p">)])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                        </span><span class="p">[</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="w"> </span><span class="n">dmHandleWithItemModelArray</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">                    </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Directory Read End:%lu delegate:%@&quot;</span><span class="p">,(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">,</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">_delegate</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonBusy</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;The device is busy&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonDataFail</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Data read failed&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonPlaySuccess</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="n">wself</span><span class="w"> </span><span class="n">updatePlay</span><span class="p">];</span><span class="w"></span>
+<span class="w">                </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Played successfully&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_BrowseReasonUnknown</span><span class="p">:{</span><span class="w"></span>
+<span class="w">                </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;unknown error&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">requestWith</span><span class="o">:</span><span class="nb">self</span><span class="o">-&gt;</span><span class="n">reqModel</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">10</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="k">default</span><span class="o">:</span><span class="w"></span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="cp">#pragma mark </span><span class="c1">///Notification processing when updating data</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">addNote</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">add</span><span class="o">:</span><span class="n">kJL_BLE_M_ENTITY_DISCONNECTED</span><span class="w"> </span><span class="n">Action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">bleDisconnectAction</span><span class="o">:</span><span class="p">)</span><span class="w"> </span><span class="n">Own</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">JLModel_Device</span><span class="w"> </span><span class="n">observeModelProperty</span><span class="o">:</span><span class="s">@&quot;currentClus&quot;</span><span class="w"> </span><span class="n">Action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">noteCurrentClus</span><span class="o">:</span><span class="p">)</span><span class="w"> </span><span class="n">Own</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">JLModel_Device</span><span class="w"> </span><span class="n">observeModelProperty</span><span class="o">:</span><span class="s">@&quot;cardArray&quot;</span><span class="w"> </span><span class="n">Action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">noteCardArray</span><span class="o">:</span><span class="p">)</span><span class="w"> </span><span class="n">Own</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">bleDisconnectAction:</span><span class="p">(</span><span class="bp">NSNotification</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">note</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="bp">CBPeripheral</span><span class="w"> </span><span class="o">*</span><span class="n">pl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">note</span><span class="w"> </span><span class="n">object</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saveDict</span><span class="p">[</span><span class="n">pl</span><span class="p">.</span><span class="n">identifier</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">dict</span><span class="w"> </span><span class="n">removeAllObjects</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">noteCardArray:</span><span class="p">(</span><span class="bp">NSNotification</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">note</span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">isOk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">isCurrentDeviceCmd</span><span class="o">:</span><span class="n">note</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isOk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NO</span><span class="p">)</span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="bp">NSDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">tmpDict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">note</span><span class="w"> </span><span class="n">object</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">uuid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmpDict</span><span class="p">[</span><span class="n">kJL_MANAGER_KEY_UUID</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">uuid</span><span class="w"> </span><span class="n">isEqualToString</span><span class="o">:</span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleUUID</span><span class="p">]])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmpDict</span><span class="p">[</span><span class="n">kJL_MANAGER_KEY_OBJECT</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="n">tmpA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="l">@[@(</span><span class="n">JL_CardTypeUSB</span><span class="l">)</span><span class="p">,</span><span class="l">@(</span><span class="n">JL_CardTypeSD_0</span><span class="l">)</span><span class="p">,</span><span class="l">@(</span><span class="n">JL_CardTypeSD_1</span><span class="l">)</span><span class="p">,</span><span class="l">@(</span><span class="n">JL_CardTypeFLASH</span><span class="l">)</span><span class="p">,</span><span class="l">@(</span><span class="n">JL_CardTypeLineIn</span><span class="l">)]</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">tmpA</span><span class="p">.</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">array</span><span class="w"> </span><span class="n">containsObject</span><span class="o">:</span><span class="n">tmpA</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">JL_CardType</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">tmpA</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="n">integerValue</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saveDict</span><span class="p">[</span><span class="n">uuid</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">dict</span><span class="w"> </span><span class="n">removeObjectForKey</span><span class="o">:</span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">keyByType</span><span class="o">:</span><span class="n">type</span><span class="p">]];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">_delegate</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">dmCardMessageDismiss</span><span class="o">:</span><span class="p">)])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">_delegate</span><span class="w"> </span><span class="n">dmCardMessageDismiss</span><span class="o">:</span><span class="n">array</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">noteCurrentClus:</span><span class="p">(</span><span class="bp">NSNotification</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">note</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">isOk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">isCurrentDeviceCmd</span><span class="o">:</span><span class="n">note</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isOk</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NO</span><span class="p">)</span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span><span class="w"> </span><span class="o">^</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">updatePlay</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="interface-statement">
+<h3>3.3.2 Interface Statement<a class="headerlink" href="#interface-statement" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">DM_ERROR_Max_Fold</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">DM_ERROR_Unknown</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">DM_ERROR</span><span class="p">;</span><span class="w"></span>
+<span class="n">NS_ASSUME_NONNULL_BEGIN</span><span class="w"></span>
+<span class="k">@protocol</span> <span class="nc">DMHandlerDelegate</span> <span class="o">&lt;</span><span class="bp">NSObject</span><span class="o">&gt;</span><span class="w"></span>
+
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">dmHandleWithTabTitleArray</span><span class="o">:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">&lt;</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*&gt;</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">modelA</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dmHandleWithItemModelArray:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">&lt;</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*&gt;</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">modelB</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dmHandleWithPlayItemOK</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dmLoadFailed:</span><span class="p">(</span><span class="n">DM_ERROR</span><span class="p">)</span><span class="nv">err</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dmCardMessageDismiss:</span><span class="p">(</span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">nowArray</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">@end</span><span class="w"></span>
+
+<span class="k">@interface</span> <span class="nc">DMusicHandler</span> : <span class="bp">NSObject</span><span class="w"></span>
+<span class="k">@property</span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="k">weak</span><span class="p">)</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">DMHandlerDelegate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delegate</span><span class="p">;</span><span class="w"></span>
+<span class="k">@property</span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="k">weak</span><span class="p">)</span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">nowEntity</span><span class="p">;</span><span class="w"></span>
+<span class="p">+(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">sharedInstance</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadModeData:</span><span class="p">(</span><span class="n">JL_CardType</span><span class="p">)</span><span class="nv">type</span><span class="p">;</span><span class="w"></span>
+<span class="c1">/// Update the directory when clicking the corresponding title</span>
+<span class="c1">/// @param model fileModel</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tabArraySelect:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">/// Request directory list or request the file</span>
+<span class="c1">/// @param model jlfilemodel</span>
+<span class="c1">/// @param number</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">requestWith:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="w"> </span><span class="nf">Number:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">n</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">/// Load more data in the same root directory</span>
+<span class="c1">/// @param number</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">requestModelBy:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">num</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="interface-implementation">
+<h3>3.3.3 Interface implementation<a class="headerlink" href="#interface-implementation" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma mark </span><span class="c1">///Request Data</span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">loadModeData:</span><span class="p">(</span><span class="n">JL_CardType</span><span class="p">)</span><span class="nv">type</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">nowType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">type</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">checkCaChe</span><span class="o">:</span><span class="n">type</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">firstLoadData</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">checkoutArray</span><span class="o">:</span><span class="n">type</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">_delegate</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">dmHandleWithTabTitleArray</span><span class="o">:</span><span class="p">)])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">_delegate</span><span class="w"> </span><span class="n">dmHandleWithTabTitleArray</span><span class="o">:</span><span class="n">arr</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">lastPathRequest</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">request</span><span class="o">:</span><span class="n">model</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">firstLoadData</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleEntityM</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_Device</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">entity</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">outputDeviceModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">fileModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLModel_File</span><span class="w"> </span><span class="n">new</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileType</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">JL_BrowseTypeFolder</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="o">*</span><span class="n">mutbA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="n">new</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">sDict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saveDict</span><span class="p">[</span><span class="n">bleUuid</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">nowType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_CardTypeUSB</span><span class="p">:{</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">cardType</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">JL_CardTypeUSB</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;USB&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">folderName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;USB&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">handleUSB</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileClus</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">mutbA</span><span class="w"> </span><span class="n">addObject</span><span class="o">:</span><span class="n">fileModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">sDict</span><span class="w"> </span><span class="n">setValue</span><span class="o">:</span><span class="n">mutbA</span><span class="w"> </span><span class="n">forKey</span><span class="o">:</span><span class="n">USB_Card</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_CardTypeSD_0</span><span class="p">:{</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">cardType</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">JL_CardTypeSD_0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;SD Card&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">folderName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;SD Card&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">handleSD_0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileClus</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">mutbA</span><span class="w"> </span><span class="n">addObject</span><span class="o">:</span><span class="n">fileModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">sDict</span><span class="w"> </span><span class="n">setValue</span><span class="o">:</span><span class="n">mutbA</span><span class="w"> </span><span class="n">forKey</span><span class="o">:</span><span class="n">SD_0_Card</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_CardTypeSD_1</span><span class="p">:{</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">cardType</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">JL_CardTypeSD_1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;SD Card 2&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">folderName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;SD Card 2&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">handleSD_1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileClus</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">mutbA</span><span class="w"> </span><span class="n">addObject</span><span class="o">:</span><span class="n">fileModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">sDict</span><span class="w"> </span><span class="n">setValue</span><span class="o">:</span><span class="n">mutbA</span><span class="w"> </span><span class="n">forKey</span><span class="o">:</span><span class="n">SD_1_Card</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nl">JL_CardTypeFLASH</span><span class="p">:{</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">cardType</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">JL_CardTypeFLASH</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileName</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;FLASH&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">folderName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;FLASH&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileHandle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">handleFlash</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">fileModel</span><span class="p">.</span><span class="n">fileClus</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">mutbA</span><span class="w"> </span><span class="n">addObject</span><span class="o">:</span><span class="n">fileModel</span><span class="p">];</span><span class="w"></span>
+<span class="w">            </span><span class="p">[</span><span class="n">sDict</span><span class="w"> </span><span class="n">setValue</span><span class="o">:</span><span class="n">mutbA</span><span class="w"> </span><span class="n">forKey</span><span class="o">:</span><span class="n">FLASH_Card</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">requestWith</span><span class="o">:</span><span class="n">fileModel</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">20</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">requestWith:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="w"> </span><span class="nf">Number:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">n</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">reqModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">fileType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_BrowseTypeFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">playItem</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">playItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleEntityM</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">entity</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdBrowseModel</span><span class="o">:</span><span class="n">model</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">1</span><span class="w"> </span><span class="n">Result</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reqNum</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Cancel request%@&quot;</span><span class="p">,</span><span class="n">model</span><span class="p">.</span><span class="n">fileName</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">addTabArray</span><span class="o">:</span><span class="n">model</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">request</span><span class="o">:</span><span class="n">model</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">model</span><span class="p">.</span><span class="n">fileName</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">request:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_RunSDK</span><span class="w"> </span><span class="n">sharedMe</span><span class="p">]</span><span class="w"> </span><span class="n">mBleEntityM</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">entity</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdBrowseModel</span><span class="o">:</span><span class="n">model</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">10</span><span class="w"> </span><span class="n">Result</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">requestModelBy:</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">)</span><span class="nv">num</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">fm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">lastPathRequest</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">requestWith</span><span class="o">:</span><span class="n">fm</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="n">num</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">/// Update the directory when clicking the corresponding title</span>
+<span class="c1">/// @param model fileModel</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">tabArraySelect:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">reqNum</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;Cancel request%@&quot;</span><span class="p">,</span><span class="n">model</span><span class="p">.</span><span class="n">fileName</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">playItem</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">YES</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">NSLogEx</span><span class="p">(</span><span class="s">@&quot;You need to wait for the playback to succeed before continuing to control&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="o">*</span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">checkoutArray</span><span class="o">:</span><span class="n">nowType</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="o">*</span><span class="n">newArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="n">new</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">fm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">newArray</span><span class="w"> </span><span class="n">addObject</span><span class="o">:</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">fm</span><span class="p">.</span><span class="n">pathData</span><span class="w"> </span><span class="n">isEqualToData</span><span class="o">:</span><span class="n">model</span><span class="p">.</span><span class="n">pathData</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">pathData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">nil</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">dict</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saveDict</span><span class="p">[</span><span class="n">bleUuid</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">keyByType</span><span class="o">:</span><span class="n">nowType</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">dict</span><span class="w"> </span><span class="n">setValue</span><span class="o">:</span><span class="n">newArray</span><span class="w"> </span><span class="n">forKey</span><span class="o">:</span><span class="n">key</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">_delegate</span><span class="w"> </span><span class="n">respondsToSelector</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">dmHandleWithTabTitleArray</span><span class="o">:</span><span class="p">)])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="n">_delegate</span><span class="w"> </span><span class="n">dmHandleWithTabTitleArray</span><span class="o">:</span><span class="n">newArray</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">backModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">lastPathRequest</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">reqNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">requestWith</span><span class="o">:</span><span class="n">backModel</span><span class="w"> </span><span class="n">Number</span><span class="o">:</span><span class="mi">20</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">-(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">shouldBeUpdate:</span><span class="p">(</span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">model</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableArray</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">checkoutArray</span><span class="o">:</span><span class="n">nowType</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="n">JLModel_File</span><span class="w"> </span><span class="o">*</span><span class="n">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">arr</span><span class="w"> </span><span class="n">lastObject</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">pathData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">nil</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">item</span><span class="p">.</span><span class="n">pathData</span><span class="w"> </span><span class="n">isEqualToData</span><span class="o">:</span><span class="n">model</span><span class="p">.</span><span class="n">pathData</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using, pay attention to adding the corresponding protocol ` DMHandlerDelegate`</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="function.html" class="btn btn-neutral float-left" title="2.Function Module Description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Other/debug.html" class="btn btn-neutral float-right" title="Testing Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Zhuhai Jieli Technology Co., Ltd.
+      <span class="lastupdated">Last updated on Nov 22, 2023.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

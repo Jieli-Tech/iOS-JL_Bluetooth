@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <JL_BLEKit/JLModel_File.h>
-#import "JL_FunctionBaseManager.h"
-#import "JL_Tools.h"
+#import <JL_BLEKit/JL_FunctionBaseManager.h>
+#import <JL_BLEKit/JL_Tools.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -76,6 +76,22 @@ typedef void(^JL_BIGFILE_BK)(NSArray* __nullable array);
 typedef void(^JL_BIGFILE_RT)(JL_BigFileResult result, float progress);
 
 @interface JL_FileManager : JL_FunctionBaseManager
+
+/// 超时时间
+@property(nonatomic,assign)NSInteger maxTimeout;
+
+///大文件名是否使用其他编码
+///Default：false
+///短文件名：GBK  CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)
+///长文件名：Unicode16L （NSUTF16LittleEndianStringEncoding）
+///Other: true
+///需要设置encodeType属性的值，默认为Unicode16L
+@property(nonatomic,assign)BOOL isOtherEncode;
+
+/// 大文件名使用的编码
+/// default :NSUTF16LittleEndianStringEncoding
+@property(nonatomic,assign)NSStringEncoding encodeType;
+
 
 - (void)closeTimer;
 
@@ -164,10 +180,23 @@ typedef void(^JL_BIGFILE_RT)(JL_BigFileResult result, float progress);
 - (void)setCurrentFileHandleType:(JL_FileHandleType)currentFileHandleType;
 - (JL_FileHandleType)getCurrentFileHandleType;
 
+/// 文件传输的句柄
+- (NSData *)currentDeviceHandleData;
+
 #pragma mark ---> 读取外置卡的文件内容
+
+/// 读取外置卡的文件内容
+/// - Parameters:
+///   - name: 文件名
+///   - result: 回调结果
 -(void)cmdFileReadContentWithName:(NSString*)name Result:(JL_FILE_CONTENT_BK __nullable)result;
 
 #pragma mark ---> 簇号方式读取外置卡的文件内容
+
+/// 簇号方式读取外置卡的文件内容
+/// - Parameters:
+///   - fileClus: 文件簇号
+///   - result: 回调
 - (void)cmdFileReadContentWithFileClus:(uint32_t)fileClus Result:(JL_FILE_CONTENT_BK __nullable)result;
 
 #pragma mark ---> 取消读取外置卡的文件内容

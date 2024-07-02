@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "58CB2CD5-6002-4653-986D-ED2B405826CD"
-            shouldBeEnabled = "No"
+            uuid = "005B6F50-38B2-4D00-88C1-FCC26C061B84"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NewJieliZhiNeng/&#x8bbe;&#x5907;/&#x8bbe;&#x5907;&#x4fe1;&#x606f;/&#x8033;&#x673a;ANC/&#x901a;&#x900f;&#x589e;&#x76ca;/DenoiseVC.m"
+            filePath = "NewJieliZhiNeng/&#x8bbe;&#x5907;&#x5207;&#x6362;/DeviceChangeView.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
-            landmarkName = "-btnAction:"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A085F184-CDC9-4C82-BDC7-653488331240"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewJieliZhiNeng/&#x8bbe;&#x5907;/&#x8bbe;&#x5907;&#x641c;&#x7d22;/SearchView.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

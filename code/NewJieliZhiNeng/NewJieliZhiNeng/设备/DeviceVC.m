@@ -207,6 +207,7 @@ static TopView *topView = nil;
  
         __weak typeof(self) wSelf = self;
         JL_EntityM *entity = [bleSDK.mBleMultiple makeEntityWithUUID:objc.uuid];
+        
         [bleSDK.mBleMultiple connectEntity:entity Result:^(JL_EntityM_Status status) {
             if (status == JL_EntityM_StatusPaired) {
                 //[entity.mCmdManager cmdHeatsetAdvEnable:NO];
@@ -216,6 +217,7 @@ static TopView *topView = nil;
                 [wSelf setLoadingText:txt Delay:1.0];
             }];
         }];
+        
     }
     
     /*--- 已连接 ---*/

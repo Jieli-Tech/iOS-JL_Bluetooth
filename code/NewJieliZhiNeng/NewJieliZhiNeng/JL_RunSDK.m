@@ -54,7 +54,9 @@ static JL_RunSDK *SDK = nil;
 
         /*--- 初始化JL_SDK ---*/
         self.mBleMultiple = [[JL_BLEMultiple alloc] init];
+        //是否开启过滤
         self.mBleMultiple.BLE_FILTER_ENABLE = YES;
+        //是否开启设备认证
         self.mBleMultiple.BLE_PAIR_ENABLE = YES;
         self.mBleMultiple.BLE_TIMEOUT = 7;
 
@@ -82,6 +84,18 @@ static JL_RunSDK *SDK = nil;
     
     [SDK changeUUID:uuid];
     [JL_Tools post:kUI_JL_DEVICE_CHANGE Object:@(JLDeviceChangeTypeManualChange)];
+}
+
++(BOOL)isConnectedEdr:(JL_EntityM *)entity{
+    if (entity.mType != JL_DeviceTypeTWS){
+        return true;
+    }
+    NSArray *array = [JL_BLEMultiple outputEdrList];
+    if ([array containsObject:entity.mEdr]){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 
@@ -201,6 +215,7 @@ static JL_RunSDK *SDK = nil;
     
 }
 
+
 #pragma mark 已连设备的定时处理
 -(void)startPreparation{
     NSLog(@"---> 开始预处理...");
@@ -311,6 +326,19 @@ static JL_RunSDK *SDK = nil;
     if(uuid)[linkedUuidArr insertObject:uuid atIndex:0];
 }
 
+-(void)noteEdrChange:(NSNotification *)note{
+    if (self.mBleEntityM == nil) return;
+    for (JL_EntityM *entity in self.mBleMultiple.bleConnectedArr) {
+        if(![JL_RunSDK isConnectedEdr:entity]){
+            if (entity.mCmdManager.mTwsManager.supports.isSupportDragWithMore){
+                
+                [self.mBleMultiple disconnectEntity:entity Result:^(JL_EntityM_Status status) {
+                }];
+            }
+        }
+    }
+}
+
 
 -(void)addNote{
     [JL_Tools add:kUI_JL_BLE_SCAN_OPEN Action:@selector(noteBleScanOpen:) Own:self];
@@ -319,6 +347,7 @@ static JL_RunSDK *SDK = nil;
     [JL_Tools add:kJL_BLE_M_ENTITY_CONNECTED Action:@selector(noteEntityConnected:) Own:self];
     [JL_Tools add:kJL_BLE_M_ENTITY_DISCONNECTED Action:@selector(noteEntityDisconnected:) Own:self];
     [JL_Tools add:kJL_BLE_M_OFF Action:@selector(noteBlePoweredOFF:) Own:self];
+    [JL_Tools add:kJL_BLE_M_EDR_CHANGE Action:@selector(noteEdrChange:) Own:self];
 }
 
 @end

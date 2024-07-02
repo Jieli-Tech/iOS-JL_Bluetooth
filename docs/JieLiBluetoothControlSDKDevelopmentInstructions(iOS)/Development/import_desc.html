@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.Access Process &mdash; Jieli Home Development Documentation(IOS) v1.6.4 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.Function Module Description" href="function.html" />
+    <link rel="prev" title="SDK Architecture" href="../Framework/framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Jieli Home Development Documentation(IOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Development framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK Architecture</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development description</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1.Access Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#support-environment">1.1 Support environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#library-import">1.2 Library import</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependent-library">1.2.1 Dependent library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#necessary-permissions">1.2.3 Necessary permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xcode-configuration">1.2.4 Xcode configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sdk-configuration">1.3 SDK configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bluetooth-initialization">1.3.1 Bluetooth initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-devices">1.3.2 Connecting devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disconnect-the-device">1.3.3 Disconnect the device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mac-address-loopback-device">1.3.4 MAC address loopback device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uuid-back-connection-equipment">1.3.5 UUID back connection equipment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization-after-successful-bluetooth-connection">1.3.6 Initialization after successful Bluetooth connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notification-callback-of-monitoring-discovery-connection-disconnection-bluetooth-status-etc">1.3.7 Notification callback of monitoring discovery, connection, disconnection, Bluetooth status, etc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="function.html">2.Function Module Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browse_desc.html">3 Directory Browse</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">Testing Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">Release Record</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/openSourceCommunity.html">Open Source Community</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Jieli Home Development Documentation(IOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>1.Access Process</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="access-process">
+<h1>1.Access Process<a class="headerlink" href="#access-process" title="Permalink to this headline"></a></h1>
+<section id="support-environment">
+<h2>1.1 Support environment<a class="headerlink" href="#support-environment" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 35%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Environment</p></th>
+<th class="head"><p>Compatibility range</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Software system</p></td>
+<td><p>Target Version：IOS 10.0</p></td>
+<td><p>Support BLE function</p></td>
+</tr>
+<tr class="row-odd"><td><p>Firmware SDK</p></td>
+<td><p>AC693NSDK, AC695NSDK,AC697NSDK etc.</p></td>
+<td><p>It is recommended to consult the SDK principal</p></td>
+</tr>
+<tr class="row-even"><td><p>development tool</p></td>
+<td><p>Xcode 13.0 or above</p></td>
+<td><p>The latest version is recommended</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="library-import">
+<h2>1.2 Library import<a class="headerlink" href="#library-import" title="Permalink to this headline"></a></h2>
+<section id="dependent-library">
+<h3>1.2.1 Dependent library<a class="headerlink" href="#dependent-library" title="Permalink to this headline"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>JL_BLEKit.framework</strong> : Bluetooth function library</p></li>
+<li><p><strong>JL_OTALib.framework</strong> : OTA upgrade business library</p></li>
+<li><p><strong>JL_AdvParse.framework</strong> : JL Bluetooth device broadcast packet parsing business library</p></li>
+<li><p><strong>JL_HashPair.framework</strong>: Device authentication business library</p></li>
+</ol>
+</section>
+<section id="necessary-permissions">
+<h3>1.2.3 Necessary permissions<a class="headerlink" href="#necessary-permissions" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective notranslate"><div class="highlight"><pre><span></span> //Use Bluetooth permissions
+Privacy - Bluetooth Peripheral Usage Description
+Privacy - Bluetooth Always Usage Description
+</pre></div>
+</div>
+</section>
+<section id="xcode-configuration">
+<h3>1.2.4 Xcode configuration<a class="headerlink" href="#xcode-configuration" title="Permalink to this headline"></a></h3>
+<blockquote>
+<div><p>Since the library contains attributes of extended classes, you need to configure <strong>Other linker Flags</strong> when using it.</p>
+<p><strong>-ObjC</strong> needs to be added to <strong>Other Linker Flags</strong> in the <strong>Build Settings</strong> of the project.</p>
+</div></blockquote>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/otherlinkerflags.jpg"><img alt="../_images/otherlinkerflags.jpg" src="../_images/otherlinkerflags.jpg" style="width: 100%;" /></a>
+</figure>
+</section>
+</section>
+<section id="sdk-configuration">
+<h2>1.3 SDK configuration<a class="headerlink" href="#sdk-configuration" title="Permalink to this headline"></a></h2>
+<section id="bluetooth-initialization">
+<h3>1.3.1 Bluetooth initialization<a class="headerlink" href="#bluetooth-initialization" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//1、External references</span>
+<span class="linenos"> 2</span><span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="n">JL_BLEMultiple</span><span class="w">  </span><span class="o">*</span><span class="n">mBleMultiple</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="k">@property</span><span class="p">(</span><span class="k">weak</span><span class="w">  </span><span class="p">,</span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="n">JL_EntityM</span><span class="w">      </span><span class="o">*</span><span class="n">mBleEntityM</span><span class="p">;</span><span class="c1">//A Weak reference is required. Disconnect the device and search again. The SDK needs to be released. (used as the currently operating device)</span>
+<span class="linenos"> 4</span><span class="k">@property</span><span class="p">(</span><span class="k">strong</span><span class="p">,</span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="bp">NSString</span><span class="w">        </span><span class="o">*</span><span class="n">mBleUUID</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">@property</span><span class="p">(</span><span class="k">weak</span><span class="w">  </span><span class="p">,</span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="bp">NSArray</span><span class="w">         </span><span class="o">*</span><span class="n">mFoundArray</span><span class="p">;</span><span class="w"> </span><span class="c1">//The device that needs to be referred to by Weak and scanned.</span>
+<span class="linenos"> 6</span><span class="k">@property</span><span class="p">(</span><span class="k">weak</span><span class="w">  </span><span class="p">,</span><span class="k">nonatomic</span><span class="p">)</span><span class="w"> </span><span class="bp">NSArray</span><span class="w">         </span><span class="o">*</span><span class="n">mConnectedArray</span><span class="p">;</span><span class="c1">//A Weak reference is required for connected devices.</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">//2、Instantiate SDK</span>
+<span class="linenos"> 9</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JL_BLEMultiple</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">10</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_FILTER_ENABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w">    </span><span class="c1">//Enable filter equipment</span>
+<span class="linenos">11</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_PAIR_ENABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w">      </span><span class="c1">//Pairing enable</span>
+<span class="linenos">12</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">BLE_TIMEOUT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w">            </span><span class="c1">//Connection timeout</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">//3、Select the type of device you want to search</span>
+<span class="linenos">15</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">bleDeviceTypeArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="l">@[@(</span><span class="n">JL_DeviceTypeWatch</span><span class="l">)]</span><span class="p">;</span><span class="c1">//Only Watch</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">//4、The devices found by the SDK will be added to the bleConnectedArr array after clicking Connect.</span>
+<span class="linenos">18</span><span class="c1">//5、call [self.mBleMultiple scanStart] will be released blePeripheralArr in JL_EntityM。</span>
+<span class="linenos">19</span><span class="nb">self</span><span class="p">.</span><span class="n">mFoundArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">blePeripheralArr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">//6、Devices connected to SDk will be added to the blePeripheralArr array after disconnection.</span>
+<span class="linenos">22</span><span class="nb">self</span><span class="p">.</span><span class="n">mConnectedArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">bleConnectedArr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c1">//7、Use mBleEntityM weak reference mConnectedArray Connected in JL_EntityM Device，After that, the command will be issued using the [JL_ManagerM] in mBleEntity.</span>
+</pre></div>
+</div>
+</section>
+<section id="connecting-devices">
+<h3>1.3.2 Connecting devices<a class="headerlink" href="#connecting-devices" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//Connect one from the list of discovered devices.</span>
+<span class="linenos"> 2</span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mFoundArray</span><span class="p">[</span><span class="n">indexPath</span><span class="p">.</span><span class="n">row</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="cm">/**</span>
+<span class="linenos"> 4</span><span class="cm">Connecting devices</span>
+<span class="linenos"> 5</span><span class="cm">@param entity Bluetooth device class</span>
+<span class="linenos"> 6</span><span class="cm">*/</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="n">connectEntity</span><span class="o">:</span><span class="n">entity</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">                        </span><span class="nl">Result</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">JL_EntityM_Status</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">mainTask</span><span class="o">:^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="cm">/*【status】Error code and cause</span>
+<span class="linenos">11</span><span class="cm">    JL_EntityM_StatusBleOFF         = 0,    //BLE Bluetooth is not enabled</span>
+<span class="linenos">12</span><span class="cm">    JL_EntityM_StatusConnectFail    = 1,    //BLE connection failed</span>
+<span class="linenos">13</span><span class="cm">    JL_EntityM_StatusConnecting     = 2,    //BLE is connecting</span>
+<span class="linenos">14</span><span class="cm">    JL_EntityM_StatusConnectRepeat  = 3,    //BLE repeated connection</span>
+<span class="linenos">15</span><span class="cm">    JL_EntityM_StatusConnectTimeout = 4,    //BLE connection timeout</span>
+<span class="linenos">16</span><span class="cm">    JL_EntityM_StatusConnectRefuse  = 5,    //BLE Rejected</span>
+<span class="linenos">17</span><span class="cm">    JL_EntityM_StatusPairFail       = 6,    //Pairing failed</span>
+<span class="linenos">18</span><span class="cm">    JL_EntityM_StatusPairTimeout    = 7,    //Pairing timeout</span>
+<span class="linenos">19</span><span class="cm">    JL_EntityM_StatusPaired         = 8,    //Paired</span>
+<span class="linenos">20</span><span class="cm">    JL_EntityM_StatusMasterChanging = 9,    //Switching between master and slave</span>
+<span class="linenos">21</span><span class="cm">    JL_EntityM_StatusDisconnectOk   = 10,   //Disconnected successfully</span>
+<span class="linenos">22</span><span class="cm">    JL_EntityM_StatusNull           = 11,   //Entity is empty */</span><span class="w"></span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_EntityM_StatusPaired</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">        </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;Connection succeeded:%@&quot;</span><span class="p">,</span><span class="n">deviceName</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">        </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;connection failed:%@&quot;</span><span class="p">,</span><span class="n">deviceName</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">30</span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="c1">//Matters needing attention</span>
+<span class="linenos">33</span><span class="c1">//mBleEntityM is introduced in document 1.3.1；</span>
+<span class="linenos">34</span><span class="c1">//after successful connection, you must first obtain the device information；</span>
+<span class="linenos">35</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdTargetFeatureResult</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="n">array</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">    </span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="n">intValue</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">st</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_CMDStatusSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">        </span><span class="cm">/*--- model of device information ---*/</span><span class="w"></span>
+<span class="linenos">39</span><span class="w">    </span><span class="n">JLModel_Device</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">outputDeviceModel</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">40</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Get succeeded.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">41</span><span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">42</span><span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Get failed.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">43</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">44</span><span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="disconnect-the-device">
+<h3>1.3.3 Disconnect the device<a class="headerlink" href="#disconnect-the-device" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/**</span>
+<span class="linenos"> 2</span><span class="cm">Connecting devices</span>
+<span class="linenos"> 3</span><span class="cm">@param entity Bluetooth device class</span>
+<span class="linenos"> 4</span><span class="cm">*/</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="n">disconnectEntity</span><span class="o">:</span><span class="n">entity</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_EntityM_Status</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">mainTask</span><span class="o">:^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_EntityM_StatusDisconnectOk</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">txt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;Disconnected:%@&quot;</span><span class="p">,</span><span class="n">deviceName</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="mac-address-loopback-device">
+<h3>1.3.4 MAC address loopback device<a class="headerlink" href="#mac-address-loopback-device" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="n">connectEntityForMac</span><span class="o">:</span><span class="s">@&quot;Mac Address&quot;</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_EntityM_Status</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">2</span><span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">mainTask</span><span class="o">:^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_EntityM_StatusPaired</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----&gt; Succeeded in connecting the device back.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----&gt; Failed to connect the device back successfully.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">7</span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">8</span><span class="w">        </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">9</span><span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="uuid-back-connection-equipment">
+<h3>1.3.5 UUID back connection equipment<a class="headerlink" href="#uuid-back-connection-equipment" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//Find the corresponding JL according to the UUID_ EntityM connection.</span>
+<span class="linenos"> 2</span><span class="n">JL_EntityM</span><span class="w"> </span><span class="o">*</span><span class="n">entity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">bleMp</span><span class="w"> </span><span class="n">makeEntityWithUUID</span><span class="o">:</span><span class="s">@&quot;UUID-xxxx-xxxx-xxxx-xxxx&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="cm">/*--- 1、UUID connection device ---*/</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleMultiple</span><span class="w"> </span><span class="n">connectEntity</span><span class="o">:</span><span class="n">entity</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_EntityM_Status</span><span class="w"> </span><span class="n">status</span><span class="p">){</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="p">[</span><span class="n">JL_Tools</span><span class="w"> </span><span class="n">mainTask</span><span class="o">:^</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_EntityM_StatusPaired</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----&gt; UUID successfully reconnects the device.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;----&gt; Failed to connect the device back successfully.&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">13</span><span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="initialization-after-successful-bluetooth-connection">
+<h3>1.3.6 Initialization after successful Bluetooth connection<a class="headerlink" href="#initialization-after-successful-bluetooth-connection" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//Received kJL_ BLE_ M_ ENTITY_ Connected notification, the following processing shall be performed:</span>
+<span class="linenos"> 2</span><span class="cm">/*--- Turn off the headset information push ---*/</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mTwsManager</span><span class="w"> </span><span class="n">cmdHeadsetAdvEnable</span><span class="o">:</span><span class="nb">NO</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="cm">/*--- Synchronization timestamp ---*/</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="bp">NSDate</span><span class="w"> </span><span class="o">*</span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSDate</span><span class="w"> </span><span class="n">new</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="n">JL_SystemTime</span><span class="w"> </span><span class="o">*</span><span class="n">systemTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mSystemTime</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="p">[</span><span class="n">systemTime</span><span class="w"> </span><span class="n">cmdSetSystemTime</span><span class="o">:</span><span class="n">date</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="cm">/*--- Clear device music cache ---*/</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdCleanCacheType</span><span class="o">:</span><span class="n">JL_CardTypeUSB</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">12</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdCleanCacheType</span><span class="o">:</span><span class="n">JL_CardTypeSD_0</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">13</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="p">.</span><span class="n">mFileManager</span><span class="w"> </span><span class="n">cmdCleanCacheType</span><span class="o">:</span><span class="n">JL_CardTypeSD_1</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">__weak</span><span class="w"> </span><span class="nf">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="n">wSelf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="cm">/*--- Get device information ---*/</span><span class="w"></span>
+<span class="linenos">17</span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdTargetFeatureResult</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sn</span><span class="p">,</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">_Nullable</span><span class="w"> </span><span class="n">data</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">        </span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">st</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">status</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">st</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_CMDStatusSuccess</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">            </span><span class="p">[</span><span class="n">wSelf</span><span class="w"> </span><span class="n">startTimeout</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="w">        </span><span class="n">JLModel_Device</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">outputDeviceModel</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">        </span><span class="n">JL_OtaStatus</span><span class="w"> </span><span class="n">upSt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">otaStatus</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">upSt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaStatusForce</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">            </span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mBLE_NEED_OTA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">            </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">27</span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">otaHeadset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_OtaHeadsetYES</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">        </span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mBLE_NEED_OTA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">31</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">32</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">33</span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mBLE_NEED_OTA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">34</span>
+<span class="linenos">35</span><span class="cm">/*--- Common information ---*/</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">        </span><span class="p">[</span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdGetSystemInfo</span><span class="o">:</span><span class="n">JL_FunctionCodeCOMMON</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sn</span><span class="p">,</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">_Nullable</span><span class="w"> </span><span class="n">data</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">            </span><span class="p">[</span><span class="n">wSelf</span><span class="p">.</span><span class="n">mBleEntityM</span><span class="p">.</span><span class="n">mCmdManager</span><span class="w"> </span><span class="n">cmdGetSystemInfo</span><span class="o">:</span><span class="n">JL_FunctionCodeBT</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sn</span><span class="p">,</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">_Nullable</span><span class="w"> </span><span class="n">data</span><span class="p">){</span><span class="w"></span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="w">            </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">40</span><span class="w">        </span><span class="p">}];</span><span class="w"></span>
+<span class="linenos">41</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">42</span><span class="p">}];</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="notification-callback-of-monitoring-discovery-connection-disconnection-bluetooth-status-etc">
+<h3>1.3.7 Notification callback of monitoring discovery, connection, disconnection, Bluetooth status, etc<a class="headerlink" href="#notification-callback-of-monitoring-discovery-connection-disconnection-bluetooth-status-etc" title="Permalink to this headline"></a></h3>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_FOUND</span><span class="p">;</span><span class="w">               </span><span class="c1">//1、devices detected</span>
+<span class="linenos"> 2</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_FOUND_SINGLE</span><span class="p">;</span><span class="w">        </span><span class="c1">//2、Discover a single device</span>
+<span class="linenos"> 3</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ENTITY_CONNECTED</span><span class="p">;</span><span class="w">    </span><span class="c1">//3、Device connection</span>
+<span class="linenos"> 4</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ENTITY_DISCONNECTED</span><span class="p">;</span><span class="w"> </span><span class="c1">//4、Device disconnection</span>
+<span class="linenos"> 5</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_ON</span><span class="p">;</span><span class="w">                  </span><span class="c1">//5、BLE ON</span>
+<span class="linenos"> 6</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_OFF</span><span class="p">;</span><span class="w">                 </span><span class="c1">//6、BLE OFF</span>
+<span class="linenos"> 7</span><span class="k">extern</span><span class="w"> </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">kJL_BLE_M_EDR_CHANGE</span><span class="p">;</span><span class="w">          </span><span class="c1">//7、Change of classic Bluetooth output channel</span>
+<span class="linenos"> 8</span><span class="c1">//Listen to the notifications at points 1, 3 and 4,</span>
+<span class="linenos"> 9</span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">changes</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">mBleMultiple</span><span class="p">.</span><span class="n">blePeripheralArr</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">UI</span><span class="p">.</span><span class="w"></span>
+<span class="linenos">10</span><span class="c1">//Monitor the notification at point 5 to know the changes of the current classic Bluetooth</span>
+<span class="linenos">11</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">classic</span><span class="w"> </span><span class="n">Bluetooth</span><span class="w"> </span><span class="n">information</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">            </span><span class="l">@{</span><span class="s">@&quot;ADDRESS&quot;</span><span class="o">:</span><span class="s">@&quot;7c9a1da7330e&quot;</span><span class="p">,</span><span class="w">      </span><span class="c1">//Classic Bluetooth address</span>
+<span class="linenos">13</span><span class="w">            </span><span class="s">@&quot;TYPE&quot;</span><span class="w">   </span><span class="o">:</span><span class="s">@&quot;BluetoothA2DPOutput&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">//type</span>
+<span class="linenos">14</span><span class="w">            </span><span class="s">@&quot;NAME&quot;</span><span class="w">   </span><span class="o">:</span><span class="s">@&quot;earphone&quot;</span><span class="l">}</span><span class="w">            </span><span class="c1">//name</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Framework/framework.html" class="btn btn-neutral float-left" title="SDK Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="function.html" class="btn btn-neutral float-right" title="2.Function Module Description" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Zhuhai Jieli Technology Co., Ltd.
+      <span class="lastupdated">Last updated on Nov 22, 2023.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

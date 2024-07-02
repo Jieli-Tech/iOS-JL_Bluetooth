@@ -23,6 +23,7 @@
     ANCModeView *ancModeView;
     NSMutableArray *ancArr;
     UILabel *ancLabel2;
+    UILabel *sph_label;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *titleName;
@@ -33,6 +34,7 @@
 @property(nonatomic,strong) NSArray  *micModeArray;
 @property(nonatomic,strong) NSArray  *lighModeArray;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headHeight;
+
 
 @property(nonatomic,strong) UIView *ancView;
 @end
@@ -48,7 +50,62 @@
     
     [self initUI];
     [self addNote];
+    
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager addObserver:self forKeyPath:@"headSetInfoDict" options:NSKeyValueObservingOptionNew context:nil];
 }
+
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"headSetInfoDict"]){
+        if ([change objectForKey:@"new"]) {
+            JL_TwsManager *mgr = bleSDK.mBleEntityM.mCmdManager.mTwsManager;
+            [mgr logProperties];
+            NSLog(@"_funType:%d,_directionType:%d",_funType,_directionType);
+            _workMode = mgr.workMode;
+            _micMode = mgr.micMode;
+            if (mgr.headSetInfoDict[@"KEY_SETTING"]){
+                
+                [self setHeadsetDict:mgr.headSetInfoDict];
+                [self initUI];
+                [self updateKeySetting:mgr.headSetInfoDict];
+            }
+            
+            if (mgr.headSetInfoDict[@"KEY_ANC_MODE"]){
+                if (clickIndex == 255){
+                    ancLabel2.hidden = NO;
+                }else{
+                    ancLabel2.hidden = YES;
+                }
+                ancArr = mgr.headSetInfoDict[@"KEY_ANC_MODE"];
+                ancModeView.mAncArray = ancArr;
+            }
+            
+            
+        }
+    }
+}
+
+-(void)updateKeySetting:(NSDictionary *)dict{
+    NSArray *array = dict[@"KEY_SETTING"];
+    for (NSDictionary *item in array) {
+        int keyAction = [item[@"KEY_ACTION"] intValue];
+        int keyLR = [item[@"KEY_LR"] intValue];
+        int function = [item[@"KEY_FUNCTION"] intValue];
+        if (_funType+1 == keyAction){
+            if (_directionType+1 == keyLR){
+                clickIndex = function;
+                if (function != 255){
+                    ancLabel2.hidden = true;
+                }
+                [_listTable reloadData];
+                break;
+            }
+        }
+    }
+}
+
 
 -(void)setHeadsetDict:(NSDictionary *)headsetDict{
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
@@ -74,52 +131,56 @@
         if(_ancView == nil){
             _ancView = [[UIView alloc] initWithFrame:CGRectMake(0, kJL_HeightNavBar+10, kJL_W, 55)];
             [self.view addSubview:_ancView];
+            UILabel *ancLabel;
+            if(ancLabel == nil){
+                ancLabel = [[UILabel alloc] init];
+                ancLabel.frame = CGRectMake(16,55/2-21/2,kJL_W-70,21);
+                ancLabel.numberOfLines = 0;
+                [_ancView addSubview:ancLabel];
+                ancLabel.font =  [UIFont fontWithName:@"PingFang SC" size: 14];
+                ancLabel.text =  kJL_TXT("noise_control");
+                ancLabel.textColor = kDF_RGBA(36, 36, 36, 1.0);
+            }
+            
+            UIButton *ancBtn = [[UIButton alloc] initWithFrame:CGRectMake(kJL_W-8-24.5,55/2-11/2,24.5,11)];
+            [ancBtn setImage:[UIImage imageNamed:@"Theme.bundle/icon_app_settings_next"] forState:UIControlStateNormal];
+            [_ancView addSubview:ancBtn];
+            UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(enterANCModeUI)];
+            [_ancView addGestureRecognizer:gestureRecognizer];
         }
-        _ancView.backgroundColor = [UIColor whiteColor];
         
-        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(enterANCModeUI)];
-        [_ancView addGestureRecognizer:gestureRecognizer];
+        _ancView.backgroundColor = [UIColor whiteColor];
         _ancView.userInteractionEnabled=YES;
         
-        UILabel *ancLabel;
-        if(ancLabel == nil){
-            ancLabel = [[UILabel alloc] init];
-            ancLabel.frame = CGRectMake(16,55/2-21/2,kJL_W-70,21);
-            ancLabel.numberOfLines = 0;
-            [_ancView addSubview:ancLabel];
-            ancLabel.font =  [UIFont fontWithName:@"PingFang SC" size: 14];
-            ancLabel.text =  kJL_TXT("noise_control");
-            ancLabel.textColor = kDF_RGBA(36, 36, 36, 1.0);
+        if (ancLabel2 == nil){
+            ancLabel2 = [[UILabel alloc] init];
+            ancLabel2.hidden = YES;
+            [_ancView addSubview:ancLabel2];
         }
-
-        UIButton *ancBtn = [[UIButton alloc] initWithFrame:CGRectMake(kJL_W-8-24.5,55/2-11/2,24.5,11)];
-        [ancBtn setImage:[UIImage imageNamed:@"Theme.bundle/icon_app_settings_next"] forState:UIControlStateNormal];
-        [_ancView addSubview:ancBtn];
-
-        ancLabel2 = [[UILabel alloc] init];
         ancLabel2.frame = CGRectMake(kJL_W-16-24.5-35,55/2-18/2,60,18);
         ancLabel2.numberOfLines = 0;
-        [_ancView addSubview:ancLabel2];
         ancLabel2.font =  [UIFont fontWithName:@"PingFang SC" size: 14];
         ancLabel2.text =  kJL_TXT("enable");
         ancLabel2.textColor = kDF_RGBA(111, 206, 124, 1.0);
-        ancLabel2.hidden = YES;
     }
     
     //短按耳机
-    UILabel *sph_label = [[UILabel alloc] init];
-    
+    if (sph_label == nil){
+        sph_label = [[UILabel alloc] init];
+        [self.view addSubview:sph_label];
+    }
     if(deviceModel.ancType == JL_AncTypeYES){
         sph_label.frame = CGRectMake(18,kJL_HeightNavBar+10+55,160,50);
     }else{
         sph_label.frame = CGRectMake(18,kJL_HeightNavBar+10,160,50);
     }
     sph_label.numberOfLines = 1;
-    [self.view addSubview:sph_label];
     sph_label.textColor = [UIColor colorWithRed:152/255.0 green:152/255.0 blue:152/255.0 alpha:1.0];
     sph_label.font = [UIFont fontWithName:@"PingFangSC-Medium" size:13];
-    
-    _listTable = [[UITableView alloc] initWithFrame:CGRectMake(0, kJL_HeightNavBar+10+50.0,kJL_W,kJL_H-(kJL_HeightNavBar+10+50.0)-27)];
+    if (_listTable == nil){
+        _listTable = [[UITableView alloc] initWithFrame:CGRectMake(0, kJL_HeightNavBar+10+50.0,kJL_W,kJL_H-(kJL_HeightNavBar+10+50.0)-27)];
+        [self.view addSubview:_listTable];
+    }
     _listTable.delegate      = self;
     _listTable.dataSource    = self;
     _listTable.rowHeight = 55.0;
@@ -127,10 +188,8 @@
     _listTable.tableFooterView = [UIView new];
     _listTable.backgroundColor = [UIColor clearColor];
     _listTable.separatorColor = kDF_RGBA(238, 238, 238, 1.0);
-    [self.view addSubview:_listTable];
     
     if(_funType == 0) { //0:短按耳机 1:轻点两下耳机
-        
         sph_label.text = @"短按耳机";
         if ([[JL_RunSDK sharedMe] mBleEntityM].mProtocolType == PTLVersion) {
             sph_label.text = self.tapNameStr;
@@ -288,11 +347,12 @@
     }
     
     [_listTable reloadData];
-    
-    ancModeView = [[ANCModeView alloc] initWithFrame:CGRectMake(0, 0, kJL_W, kJL_H)];
-    [self.view addSubview:ancModeView];
-    ancModeView.delegate = self;
-    ancModeView.hidden = YES;
+    if (ancModeView == nil){
+        ancModeView = [[ANCModeView alloc] initWithFrame:CGRectMake(0, 0, kJL_W, kJL_H)];
+        [self.view addSubview:ancModeView];
+        ancModeView.hidden = YES;
+        ancModeView.delegate = self;
+    }
 }
 
 - (IBAction)leftBtnAction:(UIButton *)sender {
@@ -310,34 +370,10 @@
     if (cell == nil) {
         cell = [[Headphonecell alloc] init];
     }
-//    if (@available(iOS 13.0, *)) {
-//        UIColor *myColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull trainCollection) {
-//            if ([trainCollection userInterfaceStyle] == UIUserInterfaceStyleLight) {
-//                return [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
-//            }
-//            else {
-//                return [UIColor colorWithRed:30/255.0 green:31/255.0 blue:48/255.0 alpha:1.0];
-//            }
-//        }];
-//        cell.contentView.backgroundColor = myColor;
-//    } else {
-//        cell.contentView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
-//    }
+
     cell.contentView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
     cell.cellLabel.text = _tmpArray[indexPath.row];
-//    if (@available(iOS 13.0, *)) {
-//        UIColor *myColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull trainCollection) {
-//            if ([trainCollection userInterfaceStyle] == UIUserInterfaceStyleLight) {
-//                return [UIColor colorWithRed:67/255.0 green:67/255.0 blue:67/255.0 alpha:1.0];
-//            }
-//            else {
-//                return [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.7];
-//            }
-//        }];
-//        [cell.cellLabel setTextColor:myColor];
-//    } else {
-//        [cell.cellLabel setTextColor:[UIColor colorWithRed:67/255.0 green:67/255.0 blue:67/255.0 alpha:1.0]];
-//    }
+
     [cell.cellLabel setTextColor:[UIColor colorWithRed:67/255.0 green:67/255.0 blue:67/255.0 alpha:1.0]];
     
     cell.cellImv.image = [UIImage imageNamed:@"Theme.bundle/icon_sel"];
@@ -466,7 +502,9 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
     [self removeNote];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager removeObserver:self forKeyPath:@"headSetInfoDict"];
 }
 
 #pragma mark 进入噪声模式选择界面
@@ -529,6 +567,7 @@
 
 -(void)dealloc{
     [JL_Tools remove:nil Own:self];
+   
 }
 
 @end

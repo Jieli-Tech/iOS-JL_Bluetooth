@@ -43,6 +43,9 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
     
     self.isPreparateOK = 1;
     [self startTimeout];
+    
+    /*--- 监听设备信息变化通知 ---*/
+    [self.mBleEntityM.mCmdManager setPropertyUpdate:YES];
  
     /*--- 关闭耳机信息推送 ---*/
     NSLog(@"--->(1) TURN OFF headset push.");
@@ -196,10 +199,66 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
                     }
                 }];
             }];
+            
+            //一拖二特殊处理
+            [self handleWith1t2TWSDevice];
         }
     }];
 }
+//MARK: - 一拖二特殊处理
+-(void)handleWith1t2TWSDevice{
+    JL_TwsManager *tws = self.mBleEntityM.mCmdManager.mTwsManager;
+    if(!tws.supports.isSupportDragWithMore){return;}
+    
+    [tws cmdGetDeviceInfoListResult:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+        if (status == JL_CMDStatusSuccess){
 
+            for (JLTWSAddrNameInfo *info in phoneInfos){
+                [info logProperties];
+            }
+            
+            NSData *addr = [[NSUserDefaults standardUserDefaults] valueForKey:PhoneEdrAddr];
+
+            if (phoneInfos.count == 1){
+                JLTWSAddrNameInfo *info = phoneInfos.firstObject;
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                //绑定
+                [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                    
+                }];
+            }
+            if (phoneInfos.count == 2){
+                for (JLTWSAddrNameInfo *info in phoneInfos) {
+                    if (info.isBind){
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                
+                            }];
+                            
+                        }
+                    }else{
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+
+    }];
+    
+}
 
 -(void)actionFinished{
     [self stopTimeout];//停止超时
@@ -216,6 +275,8 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
     self.isPreparateOK = 2;
     [JL_Tools post:kUI_JL_UUID_PREPARATE_OK Object:uuid];
 }
+
+
 
 
 

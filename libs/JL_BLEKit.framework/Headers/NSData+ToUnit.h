@@ -44,4 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
+@interface NSMutableData(WithUnit)
+
+-(void)appendUint8:(uint8_t)k;
+
+-(void)appendUint16:(uint16_t)k;
+
+-(void)appendUint32:(uint32_t)k;
+@end
+
 NS_ASSUME_NONNULL_END

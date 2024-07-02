@@ -11,7 +11,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <UIKit/UIKit.h>
 
-#import "JL_EntityM.h"
+#import <JL_BLEKit/JL_EntityM.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +25,8 @@ extern NSString *kJL_BLE_M_ENTITY_DISCONNECTED; //断开连接
 extern NSString *kJL_BLE_M_ON;                  //BLE开启
 extern NSString *kJL_BLE_M_OFF;                 //BLE关闭
 extern NSString *kJL_BLE_M_EDR_CHANGE;          //经典蓝牙输出通道变化
-extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
+extern NSString *kJL_BLE_M_SAVE_BLEADDR;        //存储EDR地址
+extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 
 
 @interface JL_BLEMultiple : NSObject
@@ -36,11 +37,12 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
 @property (assign, nonatomic) BOOL                 BLE_PAIR_ENABLE;   //是否【开启配对】
 @property (assign, nonatomic) int                  BLE_TIMEOUT;       //连接超时时间
 
-@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr; //发现的设备
-@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *bleConnectedArr;  //已连接的设备
-@property (assign, nonatomic) CBManagerState bleManagerState;   //蓝牙状态
+@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *blePeripheralArr;   //发现的设备
+@property (strong, nonatomic) NSMutableArray<JL_EntityM *> *bleConnectedArr;    //已连接的设备
+@property (assign, nonatomic) CBManagerState                bleManagerState;    //蓝牙状态
+@property (strong, nonatomic) NSArray<NSNumber *> *__nullable bleDeviceTypeArr;   //选择的设备类型<@(JL_DeviceType)>
+@property (strong, nonatomic) NSArray<NSNumber *> *__nullable managerClassArr;    //实例化的业务逻辑<@(JL_CLASS)>
 
-@property (strong, nonatomic) NSArray<NSNumber *> *bleDeviceTypeArr; //选择的设备类型<@(JL_DeviceType)>
 
 @property (strong, nonatomic) NSString             *JL_BLE_SERVICE;   //服务号
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_W;    //命令【写】通道
@@ -68,6 +70,11 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
  */
 -(JL_EntityM *_Nullable)makeEntityWithUUID:(NSString*)uuid;
 
+/// 通过UUID获得一个已连接过的entity
+/// @param uuid uuid
+/// @param status 获取后是否继续蓝牙搜索
+/// @param result 结果
+-(void)getEntityWithSearchUUID:(NSString *)uuid SearchStatus:(BOOL)status Result:(void(^)(JL_EntityM *_Nullable entity))result;
 /**
  连接设备
  @param entity 蓝牙设备类
@@ -100,9 +107,14 @@ extern NSString *kJL_BLE_M_SAVE_BLEADDR;            //存储EDR地址
  */
 +(NSDictionary*)outputEdrInfo;
 
+/**
+ 返回经典蓝牙edr列表
+ @return 蓝牙edr列表
+ */
++(NSArray<NSString *>*)outputEdrList;
+
 
 #pragma mark - ota升级
-
 /**
  *  ota升级功能
  *  @param mBleEntityM 当前ota升级的蓝牙设备（JL_EntityM）

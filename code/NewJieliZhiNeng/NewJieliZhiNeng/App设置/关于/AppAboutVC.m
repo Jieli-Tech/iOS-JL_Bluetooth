@@ -9,6 +9,8 @@
 #import "AppAboutVC.h"
 #import "UserProfileVC.h"
 #import "PrivacyPolicyVC.h"
+#import "NavViewController.h"
+#import "DebugFuncsViewController.h"
 
 @interface AppAboutVC ()<UITableViewDelegate,UITableViewDataSource>{
     UIImageView *topImv;
@@ -20,6 +22,7 @@
     UITableView *aboutTableView; //列表TableView
     NSMutableArray *itemArray;
     __weak IBOutlet NSLayoutConstraint *headHeight;
+    
 }
 
 @end
@@ -54,6 +57,10 @@
     topImv.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:topImv];
     
+    UILongPressGestureRecognizer *gapes = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction)];
+    gapes.minimumPressDuration = 4;
+    [self.view addGestureRecognizer:gapes];
+    
     aboutTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,topImv.frame.origin.y+topImv.frame.size.height+80,[UIScreen mainScreen].bounds.size.width,55*3)];
     aboutTableView.delegate      = self;
     aboutTableView.dataSource    = self;
@@ -72,6 +79,15 @@
     [aboutTableView reloadData];
 }
 
+//MARK: - long press
+-(void)longPressAction{
+    DebugFuncsViewController *vc = [[DebugFuncsViewController alloc] init];
+    NavViewController *nvc = [[NavViewController alloc] initWithRootViewController:vc];
+    nvc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:nvc animated:true completion:nil];
+}
+
+//MARK: - tableview delegate
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return itemArray.count;
 }

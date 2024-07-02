@@ -37,15 +37,15 @@
 #define FontMedium(s) [UIFont fontWithName:@"PingFangSC-Medium" size:(s)]
 #define DHAUITest 0   //0 不使用UI测试代码，1 使用UI测试代码
 
-
 #import "LanguageCls.h"
 #import "JL_RunSDK.h"
 #import "Masonry.h"
+#import "杰理之家-Swift.h"
 #import "NavViewController.h"
 #import "Colours.h"
 #import "WMZDialog.h"
-#import "杰理之家-Swift.h"
 #import "DhaSqlite.h"
+
 
 
 

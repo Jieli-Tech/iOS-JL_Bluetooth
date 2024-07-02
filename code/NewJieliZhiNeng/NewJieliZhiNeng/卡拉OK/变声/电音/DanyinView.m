@@ -150,8 +150,12 @@
     selectFlag = YES;
     clickIndexPath = indexPath;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];        
-    [bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKalaokIndex:(long)[indexArray[indexPath.row] integerValue] Value:0];
+
     
+    JL_ManagerM *manager = bleSDK.mBleEntityM.mCmdManager;
+    [manager.mSoundCardManager cmdSetKalaok:manager Index:[indexArray[indexPath.row] intValue] Value:0 result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+    }];
     [tableView reloadData];
 }
 

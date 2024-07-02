@@ -49,15 +49,20 @@
     //App日志上报
     [JL_Tools subTask:^{
         [self requestUserLog:^(id  _Nonnull result, NSError * _Nonnull error) {
-            self->requestTime = [result[@"data"][@"minute"] intValue];
-            
-            /*--- 用户认证登录 ---*/
-            [self requestUserLogin:^(NSDictionary * _Nonnull info) {
-                self->accessToken = info[@"data"][@"access_token"];
-            }];
+            NSNull *nul = [NSNull new];
+            int code = [result[@"code"] intValue];
+            if (![result[@"data"] isEqual:nul] && code == 0) {
+                self->requestTime = [result[@"data"][@"minute"] intValue];
+                
+                /*--- 用户认证登录 ---*/
+                [self requestUserLogin:^(NSDictionary * _Nonnull info) {
+                    self->accessToken = info[@"data"][@"access_token"];
+                }];
+            }else{
+                [self requestFirstHttp];
+            }
         }];
     }];
-    
 }
 
 #pragma mark - 获取手机型号
@@ -104,6 +109,11 @@
     if ([platform isEqualToString:@"iPhone14,5"])   return @"iPhone 13";
     if ([platform isEqualToString:@"iPhone14,2"])   return @"iPhone 13  Pro";
     if ([platform isEqualToString:@"iPhone14,3"])   return @"iPhone 13  Pro Max";
+    if ([platform isEqualToString:@"iPhone14,6"])   return @"iPhone SE (3rd generation)";
+    if ([platform isEqualToString:@"iPhone14,7"])   return @"iPhone 14";
+    if ([platform isEqualToString:@"iPhone14,8"])   return @"iPhone 14 Plus";
+    if ([platform isEqualToString:@"iPhone15,2"])   return @"iPhone 14 Pro";
+    if ([platform isEqualToString:@"iPhone15,3"])   return @"iPhone 14 Pro Max";
 
     return platform;
 }
@@ -250,10 +260,13 @@
             if (result) result(nil);
         } else {
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            NSArray *arr = dict[@"data"];
-            NSMutableArray *myMutableArray = [arr mutableCopy];
-            [myMutableArray removeObjectAtIndex:myMutableArray.count - 1];
-            if (result) result([NSArray arrayWithArray:myMutableArray]);
+            NSNull *nul = [NSNull new];
+            if (![dict[@"data"] isEqual:nul]) {
+                NSArray *arr = dict[@"data"];
+                NSMutableArray *myMutableArray = [arr mutableCopy];
+                [myMutableArray removeObjectAtIndex:myMutableArray.count - 1];
+                if (result) result([NSArray arrayWithArray:myMutableArray]);
+            }
         }
      }];
     [dataTask resume];
@@ -284,9 +297,12 @@
             NSLog(@"%@", error);
             if (result) result(nil);
         } else {
-              NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-              NSArray *arr = dict[@"data"];
-              if (result) result(arr);
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            NSNull *nul = [NSNull new];
+            if (![dict[@"data"] isEqual:nul]) {
+                NSArray *arr = dict[@"data"];
+                if (result) result(arr);
+            }
         }
     }];
     [dataTask resume];
@@ -321,10 +337,13 @@
             if (result) result(nil);
         } else {
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            NSArray *arr = dict[@"data"];
-            NSMutableArray *myMutableArray = [arr mutableCopy];
-            [myMutableArray removeObjectsInRange:NSMakeRange(0, arr.count-1)];
-            if (result) result([NSArray arrayWithArray:myMutableArray]);
+            NSNull *nul = [NSNull new];
+            if (![dict[@"data"] isEqual:nul]) {
+                NSArray *arr = dict[@"data"];
+                NSMutableArray *myMutableArray = [arr mutableCopy];
+                [myMutableArray removeObjectsInRange:NSMakeRange(0, arr.count-1)];
+                if (result) result([NSArray arrayWithArray:myMutableArray]);
+            }
         }
      }];
     [dataTask resume];
@@ -354,8 +373,11 @@
             if (result) result(nil);
         } else {
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            NSArray *arr = dict[@"data"];
-            if (result) result(arr);
+            NSNull *nul = [NSNull new];
+            if (![dict[@"data"] isEqual:nul]) {
+                NSArray *arr = dict[@"data"];
+                if (result) result(arr);
+            }
         }
     }];
     [dataTask resume];

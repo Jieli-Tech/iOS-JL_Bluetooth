@@ -34,7 +34,7 @@
     float sH;
     
     MPVolumeView *volumeView;
-    uint8_t cVol;
+    CGFloat cVol;
     int clickFlag; //0:低音 1：主音量 2：高音
     
     JL_RunSDK   *bleSDK;
@@ -149,7 +149,11 @@
             if(devel) _volSlider.maximumValue = 1;
         }
         if(devel.karaokeEQType == JL_KaraokeEQTypeNO){
-            if(devel) _volSlider.maximumValue = devel.maxVol;
+            if(devel.maxVol==0){
+                if(devel) _volSlider.maximumValue = 31;
+            }else{
+                if(devel) _volSlider.maximumValue = devel.maxVol;
+            }
         }
     }
     _volSlider.startAngle = 0.7*M_PI;
@@ -293,8 +297,8 @@
         float val = (slider.value/16);
         [self setVolume:val];
     }else{  //音箱
-        cVol = slider.value;
         
+        cVol = slider.value;
         self->_volSlider.value = cVol;
         self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)cVol];
         
@@ -371,17 +375,16 @@
 
 #pragma mark 更新音量
 -(void)updateFirstVol{
-    [JL_Tools mainTask:^{
-
-        if (self->bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
-            self->_volSlider.value = (16*[[AVAudioSession sharedInstance] outputVolume]);
-            self->_volLabel.text = [NSString stringWithFormat:@"%.00f", self->_volSlider.value];
-        }else{  //音箱
-            NSInteger cvol = [[JLCacheBox cacheUuid:self->bleUUID] P_Cvol];
-            self->_volSlider.value = cvol;
-            self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)cvol];
-        }
-    }];
+    
+    if (self->bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+        self->_volSlider.value = (16*[[AVAudioSession sharedInstance] outputVolume]);
+        self->_volLabel.text = [NSString stringWithFormat:@"%.00f", self->_volSlider.value];
+    }else{  //音箱
+        NSInteger cvol = [[JLCacheBox cacheUuid:self->bleUUID] P_Cvol];
+        self->_volSlider.value = cvol;
+        self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)cvol];
+    }
+    
 }
 
 -(void)getMaxVol:(NSNotification *)note{
@@ -427,17 +430,17 @@
     if (isOK == NO) return;
     
     if (bleSDK.mBleEntityM.mType != JL_DeviceTypeTWS) { //音箱
-        [JL_Tools mainTask:^{
-            JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
-            if(model){
-                //设备音量
-                [[JLCacheBox cacheUuid:self->bleUUID] setP_Cvol:model.currentVol];
-                [[JLCacheBox cacheUuid:self->bleUUID] setP_Mvol:model.maxVol];
-                
-                self->_volSlider.value = model.currentVol;
-                self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)model.currentVol];
-            }
-        }];
+        
+        JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+        if(model){
+            //设备音量
+            [[JLCacheBox cacheUuid:self->bleUUID] setP_Cvol:model.currentVol];
+            [[JLCacheBox cacheUuid:self->bleUUID] setP_Mvol:model.maxVol];
+            
+            self->_volSlider.value = model.currentVol;
+            self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)model.currentVol];
+        }
+        
     }
 }
 
@@ -445,14 +448,14 @@
     JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
     if(model){
         if (bleSDK.mBleEntityM.mType != JL_DeviceTypeTWS) { //音箱
-            [JL_Tools mainTask:^{
-                //设备音量
-                [[JLCacheBox cacheUuid:self->bleUUID] setP_Cvol:model.currentVol];
-                [[JLCacheBox cacheUuid:self->bleUUID] setP_Mvol:model.maxVol];
-                
-                self->_volSlider.value = model.currentVol;
-                self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)model.currentVol];
-            }];
+            
+            //设备音量
+            [[JLCacheBox cacheUuid:self->bleUUID] setP_Cvol:model.currentVol];
+            [[JLCacheBox cacheUuid:self->bleUUID] setP_Mvol:model.maxVol];
+            
+            self->_volSlider.value = model.currentVol;
+            self->_volLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)model.currentVol];
+            
         }
         [self getMaxVol:nil];
     }

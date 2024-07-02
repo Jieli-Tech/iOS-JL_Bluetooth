@@ -25,7 +25,8 @@ static void *dhaFitSwitchContext = &dhaFitSwitchContext;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorFromHexString:@"#FFFFFF"];
-    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Theme.bundle/icon_return.png"] style:UIBarButtonItemStyleDone target:self action:@selector(backBtnAction)];
+    UIImage *image = [[UIImage imageNamed:@"Theme.bundle/icon_return.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(backBtnAction)];
     leftBtn.tintColor = [UIColor grayColor];
     [self.navigationItem setLeftBarButtonItem:leftBtn];
     

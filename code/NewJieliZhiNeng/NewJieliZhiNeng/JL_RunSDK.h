@@ -44,11 +44,16 @@
 #define kJL_IS_IPHONE_12P_Max ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1284, 2778), [[UIScreen mainScreen] currentMode].size) && !kJL_IS_IPAD : NO)
 
 //iPhoneX系列
-#define kJL_HeightStatusBar ((kJL_IS_IPHONE_X==YES || kJL_IS_IPHONE_Xr ==YES || kJL_IS_IPHONE_Xs== YES || kJL_IS_IPHONE_Xs_Max== YES || kJL_IS_IPHONE_12P == YES || kJL_IS_IPHONE_12P_Max == YES) ? 44.0 : 20.0)
-#define kJL_HeightNavBar ((kJL_IS_IPHONE_X==YES || kJL_IS_IPHONE_Xr ==YES || kJL_IS_IPHONE_Xs== YES || kJL_IS_IPHONE_Xs_Max== YES || kJL_IS_IPHONE_12P == YES || kJL_IS_IPHONE_12P_Max == YES) ? 88.0 : 64.0)
-#define kJL_HeightTabBar ((kJL_IS_IPHONE_X==YES || kJL_IS_IPHONE_Xr ==YES || kJL_IS_IPHONE_Xs== YES || kJL_IS_IPHONE_Xs_Max== YES || kJL_IS_IPHONE_12P == YES || kJL_IS_IPHONE_12P_Max == YES) ? 83.0 : 49.0)
+#define kJL_HeightStatusBar [UIApplication sharedApplication].delegate.window.safeAreaInsets.top
+#define kJL_HeightNavBar ([UIApplication sharedApplication].delegate.window.safeAreaInsets.top+44.0)
+#define kJL_HeightTabBar ([UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom+49.0)
 
 #define PTLVersion  3
+
+///手机蓝牙edr地址
+#define PhoneEdrAddr @"phone_edr_addr"
+///手机蓝牙名称
+#define PhoneName @"phone_name"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -91,6 +96,10 @@ extern NSString *kUI_JL_BLE_SCAN_CLOSE;
  */
 +(void)setActiveUUID:(NSString*)uuid;
 
+
+/// 请求是否一连上了entity的edr
+/// - Parameter entity: entity
++(BOOL)isConnectedEdr:(JL_EntityM *)entity;
 
 /// 请求当前设备的信息
 +(JLModel_Device *)getDeviceModel;

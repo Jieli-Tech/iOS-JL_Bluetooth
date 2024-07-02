@@ -195,7 +195,8 @@
     NSString *addr = info[@"ADDRESS"];
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    if ([addr isEqualToString:entity.mEdr]) {
+    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    if ([addr isEqualToString:model.btAddr]) {
         [self playMusic:indexPath];
         [JL_Tools post:@"kUI_FUNCTION_ACTION" Object:@(0)];
         [[JLCacheBox cacheUuid:bleUUID] setIsTFType:NO];

@@ -355,7 +355,7 @@
 "device_is_disconected" = "設備が切断された";
 "user_op_error_failed" = "ユーザーの異常操作、アップデート失敗!";
 "radio_cannot_play" = "現在放送局では放送できない";
-"no_data_connect_first" = "データなし、デバイスを接続";
+"no_data_connect_first" = "コンテンツなし";
 "search_radio" = "ラジオ局を捜索する...";
 "loading" = "ロード中…";
 "key_func_setting" = "主な機能設定";
@@ -440,6 +440,16 @@
 "录音音量" = "録音音量";
 "伴奏音量" = "伴奏ボリューム";
 "监听音量" = "ボリュームを監視する";
+"dual_device_connection" = "デュアルデバイス接続";
+"on" = "オン";
+"off" = "オフ";
+"dual_device_connect_tips" = "オンにすると、ヘッドセットは 2 つのデバイスの同時接続をサポートし、デバイス間のオーディオ出力を簡単に切り替えることができます。";
+"dual_devices_connected_device" = "接続されたデバイス";
+"this_machine" = " このマシン ";
+"are_you_sure_trun_off_dual" = "デュアル デバイス接続をオフにしてもよろしいですか?";
+"dual_trun_off_tips" = "電源をオフにすると、ヘッドセットは切断されます";
+"some_one_disconnected" = "";
+"setting_failed_need_devices_all_online" = "ヘッドフォンを同時にオンラインにする必要があります。";
 ////变声
 //"变声" = "ボイス";
 //"正常" = "正常";

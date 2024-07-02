@@ -358,7 +358,7 @@
 "device_is_disconected" = "设备已断开";
 "user_op_error_failed" = "用户异常操作，升级失败!";
 "radio_cannot_play" = "当前电台无法播放";
-"no_data_connect_first" = "暂无数据，请先连接设备";
+"no_data_connect_first" = "没有内容";
 "search_radio" = "搜索电台...";
 "loading" = "加载中...";
 "key_func_setting" = "按键功能设置";
@@ -436,6 +436,16 @@
 "normal_model_cannot_entry" = "普通模式，不允许进入";
 "anc_mode_less_2" = "当前ANC模式不能少于2个";
 "min2_format" = "分钟";
+"dual_device_connection" = "双设备连接";
+"on" = "开";
+"off" = "关";
+"dual_device_connect_tips" = "开启后，耳机可同时支持连接两台设备，并可轻松在设备间切换音频输出。";
+"dual_devices_connected_device" = "已连接的设备";
+"this_machine" = " 本机 ";
+"are_you_sure_trun_off_dual" = "您是否确定关闭双设备连接？";
+"dual_trun_off_tips" = "关闭后，耳机将会断开与";
+"some_one_disconnected" = "的连接";
+"setting_failed_need_devices_all_online" = "设置失败，需要双耳同时在线！";
 ////变声
 //"变声" = "变声";
 //"正常" = "正常";

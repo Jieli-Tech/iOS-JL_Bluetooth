@@ -245,8 +245,11 @@ typedef NS_ENUM(UInt8, JL_FMMode) {
 @property (copy,  nonatomic) NSString           *license;               //平台序列号
 @property (assign,nonatomic) JL_DevicePlatform  platform;               //平台类型（图灵，Deepbrain）
 @property (assign,nonatomic) JL_DeviceBTStatus  btStatus;               //经典蓝牙状态
-@property (assign,nonatomic) uint32_t           function;               //BIT(0):BT BIT(1):MUSIC BIT(2):RTC
-@property (assign,nonatomic) JL_FunctionCode    currentFunc;            //当前处于的模式
+
+/// BIT(0):BT BIT(1):MUSIC BIT(2):RTC
+@property (assign,nonatomic) uint32_t           function;
+///当前处于的模式
+@property (assign,nonatomic) JL_FunctionCode    currentFunc;
 @property (assign,nonatomic) uint8_t            funcOnlineStatus;       //USb,SD,LineIn,网络电台是否在线
 @property (copy,  nonatomic) NSString           *versionUBoot;          //uboot版本
 @property (assign,nonatomic) JL_Partition       partitionType;          //设备单、双备份

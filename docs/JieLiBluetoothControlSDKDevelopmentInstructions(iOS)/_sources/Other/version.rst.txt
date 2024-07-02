@@ -1,0 +1,80 @@
+Release Record
+******************
+
+.. important::
+   Please confirm the modification according to the SDK version
+
+=============== ================== =============================================== ======================
+     Version        Update date                    describe                            Modified Person
+=============== ================== =============================================== ======================
+  V1.10.0            2023/11/25        :ref:`version_1_10_0` Release record               Chen Guanjie
+=============== ================== =============================================== ======================
+
+
+1. Grade description
+========================
+
+- Class A: problem repair, customer must repair
+- Class B: performance optimization, customers can choose to repair
+- Class C: increased functions, customers can choose to repair
+
+
+2. Release record
+=====================
+
+.. _version_1_10_0:
+
+Jieli Home SDK_IOS_V1.10.0
+--------------------------
+
+● Patch description
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+| **Date: 2023/11/25**
+| **APP Version: V1.4.0**
+| **SDK: V1.10.0**
+| **The SDK is implemented on the basis of RCSP protocol and needs to cooperate with Use of JL_BleSDk Library**
+| **Applicable chip scope：AC700N-SDK**
+
+================ ==================== ====================
+chip                Version                 Remarks
+================ ==================== ====================
+AC700N-SDK           V1.3.3             
+================ ==================== ====================
+
+
+● Patch level：``C``
+^^^^^^^^^^^^^^^^^^^^
+
+● Modification
+^^^^^^^^^^^^^^^^^
+
+ 1. Added TWS headset one-to-two related interfaces
+
+
+● matters needing attention
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. warning::
+
+ 1. It is necessary to replace the development with a new SDK. The interfaces have been added and some interfaces have been abandoned. It is recommended to use new interfaces for development.
+
+
+● SDK Function Overview
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Bluetooth connection
+2. Basic functions
+3. Volume control function
+4. Device music control
+5. Equalizer debugging function
+6. Clock function
+7. Control function of external equipment
+8. FM control function
+9. Light control function
+10. ID information control function
+11. TWS function
+12. Sound card function configuration
+13. Find Device Functions
+14. User defined command function
+15. OTA function
+16. Directory browsing function

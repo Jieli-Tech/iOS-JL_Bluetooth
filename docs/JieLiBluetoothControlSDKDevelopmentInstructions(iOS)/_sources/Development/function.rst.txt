@@ -1,0 +1,2257 @@
+2.Function Module Description
+********************************
+
+2.1 Basic functions
+=========================================================================================================================================================
+
+.. note:: 
+    1.The following data models can be viewed through SDK
+
+    2.This document only shows some important data models
+
+* Acquire system/state information model
+    * :func:`JLModel_Device` System information change/status acquisition are all obtained through this model
+
+
+* Alarm clock related model
+    * :func:`JLModel_Ring` Alarm clock ring model
+    * :func:`JLModel_AlarmSetting` Alarm clock setting model
+    * :func:`RTC_RingInfo` Alarm ring detail model, which is not supported by some devices. The actual firmware version needs to be considered
+    * :func:`JLModel_RTC` Alarm clock RTC model
+
+* Device file model
+    * :func:`JLModel_File` File model, which is used for a series of file operation related functions such as file browsing/playing
+
+* Equipment FM model
+    * :func:`JLModel_FM` FM model
+ 
+* TWS headphone parameter model
+   * :func:`JLModel_Headset` TWS headphone parameter model
+
+* Bluetooth related parameter model
+   * :func:`JLModel_BT` Bluetooth related parameter model
+
+* Balanced debugger model
+   * :func:`JLModel_EQ` Balanced debugger model
+
+* Equipment noise reduction model
+    * :func:`JLModel_ANC` Equipment noise reduction model
+
+2.1.1 Request device information
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Get the basic information of the device, including the power of the device, the status of each module of the device, and the mode it is in.
+
+Sample code：
+
+.. code-block:: objective-c
+
+     /*--- Get device information ---*/
+    [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        JL_CMDStatus st = status;
+        if (st == JL_CMDStatusSuccess) {
+            JLModel_Device *device = [elf.mBleEntityM.mCmdManager outputDeviceModel];
+            NSLog(@"Device Information：%@", device);
+        }
+    }];
+
+2.1.2 Querying device system information
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Get the information content of the device system to provide basic information for subsequent operations.
+
+Sample code：
+
+.. code-block:: objective-c
+    
+    /*--- Querying device system information ---*/
+    [wSelf.mBleEntityM.mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON
+                                             Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) 
+     {
+        JL_CMDStatus st = status;
+        if (st == JL_CMDStatusSuccess) {
+            JLModel_SystemInfo *systemInfo = [elf.mBleEntityM.mCmdManager outputSystemInfoModel];
+            NSLog(@"Equipment system information：%@", systemInfo);
+        }
+    }];
+
+
+2.1.3 Monitor device status information
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+For the change of device status information, you can monitor the change of device status information through KVO and obtain the device status information.
+
+Example code:
+
+.. code-block:: objective-c
+    
+    /*--- Monitor device status information ---*/
+    -(void)addNote{
+        [JLModel_Device observeModelProperty:@"currentFunc" Action:@selector(noteCurrentFunction:) Own:self];
+    }
+
+    -(void)noteCurrentFunction:(NSNotification*)note{
+        BOOL isOK = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOK == NO) return;
+        
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *devel = [entity.mCmdManager outputDeviceModel];
+        if (devel.currentFunc == JL_FunctionCodeBT) {
+        
+        }else{
+            NSLog(@"Turn off all music on your phones.");
+        
+        }
+        
+    }
+
+
+2.1.4 Switch device mode
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Example code:
+
+.. code-block:: objective-c
+    
+    /*--- Switch device mode ---*/
+   -(void)changeDeviceMode:(JL_FunctionCode)code{
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    [entity.mCmdManager cmdFunction:JL_FunctionCodeCOMMON Command:code Extend:0x00 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+            if (code == JL_FunctionCodeBT) {
+
+                LocalMusicVC *vc = [[LocalMusicVC alloc] init];
+                vc.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:vc animated:YES completion:nil];
+            }
+            if (code == JL_FunctionCodeFM) {
+                [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeFM Result:nil];
+            }
+            if (code == JL_FunctionCodeFMTX) {
+                [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeFMTX Result:nil];
+            }
+        }];
+    }
+
+
+2.2 Volume control function
+============================
+
+2.2.1 Device volume setting
+----------------------------
+
+2.2.2 Sample code
+---------------------------
+
+.. code-block:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mSystemVolume cmdSetSystemVolume:10 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {            
+       JL_CMDStatus state = status;
+       if(state == JL_CMDStatusFail){
+            //[DFUITools showText:kJL_TXT("settings_failed") onView:self delay:1.0];
+       }
+    }];
+
+
+2.3 Device Music Control
+=========================
+
+2.3.1 Function description
+---------------------------------------------------------------------------------------------------------
+
+    When the device is playing SD card or USB flash disk/TF card, it is used for mobile terminal control
+    
+
+2.3.2 Sample code
+------------------
+
+.. code-block:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mMusicControlManager cmdFastPlay:JL_FCmdMusicFastBack
+                                            Second:(uint16_t)fabsf((pg * f_tott - f_curt))
+                                            Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data)  {
+        //progress_sec = (int)(f_tott*pg);
+        //NSLog(@"---------------> To Progress Second: %d",progress_sec);
+
+        if (sv_tott > 60*60) {
+            [JL_Tools delay:0.6 Task:^{
+                NSLog(@"----> delay get music progess 0");
+                [self getDeviceMusicProgress];
+            }];
+        }else{
+            [self getDeviceMusicProgress];
+        }
+   }];
+
+
+2.3.3 Related interfaces
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: objectivec
+
+   typedef NS_ENUM(UInt8, JL_FCmdMusic) {
+       JL_FCmdMusicPP                  = 0x01, //PP button
+       JL_FCmdMusicPREV                = 0x02, //Previous song
+       JL_FCmdMusicNEXT                = 0x03, //Next song
+       JL_FCmdMusicMODE                = 0x04, //Change playback mode
+       JL_FCmdMusicEQ                  = 0x05, //EQ
+       JL_FCmdMusicFastBack            = 0x06, //Fast rewind
+       JL_FCmdMusicFastPlay            = 0x07, //Fast forward
+   };
+
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_MusicControlManager : JL_FunctionBaseManager
+
+   #pragma mark ---> Set playback mode
+   /**
+    @param mode Pattern
+   0x01: All loops; 0x02: Equipment cycle; 0x03: single song cycle; 0x04: random play; 0x05: Folder cycle
+    */
+   -(void)cmdSetSystemPlayMode:(JL_MusicMode)mode;
+
+   #pragma mark ---> Fast forward and fast backward
+   /**
+    @param cmd Fast forward or rewind enumeration
+    @param sec Time
+    @param result Return Results
+    */
+   -(void)cmdFastPlay:(JL_FCmdMusic)cmd
+               Second:(uint16_t)sec
+               Result:(JL_CMD_RESPOND __nullable)result;
+
+   @end
+
+
+2.4 Equalizer debugging function
+==================================
+2.4.1 Function description
+---------------------------------------------------------
+
+    Equalizer debugging function to set EQ of equipment
+    
+
+2.4.2 Sample code
+------------------
+
+2.4.2.1 System EQ commissioning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: objective-c
+
+    /**
+   /**
+   /**
+   Set system EQ
+   @param eqMode EQ Mode 
+   @param params EQ Parameters(10 parameters for JL_EQModeCUSTOM)
+   */
+   +(void)cmdSetSystemEQ:(JL_EQMode)eqMode Params:(NSArray* __nullable)params;
+
+   @property (assign,nonatomic) JL_EQMode          eqMode;         //EQ Mode 
+   @property (copy,  nonatomic) NSArray            *eqArray;       //EQ parameter value (only applicable to EQ Mode=CUSTOM)）
+   @property (copy,  nonatomic) NSArray            *eqCustomArray; //Custom EQ
+   @property (copy,  nonatomic) NSArray            *eqFrequencyArray; //EQ frequency
+   @property (assign,nonatomic) JL_EQType          eqType;         //EQ segment number type (JL_EQType10<fixed 10 segment type>, JL_EQTypeMutable<dynamic EQ segment>)
+   @property (strong,nonatomic) NSArray            *eqDefaultArray;//Type of preset value array element of EQ -->[JLEQModel]
+
+
+   -(void)test{
+     NSArray *eqArray = [@(2),@(3),@(2),@(2),@(8)];
+       [bleSDK.mBleEntityM.mCmdManager.mSystemEQ cmdSetSystemEQ:JL_EQModeCUSTOM Params:eqArray];
+   }
+
+
+2.4.2.2 Set reverberation/limiting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When setting reverberation and amplitude limiting, it is necessary to determine whether the equipment supports it.
+
+.. code:: objective-c
+
+    JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+    int type = -1; ///0: Support reverb and limiter 1: Support reverb only 2: Support limiter only
+    if(model.reverberationTypes.count==2  && [model.reverberationTypes containsObject:@(JL_ReverberationAndDynamicType)] //Supports reverb and limiter
+       && [model.reverberationTypes containsObject:@(1)]){
+        type = 0;
+    }
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyReverberationType)]) {//Only reverberation is supported
+        type = 1;
+    }
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyDynamicLimiterType)]) {//Only limiter is supported
+        type = 2;
+    }
+
+
+
+`JL_BinChargeManager` the interfaces used are as follows:
+
+.. code:: objectivec
+
+    /// Set reverb value
+    /// @param depthValue depth 0-100
+    /// @param intensityValue strength 0-100
+    /// @param dynamicLimiterValue dynamic limit amplitude -60 - 0
+    /// @param reverOn whether to open
+    /// @param type reverb Type
+    -(void)cmdSetReverberation:(int)depthValue
+                IntensityValue:(int)intensityValue
+        DynamicLimiterValue:(int)dynamicLimiterValue
+            SwtichReverState:(int)reverOn
+                    FunType:(JL_ReverberationFunType)type;
+
+
+
+
+2.5 Clock function
+===================
+2.5.1 Function description
+-------------------------------------------------------------------------------------------------
+
+    Synchronizing alarm devices and managing alarm clocks include: reading, modifying, deleting.
+
+
+2.5.2 Use demo
+-------------------
+
+2.5.2.1 Synchronization time
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objective-c
+
+    //在JLManagerM -> JL_SystemTime -> cmdSetSystemTime
+     /*--- Synchronization timestamp ----*/
+    NSLog(@"--->(2) SET Device time.");
+    NSDate *date = [NSDate new];
+    JL_SystemTime *systemTime = self.mBleEntityM.mCmdManager.mSystemTime;
+    [systemTime cmdSetSystemTime:date];
+
+
+
+2.5.2.2 Read alarm clock
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeRTC SelectionBit:0xF2 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+       //TODO: do something...
+       //Get the itemArray to display the data of the alarm clock list
+   }];
+
+
+2.5.2.3 Modify alarm clock
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+
+   //Create a new alarm clock
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];
+   rtcmodel.rtcName = kJL_TXT("Alarm clock");
+   NSDateFormatter *formatter = [NSDateFormatter new];
+   formatter.dateFormat = @"yyyy:MM:DD:HH:mm:ss";
+   NSString *nowStr = [formatter stringFromDate:[NSDate new]];
+   NSArray *timeArr = [nowStr componentsSeparatedByString:@":"];
+   rtcmodel.rtcYear = [timeArr[0] intValue];
+   rtcmodel.rtcMonth = [timeArr[1] intValue];
+   rtcmodel.rtcDay = [timeArr[2] intValue];
+   rtcmodel.rtcHour = [timeArr[3] intValue];
+   rtcmodel.rtcMin = [timeArr[4] intValue];
+   rtcmodel.rtcSec = [timeArr[5] intValue];
+   rtcmodel.rtcMode = 0x00;//Ring type
+   rtcmodel.rtcEnable = YES;
+   rtcmodel.rtcIndex = 0;//Current alarm number
+
+   //Generally speaking, you can obtain all the current alarm clocks of the device through the above method of reading alarm clocks, and then set them according to the corresponding rtcIndex
+   //JLModel_RTC *rtcmodel = // cmdGetSystemInfo: SelectionBit: Result:
+
+   JLModel_Device *device = [entity.mCmdManager outputDeviceModel];//Get device attribute details
+   if (device.rtcDfRings.count>0) {//Get device attribute details
+       JLModel_Ring *ring = device.rtcDfRings[0];//Default alarm sound of the device
+       rtcmodel.ringInfo = [RTC_RingInfo new];
+       rtcmodel.ringInfo.type = 0;//Alarm type: default or custom
+       rtcmodel.ringInfo.dev = 0;//Storage location of ring tones, please refer to
+       rtcmodel.ringInfo.clust = 0;//Custom alarm file cluster number
+       rtcmodel.ringInfo.data = [ring.name dataUsingEncoding:NSUTF8StringEncoding];//Ring name
+       rtcmodel.ringInfo.len = (uint8_t)self.rtcmodel.ringInfo.data.length;//The name file length of the ring tone
+           }
+           //The current alarm settings include adding or modifying one or more alarms
+      [entity.mCmdManager.mAlarmClockManager cmdRtcSetArray:@[rtcmodel] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+           //TODO: Returns the number of alarms on the current device，to do something...
+      }];
+
+2.5.2.4 Delete alarm clock
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JLModel_RTC *rtcmodel = //.... Get an alarm clock by acquiring the device alarm clock
+   //JLModel_RTC
+   int rtcIndex = rtcmodel.rtcIndex;//Alarm clock serial number
+     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+       [entity.mCmdManager.mAlarmClockManager cmdRtcDeleteIndexArray:@[@(rtcIndex)] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data){
+           JL_CMDStatus state = (UInt8)[array[0] intValue];
+           if(state == JL_CMDStatusSuccess){
+               //TODO: do something...
+           }
+           if(state == JL_CMDStatusFail){
+               //ERR: delete failed
+           }
+       }];
+
+2.5.2.5 Get the default ring tone selection list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+   NSArray *defaultRings =  model.rtcDfRings;
+
+2.5.2.6 Listen to the alarm clock ring tone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];//Build or get from device
+   JLModel_Ring *ring = //Alarm object, by obtaining the default or creating a new one;
+   rtcModel.ringInfo.type = 0;//type
+   /*
+   typedef NS_ENUM(UInt8, JL_CardType) {
+       JL_CardTypeUSB                  = 0, //USB
+       JL_CardTypeSD_0                 = 1, //SD_0
+       JL_CardTypeSD_1                 = 2, //SD_1
+       JL_CardTypeFLASH                = 3, //FLASH
+       JL_CardTypeLineIn               = 4, //LineIn
+       JL_CardTypeFLASH2               = 5, //FLASH2
+   };
+   */
+   rtcModel.ringInfo.dev = JL_CardTypeUSB;//Where does the ringing content come from
+   rtcModel.ringInfo.clust = ring.index;//File cluster number
+   rtcModel.ringInfo.data = [ring.name dataUsingEncoding:NSUTF8StringEncoding];//file name
+   rtcModel.ringInfo.len = rtcModel.ringInfo.data.length;//file length
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mAlarmClockManager cmdRtcAudition:rtcModel Option:YES result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+   }];
+
+2.5.2.7 Stop ringing tone audition
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mAlarmClockManager cmdRtcStopResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+   }];
+
+2.5.2.8 Get alarm mode settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   @interface JLModel_AlarmSetting : NSObject
+   @property(assign,nonatomic)uint8_t index;       //Index of the alarm clock
+   @property(assign,nonatomic)uint8_t isCount;     //Whether the [alarm times] can be set
+   @property(assign,nonatomic)uint8_t count;       //The alarm number
+   @property(assign,nonatomic)uint8_t isInterval;  //Whether the [time interval] can be set
+   @property(assign,nonatomic)uint8_t interval;    //The time interval
+   @property(assign,nonatomic)uint8_t isTime;      //Whether the [time length] can be set
+   @property(assign,nonatomic)uint8_t time;        //Length of time
+   -(NSData*)dataModel;
+   @end
+
+    -(void)getAlarmModelSetting{
+       JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+       JL_ManagerM *mCmdManager = bleSDK.mBleEntityM.mCmdManager;
+       JLModel_Device *model = [mCmdManager outputDeviceModel];
+
+       // Whether alarm clock setting is supported
+       if (model.rtcAlarmType == YES) {
+         //itemArray refers to getting the alarm list from the read alarm clock
+         JLModel_RTC *rtcModel = itemArray[0];
+         uint8_t bit = 0x01;
+         uint8_t bit_index = bit << rtcModel.rtcIndex;
+   /**
+    @param operate 0x00:read 0x01:write
+    @param index  Mask
+   //Bit0：Alarm 0
+   //Bit0：Alarm 1
+   //Bit0：Alarm 2
+   //Bit1：Alarm 3
+   //Bit1：Alarm 4
+   as shown below：
+   0b0000 0001：set alarm 0
+   0b0000 0011：set alarm 0 and alarm 1（Other similar reasons）
+   If you want to set 0 3 4 alarm clock, index=0x19
+   To set 1 2 alarm clocks, index=0x06
+    @param setting Set options, no need to pass in when reading
+    @param result Reply
+    */
+   [mCmdManager.mAlarmClockManager cmdRtcOperate:JL_FlashOperateFlagRead Index:bit_index Setting:nil
+                               Result:^(NSArray<JLModel_AlarmSetting *> * _Nullable array, uint8_t flag) {
+                   }];
+       }
+   }
+
+2.5.2.9 Set alarm mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   @interface JLModel_RTC : NSObject
+   @property (assign,nonatomic) uint16_t       rtcYear; //Year
+   @property (assign,nonatomic) uint8_t        rtcMonth;//Month
+   @property (assign,nonatomic) uint8_t        rtcDay; //day
+   @property (assign,nonatomic) uint8_t        rtcHour;//hour
+   @property (assign,nonatomic) uint8_t        rtcMin; //minute
+   @property (assign,nonatomic) uint8_t        rtcSec; //second
+   @property (assign,nonatomic) BOOL           rtcEnable; //Open Close
+   //Pattern：
+   /*
+   Scenario 1:
+   mode=0:Only ring once
+   Scenario 2:
+   Bit0:Every day
+   Bit1：Monday
+   Bit2：Tuesday
+   Bit3：Wednesday
+   Bit4：Thursday
+   Bit5：Friday
+   Bit6：Saturday
+   Bit7：Sunday
+   */
+   @property (assign,nonatomic) uint8_t        rtcMode;
+   @property (assign,nonatomic) uint8_t        rtcIndex; //Serial Number
+   @property (copy  ,nonatomic) NSString       *rtcName; //Name
+   @property (strong,nonatomic) RTC_RingInfo   *ringInfo;//Details
+   @property (strong,nonatomic) NSData         *RingData;//Ring data
+   @end
+
+   @interface RTC_RingInfo : NSObject
+   //Type: 0: Default: 1: External
+   @property (assign,nonatomic) uint8_t type;
+   //Storage location
+   /*
+   typedef NS_ENUM(UInt8, JL_CardType) {
+       JL_CardTypeUSB                  = 0, //USB
+       JL_CardTypeSD_0                 = 1, //SD_0
+       JL_CardTypeSD_1                 = 2, //SD_1
+       JL_CardTypeFLASH                = 3, //FLASH
+       JL_CardTypeLineIn               = 4, //LineIn
+       JL_CardTypeFLASH2               = 5, //FLASH2
+   };
+   */
+   @property (assign,nonatomic) uint8_t  dev;
+   //File cluster number
+   @property (assign,nonatomic) uint32_t clust;
+   //Ring name length
+   @property (assign,nonatomic) uint8_t len;
+   //Ringing name content
+   @property (strong,nonatomic) NSData *data;
+   @end
+
+   //Ring cycle mode setting
+   -(uint8_t)rtcmode{
+   NSArray *array = @[@1,@3,@5];
+   uint8_t mode = 0x00;
+       if (array.count > 0) {
+           for (NSString *num in array) {
+               uint8_t tmp = 0x01;
+               int n = [num intValue];
+               uint8_t tmp_n = tmp<<n;
+               mode = mode|tmp_n;
+           }
+       }else{
+           mode = 0x01;
+       }
+       return mode;
+   }
+   //New alarm
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];
+   //Ring cycle mode setting
+   rtcmodel.rtcMode = [self rtcmode];
+   //Interface Statement
+   #pragma mark ---> Alarm setting
+   /**
+    @param operate 0x00:Read 0x01:Write
+    @param index Mask
+   //Bit0：Alarm 0
+   //Bit1：Alarm 1
+   //Bit1：Alarm 2
+   //Bit1：Alarm 3
+   //Bit1：Alarm 4
+   As shown below：
+   0b0000 0001：Set alarm 0
+   0b0000 0011：Set alarm clock 0 and alarm clock 1 (the same for others)
+   If you want to set 0 3 4 alarm clock, index=0x19
+   To set 1 2 alarm clocks, index=0x06
+    @param setting Set options, no need to pass in when reading
+    @param result Reply
+    */
+   -(void)cmdRtcOperate:(JL_RtcOperate)operate
+                  Index:(uint8_t)index
+                  Setting:(JLModel_AlarmSetting* __nullable)setting
+                  Result:(JL_RTC_ALARM_BK __nullable)result;
+
+   -(void)setRingModel{
+       JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+
+       JLModel_AlarmSetting *setting = [JLModel_AlarmSetting new];
+       setting.index = index;
+       setting.isCount = 1;
+       setting.count = mCount;
+       setting.isInterval = 1;
+       setting.interval = mInterval;
+       setting.isTime = 1;
+       setting.time = mTime;
+
+       //You can also use this mode to set the alarm mode after obtaining it in the above way
+
+       NSLog(@"Alarm Index ---> %d count:%d interval:%d time:%d",index,mCount,mInterval,mTime);
+       [entity.mCmdManager.mAlarmClockManager cmdRtcOperate:JL_FlashOperateFlagWrite Index:index Setting:setting
+                                  Result:^(NSArray<JLModel_AlarmSetting *> * _Nullable array, uint8_t flag)
+       {
+           if (flag == 0) NSLog(@"Set alarm clock successfully");
+       }];
+   }
+
+2.5.2.10 The alarm clock is ringing or it stops ringing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   extern NSString *kJL_RTC_RINGING;       //The alarm clock is ringing
+   extern NSString *kJL_RTC_RINGSTOP;      //The alarm clock stops ringing
+
+2.5.2.11 Stop alarm sound callback
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Stop the alarm
+   @param result Reply
+   */
+   +(void)cmdRtcStopResult:(JL_CMD_BK)result;
+
+2.6 Control function of external equipment
+============================================
+2.6.1 Function description
+----------------------------
+
+   Switch to Linein mode and operation in LineIn mode
+    
+
+2.6.2 Sample code
+-------------------
+
+.. code-block:: objective-c
+
+    [JL_Manager cmdFunction:JL_FunctionCodeCOMMON Command:JL_FunctionCodeLINEIN Extend:0x00 Result:nil]; //Switch to Linein mode
+    [JL_Manager cmdGetSystemInfo:JL_FunctionCodeLINEIN Result:nil]; //Get information in Linein mode
+    //Set playback and pause under Linein
+    [JL_Manager cmdFunction:JL_FunctionCodeLINEIN Command:JL_FCmdLineInPP Extend:0 Result:nil];
+
+
+2.6.3 Matters needing attention
+------------------------------------
+
+Get the status of LineIn through  \ **JL_ManagerM**
+\ **outputDeviceModel**\  method, where the property
+
+/*— LineIn INFO —*/
+
+**@property** (**assign**,\ **nonatomic**) JL_LineInStatus lineInStatus;
+//LineIn Status
+
+
+2.7 FM control function
+===============================
+2.7.1 Function description
+-----------------------------
+
+   Control Firmware Radio Module Related Operations **FM Related Operations**
+    
+
+2.7.2 Sample code
+-------------------
+
+.. code-block:: objective-c
+
+    ///Next Node
+   - (void)btn_lastPoint {
+       JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+       JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+       if (model.currentFunc == JL_FunctionCodeFM) {
+           if(self->imageGif.hidden == NO){
+               [DFUITools showText:kJL_TXT("searching") onView:self delay:1.0];
+               return;
+           }
+           [entity.mCmdManager.mFmManager cmdFm:JL_FCmdFMChannelBefore
+                      Saerch:0x00 Channel:0x00
+                   Frequency:0x00 Result:nil];
+       }
+   }
+
+2.7.3 Related interfaces
+----------------------------
+
+.. code-block:: objective-c
+
+    typedef NS_ENUM(UInt8, JL_FCmdFM) {
+       JL_FCmdFMPP                     = 0x01, //FM Pause/Play
+       JL_FCmdFMPonitBefore            = 0x02, //Last frequency point
+       JL_FCmdFMPonitNext              = 0x03, //Next frequency point
+       JL_FCmdFMChannelBefore          = 0x04, //Previous Channel
+       JL_FCmdFMChannelNext            = 0x05, //Next Channel
+       JL_FCmdFMSearch                 = 0x06, //Scanning
+       JL_FCmdFMChannelSelect          = 0x07, //Select Channel
+       JL_FCmdFMChannelDelete          = 0x08, //Delete Channel
+       JL_FCmdFMFrequencySelect        = 0x09, //Select frequency point
+       JL_FCmdFMFrequencyDelete        = 0x0a, //Delete frequency point
+   };
+
+   typedef NS_ENUM(UInt8, JL_FMSearch) {
+       JL_FMSearchALL                  = 0x00, //FM Pause/Play
+       JL_FMSearchForward              = 0x01, //Search Forward
+       JL_FMSearchBackward             = 0x02, //Search Backward
+       JL_FMSearchStop                 = 0x03, //Stop searching
+   };
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_FmManager : JL_FunctionBaseManager
+
+   #pragma mark ---> FM related operations
+   /**
+    @param cmd FM function
+    @param search FM Search
+    @param channel FM Channel
+    @param frequency FM frequency point
+    @param result Return Results
+    */
+   -(void)cmdFm:(JL_FCmdFM)cmd
+         Saerch:(JL_FMSearch)search
+        Channel:(uint8_t)channel
+      Frequency:(uint16_t)frequency
+         Result:(JL_CMD_RESPOND __nullable)result;
+   @end
+
+
+2.8 Light control function
+=============================
+2.8.1 Function description
+--------------------------------------------------
+
+    Contents related to equipment setting light
+    
+
+2.8.2 Sample code
+-------------------
+
+.. code:: objectivec
+
+   #pragma mark App---->Firmware sends commands to firmware
+   -(void)sendMessageLightState:(int )lightState withLightMode:(int) lightMode{
+
+      COLOR_HSL hsl = {360*(sliderSewen_0.value),100*(sliderSewen_1.value),100*(sliderSewen_2.value)};
+      COLOR_RGB rgb = {0,0,0};
+      HSLtoRGB(&hsl, &rgb);
+      
+      btnColor.backgroundColor = kDF_RGBA(rgb.red, rgb.green, rgb.blue, 1.0);
+      addColor = kDF_RGBA(rgb.red, rgb.green, rgb.blue, 1.0);
+      
+      float hue = 360*(sliderSewen_0.value);
+      float saturation = 100*(sliderSewen_1.value);
+      float lightness = 100*(sliderSewen_2.value);
+      [bleSDK.mBleEntityM.mCmdManager.mLightManager cmdSetState:lightState Mode:lightMode
+                                              Red:rgb.red Green:rgb.green Blue:rgb.blue
+                                        FlashInex:flashIndex FlashFreq:freqenyIndex SceneIndex:sceneIndex
+                                              Hue:hue Saturation:saturation Lightness:lightness];
+   }
+
+2.8.3 Related interfaces
+-----------------------------
+
+
+.. code:: objectivec
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_LightManager : JL_FunctionBaseManager
+
+   #pragma mark ---> Setting Lights
+   /**
+    *  Setting Lights
+    *  @param lightState
+    *  @param lightMode
+    *  @param red 
+    *  @param green
+    *  @param blue 
+    *  @param flashIndex 
+    *  @param flashFreqIndex 
+    *  @param sceneIndex 
+    *  @param hue 
+    *  @param saturation 
+    *  @param lightness 
+    */
+   -(void)cmdSetState:(JL_LightState)lightState
+                 Mode:(JL_LightMode)lightMode
+                  Red:(uint8_t)red
+                Green:(uint8_t)green
+                 Blue:(uint8_t)blue
+            FlashInex:(JL_LightFlashModeIndex)flashIndex
+            FlashFreq:(JL_LightFlashModeFrequency)flashFreqIndex
+           SceneIndex:(JL_LightSceneMode)sceneIndex
+                  Hue:(uint16_t)hue
+           Saturation:(uint8_t)saturation
+            Lightness:(uint8_t)lightness;
+
+   @end
+
+
+2.9 ID3 information control function
+=========================================
+
+The device sends information about the songs being played to the APP through ID3. The APP can be controlled through the following interfaces.
+
+ 
+2.9.1 Control related interfaces
+-------------------------------------
+
+.. code:: objectivec
+
+   //Play/Pause
+   +(void)cmdID3_PP;
+
+   //Previous song
+   +(void)cmdID3_Before;
+
+   //Next
+   +(void)cmdID3_Next;
+
+   // Turn on/off music information push
+   +(void)cmdID3_PushEnable:(BOOL)enable;
+
+   // Actively set ID3 playback status
+   +(void)setID3_Status:(uint8_t)st;
+
+
+2.9.2 Monitoring and usage
+-------------------------------
+
+ID3 is some information sent to the mobile phone by other mobile players when playing music. The mobile phone can listen to these information through the following interfaces. Note: the developer needs to actively and regularly query changes.
+
+.. code:: objectivec
+
+    -(void)addNote{
+        //Monitor ID3 playback status
+        [JL_Tools add:kUI_JL_SHOW_ID3 Action:@selector(noteShowId3:) Own:self];
+    }
+    -(void)noteShowId3:(NSNotification*)note{
+        //Third party music, turn off the timer of device music
+        [DFAction timingStop:myTimer];
+        NSLog(@"----------> showID3UI 1111");
+        [self showID3UI:YES];
+
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+        NSString *name_0 = [NSString stringWithFormat:@"%@",model.ID3_Title];
+        NSString *name_1 = [NSString stringWithFormat:@"%@",model.ID3_Artist];
+        NSString *name_2 = [NSString stringWithFormat:@"%@",model.ID3_AlBum];
+    }
+
+
+
+2.9.3 Equipment LRC lyrics display
+-------------------------------------
+2.9.3.1 Function description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    Display lyrics of firmware transmission
+    
+
+2.9.3.2 Sample code
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: objective-c
+
+    -(void)speexTest {
+       JL_ManagerM *manager =  [[JL_ManagerM alloc] init];
+       [manager.mLrcManager cmdLrcMonitorResult:^(NSString * _Nullable lrc, JL_LRCType type) {
+          //TODO:
+       }];
+   }
+
+
+2.10 TWS function
+=====================
+2.10.1 Function description
+-------------------------------
+
+    Relevant interfaces for TWS headset operation
+    
+
+2.10.2 Sample code
+--------------------
+
+2.10.2.1 Intelligent charging chamber related
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    Operation of the intelligent charging chamber, informing the firmware app of the information, enabling the device blue scan, returning results, and other operations
+    
+
+- Sample code
+
+.. code:: objectivec
+
+   // Notify Firmware App of information
+   // @param flag  unknown
+   +(void)cmdSetAppInfo:(uint8_t)flag;
+
+   // Set communication MTU
+   // @param mtu app Request mtu
+   // @param result Actual settings MTU Size
+   +(void)cmdSetMTU:(uint16_t)mtu Result:(JL_CMD_VALUE_BK)result;
+
+   // Enable Blue Scan
+   // @param timeout Timeout
+   // @param result  0: Success 1: Failure
+   +(void)cmdBTScanStartTimeout:(uint16_t)timeout Result:(JL_CMD_VALUE_BK)result;
+
+   // Push bluetooth scan results
+   // Return [Blue Data Structure] array
+   // @see JLBTModel
+   extern NSString *kJL_BT_LIST_RESULT;
+
+   // Stop blue scanning (APP -->firmware)
+   // @Param reason 0: timeout end 1: interrupt end 2: start scanning failed 3: scanning in progress
+   // @Param result 0: Success 1: Failure
+   +(void)cmdBTScanStopReason:(uint8_t)reason Result:(JL_CMD_VALUE_BK)result;
+
+   // Stop blue scan (firmware -->APP)
+   // 0: Timeout end 1: Interrupt end 2: Failed to start scanning 3: Scanning in progress
+   extern NSString *kJL_BT_SCAN_STOP_NOTE;
+
+   // Notify the firmware to connect the specified blue device
+   // @param addr Bluetooth device address
+   // @param result  0: Success 1: Failure
+   +(void)cmdBTConnectAddress:(NSData*)addr Result:(JL_CMD_VALUE_BK)result;
+
+   //File transfer [Firmware -->APP]
+   //1.Listen to file data
+   +(void)cmdFileDataMonitorResult:(JL_FILE_DATA_BK)result;
+
+   //2.Allow transfer of file data
+   +(void)cmdAllowFileData;
+
+   //3.Refuse to transfer file data
+   +(void)cmdRejectFileData;
+
+   //4.Stop transferring file data
+   +(void)cmdStopFileData;
+
+   //File Transfer [APP -->Firmware]
+   //5.Request to transfer files to the device
+   +(void)cmdFileDataSize:(uint8_t)size
+                SavePath:(NSString*)path;
+
+   //6.Push file data to the device
+   +(void)cmdPushFileData:(NSData*)data;
+
+
+
+2.10.2.2 Get a picture of the device
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Get a picture of the device.
+   @param vid Device vid
+   @param pid Device pid
+   @param result Picture data
+   */
+   +(void)cmdRequestDeviceImageVid:(NSString*)vid
+   Pid:(NSString*)pid
+   Result:(JL_IMAGE_RT __nullable)result;
+
+2.10.2.3 Set EDR name
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   //Ear related API
+   /**
+   Set EDR name
+   @param name
+   */
+   +(void)cmdHeatsetEdrName:(NSData*)name;
+
+2.10.2.4 Key setting (opposite ear)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Key setting (opposite ear)
+   @param key Left ear 0x01 Right ear 0x02
+   @param act single click 0x01 double click 0x02
+   @param fuc 0x00    No effect
+   0x01    power up
+   0x02    shutdown
+   0x03    Previous song
+   0x04    Next song
+   0x05    Play/Pause
+   0x06    Answer/end
+   0x07    Refuse to listen
+   0x08    Photograph
+   */
+   +(void)cmdHeatsetKeySettingKey:(uint8_t)key
+   Action:(uint8_t)act
+   Function:(uint8_t)fuc;
+
+2.10.2.5 LED setting (Opposite ears)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   LED setting (opposite ears)
+   @param scene 
+   unpaired      0x01
+   Not connected 0x02
+   connect       0x03
+   @param effect 
+   0x00    Total extinction
+   0x01    The red light is always on
+   0x02    The blue light is always on
+   0x03    Red light breathing
+   0x04    Blue light breathing
+   0x05    Red blue alternating flash
+   0x06    Red blue alternating slow flashing
+   */
+   +(void)cmdHeatsetLedSettingScene:(uint8_t)scene
+   Effect:(uint8_t)effect;
+
+2.10.2.6 MIC settings (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   MIC settings (headset)
+   @param mode 
+   0： Left ear only
+   1： Right ear only
+   2： Auto Select
+   */
+   +(void)cmdHeatsetMicSettingMode:(uint8_t)mode;
+
+2.10.2.7 Operating mode (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Operating mode (headset)
+   @param mode 
+   0： Normal mode
+   1： Game mode
+   */
+   +(void)cmdHeatsetWorkSettingMode:(uint8_t)mode;
+
+2.10.2.8 Synchronization timestamp (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+    Synchronization timestamp (headset)
+    @param date  Current system time
+   */
+   +(void)cmdHeatsetTimeSetting:(NSDate*)date;
+
+2.10.2.9 Get device information (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Get device information (headset)
+   @param flag 
+   BIT0    The format of small electromechanical quantity acquisition is 3 bytes reference broadcast package format
+   BIT1    Edr Name
+   BIT2    Key functions
+   BIT3    LED Show Status
+   BIT4    MIC Mode
+   BIT5    Operating mode
+
+   @param result 
+   Back to Dictionary：
+   @"ISCHARGING_L"
+   @"ISCHARGING_R"
+   @"ISCHARGING_C"
+   @"POWER_L"
+   @"POWER_R"
+   @"POWER_C"
+   @"EDR"
+   @"KEY_LR"
+   @"KEY_ACTION"
+   @"KEY_FUNCTION"
+   @"LED_SCENE"
+   @"LED_EFFECT"
+   @"MIC_MODE"
+   @"WORK_MODE"
+   */
+   +(void)cmdHeatsetGetAdvFlag:(uint32_t)flag
+   Result:(JL_HEADSET_BK __nullable)result;
+
+2.10.2.10 Device broadcast notification (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Device broadcast notification (headset)
+   @{@"JLID": JLID,
+   @"VID": ,
+   @"PID":  ,
+   @"EDR": ,
+   @"SCENE": ,
+   @"ISCHARGING_L": ,
+   @"ISCHARGING_R": ,
+   @"ISCHARGING_C": ,
+   @"POWER_L": ,
+   @"POWER_R": ,
+   @"POWER_C": ,
+   @"CHIP_TYPE": ,
+   @"PROTOCOL_TYPE": ,
+   @"SEQ": };
+   */
+   extern NSString *kJL_HEADSET_ADV;
+
+2.10.2.11 Turn off or on device radio (headset)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   Turn off or on device radio (headset)
+   @param enable Enabling potential
+   */
+   +(void)cmdHeatsetAdvEnable:(BOOL)enable;
+
+2.10.2.12 Used for ADV to set the behavior that requires host operation after synchronization.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+    Used for ADV to set the behavior that requires host operation after synchronization.
+      1: Update the configuration information and restart it to take effect.
+    */
+   extern NSString *kJL_HEADSET_TIPS;
+
+
+2.10.2.13 Support for neck headset type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The functions of the neck hook headset are similar to those of the ear headset and TWS headset mentioned above, except that the product modeling is inconsistent. The APP will analyze them in the way of TWS ear headset.
+
+For details\ **JL_EntityM**\ the following properties of the class：
+
+.. code:: objectivec
+
+   /**
+       JL_DeviceTypeSoundBox           = 0,     //AI speaker type
+       JL_DeviceTypeChargingBin        = 1,     //Charging chamber type
+       JL_DeviceTypeTWS                = 2,     //TWS headphone type
+       JL_DeviceTypeHeadset            = 3,     //Ordinary earphone type
+       JL_DeviceTypeSoundCard          = 4,     //Sound card type
+       JL_DeviceTypeWatch              = 5,     //Watch type
+       JL_DeviceTypeTradition          = -1,    //Traditional device type
+    */
+   @property(assign,nonatomic) JL_DeviceType   mType; //Marked here as: TWS headphone type
+
+   @property(assign,nonatomic) BOOL            isCharging_L; //The left ear status is displayed as the power of the whole headset
+   @property(assign,nonatomic) BOOL            isCharging_R;//Zero or no reference
+   @property(assign,nonatomic) BOOL            isCharging_C;//Zero or no reference
+   @property(assign,nonatomic) uint8_t         mPower;  //The left ear power is displayed as the power of the whole headset
+   @property(assign,nonatomic) uint8_t         mPower_L; //The left ear power is displayed as the power of the whole headset
+   @property(assign,nonatomic) uint8_t         mPower_R; //Zero or no reference
+   @property(assign,nonatomic) uint8_t         mPower_C;//Zero or no reference
+
+   @property(assign,nonatomic) uint8_t         mProtocolType; //When the headset is a neck hook headset, the displayed value of this attribute is 0x03, and 0x02 when the device is a normal TWS headset
+
+2.10.2.14 Matching function of auxiliary hearing earphones
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    The auxiliary listening function is used to set the TWS headset, which is not supported by other devices. Implementation depends on\ `JL_EntityM`\ the following properties of the class：\ `mCmdManager`\ attribute.
+
+
+- Judge whether the current device supports the auxiliary hearing function：
+  
+    Whether the auxiliary listening function is currently supported can be checked by\ `JLModel_Device`\ the following properties of the class：\ `isSupportDhaFitting`\ attribute.
+    
+    \ `JLModel_Device`\ Class objects are created by，\ `JL_EntityM`\ the following properties of the class：\ `mCmdManager`\ attribute，\ `outputDeviceModel`\method to get.
+
+
+.. code:: objectivec
+
+    /// Whether the auxiliary listening setting is supported
+    @property (assign,nonatomic) BOOL               isSupportDhaFitting;
+    /// Matching information interaction: version, channel number, channel frequency
+    @property (strong,nonatomic) DhaFittingInfo     *dhaFitInfo;
+    /// Interrupted/enabled objects can only be monitored
+    @property (strong,nonatomic) DhaFittingSwitch   *dhaFitSwitch;
+
+
+
+- Get the basic information of the current auxiliary listening of the device: version, channel number, channel frequency.
+
+.. code:: objectivec
+
+    [JLDhaFitting auxiGetInfo:^(DhaFittingInfo * _Nonnull info, NSArray<NSNumber *> * _Nonnull gains) {
+        if (info) {
+            if (info.ch_num != 0) {
+                [self.navigationController pushViewController:vc animated:true];
+            }else{
+                Dialog()
+                //position
+                    .wToastPositionSet(DialogToastBottom)
+                    .wTypeSet(DialogTypeToast)
+                    .wMessageSet(kJL_TXT("msg_read_file_err_reading"))
+                //Adjust Width
+                    .wMainOffsetXSet(30)
+                    .wStart();
+            }
+        }else{
+            Dialog()
+            //position
+                .wToastPositionSet(DialogToastBottom)
+                .wTypeSet(DialogTypeToast)
+                .wMessageSet(kJL_TXT("msg_read_file_err_reading"))
+            //Adjust Width
+                .wMainOffsetXSet(30)
+                .wStart();
+        }
+    } Manager:[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager];
+
+
+- Conduct auxiliary hearing and fitting：
+
+ .. code:: objectivec
+
+    dhaManager = [[JLDhaFitting alloc] init];
+    JL_ManagerM *cmd = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+     DhaFittingData *dataInfo = [DhaFittingData new];
+    dataInfo.leftOn = NO;//Is the left ear open
+    dataInfo.rightOn = NO;//Is the right ear open
+    dataInfo.freq = 0;//Frequency
+    dataInfo.gain = 0.0;//Gain
+    [dhaManager auxiCheckByStep:dataInfo Manager:cmd Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        NSLog(@"Matching：channecl:%d freq:%d gains:%.2f",dataInfo.channel,dataInfo.freq,dataInfo.gain);
+        
+    }];
+
+- Save matching settings:
+  
+.. warning::
+
+    It should be noted here that to save the matching settings, you need to rearrange and send the N pieces of data  ` DhaFittingData `  previously matched to the device.
+
+
+
+.. code:: objectivec
+
+    NSMutableArray *newArray = [NSMutableArray new];
+    for (FittingMgr *item in self.results) {
+        for (DhaFittingData *item2 in item.dhaList) {
+            [newArray addObject:item2];
+        }
+    }
+    JL_ManagerM *mgr = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    
+    [fitting auxiSaveGainsList:newArray Manager:mgr Type:[self getType] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        //Saving succeeded or failed
+    }];
+
+
+
+
+- Withdraw from assisted hearing fitting：
+
+.. code:: objectivec
+
+    JL_ManagerM *cmd = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    [[JLDhaFitting new] auxiCloseManager:cmd Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        NSLog(@"Exit fitting");
+    }];
+    
+
+In the current protocol version, only the auxiliary hearing switch is set through the firmware key, so the device will automatically enter the auxiliary hearing matching state when the auxiliary hearing switch is turned on. Every time the device information is requested and the reply is correct, the device will enter the auxiliary hearing and matching state.
+Under this specific condition, it is necessary to pay attention to the operation of quitting the auxiliary hearing fitting in time.
+
+- The monitoring device pushes out the auxiliary hearing verification status：
+
+Use the KVO method to monitor the device to push out the auxiliary hearing and matching status. When the device pushes out the auxiliary hearing and matching status, the callback will be triggered.
+
+.. code:: objectivec
+
+    @interface FittingBasicVC (){
+        JLModel_Device *devModel;
+    }
+    @end
+
+    @implementation FittingBasicVC
+    - (void)viewDidLoad {
+        static void *dhaFitSwitchContext = &dhaFitSwitchContext;
+
+        devModel = [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager getDeviceModel];
+        [devModel addObserver:self forKeyPath:@"dhaFitSwitch" options:NSKeyValueObservingOptionNew context:dhaFitSwitchContext];
+    }
+
+    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+    {
+        
+        if (context == dhaFitSwitchContext) {
+            if ([change objectForKey:@"new"]) {
+                
+                JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+                TwsElectricity *electricity = manager.mTwsManager.electricity;
+                DhaFittingSwitch *sw = [change objectForKey:@"new"];
+                if (electricity.powerLeft > 0 && electricity.powerRight>0) {
+                    //Binaural
+                    if (sw.rightOn == NO || sw.leftOn == NO) {
+                        [self goBackToRoot];
+                    }
+                }
+                if (electricity.powerLeft == 0 && electricity.powerRight>0) {
+                    //Right ear
+                    if (sw.rightOn == NO) {
+                        [self goBackToRoot];
+                    }
+                   
+                }
+                if (electricity.powerRight == 0 && electricity.powerLeft>0) {
+                    //Left ear
+                    if (sw.leftOn == NO) {
+                        [self goBackToRoot];
+                    }
+                }
+                
+            }
+        } else {
+            [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        }
+    }
+    -(void)viewDidDisappear:(BOOL)animated{
+        [super viewDidDisappear:animated];
+        [devModel removeObserver:self forKeyPath:@"dhaFitSwitch" context:dhaFitSwitchContext];
+    }
+    -(void)goBackToRoot{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    @end
+
+
+
+2.10.2.15 One-to-two headphone function support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The support for the one-drag-two function can be determined by `isSupportDragWithMore;` under the extended function support attribute **TwsSupportFuncs *supports;** of the `JL_TwsManager` class;
+
+- Get the name of the connected mobile phone of the device:
+
+
+
+.. code:: objectivec
+
+    NSMutableArray *itemList = [NSMutableArray new];
+
+    JL_TwsManager *tws = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mTwsManager;
+
+    [tws cmdGetDeviceInfoListResult:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+        if (status == JL_CMDStatusSuccess){
+            
+            [self->itemList setArray:phoneInfos];
+            for (JLTWSAddrNameInfo *info in phoneInfos){
+                [info logProperties];
+            }
+            
+            NSData *addr = [[NSUserDefaults standardUserDefaults] valueForKey:PhoneEdrAddr];
+
+            if (phoneInfos.count == 1){
+                JLTWSAddrNameInfo *info = phoneInfos.firstObject;
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                //bind
+                [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                    [self->subTable reloadData];
+                }];
+            }
+            if (phoneInfos.count == 2){
+                for (JLTWSAddrNameInfo *info in phoneInfos) {
+                    if (info.isBind){
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //bind
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                            
+                        }
+                    }else{
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //bind
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+        [self->subTable reloadData];
+    }];
+
+
+
+The above logic is a judgment to determine the Bluetooth address corresponding to this machine:
+
+.. warning::
+
+     #. When the device returns information about only one mobile phone, the mobile phone needs to update and record the name and address (regardless of whether it has been recorded). If the local record (name or address) of the mobile phone has changed, please bind it and resend it. C031;
+     #. When the device returns that the information on both mobile phones is not bound, the mobile phone does not perform any operation;
+     #. When the device returns information about two mobile phones, one of which is bound and the other is not:
+     #. If the bound address matches the local one of the mobile phone, check whether there is an update. If there is an update, resend the C031 command. If there is no update, no processing will be performed;
+     #. If the bound address does not match the local one of the mobile phone (including the local mobile phone), the unbound mobile phone information is the information of the current mobile phone. After binding, resend the C031 command.
+
+One-to-two device list information can also be obtained through the following notifications:
+
+
+
+.. code:: 
+
+    /// Device upload one-to-two device information list
+    extern NSString* kJL_MULIT_NAME_LIST;
+
+
+- Notify the device of the connected mobile phone address and binding information
+     This interface needs to be used in conjunction with the above-mentioned interface for obtaining device connected mobile phone information. The specific binding rules are as mentioned in the above points.
+
+
+.. code-block::objective-c
+
+     /// Notify the device to connect to the mobile phone address and binding information
+     /// - Parameters:
+     /// - addr: mobile phone EDR address
+     /// - name: mobile phone Bluetooth name
+     /// - result: result
+     -(void)cmdBindDeviceInfo:(NSData *)addr phone:(NSString *)name result:(JL_MulitLinksInfo_BK)result
+
+- The device turns on/off the multi-connection mobile phone interface
+
+.. code-block::objective-c
+
+     /// One to two switches
+     /// @param dragWithMore switch status
+     /// @param addr The classic Bluetooth address of the mobile phone (obtained through cmdGetDeviceInfoList)
+     /// @param result result callback
+     -(void)setDragWithMore:(BOOL)dragWithMore phoneBleAddr:(NSData *) addr result:(JL_CMD_RESPOND)result
+
+
+2.11 ANC setting function
+=============================
+
+2.11.1 Function description
+----------------------------------
+
+The current interface only works for earphones with noise reduction function. It belongs to the public interface and is available in the properties of the relevant fields in the 'JLDeviceModel' object of the JL_Manager.h class.
+
+2.11.2 Sample code
+------------------------------
+
+.. code-block:: objective-c
+ 
+   @property (assign,nonatomic) uint8_t            mAncMode;        //Headset noise reduction mode
+   @property (strong,nonatomic) NSArray            *mAncModeTypes;  //Modes supported by active noise reduction of earphones  
+
+
+
+- At present, there are two interfaces. One is to set the noise reduction mode of the headset, and the other is to set how many noise reduction modes the headset can support.
+
+
+.. code:: objectivec
+
+   /// Active noise reduction ANC of earphones
+   /// @param Mode (0x01: normal mode 0x02: noise reduction mode 0x03: transparent mode)
+   +(void)cmdSetAncMode:(uint8_t)mode;
+
+   /// Active noise reduction ANC of earphones (mode enable)
+   /// @param modeTypes Supported Modes @[@(JL_ANCType_Normal),@(JL_ANCType_NoiseReduction).....]
+   /// JL_ANCType_Normal                = 0,    //Normal mode
+   /// JL_ANCType_NoiseReduction        = 1,    //Noise reduction mode
+   /// JL_ANCType_Transparent           = 2,    //Bridge Mode
+   +(void)cmdSetAncModeTypes:(NSArray *)modeTypes;
+
+2.11.3 Add ANC (active noise reduction) to the headset SDK
+-----------------------------------------------------------------
+
+-  Headset active noise reduction support mode
+
+.. code:: objectivec
+
+   @property (copy  ,nonatomic) NSMutableArray     *mAncModeArray;         //ANC mode array
+
+-  Active noise reduction of headphones Current mode
+
+.. code:: objectivec
+
+   @property (copy  ,nonatomic) JLModel_ANC        *mAncModeCurrent;       //Current ANC mode
+
+-  Set active noise reduction for headphones
+
+.. code:: objectivec
+
+   @interface JLModel_ANC : NSObject
+   @property(assign,nonatomic)JL_AncMode       mAncMode;               //Headset noise reduction mode
+   @property(assign,nonatomic) uint16_t        mAncMax_L;              //Left ear maximum gain
+   @property(assign,nonatomic) uint16_t        mAncCurrent_L;          //Current gain of left ear
+   @property(assign,nonatomic) uint16_t        mAncMax_R;              //Right ear maximum gain
+   @property(assign,nonatomic) uint16_t        mAncCurrent_R;          //Current gain of right ear
+   -(NSData*)dataModel;
+
+   #pragma mark ---> Active noise reduction ANC setting of headphones
+   -(void)cmdSetANC:(JLModel_ANC*)model;
+
+
+2.12 Sound card function configuration
+=========================================
+2.12.1 Function description
+-----------------------------------------
+
+    Processing of sound card equipment
+    
+
+2.12.2 Sample code
+--------------------
+
+
+.. code:: objc
+
+
+   extern NSString *kJL_MANAGER_KALAOK_Data;
+
+   #pragma mark ---> Set karaoke【index、value】
+   -(void)cmdSetKalaokIndex:(uint8_t) index Value:(uint16_t) value;
+
+   #pragma mark ---> Set karaoke【MIC EQ gain】
+   -(void)cmdSetKaraokeMicEQ:(NSArray*)array;
+
+2.12.3 Sound card effect settings
+-------------------------------------
+The sound card setting effect is based on the following json 'id' pickup
+
+.. code:: json
+
+    {
+    "hasEq": "true",
+    "function": [
+    {
+        "id": 0,
+        "title": {
+        "zh": "变声",
+        "en": "Voice"
+        },
+        "type": "select",
+        "icon_url": "icon_voice_nol.png",
+        "column": 3,
+        "paging": false,
+        "list": [
+        {
+            "title": {
+            "zh": "正常",
+            "en": "Normal"
+            },
+            "index": 0
+        },
+        {
+            "title": {
+            "zh": "男声",
+            "en": "Boy"
+            },
+            "index": 1
+        },
+        {
+            "title": {
+            "zh": "女声",
+            "en": "Girl"
+            },
+            "index": 2
+        },
+        {
+            "title": {
+            "zh": "童音",
+            "en": "Children"
+            },
+            "index": 3
+        },
+        {
+            "title": {
+            "zh": "魔音",
+            "en": "Magic"
+            },
+            "index": 4
+        },
+        {
+            "title": {
+            "zh": "电音",
+            "en": "EM"
+            },
+            "group": true,
+            "list": [
+            {
+                "title": {
+                "zh": "A大调",
+                "en": "A major"
+                },
+                "index": 5
+            },
+            {
+                "title": {
+                "zh": "升A大调",
+                "en": "L A major"
+                },
+                "index": 6
+            },
+            {
+                "title": {
+                "zh": "B大调",
+                "en": "B major"
+                },
+                "index": 7
+            },
+            {
+                "title": {
+                "zh": "C大调",
+                "en": "C major"
+                },
+            "index": 8
+            },
+            {
+                "title": {
+                "zh": "升C大调",
+                "en": "L C major"
+                },
+            "index": 9
+            },
+            {
+                "title": {
+                "zh": "D大调",
+                "en": "D major"
+                },
+                "index": 10
+            },
+            {
+                "title": {
+                "zh": "升D大调",
+                "en": "L D major"
+                },
+                "index": 11
+            },
+            {
+                "title": {
+                "zh": "E大调",
+                "en": "E major"
+                },
+                "index": 12
+            },
+            {
+                "title": {
+                "zh": "F大调",
+                "en": "F major"
+                },
+                "index": 13
+            },
+            {
+                "title": {
+                "zh": "升F大调",
+                "en": "L F major"
+                },
+                "index": 14
+            },
+            {
+                "title": {
+                "zh": "G大调",
+                "en": "G major"
+                },
+                "index": 15
+            },
+            {
+                "title": {
+                "zh": "升G大调",
+                "en": "L G major"
+                },
+                "index": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+        "title": {
+        "zh": "其他",
+        "en": "Other"
+        },
+        "id": 3,
+        "icon_url": "icon_others_nol.png",
+        "type": "select",
+        "column": 3,
+        "paging": false,
+        "list": [
+        {
+            "title": {
+            "zh": "爆音",
+            "en": "Popping"
+            },
+            "index": 36
+        },
+        {
+            "title": {
+            "zh": "喊麦",
+            "en": "Shout"
+            },
+            "index": 37
+        },
+        {
+            "title": {
+            "zh": "闪避",
+            "en": "Dodge"
+            },
+            "index": 38
+        }
+      ]
+    },
+    {
+        "title": {
+        "zh": "气氛",
+        "en": "AtmosPhere"
+        },
+        "id": "1",
+        "icon_url": "icon_effect_nol.png",
+        "type": "img_select",
+        "column": 4,
+        "paging": true,
+        "row": 2,
+        "list": [
+        {
+            "title": {
+            "zh": "欢呼",
+            "en": "Cheers"
+            },
+            "index": 17,
+            "icon_url": "img_cheer.png"
+        },
+        {
+            "title": {
+            "zh": "尴尬",
+            "en": "Awkward"
+            },
+            "index": 18,
+            "icon_url": "img_awkward.png"
+        },
+        {
+            "title": {
+            "zh": "枪声",
+            "en": "Gunfire"
+            },
+            "index": 19,
+            "icon_url": "img_gun.png"
+        },
+        {
+            "title": {
+            "zh": "鄙视",
+            "en": "Despise"
+            },
+            "index": 20,
+            "icon_url": "img_despise.png"
+        },
+        {
+            "title": {
+            "zh": "开场",
+            "en": "Stage"
+            },
+            "index": 21,
+            "icon_url": "img_stage.png"
+        },
+        {
+            "title": {
+            "zh": "飞吻",
+            "en": "Kiss"
+            },
+            "index": 22,
+            "icon_url": "img_kiss.png"
+        },
+        {
+            "title": {
+            "zh": "笑声",
+            "en": "Laugh"
+            },
+            "index": 23,
+            "icon_url": "img_laugh.png"
+        },
+        {
+            "title": {
+            "zh": "掌声",
+            "en": "Applause"
+            },
+            "index": 24,
+            "icon_url": "img_applause.png"
+        },
+        {
+            "title": {
+            "zh": "请关注",
+            "en": "Attention"
+            },
+            "index": 25,
+            "icon_url": "img_follow.png"
+        },
+        {
+            "title": {
+            "zh": "么么哒",
+            "en": "Mua"
+            },
+            "index": 26,
+            "icon_url": "img_memeda.png"
+        },
+        {
+            "title": {
+             "zh": "贼啦啦",
+            "en": "Song01"
+            },
+            "index": 27,
+            "icon_url": "img_song_01.png"
+        },
+        {
+            "title": {
+            "zh": "非诚勿扰",
+            "en": "Song02"
+            },
+            "index": 28,
+            "icon_url": "img_song_02.png"
+        }
+      ]
+    },
+    {
+        "title": {
+        "zh": "Mic参数",
+        "en": "Mic Args"
+        },
+        "id": 2,
+        "icon_url": "icon_settle_nol.png",
+        "type": "slider",
+        "list": [
+         {
+            "title": {
+            "zh": "麦音量",
+            "en": "Mic Vol"
+            },
+            "index": 29,
+            "max": 30,
+            "enable": true
+        },
+        {
+            "title": {
+            "zh": "录音音量",
+            "en": "Record Vol"
+            },
+            "index": 30,
+            "enable": true,
+            "max": 30
+        },
+        {
+            "title": {
+            "zh": "混响",
+            "en": "Reverberation"
+            },
+            "index": 31,
+            "enable": true,
+            "max": 30
+        },
+        {
+            "title": {
+            "zh": "高音",
+            "en": "High"
+            },
+            "index": 32,
+            "enable": true,
+            "max": 10
+        },
+        {
+            "title": {
+            "zh": "低音",
+            "en": "Bass"
+            },
+            "index": 33,
+            "enable": true,
+            "max": 10
+        },
+        {
+            "title": {
+            "zh": "伴奏音量",
+            "en": "Accomp Vol"
+            },
+            "index": 34,
+            "enable": true,
+            "max": 30
+        },
+        {
+            "title": {
+            "zh": "监听音量",
+            "en": "Monitor Vol"
+            },
+            "index": 35,
+            "enable": true,
+            "max": 30
+            }
+        ]
+        }
+    ]
+    }
+
+
+2.13 Find device features
+===========================
+2.13.1 Function description
+----------------------------
+
+After receiving the command from the device, the user can find the phone by playing the audio of the phone, or the device makes a sound by sending the command to the device.    
+
+2.13.2 Sample code
+---------------------
+
+Notification of device searching for mobile phone, with ringing duration
+
+.. code:: objectivec
+
+   extern NSString *kJL_BT_FIND_PHONE;
+
+Find Device Command
+
+.. code:: objectivec
+
+   /// Find Device Command
+   /// @param isVoice Whether to make sound
+   /// @param timeout Timeout
+   /// @param isIphone Whether the device finds the mobile phone (by default, the mobile phone finds the device)
+   +(void)cmdFindDevice:(BOOL)isVoice timeOut:(uint16_t)timeout findIphone:(BOOL)isIphone;
+
+2.14 User defined command function
+===================================
+2.14.1 Function description
+-----------------------------
+
+    User defined data can be sent and received through this interface.
+    
+
+2.14.2 Sample code
+----------------------
+
+.. code-block:: objective-c
+    
+   //Send custom data
+   NSData *data = [NSData new];
+   [self.mBleEntityM.mCmdManager.mCustomManager cmdCustomData:data
+                                                       Result:^(JL_CMDStatus status,
+                                                                uint8_t sn, NSData * _Nullable data) {
+       if (status == JL_CMDStatusSuccess) {
+           NSLog(@"Number of posts succeeded...");
+       }else{
+           NSLog(@"Number of sends failed...");
+       }
+   }];
+
+   //Receive custom data
+   [JL_Tools add:kJL_MANAGER_CUSTOM_DATA Action:@selector(noteCustomData:) Own:self];
+
+2.14.3 Matters needing attention
+----------------------------------
+
+If the number is successful, there will be\ ``JL_CMDStatusSuccess``\ callback.
+
+
+
+
+
+
+
+2.15 OTA
+========================
+2.15.1 Function description
+------------------------------
+
+    Upgrade the equipment, refer to the detailed version：\ `【Jieli OTA Upgrade(iOS) development description】 <https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html>`
+    
+
+2.15.2 Use demo
+------------------
+
+2.15.2.1 OTA upgrade file download
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the server resources provided by Jerry are used, the following interfaces can be used to download the upgrade files after negotiation.
+
+.. code:: objectivec
+
+   /**
+   OTA upgrade file download
+   @param key
+   @param code 
+   @param result 
+   */
+   +(void)cmdGetOtaFileKey:(NSString*)key
+   Code:(NSString*)code
+   Result:(JL_OTA_URL __nullable)result;
+
+   /**
+   OTA upgrade file download [MD5]
+   @param key 
+   @param code 
+   @param hash  
+   @param result 
+   */
+   +(void)cmdGetOtaFileKey:(NSString*)key
+                      Code:(NSString*)code
+                      hash:(NSString*)hash
+                    Result:(JL_OTA_URL __nullable)result;
+
+2.15.2.2 OTA upgrading equipment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   OTA upgrading equipment
+   @param data Upgrade Data
+   @param result Upgrade Results
+   */
+   +(void)cmdOTAData:(NSData*)data
+   Result:(JL_OTA_RT __nullable)result;
+
+2.15.2.3 OTA upgrade status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_OtaStatusNormal              = 0,    //Normal upgrade
+   JL_OtaStatusForce               = 1,    //Force Upgrade
+
+2.15.2.4 OTA return results
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_OTAResultSuccess             = 0x00, //OTA upgrade succeeded
+   JL_OTAResultFail                = 0x01, //OTA upgrade failed
+   JL_OTAResultDataIsNull          = 0x02, //OTA upgrade data is empty
+   JL_OTAResultCommandFail         = 0x03, //OTA instruction failed
+   JL_OTAResultSeekFail            = 0x04, //OTA mark offset lookup failed
+   JL_OTAResultInfoFail            = 0x05, //OTA upgrade firmware information error
+   JL_OTAResultLowPower            = 0x06, //Low voltage of OTA upgrading equipment
+   JL_OTAResultEnterFail           = 0x07, //Failed to enter OTA upgrade mode
+   JL_OTAResultUpgrading           = 0x08, //OTA upgrading
+   JL_OTAResultReconnect           = 0x09, //OTA needs to reconnect equipment
+   JL_OTAResultReboot              = 0x0a, //OTA requires equipment restart
+   JL_OTAResultPreparing           = 0x0b, //OTA in preparation
+   JL_OTAResultPrepared            = 0x0f, //OTA preparation completed
+   JL_OTAResultFailVerification    = 0xf1, //Failed to verify the upgrade data
+   JL_OTAResultFailCompletely      = 0xf2, //Upgrade failed
+   JL_OTAResultFailKey             = 0xf3, //Failed to verify the upgrade data
+   JL_OTAResultFailErrorFile       = 0xf4, //Error upgrading file
+   JL_OTAResultFailUboot           = 0xf5, //Uboot mismatch
+   JL_OTAResultFailLenght          = 0xf6, //Error in upgrade process length
+   JL_OTAResultFailFlash           = 0xf7, //Flash read/write failed during upgrade
+   JL_OTAResultFailCmdTimeout      = 0xf8, //Upgrade process instruction timeout
+   JL_OTAResultFailSameVersion     = 0xf9, //Same version
+   JL_OTAResultFailTWSDisconnect   = 0xfa, //TWS headset not connected
+   JL_OTAResultFailNotInBin        = 0xfb, //The headset is not in the charging compartment
+   JL_OTAResultUnknown,                    //OTA unknown error
+
+2.15.2.5 Get MD5 data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   #pragma mark Get MD5 data
+   +(void)cmdGetMD5_Result:(JL_CMD_BK __nullable)result;
+
+2.15.2.6 Proofread the version and obtain the upgrade file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   -(void)checkVersion{
+
+   #if (LT==0)
+
+   //    //new version
+   //    self->shouldUp = YES;
+   //    self->downloadUrl = [JL_Tools find:@"update_yx_hp_93.ufw"];
+   //    savePath = [JL_Tools find:@"update_yx_hp_93.ufw"];
+   //    dispatch_async(dispatch_get_main_queue(), ^{
+   //        [self->upgradeView initWithNews:@"1.0.0.0" tips:@"Upgrade test"];
+   //        [self.view addSubview:self->upgradeView];
+   //    });
+   //    [self.upgradeTable reloadData];
+   //    return;
+       
+       JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+       if (model.md5Type == YES) {
+           /*---- OTA upgrade uses MD5 verification ----*/
+           [self.otaEntity.mCmdManager cmdGetMD5_Result:^(NSArray * _Nullable array) {
+               if (array.count >= 3) {
+                   NSData *data_md5 = array[2];
+                   NSString *str_md5 = [[NSString alloc] initWithData:data_md5 encoding:NSUTF8StringEncoding];
+                   NSLog(@"MD5 ----> %@",str_md5);
+                   //NSString* test = @"eb5eaa7e89664adc2c840230fc494656";
+                   [self.otaEntity.mCmdManager cmdGetOtaFileKey:model.authKey Code:model.proCode hash:str_md5
+                                         Result:^(JL_OTAUrlResult result,
+                                                  NSString * _Nullable version,
+                                                  NSString * _Nullable url,
+                                                  NSString * _Nullable explain) {
+                       [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+                   }];
+               }
+           }];
+       }else{
+           /*--- Traditional OTA upgrade ---*/
+           NSString *authKey = @"";
+           NSString *proCode = @"";
+           if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
+
+               DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+               authKey = m1.authKey;
+               proCode = m1.proCode;
+           }else{
+               authKey = model.authKey;
+               proCode = model.proCode;
+           }
+           [self.otaEntity.mCmdManager cmdGetOtaFileKey:authKey Code:proCode
+                                 Result:^(JL_OTAUrlResult result,
+                                          NSString * _Nullable version,
+                                          NSString * _Nullable url,
+                                          NSString * _Nullable explain) {
+               [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+           }];
+       }
+   #else
+       JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+       NSString *authKey = @"";
+       NSString *proCode = @"";
+       if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
+
+           DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+           authKey = m1.authKey;
+           proCode = m1.proCode;
+       }else{
+           authKey = model.authKey;
+           proCode = model.proCode;
+       }
+       //new version
+       shouldUp = YES;
+       NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+       path = [path stringByAppendingPathComponent:@"update.ufw"];
+       savePath = path;
+      
+       [upgradeView initWithNews:@"Max" tips:@"无限制升级"];
+       [self.view addSubview:upgradeView];
+      
+       
+   #endif
+       
+   }
+
+2.15.2.7 Perform OTA upgrade
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   [self.otaEntity.mCmdManager cmdOTAData:data Result:^(JL_OTAResult result, float progress) {
+       if (result == JL_OTAResultSuccess) {
+           [self->transportView update:1.0 Text:nil];
+           self->transportView.alpha = 0.0;
+           
+           [[JLUI_Cache sharedInstance] setOtaUUID:nil];
+           
+           [weakSelf upgradeFinish];
+       }
+       if (result == JL_OTAResultFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA upgrade failed")];
+       }
+       if (result == JL_OTAResultDataIsNull) {
+           [weakSelf failedWithAction:kJL_TXT("OTA upgrade data is empty!")];
+       }
+       if (result == JL_OTAResultCommandFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA instruction failed!")];
+       }
+       if (result == JL_OTAResultSeekFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA mark offset lookup failed!")];
+       }
+       if (result == JL_OTAResultInfoFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA upgrade firmware information error!")];
+       }
+       if (result == JL_OTAResultLowPower) {
+           [weakSelf failedWithAction:kJL_TXT("Low voltage of OTA upgrading equipment!")];
+       }
+       if (result == JL_OTAResultEnterFail) {
+           [weakSelf failedWithAction:kJL_TXT("Failed to enter OTA upgrade mode!")];
+       }
+       if (result == JL_OTAResultUnknown) {
+           [weakSelf failedWithAction:kJL_TXT("OTA unknown error!")];
+       }
+       if (result == JL_OTAResultFailSameVersion) {
+           [weakSelf failedWithAction:kJL_TXT("Same version！")];
+       }
+       if (result == JL_OTAResultFailTWSDisconnect) {
+           [weakSelf failedWithAction:kJL_TXT("TWS headset not connected")];
+       }
+       if (result == JL_OTAResultFailNotInBin) {
+           [weakSelf failedWithAction:kJL_TXT("The headset is not in the charging compartment")];
+       }
+       
+       if (result == JL_OTAResultPreparing ||
+           result == JL_OTAResultUpgrading)
+       {
+           if (result == JL_OTAResultUpgrading) [self->transportView update:progress Text:kJL_TXT("Upgrading")];
+           if (result == JL_OTAResultPreparing) [self->transportView update:progress Text:@"Inspection documents"];
+           [self otaTimeCheck];//Increase timeout detection
+       }
+       
+       if (result == JL_OTAResultPrepared) {
+           [self otaTimeCheck];//Increase timeout detection
+       }
+       if (result == JL_OTAResultReconnect) {
+           [self otaTimeCheck];//Increase timeout detection
+           
+           NSLog(@"---> OTA is connecting the device back... %@",self.otaEntity.mItem);
+           [self->bleSDK.mBleMultiple connectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
+               if (status != JL_EntityM_StatusPaired) {
+                   [weakSelf failedWithAction:kJL_TXT("OTA upgrade timeout")];
+               }
+           }];
+       }
+   }];
+
+

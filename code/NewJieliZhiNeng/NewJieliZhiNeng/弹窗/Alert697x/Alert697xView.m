@@ -68,6 +68,7 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     
     ElasticHandler * elasticHanlder;
     JL_RunSDK *bleSDK;
+    JL_EntityM *relinkEntity;
 }
 
 @end
@@ -94,7 +95,8 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
         [JL_Tools add:kJL_BLE_M_OFF Action:@selector(noteEntityDisconnected2:) Own:self];
         [JL_Tools add:kJL_BLE_M_ENTITY_DISCONNECTED Action:@selector(noteEntityDisconnected:) Own:self];
         [JL_Tools add:kUI_JL_DEVICE_SHOW_OTA Action:@selector(dismissView) Own:self];
-        
+        [JL_Tools add:kJL_BLE_M_ENTITY_CONNECTED Action:@selector(handleWithConnected:) Own:self];
+        [JL_Tools add:@"JL_ENTITY_RELINK" Action:@selector(noteEntityRelink:) Own:self];
     }
     return self;
 }
@@ -136,6 +138,12 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     
     self.hidden = YES;
 }
+
+//MARK: - 主从切换时弹窗处理
+-(void)noteEntityRelink:(NSNotification*)note{
+    relinkEntity = [note object];
+}
+
 
 #pragma mark Tap手势取消
 -(void)didShouldDismiss{
@@ -264,7 +272,13 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
         NSLog(@"---> 【完成】连接设备：%@",entity.mItem);
         [self startLoadingView:kJL_TXT("device_connecting") Delay:15];
         
+        if (![JL_RunSDK isConnectedEdr:entity]){
+            [self startLoadingView:kJL_TXT("connectable_devies") Delay:2];
+            return;
+        }
+        
         __weak typeof(self) wSelf = self;
+        
         [bleSDK.mBleMultiple connectEntity:entity Result:^(JL_EntityM_Status status) {
             
             /*--- 加入黑名单 ---*/
@@ -526,9 +540,19 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
         //NSLog(@"弹窗不处理 -----> %@",nowEntity.mItem);
         return;
     }
+    
+    if ([nowUUID isEqualToString:oneUUID] && nowEntity) {
+        if(nowEntity.mCmdManager.mTwsManager.supports.isSupportDragWithMore){
+            //一拖二，不显示已连接后的电量推送
+            NSLog(@"一拖二，不显示已连接后的电量推送");
+            [self dismissAnimation];
+            return;
+        }
+    }
+    
     //NSLog(@"nowUUID:%@",nowUUID);
     if (!canBeShow) return;//延时禁止弹窗
-    NSLog(@"JL_Entity Found --->[%p] %@ sence:%d seq:%d",entity,entity.mItem,entity.mScene,entity.mSeq);
+    NSLog(@"JL_Entity Found --->[%p] %@ sence:%d seq:%d edr:%@",entity,entity.mItem,entity.mScene,entity.mSeq,entity.mEdr);
     
     if (nowEntity == nil) {//这里判断是否已经开启了窗口，如果是第一次开启，那就添加一个连接成功的监听
         if (entity.mScene == 0) return;//第一次搜到0状态不处理
@@ -541,8 +565,9 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
             self->isLoadingImage = NO;
             
             NSLog(@"JL_Entity Show  --->[%p] %@ sence:%d seq:%d",entity,entity.mItem,entity.mScene,entity.mSeq);
-            [wSelf reconnectByDeviceBoardcast:entity];//尝试连接设备
-            
+            if (self->relinkEntity){
+                [wSelf reconnectByDeviceBoardcast:entity];//尝试连接设备
+            }
             //[JL_Tools mainTask:^{
             [wSelf showAnimation];
             [wSelf updateEntityView:entity];
@@ -611,6 +636,16 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     
     
     [self dismissAnimation];
+}
+
+-(void)handleWithConnected:(NSNotification *)note{
+    CBPeripheral *pl = [note object];
+    NSString *uuid = pl.identifier.UUIDString;
+    if (relinkEntity){
+        if ([uuid isEqualToString:relinkEntity.mPeripheral.identifier.UUIDString]){
+            relinkEntity = nil;
+        }
+    }
 }
 
 #pragma mark <- 需要手动连接经典蓝牙 ->
@@ -1055,6 +1090,13 @@ static BOOL isRelinkBoardcast = NO;
     
     for (DeviceObjc *item in sqlArray) {
         if ([entity.mPeripheral.identifier.UUIDString isEqualToString:item.uuid]) {
+            
+            
+            if (![JL_RunSDK isConnectedEdr:entity]){
+                continue;
+            }
+            
+            
             isRelinkBoardcast = YES;
             
             NSLog(@"------> 弹窗主动回连: %@",entity.mItem);

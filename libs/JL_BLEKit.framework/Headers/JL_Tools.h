@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JL_BLEKit/NSObject+JLTools.h>
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^JL_Action)(void);
@@ -14,6 +15,8 @@ typedef void(^JL_Timer_BK)(void);
 
 @class JL_Timer;
 @interface JL_Tools : NSObject
+
+
 /**
  Data自定义截取。
  
@@ -121,6 +124,14 @@ typedef void(^JL_Timer_BK)(void);
  */
 +(void)post:(NSString*)name Object:(id __nullable)object;
 
+/**
+ 发出通知事件
+ 
+ @param name 通知名字
+ @param object 传递的对象
+ @param info     传递的信息
+ */
++(void)post:(NSString*)name Object:(id __nullable)object UserInfo:(NSDictionary* __nullable)info;
 /**
  监听通知事件
  
@@ -342,6 +353,14 @@ typedef void(^JL_Timer_BK)(void);
  */
 +(NSData*)stringBigFileWithNeedRemoveUnnecessaryPunctuationCharactersWithString:(NSString*)name withFileNameIndex:(int)fileNameIndex;
 
+
+/// 大文件传输文件名设置
+/// Unicode编码
+/// - Parameters:
+///   - name: 文件名
+///   - fileNameIndex: index
+///   - encodeType: 编码格式
++(NSData *)stringBigFileUnicode:(NSString *)name withFileNameIndex:(int)fileNameIndex WithEncode:(NSStringEncoding) encodeType;
 /**
  * 移除不必要字符  \ / : " < > . space
  */

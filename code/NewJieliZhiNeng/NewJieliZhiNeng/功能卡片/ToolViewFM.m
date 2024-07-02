@@ -544,6 +544,7 @@ static BOOL isShowManager = NO;
                                  Action:@selector(noteFmStatus:)
                                     Own:self];
     [DFNotice add:@"TOBE_NEXT_FM" Action:@selector(btn_nextPoint:) Own:self];
+    
 }
 
 -(void)dealloc{

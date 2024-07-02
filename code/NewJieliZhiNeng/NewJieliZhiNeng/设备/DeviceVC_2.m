@@ -236,22 +236,36 @@ static BOOL isDelete = NO;
     DeviceObjc *model = dataArray[indexPath.row];
     JLUuidType type = [JL_RunSDK getStatusUUID:model.uuid];
     
+    NSLog(@"选中了：%@ 当前操作类型是：%d",model.name,type);
+    [model logProperties];
+    
     /*--- 未连接 ---*/
     if (type == JLUuidTypeDisconnected) {
         NSLog(@"---> 设备列表，连接设备：%@",model.name);
         [self startLoadingView:kJL_TXT("bt_connecting") Delay:15];
  
+        
         __weak typeof(self) wSelf = self;
-        JL_EntityM *entity = [bleSDK.mBleMultiple makeEntityWithUUID:model.uuid];
-        [bleSDK.mBleMultiple connectEntity:entity Result:^(JL_EntityM_Status status) {
-            if (status == JL_EntityM_StatusPaired) {
-                //[entity.mCmdManager.mTwsManager cmdHeadsetAdvEnable:NO];
+        
+        [bleSDK.mBleMultiple getEntityWithSearchUUID:model.uuid SearchStatus:true Result:^(JL_EntityM * _Nullable entity) {
+            
+            if(![JL_RunSDK isConnectedEdr:entity]){
+                [self closeLoadingView];
+                [DFUITools showText:kJL_TXT("user_connect_edr") onView:self.view delay:2];
+                return;
             }
-            [JL_Tools mainTask:^{
-                NSString *txt = [JL_RunSDK textEntityStatus:status];
-                [wSelf setLoadingText:txt Delay:1.0];
+            
+            [self->bleSDK.mBleMultiple connectEntity:entity Result:^(JL_EntityM_Status status) {
+                if (status == JL_EntityM_StatusPaired) {
+                    //[entity.mCmdManager.mTwsManager cmdHeadsetAdvEnable:NO];
+                }
+                [JL_Tools mainTask:^{
+                    NSString *txt = [JL_RunSDK textEntityStatus:status];
+                    [wSelf setLoadingText:txt Delay:1.0];
+                }];
             }];
         }];
+      
     }
     
     /*--- 已连接 ---*/

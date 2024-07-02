@@ -1,0 +1,600 @@
+3 Directory Browse
+********************
+
+3.1 Function description
+============================
+
+    Browse the SD card or USB flash disk on the device side
+
+3.2 Sample code
+========================
+
+.. code-block:: objective-c
+
+    [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager cmdBrowseMonitorResult:^(NSArray * _Nullable array, JL_BrowseReason reason) {
+    switch (reason) {
+        case JL_BrowseReasonReading:{
+            [wself updateData:array];
+            
+            NSLogEx(@"Reading:%lu",(unsigned long)array.count);
+        }break;
+        case JL_BrowseReasonCommandEnd:{
+            [wself updateData:array];
+            self->reqNum-=10;
+            if (self->reqNum>0) {
+                [wself request:self->reqModel];
+            }
+            NSLogEx(@"End of read command:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+        }break;
+        case JL_BrowseReasonFolderEnd:{
+            [wself updateData:array];
+            
+            if (array.count == 0 && self->reqNum != -1) {
+                if ([self->_delegate respondsToSelector:@selector(dmHandleWithItemModelArray:)]) {
+                    [self->_delegate dmHandleWithItemModelArray:array];
+                }
+            }
+            self->reqNum = -1;
+            NSLogEx(@"Directory Read End:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+        }break;
+        case JL_BrowseReasonBusy:{
+            NSLogEx(@"The device is busy");
+        }break;
+        case JL_BrowseReasonDataFail:{
+            NSLogEx(@"Data read failed");
+        }break;
+        case JL_BrowseReasonPlaySuccess:{
+            [wself updatePlay];
+            self->playItem = NO;
+            NSLogEx(@"Played successfully");
+        }break;
+        case JL_BrowseReasonUnknown:{
+            NSLogEx(@"Unknown error");
+            self->reqNum = -1;
+            self->playItem = NO;
+            [self requestWith:self->reqModel Number:10];
+        }
+        default:
+            break;
+    }
+    }];
+
+3.2.1 Related interfaces
+--------------------------
+
+.. code:: objectivec
+    
+   typedef NS_ENUM(UInt8, JL_FileOperationEnvironmentType) {
+       JL_FileOperationEnvironmentTypeBigFileTransmission      = 0x00, //Large file transfer
+       JL_FileOperationEnvironmentTypeDeleteFile               = 0x01, //Delete File
+       JL_FileOperationEnvironmentTypeFormatting               = 0x02, //format
+       JL_FileOperationEnvironmentTypeFatfsTransmission        = 0x03, //FAT file transfer
+   };
+   typedef NS_ENUM(UInt8, JL_DeleteFileLastType) {
+       JL_DeleteFileLastTypeIsNotLast                  = 0x00, //Not the last file
+       JL_DeleteFileLastTypeIsLast                     = 0x01, //Is the last file
+   };
+   typedef NS_ENUM(UInt8, JL_BrowseReason) {
+       JL_BrowseReasonCommandEnd       = 0,    //Read the file requested by the current command
+       JL_BrowseReasonFolderEnd        = 1,    //Read the files in the current directory
+       JL_BrowseReasonPlaySuccess      = 2,    //Successful on-demand
+       JL_BrowseReasonBusy             = 3,    //Equipment busy
+       JL_BrowseReasonDataFail         = 4,    //Failed to send directory data
+       JL_BrowseReasonReading          = 0x0f, //Reading
+       JL_BrowseReasonUnknown,                 //Unknown reason
+   };
+   typedef NS_ENUM(UInt8, JL_FileContentResult) {
+       JL_FileContentResultStart       = 0x00, //Start transfer
+       JL_FileContentResultReading     = 0x01, //Reading
+       JL_FileContentResultEnd         = 0x02, //End of reading
+       JL_FileContentResultCancel      = 0x03, //Cancel Read
+       JL_FileContentResultFail        = 0x04, //Read failure
+       JL_FileContentResultNull        = 0x05, //file does not exist
+       JL_FileContentResultDataError   = 0x06, //data error
+       JL_FileContentResultCrcFail     = 0x07, //Crc verification failed
+   };
+   typedef NS_ENUM(UInt8, JL_FileDataType) {
+       JL_FileDataTypeDo               = 0,    //Start transferring file data
+       JL_FileDataTypeDone             = 1,    //End transferring file data
+       JL_FileDataTypeDoing            = 2,    //Transferring file data
+       JL_FileDataTypeCancel           = 3,    //Cancel transfer of file data
+       JL_FileDataTypeError            = 4,    //Error transferring file data
+       JL_FileDataTypeUnknown,
+   };
+   typedef NS_ENUM(UInt8, JL_BigFileTransferCode) {
+       JL_BigFileTransferCodeSuccess       = 0x00, //success
+       JL_BigFileTransferCodeFail          = 0x01, //Write failed
+       JL_BigFileTransferCodeOutOfRange    = 0x02, //Data out of range
+       JL_BigFileTransferCodeCrcFail       = 0x03, //Crc verification failed
+       JL_BigFileTransferCodeOutOfMemory   = 0x04, //insufficient memory
+   };
+   typedef NS_ENUM(UInt8, JL_BigFileResult) {
+       JL_BigFileTransferStart         = 0x00, //Start large file data transfer
+       JL_BigFileTransferDownload      = 0x01, //Transfer valid data of large files
+       JL_BigFileTransferEnd           = 0x02, //End large file data transfer
+       JL_BigFileTransferOutOfRange    = 0x03, //Large file transfer data out of range
+       JL_BigFileTransferFail          = 0x04, //Large file transfer failed
+       JL_BigFileCrcError              = 0x05, //Large file verification failed
+       JL_BigFileOutOfMemory           = 0x06, //Insufficient space
+       JL_BigFileTransferCancel        = 0x07, //Cancel transfer
+       JL_BigFileTransferNoResponse    = 0xF1, //The device is not responding
+   };
+
+   typedef void(^JL_FILE_BK)(NSArray* __nullable array,JL_BrowseReason reason);
+   typedef void(^JL_FILE_CONTENT_BK)(JL_FileContentResult result, uint32_t size, NSData* __nullable data, float progress);
+   typedef void(^JL_FILE_DATA_BK)(NSData* __nullable data, NSString* __nullable path, uint16_t size, JL_FileDataType type);
+   typedef void(^JL_BIGFILE_BK)(NSArray* __nullable array);
+   typedef void(^JL_BIGFILE_RT)(JL_BigFileResult result, float progress);
+
+   @interface JL_FileManager : JL_FunctionBaseManager
+
+   - (void)closeTimer;
+
+   #pragma mark ---> Listen to directory data
+   /**
+    @param result Status reply
+    */
+   -(void)cmdBrowseMonitorResult:(JL_FILE_BK __nullable)result;
+
+   #pragma mark ---> Browse Directory
+   /**
+    @param model File Model
+    @param number Number of reads
+    */
+   -(void)cmdBrowseModel:(JLModel_File*)model
+                  Number:(uint8_t)number
+                  Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark ---> Delete files (must be performed asynchronously)
+   /**
+    @param array File Model Array
+    */
+   -(BOOL)cmdDeleteFileModels:(NSArray*)array;
+   /**
+    *  Delete a single JLModel_ File File
+    *  @param model JLModel_File object
+    *  @param last Last file or not
+    *  @param result Delete successful callback
+    */
+   -(void)cmdDeleteFile:(JLModel_File*)model
+                IsLast:(JL_DeleteFileLastType)last
+                Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark device Formatting
+   //@param model device handle
+   -(void)cmdDeviceFormat:(NSString*)handle Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark ---> Clear device music cache records
+   /**
+    @param type Type of card
+    */
+   -(void)cmdCleanCacheType:(JL_CardType)type;
+
+   #pragma mark --->【File transfer firmware -->APP】
+   #pragma mark 1.Listen to file data
+   -(void)cmdFileDataMonitorResult:(JL_FILE_DATA_BK __nullable)result;
+
+   #pragma mark 2.Allow transfer of file data
+   -(void)cmdAllowFileData;
+
+   #pragma mark 3.Refuse to transfer file data
+   -(void)cmdRejectFileData;
+
+   #pragma mark 4.Stop transferring file data
+   -(void)cmdStopFileData;
+
+   #pragma mark --->[File Transfer APP -->Firmware]
+   #pragma mark 5.Request to transfer files to the device
+   -(void)cmdFileDataSize:(uint8_t)size
+                 SavePath:(NSString*)path;
+
+   #pragma mark 6.Push file data to the device
+   -(void)cmdPushFileData:(NSData*)data;
+
+   #pragma mark 【Large file transfer App -->firmware】
+   // @param  path       Large file download file path
+   // @param  fileName   Large file download file name
+   // @param  result     Large file download results
+   -(void)cmdBigFileData:(NSString *)path WithFileName:(NSString *)fileName
+                  Result:(JL_BIGFILE_RT __nullable)result;
+
+   #pragma mark Cancel file transfer
+   -(void)cmdStopBigFileData;
+
+   #pragma mark Notify the firmware to prepare the environment
+   // @param  environment 0: Large file transfer 1: Delete file 2: Format
+   -(void)cmdPreEnvironment:(JL_FileOperationEnvironmentType)environment Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark Delete files by name
+   -(void)cmdFileDeleteWithName:(NSString*)name Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark Set file transfer handle
+   /**
+    *  Large file transfer, set the current transfer handle for crc16
+    */
+   - (void)setCurrentFileHandleType:(JL_FileHandleType)currentFileHandleType;
+   - (JL_FileHandleType)getCurrentFileHandleType;
+
+   #pragma mark ---> Read the file contents of the external card
+   -(void)cmdFileReadContentWithName:(NSString*)name Result:(JL_FILE_CONTENT_BK __nullable)result;
+
+   #pragma mark ---> Read the file content of the external card in cluster number mode
+   - (void)cmdFileReadContentWithFileClus:(uint32_t)fileClus Result:(JL_FILE_CONTENT_BK __nullable)result;
+
+   #pragma mark ---> Cancel reading file contents of external card
+   -(void)cmdFileReadContentCancel;
+
+   @end
+
+
+3.3 Process Description
+==========================
+3.3.1 initialization
+---------------------------
+.. code:: objective-c
+
+    @interface DMusicHandler(){
+        /**
+        Hierarchy
+            {
+            "uuid0": {//Device uuid
+                "card": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ]
+            },
+            "uuid1": {
+                "card1": "value",
+                "usb": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ]
+            },
+            "uuid2": {
+                "card1": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ],
+                "usb": "usbq"
+            }
+            }
+        */
+        NSMutableDictionary *saveDict;
+        NSString *bleUuid;
+        JL_CardType nowType;
+        NSInteger reqNum;
+        JLModel_File *reqModel;
+        BOOL    playItem;
+    }
+    @end
+
+    @implementation DMusicHandler
+
+    static dispatch_once_t onceToken;
+    static DMusicHandler *_dmh;
+
+    +(instancetype)sharedInstance{
+        dispatch_once(&onceToken, ^{
+            _dmh = [[DMusicHandler alloc] init];
+        });
+        return _dmh;
+    }
+
+    +(void)deallocDMusic{
+        onceToken = 0;
+        _dmh = nil;
+    }
+
+    - (instancetype)init
+    {
+        self = [super init];
+        if (self) {
+            saveDict = [NSMutableDictionary new];
+            [self handleFileMonitor];
+            [self addNote];
+            playItem = NO;
+        }
+        return self;
+    }
+
+    #pragma mark ///Processing return array
+    -(void)handleFileMonitor{
+        __weak typeof(self) wself = self;
+        [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mFileManager cmdBrowseMonitorResult:^(NSArray * _Nullable array, JL_BrowseReason reason) {
+            switch (reason) {
+                case JL_BrowseReasonReading:{
+                    [wself updateData:array];
+                
+                    NSLogEx(@"Reading:%lu",(unsigned long)array.count);
+                }break;
+                case JL_BrowseReasonCommandEnd:{
+                    [wself updateData:array];
+                    unsigned long shouldDown = self->reqNum - array.count;
+                    if (shouldDown>0) {
+                        [wself request:self->reqModel];
+                    }else{
+                        self->reqNum = -1;
+                    }
+                    NSLogEx(@"End of read command:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+                }break;
+                case JL_BrowseReasonFolderEnd:{
+                    [wself updateData:array];
+                    if (array.count == 0 && self->reqNum != -1) {
+                        if ([self->_delegate respondsToSelector:@selector(dmHandleWithItemModelArray:)]) {
+                            [self->_delegate dmHandleWithItemModelArray:array];
+                        }
+                    }
+                    self->reqNum = -1;
+                    NSLogEx(@"Directory Read End:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+                }break;
+                case JL_BrowseReasonBusy:{
+                    NSLogEx(@"The device is busy");
+                }break;
+                case JL_BrowseReasonDataFail:{
+                    NSLogEx(@"Data read failed");
+                }break;
+                case JL_BrowseReasonPlaySuccess:{
+                    [wself updatePlay];
+                    self->playItem = NO;
+                    NSLogEx(@"Played successfully");
+                }break;
+                case JL_BrowseReasonUnknown:{
+                    NSLogEx(@"unknown error");
+                    self->reqNum = -1;
+                    self->playItem = NO;
+                    [self requestWith:self->reqModel Number:10];
+                }
+                default:
+                    break;
+            }
+        }];
+    }
+
+    #pragma mark ///Notification processing when updating data
+    -(void)addNote{
+        [JL_Tools add:kJL_BLE_M_ENTITY_DISCONNECTED Action:@selector(bleDisconnectAction:) Own:self];
+        [JLModel_Device observeModelProperty:@"currentClus" Action:@selector(noteCurrentClus:) Own:self];
+        [JLModel_Device observeModelProperty:@"cardArray" Action:@selector(noteCardArray:) Own:self];
+    }
+
+    
+    -(void)bleDisconnectAction:(NSNotification *)note{
+        CBPeripheral *pl = [note object];
+        NSMutableDictionary *dict = saveDict[pl.identifier.UUIDString];
+        [dict removeAllObjects];
+    }
+
+    -(void)noteCardArray:(NSNotification *)note{
+        
+        BOOL isOk = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOk == NO)return;
+        
+        NSDictionary *tmpDict = [note object];
+        NSString *uuid = tmpDict[kJL_MANAGER_KEY_UUID];
+        if (![uuid isEqualToString:[[JL_RunSDK sharedMe] mBleUUID]]) {
+            return;
+        }
+        NSArray *array = tmpDict[kJL_MANAGER_KEY_OBJECT];
+        NSArray *tmpA = @[@(JL_CardTypeUSB),@(JL_CardTypeSD_0),@(JL_CardTypeSD_1),@(JL_CardTypeFLASH),@(JL_CardTypeLineIn)];
+        for (int i  = 0;i<tmpA.count;i++) {
+            if (![array containsObject:tmpA[i]]) {
+                JL_CardType type = [tmpA[i] integerValue];
+                NSMutableDictionary *dict = saveDict[uuid];
+                [dict removeObjectForKey:[self keyByType:type]];
+            }
+        }
+        if ([_delegate respondsToSelector:@selector(dmCardMessageDismiss:)]) {
+            [_delegate dmCardMessageDismiss:array];
+        }
+    }
+
+    -(void)noteCurrentClus:(NSNotification *)note{
+        BOOL isOk = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOk == NO)return;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updatePlay];
+        });
+    }
+
+3.3.2 Interface Statement
+-----------------------------
+
+.. code:: objective-c
+
+    typedef enum : NSUInteger {
+        DM_ERROR_Max_Fold,
+        DM_ERROR_Unknown
+    } DM_ERROR;
+    NS_ASSUME_NONNULL_BEGIN
+    @protocol DMHandlerDelegate <NSObject>
+
+    -(void)dmHandleWithTabTitleArray:(NSArray<JLModel_File *> *)modelA;
+
+    -(void)dmHandleWithItemModelArray:(NSArray<JLModel_File *> *)modelB;
+
+    -(void)dmHandleWithPlayItemOK;
+
+    -(void)dmLoadFailed:(DM_ERROR)err;
+
+    -(void)dmCardMessageDismiss:(NSArray *)nowArray;
+
+    @end
+
+    @interface DMusicHandler : NSObject
+    @property(nonatomic,weak)id<DMHandlerDelegate> delegate;
+    @property(nonatomic,weak)JL_EntityM *nowEntity;
+    +(instancetype)sharedInstance;
+
+    -(void)loadModeData:(JL_CardType)type;
+    /// Update the directory when clicking the corresponding title
+    /// @param model fileModel
+    -(void)tabArraySelect:(JLModel_File *)model;
+
+    /// Request directory list or request the file
+    /// @param model jlfilemodel
+    /// @param number
+    -(void)requestWith:(JLModel_File *)model Number:(NSInteger)n;
+
+    /// Load more data in the same root directory
+    /// @param number
+    -(void)requestModelBy:(NSInteger)num;
+
+
+3.3.3 Interface implementation
+------------------------------------------------------
+
+.. code:: objective-c
+
+    #pragma mark ///Request Data
+
+    -(void)loadModeData:(JL_CardType)type{
+        nowType = type;
+        BOOL result = [self checkCaChe:type];
+        if (!result) {
+            [self firstLoadData];
+        }else{
+            NSMutableArray *arr = [self checkoutArray:type];
+            if ([_delegate respondsToSelector:@selector(dmHandleWithTabTitleArray:)]) {
+                [_delegate dmHandleWithTabTitleArray:arr];
+            }
+            JLModel_File *model = [self lastPathRequest];
+            [self request:model];
+        }
+    }
+    -(void)firstLoadData{
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+        JLModel_File *fileModel = [JLModel_File new];
+        fileModel.fileType   = JL_BrowseTypeFolder;
+        NSMutableArray *mutbA = [NSMutableArray new];
+        NSMutableDictionary *sDict = saveDict[bleUuid];
+        switch (nowType) {
+            case JL_CardTypeUSB:{
+                fileModel.cardType   = JL_CardTypeUSB;
+                fileModel.fileName   = @"USB";
+                fileModel.folderName = @"USB";
+                fileModel.fileHandle = model.handleUSB;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:USB_Card];
+            }break;
+            case JL_CardTypeSD_0:{
+                fileModel.cardType   = JL_CardTypeSD_0;
+                fileModel.fileName   = @"SD Card";
+                fileModel.folderName = @"SD Card";
+                fileModel.fileHandle = model.handleSD_0;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:SD_0_Card];
+            }break;
+            case JL_CardTypeSD_1:{
+                fileModel.cardType   = JL_CardTypeSD_1;
+                fileModel.fileName   = @"SD Card 2";
+                fileModel.folderName = @"SD Card 2";
+                fileModel.fileHandle = model.handleSD_1;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:SD_1_Card];
+            }break;
+            case JL_CardTypeFLASH:{
+                fileModel.cardType   = JL_CardTypeFLASH;
+                fileModel.fileName   = @"FLASH";
+                fileModel.folderName = @"FLASH";
+                fileModel.fileHandle = model.handleFlash;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:FLASH_Card];
+            }break;
+            default:
+                break;
+        }
+        [self requestWith:fileModel Number:20];
+    }
+
+
+    -(void)requestWith:(JLModel_File *)model Number:(NSInteger)n{
+        reqModel = model;
+        if (model.fileType == JL_BrowseTypeFile) {
+            if (playItem == YES) {
+                return;
+            }
+            playItem = YES;
+            JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+            [entity.mCmdManager.mFileManager cmdBrowseModel:model Number:1 Result:nil];
+        }else{
+            if (reqNum>0) {
+                NSLogEx(@"Cancel request%@",model.fileName);
+                return;
+            }
+            reqNum = n;
+            [self addTabArray:model];
+            [self request:model];
+            NSLogEx(@"%@",model.fileName);
+        }
+    }
+
+    -(void)request:(JLModel_File *)model{
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        [entity.mCmdManager.mFileManager cmdBrowseModel:model Number:10 Result:nil];
+    }
+
+    -(void)requestModelBy:(NSInteger)num{
+        JLModel_File *fm = [self lastPathRequest];
+        [self requestWith:fm Number:num];
+    }    
+    /// Update the directory when clicking the corresponding title
+    /// @param model fileModel
+    -(void)tabArraySelect:(JLModel_File *)model{
+        if (reqNum>0) {
+            NSLogEx(@"Cancel request%@",model.fileName);
+            return;
+        }
+        if (playItem == YES) {
+            NSLogEx(@"You need to wait for the playback to succeed before continuing to control");
+            return;
+        }
+        NSMutableArray *array = [self checkoutArray:nowType];
+        NSMutableArray *newArray = [NSMutableArray new];
+        for (int i = 0; i<array.count; i++) {
+            JLModel_File *fm = array[i];
+            [newArray addObject:array[i]];
+            if ([fm.pathData isEqualToData:model.pathData]) {
+                break;
+            }
+            if (model.pathData == nil) {
+                break;
+            }
+        }
+        NSMutableDictionary *dict = saveDict[bleUuid];
+        NSString *key = [self keyByType:nowType];
+        [dict setValue:newArray forKey:key];
+        if ([_delegate respondsToSelector:@selector(dmHandleWithTabTitleArray:)]) {
+            [_delegate dmHandleWithTabTitleArray:newArray];
+        }
+        JLModel_File *backModel = [self lastPathRequest];
+        reqNum = -1;
+        [self requestWith:backModel Number:20];
+    }
+
+    -(BOOL)shouldBeUpdate:(JLModel_File *)model{
+        NSMutableArray *arr = [self checkoutArray:nowType];
+        JLModel_File *item = [arr lastObject];
+        if (item.pathData == nil) {
+            return YES;
+        }
+        if ([item.pathData isEqualToData:model.pathData]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+
+.. note::
+    
+    When using, pay attention to adding the corresponding protocol ` DMHandlerDelegate`
+
+    

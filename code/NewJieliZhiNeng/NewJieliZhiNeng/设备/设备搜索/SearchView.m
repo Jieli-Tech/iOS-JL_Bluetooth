@@ -238,6 +238,16 @@
     
     JL_EntityM *bleEntity = self.foundArray[indexPath.row];
     
+    
+    if (![JL_RunSDK isConnectedEdr:bleEntity]){
+        UIWindow *win = [DFUITools getWindow];
+        if (win){
+            [DFUITools showText:kJL_TXT("user_connect_edr") onView:win delay:2];
+        }
+        return;
+    }
+    
+    
     bleUUID = bleEntity.mUUID;
     [deviceTable reloadData];
     
@@ -256,7 +266,7 @@
     
     NSArray *itemArr = @[@"PRODUCT_LOGO",@"DOUBLE_HEADSET",
                          @"LEFT_DEVICE_CONNECTED",@"RIGHT_DEVICE_CONNECTED",
-                         @"CHARGING_BIN_IDLE"];
+                         @"CHARGING_BIN_IDLE",@"DOUBLE_HEADSET_LOCATION",@"LEFT_DEVICE_LOCATION",@"RIGHT_DEVICE_LOCATION"];
 
     NSLog(@"---> 图片刷新...");
     [bleEntity.mCmdManager cmdRequestDeviceImageVid:vidStr Pid:pidStr
@@ -271,6 +281,7 @@
         NSLog(@"---> 搜索界面，连接设备：%@，Edr：%@",bleEntity.mItem,bleEntity.mEdr);
         
         __weak typeof(self) wSelf = self;
+      
         [self->bleSDK.mBleMultiple connectEntity:bleEntity
                                           Result:^(JL_EntityM_Status status) {
             

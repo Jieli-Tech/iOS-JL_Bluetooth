@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
     MusicModeLoopFolder,
 } DEV_MODE;
 
-@interface ToolViewMusic(){
+@interface ToolViewMusic()<JLDevPlayerCtrlDelegate>{
     
     __weak IBOutlet UIView *subView;
     __weak IBOutlet UIButton *btnMode;
@@ -40,6 +40,7 @@ typedef enum : NSUInteger {
     DEV_MODE            dev_Mode;
     
     JL_RunSDK           *bleSDK;
+    JLDevPlayerCtrl     *devPlayer;
 }
 @end
 
@@ -50,6 +51,8 @@ typedef enum : NSUInteger {
     self = [DFUITools loadNib:@"ToolViewMusic"];
     if (self) {
         bleSDK = [JL_RunSDK sharedMe];
+        devPlayer = [[JLDevPlayerCtrl alloc] init];
+        devPlayer.delegate = self;
         
         float sW = [UIScreen mainScreen].bounds.size.width;
         self.frame = CGRectMake(0, kJL_HeightStatusBar+44, sW, 200);
@@ -131,7 +134,7 @@ typedef enum : NSUInteger {
 -(void)updateFirstUI{
     NSLog(@"----------------------> updateFirstUI");
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         [DFAction timingStop:myTimer];
         [self updatePhoneMusicInfo];
@@ -159,7 +162,7 @@ typedef enum : NSUInteger {
 static BOOL isMusicInfo = YES;
 -(void)chooseDiffMusic{
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         [DFAction timingStop:myTimer];
         DFAudioPlayer *player = [DFAudioPlayer sharedMe];
@@ -264,8 +267,10 @@ static BOOL isMusicInfo = YES;
         /*--- PP Btn ---*/
         if (nowPlayer.mState == DFAudioPlayer_PLAYING) {
             [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
+            
         }else{
             [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
+            
         }
     }
     
@@ -309,7 +314,7 @@ static BOOL isMusicInfo = YES;
 #pragma mark 设备音乐赋值
 -(void)updateDeviceMusicInfo{
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
         
     /*--- 播放模式 ---*/
     UInt8 plcu= model.playMode;
@@ -327,10 +332,12 @@ static BOOL isMusicInfo = YES;
     /*--- 播放 ---*/
     if (play_st == JL_MusicStatusPlay) {
         [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
+        
         [DFAction timingContinue:myTimer];
     }else{
         /*--- 暂停 ---*/
         [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
+        
         [DFAction timingPause:myTimer];
     }
 }
@@ -366,7 +373,7 @@ static BOOL isMusicInfo = YES;
 
 - (IBAction)actionMode:(id)sender {
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         BOOL isEdr = [self isEdrOK];
         if (isEdr == NO) return;
@@ -380,50 +387,10 @@ static BOOL isMusicInfo = YES;
         [self updatePhoneMusicInfo];
     }
     if(model.currentFunc == JL_FunctionCodeMUSIC){
-        UInt8 plcu= model.playMode;
         
-        /*--- 切换【全部循环】 ---*/
-        if (plcu == JL_MusicModeLoopAll) {
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                            Command:JL_FCmdMusicMODE
-                             Extend:JL_MusicModeLoopAll
-                             Result:nil];
-            return;
-        }
-        
-        /*--- 切换【单设备循环】 ---*/
-        if (plcu == JL_MusicModeLoopDevice) {
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                            Command:JL_FCmdMusicMODE
-                             Extend:JL_MusicModeLoopDevice
-                             Result:nil];
-            return;
-        }
-        
-        /*--- 切换【单曲循环】 ---*/
-        if (plcu == JL_MusicModeLoopOne) {
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                            Command:JL_FCmdMusicMODE
-                             Extend:JL_MusicModeLoopOne
-                             Result:nil];
-            return;
-        }
-        /*--- 切换【单设备随机】 ---*/
-        if (plcu == JL_MusicModeRandomDevice) {
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                            Command:JL_FCmdMusicMODE
-                             Extend:JL_MusicModeRandomDevice
-                             Result:nil];
-            return;
-        }
-        /*--- 切换【文件夹循环】 ---*/
-        if (plcu == JL_MusicModeLoopFolder) {
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                            Command:JL_FCmdMusicMODE
-                             Extend:JL_MusicModeLoopFolder
-                             Result:nil];
-            return;
-        }
+        [devPlayer cmdPlayerCtrl:0x04 Second:0 Manager:bleSDK.mBleEntityM.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+            
+        }];
     }
 }
 
@@ -450,7 +417,7 @@ static BOOL isMusicInfo = YES;
     /*--- 关闭网络电台 ---*/
     [[NetworkPlayer sharedMe] didStop];
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         BOOL isEdr = [self isEdrOK];
         if (isEdr == NO) return;
@@ -470,13 +437,14 @@ static BOOL isMusicInfo = YES;
             isWaitCutSong = YES;
             [entity.mCmdManager.mChargingBinManager cmdID3_Before];
         }
+
     }
     if(model.currentFunc == JL_FunctionCodeMUSIC){
-        [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                        Command:JL_FCmdMusicPREV
-                         Extend:0x00
-                         Result:nil];
+        [devPlayer cmdPlayerCtrl:JL_FCmdMusicPREV Second:0 Manager:entity.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+            
+        }];
     }
+
 }
 
 
@@ -486,7 +454,8 @@ static BOOL isMusicInfo = YES;
     NSString *addr = info[@"ADDRESS"];
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    if (![addr isEqualToString:entity.mEdr]) {
+    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    if (![addr isEqualToString:model.btAddr]) {
         UIWindow *win = [DFUITools getWindow];
         [DFUITools showText:kJL_TXT("connect_match_edr") onView:win delay:1.0];
         return NO;
@@ -503,7 +472,7 @@ static BOOL isWaitCutSong = NO;
     [[NetworkPlayer sharedMe] didStop];
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
     
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsTFType:NO];
         BOOL isEdr = [self isEdrOK];
@@ -559,35 +528,30 @@ static BOOL isWaitCutSong = NO;
                 }
             }
         }else{
-            /*--- 提前更新ID3 PP按钮图标 ---*/
-            if (model.ID3_Status == 1) { //播放
-                [entity.mCmdManager.mChargingBinManager setID3_Status:1];
-            }else{ //暂停
-                [entity.mCmdManager.mChargingBinManager setID3_Status:0];
-            }
+          
             [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsID3_PLAY:YES];
-
+//            /*--- 提前更新ID3 PP按钮图标 ---*/
+//            if (model.ID3_Status == 1) { //播放
+//                [entity.mCmdManager.mChargingBinManager setID3_Status:0];
+//            }else{ //暂停
+//                [entity.mCmdManager.mChargingBinManager setID3_Status:1];
+//            }
+            
             [entity.mCmdManager.mChargingBinManager cmdID3_PP];
         }
+        
     }
     if(model.currentFunc == JL_FunctionCodeMUSIC){
         self->btnPP.userInteractionEnabled = YES;
-    
-        UInt8 pl = model.playStatus;
-        if (pl == JL_MusicStatusPlay) {
-            //[DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                                    Command:JL_FCmdMusicPP
-                                     Extend:JL_MusicStatusPause
-                                     Result:nil];
-        }else{
-            //[DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
-            [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                                    Command:JL_FCmdMusicPP
-                                     Extend:JL_MusicStatusPlay
-                                     Result:nil];
-        }
+        [devPlayer cmdPlayerCtrl:JL_FCmdMusicPP Second:0 Manager:entity.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+            
+        }];
+       
     }
+    
+    
+
+    
 }
 -(void)noteNetPlayerPause:(NSNotification*)note{
     [self updatePhoneMusicInfo];
@@ -603,7 +567,7 @@ static BOOL isWaitCutSong = NO;
     /*--- 关闭网络电台 ---*/
     [[NetworkPlayer sharedMe] didStop];
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         BOOL isEdr = [self isEdrOK];
         if (isEdr == NO) return;
@@ -624,13 +588,14 @@ static BOOL isWaitCutSong = NO;
             isWaitCutSong = YES;
             [entity.mCmdManager.mChargingBinManager cmdID3_Next];
         }
+        
     }
     if(model.currentFunc == JL_FunctionCodeMUSIC){
-        [entity.mCmdManager cmdFunction:JL_FunctionCodeMUSIC
-                                Command:JL_FCmdMusicNEXT
-                                 Extend:0x00
-                                 Result:nil];
+        [devPlayer cmdPlayerCtrl:JL_FCmdMusicNEXT Second:0 Manager:entity.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        }];
     }
+   
+    
 }
 - (IBAction)actionList:(id)sender {
     if ([_delegate respondsToSelector:@selector(enterList:)]) {
@@ -642,7 +607,7 @@ static NSDate *progress_date = nil;
 - (IBAction)actionSongDown:(UISlider *)sender {
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeMUSIC){
         _mProgressView.userInteractionEnabled = YES;
     }else{
@@ -670,7 +635,7 @@ static NSDate *progress_date = nil;
 //    progress_date = [NSDate new];
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         BOOL isID3_ST = [[JLCacheBox cacheUuid:bleSDK.mBleUUID] isID3_ST];
 
@@ -704,12 +669,8 @@ static NSDate *progress_date = nil;
             [entity.mCmdManager cmdGetSystemInfoResult_1];
             
             if(pg-current<0){
-                [entity.mCmdManager.mMusicControlManager cmdFastPlay:JL_FCmdMusicFastBack
-                                         Second:(uint16_t)fabsf((pg * f_tott - f_curt))
-                                         Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data)  {
-                    //progress_sec = (int)(f_tott*pg);
-                    //NSLog(@"---------------> To Progress Second: %d",progress_sec);
 
+                [self->devPlayer cmdPlayerCtrl:0x06 Second:(uint16_t)fabsf((pg * f_tott - f_curt)) Manager:entity.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
                     if (sv_tott > 60*60) {
                         [JL_Tools delay:0.6 Task:^{
                             NSLog(@"----> delay get music progess 0");
@@ -719,14 +680,10 @@ static NSDate *progress_date = nil;
                         [self getDeviceMusicProgress];
                     }
                 }];
+                
             }
             if(pg-current>0){
-                [entity.mCmdManager.mMusicControlManager cmdFastPlay:JL_FCmdMusicFastPlay
-                                         Second:(uint16_t)(pg * f_tott - f_curt)
-                                                              Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
-                    //progress_sec = (int)(f_tott*pg);
-                    //NSLog(@"---------------> To Progress Second: %d",progress_sec);
-
+                [self->devPlayer cmdPlayerCtrl:0x07 Second:(uint16_t)(pg * f_tott - f_curt) Manager:entity.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
                     if (sv_tott > 60*60) {
                         [JL_Tools delay:0.6 Task:^{
                             NSLog(@"----> delay get music progess 1");
@@ -771,7 +728,7 @@ static BOOL isProgress = YES;
     
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
 
     uint32_t tott = 0; uint32_t curt = 0;
     if (n_tott) tott = n_tott;
@@ -818,7 +775,7 @@ static NSTimer *myTimer = nil;
     
     float f_tott = (float)sv_tott;
     float f_curt = (float)sv_curt;
-    //JLDeviceModel *devel = [JL_Manager outputDeviceModel];
+    //JLDeviceModel *devel = [JL_Manager getDeviceModel];
     //if(devel.currentFunc == JL_FunctionCodeMUSIC){
         _mProgressView.value = (f_curt/f_tott);
     //}
@@ -829,7 +786,7 @@ static NSTimer *myTimer = nil;
 -(void)updateDeviceState{
 
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     if(model.currentFunc == JL_FunctionCodeBT){
         BOOL isID3_ST = [[JLCacheBox cacheUuid:bleSDK.mBleUUID] isID3_ST];
         if (isID3_ST == NO) {
@@ -861,7 +818,7 @@ static NSTimer *myTimer = nil;
     if (isOk == NO) return;
     
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *devel = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *devel = [entity.mCmdManager getDeviceModel];
     NSArray *cardArray = devel.cardArray;
     
     if (cardArray.count == 0) {
@@ -882,7 +839,7 @@ static NSTimer *myTimer = nil;
     
     /*--- ID3 在BT模式生效---*/
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *deviceModel = [entity.mCmdManager getDeviceModel];
     uint8_t fun_current = deviceModel.currentFunc;
     if (fun_current != JL_FunctionCodeBT) return;
 
@@ -910,9 +867,20 @@ static NSTimer *myTimer = nil;
     double a_time = ((double)deviceModel.ID3_Time);
     double c_time = ((double)deviceModel.ID3_CurrentTime)/1000.0;
     
-    _mTimeStart.text = [DFTime stringFromSec:(uint32_t)c_time];
-    _mTimeEnd.text = [DFTime stringFromSec:(uint32_t)a_time];
-    _mProgressView.value = c_time/a_time;
+    
+    if ([[AVAudioSession sharedInstance] isOtherAudioPlaying] || [[AVAudioSession sharedInstance] secondaryAudioShouldBeSilencedHint]){
+        [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
+        _mTimeStart.text = [DFTime stringFromSec:(uint32_t)c_time];
+        _mTimeEnd.text = [DFTime stringFromSec:(uint32_t)a_time];
+        _mProgressView.value = c_time/a_time;
+    }else{
+        [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
+        
+    }
+    
+
+    
+    
 }
 
 
@@ -924,7 +892,7 @@ static NSTimer *myTimer = nil;
     
     /*--- ID3 在BT模式生效---*/
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *deviceModel = [entity.mCmdManager getDeviceModel];
     uint8_t fun_current = deviceModel.currentFunc;
     if (fun_current != JL_FunctionCodeBT) return;
     
@@ -935,6 +903,7 @@ static NSTimer *myTimer = nil;
             //[[JLCacheBox cacheUuid:bleUUID] setIsID3_ST:YES];
             [[JLCacheBox cacheUuid:self->bleSDK.mBleUUID] setIsID3_PUSH:YES];
             [DFUITools setButton:self->btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
+            
             NSLog(@"UI开启ID3信息。88");
         }];
     }
@@ -946,10 +915,11 @@ static NSTimer *myTimer = nil;
     if (isID3_push == NO) return;
 
     
-    //NSLog(@"playStatus:%d",model.ID3_Status);
+    NSLog(@"playStatus:%d",deviceModel.ID3_Status);
     if (deviceModel.ID3_Status == 1) { //播放
         NSLog(@"mul_icon_play_nor......3");
         [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
+        
     }else{
         NSLog(@"mul_icon_pause_nor......3");
         [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
@@ -965,7 +935,12 @@ static NSTimer *myTimer = nil;
             (str_1 == 0 || str_1 == 1) &&
             (str_2 == 0 || str_2 == 1) &&
             time_0 == 0) {
+            _mSonyName_0.hidden = YES;
             _mSonyName_1.text = kJL_TXT("none_id3_music_data");
+            _mSonyName_2.hidden = YES;
+        }else{
+            _mSonyName_0.hidden = NO;
+            _mSonyName_2.hidden = NO;
         }
     }
 }
@@ -976,7 +951,7 @@ static NSTimer *myTimer = nil;
     
     /*--- ID3 在BT模式生效---*/
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *deviceModel = [entity.mCmdManager getDeviceModel];
     uint8_t fun_current = deviceModel.currentFunc;
     if (fun_current != JL_FunctionCodeBT) return;
     
@@ -990,6 +965,7 @@ static NSTimer *myTimer = nil;
             [[JLCacheBox cacheUuid:self->bleSDK.mBleUUID] setIsID3_PUSH:YES];
             NSLog(@"mul_icon_pause_nor......3");
             [DFUITools setButton:self->btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
+            
             NSLog(@"UI开启ID3信息。99");
         }];
     }
@@ -998,6 +974,7 @@ static NSTimer *myTimer = nil;
         isWaitCutSong = NO;
         NSLog(@"mul_icon_play_nor......4");
         [DFUITools setButton:self->btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
+        
     }
 }
 
@@ -1008,7 +985,7 @@ static NSTimer *myTimer = nil;
     [self showID3UI:YES];
 
     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
-    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    JLModel_Device *model = [entity.mCmdManager getDeviceModel];
     NSString *name_0 = [NSString stringWithFormat:@"%@",model.ID3_Title];
     NSString *name_1 = [NSString stringWithFormat:@"%@",model.ID3_Artist];
     NSString *name_2 = [NSString stringWithFormat:@"%@",model.ID3_AlBum];
@@ -1024,13 +1001,7 @@ static NSTimer *myTimer = nil;
     _mTimeEnd.text = [DFTime stringFromSec:(uint32_t)a_time];
     _mProgressView.value = c_time/a_time;
     
-    if (model.ID3_Status == 1) { //播放
-        NSLog(@"mul_icon_pause_nor......2"); //暂停
-        [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_pause_nor"];
-    }else{
-        NSLog(@"mul_icon_play_nor......2");
-        [DFUITools setButton:btnPP Image:@"Theme.bundle/mul_icon_play_nor"];
-    }
+   
 }
 
 
@@ -1055,7 +1026,7 @@ static NSTimer *myTimer = nil;
         NSLog(@"中断正在播放的手机音乐.");
         NSLog(@"UI开启ID3信息。77");
         JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
-        JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+        JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager getDeviceModel];
         if(model.mCallType == JL_CALLType_OFF){
             [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsID3_PUSH:YES];
             [bleSDK.mBleEntityM.mCmdManager.mChargingBinManager cmdID3_PushEnable:YES];
@@ -1119,6 +1090,12 @@ static NSTimer *myTimer = nil;
     if (bleSDK.mBleEntityM) {
         NSLog(@"App Active reload..");
         [self chooseDiffMusic];
+        if ([[AVAudioSession sharedInstance] isOtherAudioPlaying] || [[AVAudioSession sharedInstance] secondaryAudioShouldBeSilencedHint]){
+            [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsID3_ST:YES];
+            [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsID3_PLAY:YES];
+            [[JLCacheBox cacheUuid:bleSDK.mBleUUID] setIsID3_PUSH:YES];
+            [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mChargingBinManager cmdID3_PushEnable:YES];
+        }
     }
 }
 
@@ -1142,7 +1119,7 @@ static NSTimer *myTimer = nil;
     }
     
     if (bleSDK.mBleEntityM) {
-        JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+        JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager getDeviceModel];
         if (model.currentFunc == JL_FunctionCodeMUSIC) {
             [bleSDK.mBleEntityM.mCmdManager cmdGetSystemInfo:JL_FunctionCodeMUSIC
                                                       Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
@@ -1212,9 +1189,11 @@ static NSTimer *myTimer = nil;
     [JL_Tools add:kJL_MANAGER_ID3_Title Action:@selector(updateID3MusicPuase:) Own:self];
     [JL_Tools add:kJL_MANAGER_ID3_Artist Action:@selector(updateID3MusicPuase:) Own:self];
     [JL_Tools add:kJL_MANAGER_ID3_Album Action:@selector(updateID3MusicPuase:) Own:self];
+    
+    [JL_Tools add:kJL_MANAGER_ID3_PlayPush Action:@selector(updateID3MusicStatus:) Own:self];
+    [JL_Tools add:kJL_MANAGER_ID3_Current Action:@selector(updateID3MusicInfo:) Own:self];
 
-    [JLModel_Device observeModelProperty:@"ID3_CurrentTime" Action:@selector(updateID3MusicInfo:) Own:self];
-    [JLModel_Device observeModelProperty:@"ID3_Status" Action:@selector(updateID3MusicStatus:) Own:self];
+
     [JLModel_Device observeModelProperty:@"cardArray" Action:@selector(noteCardArray:) Own:self];
 
     
@@ -1222,11 +1201,31 @@ static NSTimer *myTimer = nil;
     [JL_Tools add:kUI_JL_CARD_MUSIC_INFO Action:@selector(noteFirstUpdateCardMusicInfo:) Own:self];
     
     [JL_Tools add:kJL_BLE_M_EDR_CHANGE Action:@selector(noteEdrChange:) Own:self];
+    
+ 
+    
 }
+
+
+
 
 
 -(void)dealloc{
     [JL_Tools remove:nil Own:self];
+}
+
+//MARK: - handle device player status{
+
+-(void)jlDevPlayerCtrl:(JLDevPlayerCtrl *)ctrl playStatus:(uint8_t)status currentCard:(uint8_t)card currentTime:(uint32_t)time tolalTime:(uint32_t)total{
+    [self updateDeviceMusicInfo];
+}
+
+- (void)jlDevPlayerCtrl:(JLDevPlayerCtrl *)ctrl playMode:(uint8_t)playMode{
+    [self updateDeviceMusicInfo];
+}
+
+- (void)jlDevPlayerCtrl:(nonnull JLDevPlayerCtrl *)ctrl fileName:(nonnull NSString *)name currentClus:(uint32_t)clus {
+    [self updateDeviceMusicInfo];
 }
 
 @end

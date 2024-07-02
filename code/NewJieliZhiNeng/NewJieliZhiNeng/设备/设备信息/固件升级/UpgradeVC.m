@@ -21,11 +21,11 @@
 
 #ifdef DEBUG
 
-#define LT 0
+#define LT 1
 
 #else
 
-#define LT 0
+#define LT 1
 
 #endif
 

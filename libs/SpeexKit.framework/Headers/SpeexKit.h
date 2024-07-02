@@ -16,5 +16,5 @@ FOUNDATION_EXPORT const unsigned char SpeexKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SpeexKit/PublicHeader.h>
 
-#import <SpeexKit/SpeexUnit.h>
+
 #import <SpeexKit/OpusUnit.h>

@@ -61,7 +61,9 @@
         
         [mSliderView outputEqArray:^(NSArray * _Nonnull eqArray) {
             NSLog(@"Mic EQ Change ---> %@",eqArray);
-            [self->bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKaraokeMicEQ:eqArray];
+            [self->bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKaraoke:self->bleSDK.mBleEntityM.mCmdManager micEQ:eqArray result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+                
+            }];
         } ChangeUI:nil];
         
         
@@ -106,7 +108,12 @@
     if (newEqArr.count > 0) eqArr = newEqArr;
     
     [mSliderView setSliderEqArray:eqArr EqFrequecyArray:defaultArr EqType:JL_EQTypeMutable];
-    [self->bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKaraokeMicEQ:eqArr];
+    
+    JL_ManagerM *manager = [bleSDK.mBleEntityM mCmdManager];
+    JL_SoundCardManager *sc = [bleSDK.mBleEntityM.mCmdManager mSoundCardManager];
+    [sc cmdSetKaraoke:manager micEQ:eqArr result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+    }];
 }
 
 -(void)noteKaraokeEQ:(NSNotification*)note{

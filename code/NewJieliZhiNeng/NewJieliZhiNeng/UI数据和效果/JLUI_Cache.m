@@ -133,6 +133,21 @@
         [self setChargingBinData:cabinDict[@"IMG"]];
         [self saveProductImage:cabinDict[@"IMG"] UUID:uuid Name:@"CHARGING_BIN_IDLE"];
     }
+    
+    NSDictionary *doubleHeadsetLocationDict = dict[@"DOUBLE_HEADSET_LOCATION"];
+    if (doubleHeadsetLocationDict) {
+        [self saveProductImage:doubleHeadsetLocationDict[@"IMG"] UUID:uuid Name:@"DOUBLE_HEADSET_LOCATION"];
+    }
+    
+    NSDictionary *leftDeviceLocationLocationDict = dict[@"LEFT_DEVICE_LOCATION"];
+    if (leftDeviceLocationLocationDict) {
+        [self saveProductImage:leftDeviceLocationLocationDict[@"IMG"] UUID:uuid Name:@"LEFT_DEVICE_LOCATION"];
+    }
+    
+    NSDictionary *rightDeviceLocationDict = dict[@"RIGHT_DEVICE_LOCATION"];
+    if (rightDeviceLocationDict) {
+        [self saveProductImage:rightDeviceLocationDict[@"IMG"] UUID:uuid Name:@"RIGHT_DEVICE_LOCATION"];
+    }
 }
 
 -(void)saveProductImage:(NSData*)data UUID:(NSString*)uuid Name:(NSString*)name{

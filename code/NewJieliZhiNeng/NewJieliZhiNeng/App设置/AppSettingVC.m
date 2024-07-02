@@ -35,6 +35,7 @@
     
     UILabel *languageLab1;
     UILabel *languageLab2;
+    
 }
 
 @end
@@ -44,6 +45,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[LanguageCls share] add:self];
+    
     [self addNote];
     [self initUI];
 }
@@ -225,8 +227,8 @@
 
 #pragma mark 进入设备使用说明界面
 -(void)productInstructionsClick{
-    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
     
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
     if(!bleSDK.mBleEntityM){
         [DFUITools showText:kJL_TXT("first_connect_device") onView:self.view delay:1.0];
         return;
@@ -251,6 +253,7 @@
 -(void)dealloc{
     [JL_Tools remove:nil Own:self];
 }
+
 
 
 -(void)setlanguage{
@@ -278,5 +281,17 @@
     productInstructionsLabel.attributedText = productInstructionsStr;
     [self setlanguage];
 }
+
+//MARK: - 测试代码
+-(void)testData{
+    [JLWearable sharedInstance];
+    NSMutableData *targetData = [NSMutableData new];
+    uint8_t head[] = {0x80,0xA2,0x00,0x0B,0x05,0x00,0x01,0x00,0x00,0x05,0x00,0x07,0x48,0x43,0x49};
+    [targetData appendBytes:head length:15];
+    JL_PKG *pkg = [JL_RCSP rcspAnalysisData:targetData];
+    NSDictionary *dict = @{@"pkg":pkg,@"entity":[[JL_RunSDK sharedMe] mBleEntityM]};
+    [JL_Tools post:JL_RECIVED_DATA Object:dict];
+}
+
 
 @end

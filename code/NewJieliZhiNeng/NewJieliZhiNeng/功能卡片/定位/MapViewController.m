@@ -23,6 +23,7 @@
 #import "MapLocationRequest.h"
 
 #import "NoNetView.h"
+JL_RunSDK *bleSDK;
 
 @interface MapViewController ()<MAMapViewDelegate,AMapSearchDelegate,AMapLocationManagerDelegate,VoiceTipsDelegate>{
     __weak IBOutlet UIView *centerView;
@@ -79,6 +80,10 @@
     
     JL_EntityM *entity;
     BOOL soundStatus; //开启或者关闭铃声的状态
+    
+    JL_RunSDK *bleSDK;
+    NSString *vidStr;
+    NSString *pidStr;
 }
 @end
 
@@ -94,6 +99,25 @@ static CTCallCenter *callCenter = nil;
     [self initWithUI];
     [self initBottomViews];
     [self initWithData];
+    
+    bleSDK = [JL_RunSDK sharedMe];
+    NSString *aVid = self->bleSDK.mBleEntityM.mVID;
+    NSString *aPid = self->bleSDK.mBleEntityM.mPID;
+
+    if (aVid.length     == 0 ||
+        aPid.length     == 0){
+        return;}
+    
+    NSNumber *vidNumber = [NSNumber numberWithLong:strtoul(aVid.UTF8String, 0, 16)];
+    vidStr = [vidNumber stringValue];
+    
+    NSNumber *pidNumber = [NSNumber numberWithLong:strtoul(aPid.UTF8String, 0, 16)];
+    pidStr = [pidNumber stringValue];
+    
+    NSLog(@"vidStr:%@",vidStr);
+    NSLog(@"pidStr:%@",pidStr);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFindStatus:) name:kJL_MANAGER_FIND_DEVICE_STATUS object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -105,6 +129,60 @@ static CTCallCenter *callCenter = nil;
     
     [self findDevice];
     [self showSoundUI];
+    
+    JL_TwsManager *tws = bleSDK.mBleEntityM.mCmdManager.mTwsManager;
+    
+    JL_FindDeviceManager *find = bleSDK.mBleEntityM.mCmdManager.mFindDeviceManager;
+    
+    if (tws.dragWithMore){
+        [find cmdFindDeviceCheckStatus:^(JL_CMDStatus status, JLFindDeviceOperation * _Nullable model) {
+            [self handleUpdate:model];
+        }];
+    }
+}
+
+-(void)handleFindStatus:(NSNotification *)note{
+    NSDictionary *dict = note.object;
+    JLFindDeviceOperation *model = dict[kJL_MANAGER_KEY_OBJECT];
+    [self handleUpdate:model];
+}
+
+-(void)handleUpdate:(JLFindDeviceOperation *)model{
+    if (self.deviceObjc.type == JL_DeviceTypeTWS){
+        if (model){
+            if(model.playWay == 3){
+                type = -1;
+            }
+            if (model.playWay == 0){
+                [playWayArray setArray:@[@(1),@(2)]];
+                type = 0;
+            }
+            if (model.playWay == 2){
+                [playWayArray setArray:@[@(2)]];
+                type = 2;
+            }
+            if (model.playWay == 1){
+                [playWayArray setArray:@[@(1)]];
+                type = 1;
+            }
+            [self handleBottomViewUI:playWayArray];
+            
+            if (model.sound == 0x00){
+                
+                bottomVoicesRightView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+                rightLabel.textColor = [UIColor colorWithRed:36/255.0 green:36/255.0 blue:36/255.0 alpha:1.0];
+                playSoundRightLabel.hidden = NO;
+                playSoundRightLabel.textColor = kColor_0000;
+                rightVolImv.hidden = YES;
+                
+                bottomVoicesLeftView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+                leftLabel.textColor = [UIColor colorWithRed:36/255.0 green:36/255.0 blue:36/255.0 alpha:1.0];
+                playSoundLeftLabel.hidden = NO;
+                playSoundLeftLabel.textColor = kColor_0000;
+                leftVolImv.hidden = YES;
+            }
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -260,7 +338,7 @@ static CTCallCenter *callCenter = nil;
                         }
                         
                         [[SqliteManager sharedInstance] updateLastTime:[NSDate new] ForUUID:uuid];
-                        if(![self->locationLab.text isEqualToString:@"locating"]){
+                        if(![self->locationLab.text isEqualToString:kJL_TXT("locating")]){
                             [[SqliteManager sharedInstance] updateLastAddress:self->locationLab.text ForUUID:uuid];
                         }
                         
@@ -998,6 +1076,7 @@ static CTCallCenter *callCenter = nil;
         rightLabel.textColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
         playSoundRightLabel.hidden = YES;
         rightVolImv.hidden = NO;
+        
     }
     if(type == 1 && self->entity.mPower_L>0){ //左耳播放
         if(playSoundLeftLabel.hidden == NO){
@@ -1016,6 +1095,9 @@ static CTCallCenter *callCenter = nil;
         }
     }
 }
+
+
+
 #pragma mark 显示播放铃声的UI
 -(void)showPlaySoundUI{
     NSSet *set = [NSSet setWithArray:playWayArray];//arr为需要去除重复的数组
@@ -1294,7 +1376,11 @@ static CTCallCenter *callCenter = nil;
                     if ([dict[@"lat"] isEqual:userLocation[@"lat"]] && [dict[@"long"] isEqual:userLocation[@"long"]]) {
                         DeviceObjc *objc = [[SqliteManager sharedInstance] checkoutByUuid:key];
                         if (objc.type == JL_DeviceTypeTWS) {//1为耳机
-                            annotationView.image = [UIImage imageNamed:@"Theme.bundle/search_my_earphone"];
+                            if([vidStr isEqualToString:@"32"] && [pidStr isEqualToString:@"158"]){
+                                annotationView.image = [UIImage imageNamed:@"search_my_earphone2"];
+                            }else{
+                                annotationView.image = [UIImage imageNamed:@"Theme.bundle/search_my_earphone"];
+                            }
                         }
                     }
                 }
@@ -1307,14 +1393,22 @@ static CTCallCenter *callCenter = nil;
                     NSDictionary *dict = pointLeftDict[key];
                     if ([dict[@"lat"] isEqual:userLocation[@"lat"]] && [dict[@"long"] isEqual:userLocation[@"long"]]) {
                         int index = (int)[annotations indexOfObject:annotation];
-                        annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        if([vidStr isEqualToString:@"32"] && [pidStr isEqualToString:@"158"]){
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"searcch_my_earphone_%d",index]];
+                        }else{
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        }
                     }
                 }
                 for (NSString *key in pointRightDict) {
                     NSDictionary *dict = pointRightDict[key];
                     if ([dict[@"lat"] isEqual:userLocation[@"lat"]] && [dict[@"long"] isEqual:userLocation[@"long"]]) {
                         int index = (int)[annotations indexOfObject:annotation];
-                        annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        if([vidStr isEqualToString:@"32"] && [pidStr isEqualToString:@"158"]){
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"searcch_my_earphone_%d",index]];
+                        }else{
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        }
                     }
                 }
                 annotationView.frame = CGRectMake(-27, -27, 54, 54);
@@ -1326,14 +1420,22 @@ static CTCallCenter *callCenter = nil;
                     NSDictionary *dict = pointLeftDict[key];
                     if ([dict[@"lat"] isEqual:userLocation[@"lat"]] && [dict[@"long"] isEqual:userLocation[@"long"]]) {
                         int index = (int)[annotations indexOfObject:annotation];
-                        annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        if([vidStr isEqualToString:@"32"] && [pidStr isEqualToString:@"158"]){
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"searcch_my_earphone_%d",index]];
+                        }else{
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        }
                     }
                 }
                 for (NSString *key in pointRightDict) {
                     NSDictionary *dict = pointRightDict[key];
                     if ([dict[@"lat"] isEqual:userLocation[@"lat"]] && [dict[@"long"] isEqual:userLocation[@"long"]]) {
                         int index = (int)[annotations indexOfObject:annotation];
-                        annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        if([vidStr isEqualToString:@"32"] && [pidStr isEqualToString:@"158"]){
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"searcch_my_earphone_%d",index]];
+                        }else{
+                            annotationView.image = [UIImage imageNamed:[NSString stringWithFormat:@"Theme.bundle/searcch__earphone_%d",index]];
+                        }
                     }
                 }
                 annotationView.frame = CGRectMake(-27, -27, 54, 54);
@@ -1498,7 +1600,8 @@ static CTCallCenter *callCenter = nil;
         
         UIImageView *leftImv = [[UIImageView alloc] init];
         leftImv.frame = CGRectMake(bottomVoicesLeftView.frame.size.width-15-45,8,46,87);
-        leftImv.image =  [UIImage imageNamed:@"Theme.bundle/img_earphone_left"];
+        //leftImv.image =  [UIImage imageNamed:@"Theme.bundle/img_earphone_left"];
+        [self setImageView:leftImv DeviceUuid:self.deviceObjc.uuid Image:@"LEFT_DEVICE_CONNECTED" Default:@"product_img_earphone_02"];
         leftImv.contentMode = UIViewContentModeScaleToFill;
         [bottomVoicesLeftView addSubview:leftImv];
         
@@ -1532,7 +1635,8 @@ static CTCallCenter *callCenter = nil;
         
         UIImageView *rightImv = [[UIImageView alloc] init];
         rightImv.frame = CGRectMake(bottomVoicesRightView.frame.size.width-15-45,8,46,87);
-        rightImv.image =  [UIImage imageNamed:@"Theme.bundle/img_earphone_right"];
+        //rightImv.image =  [UIImage imageNamed:@"Theme.bundle/img_earphone_right"];
+        [self setImageView:rightImv DeviceUuid:self.deviceObjc.uuid Image:@"RIGHT_DEVICE_CONNECTED" Default:@"product_img_earphone_01"];
         rightImv.contentMode = UIViewContentModeScaleToFill;
         [bottomVoicesRightView addSubview:rightImv];
         
@@ -1665,5 +1769,30 @@ static CTCallCenter *callCenter = nil;
         [playWayArray removeObject:@(2)];
     }
 }
+
+-(void)setImageView:(UIImageView*)imageView
+         DeviceUuid:(NSString*)uuid
+              Image:(NSString*)image
+            Default:(NSString*)def{
+    NSData *imgData = [self getEarphoneImageUUID:uuid Name:image];
+    if(imgData == nil){
+        NSString *txt = [NSString stringWithFormat:@"Theme.bundle/%@",def];
+        imageView.image = [UIImage imageNamed:txt];
+    }else{
+        imageView.image = [UIImage imageWithData:imgData];
+    }
+}
+
+-(NSData *)getEarphoneImageUUID:(NSString*)uuid Name:(NSString*)name{
+    NSString *imageName = [NSString stringWithFormat:@"%@_%@",name,uuid];
+    NSString *path = [JL_Tools findPath:NSLibraryDirectory
+                             MiddlePath:@"" File:imageName];
+    NSData *data = nil;
+    if (path) {
+        data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:nil];
+    }
+    return data;
+}
+
 
 @end

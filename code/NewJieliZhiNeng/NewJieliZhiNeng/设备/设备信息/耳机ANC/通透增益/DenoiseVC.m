@@ -48,6 +48,7 @@ static const int ec_max = 200;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addNote];
     [self initUI];
 }
 
@@ -299,5 +300,50 @@ static const int ec_max = 200;
 -(void)didSelectBtnAction:(UIButton *)btn WithText:(NSString *)text{
     
 }
+
+//MARK: - create listen
+-(void)addNote{
+    [JLModel_Device observeModelProperty:@"mAncModeArray"
+                                  Action:@selector(noAncModelArray:)
+                                    Own:self];
+}
+
+-(void)noAncModelArray:(NSNotification *)note{
+    BOOL isOk = [JL_RunSDK isCurrentDeviceCmd:note];
+    if (isOk == NO) return;
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    JLModel_Device *deviceModel = [entity.mCmdManager outputDeviceModel];
+    for (JLModel_ANC *model in deviceModel.mAncModeArray) {
+        if (model.mAncMode == self.model_ANC.mAncMode){
+
+            self.model_ANC = model;
+            
+            pick_0.maxValue = self.model_ANC.mAncMax_L;
+            int currentLeft = self.model_ANC.mAncCurrent_L;
+            
+            if((currentLeft == self.model_ANC.mAncMax_L) && (currentLeft%ec_max<ec_max)){
+                currentLeft = (currentLeft/ec_max)+1;
+            }else{
+                currentLeft = currentLeft/ec_max;
+            }
+            [pick_0 setTongTouPoint:currentLeft];
+            
+            
+            int currentRight = self.model_ANC.mAncCurrent_R;
+            pick_1.maxValue = self.model_ANC.mAncMax_R;
+            
+            if((currentRight == self.model_ANC.mAncMax_R) && (currentRight%ec_max<ec_max)){
+                currentRight = (currentRight/ec_max)+1;
+            }else{
+                currentRight = currentRight/ec_max;
+            }
+            [pick_1 setTongTouPoint:currentRight];
+            
+            
+        }
+    }
+    
+}
+
 
 @end

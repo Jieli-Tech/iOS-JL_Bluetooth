@@ -245,9 +245,6 @@ static EQSelectView *eqSelectView = nil;
             //获取低音的值
             self->circularSlider.bassSlider.value = (CGFloat)model.pitchLow;
             self->circularSlider.bassLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.bassSlider.value];
-//            //获取主音量的值
-//            self->circularSlider.volSlider.value = (CGFloat)model.currentVol;
-//            self->circularSlider.volLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.volSlider.value];
             //获取高音的值
             self->circularSlider.trebleSlider.value = (CGFloat)model.pitchHigh;
             self->circularSlider.trebleLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.trebleSlider.value];
@@ -256,19 +253,15 @@ static EQSelectView *eqSelectView = nil;
 }
 
 -(void)updateHighLowVolFromDevice{
-    [JL_Tools mainTask:^{
-        JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
-        
-        //获取低音的值
-        self->circularSlider.bassSlider.value = (CGFloat)model.pitchLow;
-        self->circularSlider.bassLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.bassSlider.value];
-//            //获取主音量的值
-//            self->circularSlider.volSlider.value = (CGFloat)model.currentVol;
-//            self->circularSlider.volLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.volSlider.value];
-        //获取高音的值
-        self->circularSlider.trebleSlider.value = (CGFloat)model.pitchHigh;
-        self->circularSlider.trebleLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.trebleSlider.value];
-    }];
+    
+    JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+    //获取低音的值
+    self->circularSlider.bassSlider.value = (CGFloat)model.pitchLow;
+    self->circularSlider.bassLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.bassSlider.value];
+    //获取高音的值
+    self->circularSlider.trebleSlider.value = (CGFloat)model.pitchHigh;
+    self->circularSlider.trebleLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.trebleSlider.value];
+    
 }
 
 #pragma mark 监听高低音可用的状态
@@ -342,9 +335,6 @@ static EQSelectView *eqSelectView = nil;
         //获取低音的值
         self->circularSlider.bassSlider.value = (CGFloat)model.pitchLow;
         self->circularSlider.bassLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.bassSlider.value];
-//        //获取主音量的值
-//        self->circularSlider.volSlider.value = (CGFloat)model.currentVol;
-//        self->circularSlider.volLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.volSlider.value];
         //获取高音的值
         self->circularSlider.trebleSlider.value = (CGFloat)model.pitchHigh;
         self->circularSlider.trebleLabel.text = [NSString stringWithFormat:@"%.00f", self->circularSlider.trebleSlider.value];

@@ -138,7 +138,9 @@
     UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 5.0, self.frame.size.width, 45)];
     lab.font = [UIFont fontWithName:(@"PingFangSC-Medium") size:13];
     lab.textColor = [UIColor colorWithRed:152/255.0 green:152/255.0 blue:152/255.0 alpha:1.0];
-    lab.text = titleArray[section];
+    if(titleArray.count>section){
+        lab.text = titleArray[section];
+    }
     [newView addSubview:lab];
     return newView;
 }

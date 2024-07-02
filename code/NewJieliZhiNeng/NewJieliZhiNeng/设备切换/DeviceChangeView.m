@@ -246,27 +246,34 @@
     if (type == JLUuidTypeDisconnected) {
            
         JL_BLEMultiple *multiple = [[JL_RunSDK sharedMe] mBleMultiple];
-        JL_EntityM *entity = [multiple makeEntityWithUUID:model.uuid];
-        NSLog(@"---> 下拉顶栏，连接设备：%@",model.name);
         
-        [multiple connectEntity:entity Result:^(JL_EntityM_Status status) {
-            if (status == JL_EntityM_StatusPaired) {
-                //插入连接历史记录数据库
-                [[SqliteManager sharedInstance] installWithDevice:entity];
-                //[entity.mCmdManager cmdHeatsetAdvEnable:NO];
+        NSLog(@"---> 下拉顶栏，连接设备：%@",model.name);
+        [multiple getEntityWithSearchUUID:model.uuid SearchStatus:true Result:^(JL_EntityM * _Nullable entity) {
+            UIWindow *win = [DFUITools getWindow];
+            
+            if(![JL_RunSDK isConnectedEdr:entity]){
+                [DFUITools showText:kJL_TXT("user_connect_edr") onView:win delay:2];
+                return;
             }
-            [JL_Tools mainTask:^{
-                self->selected = nil;
-                [tableView reloadData];
-                [self onDismiss];
-
-                UIWindow *win = [DFUITools getWindow];
-                NSString *txt = [JL_RunSDK textEntityStatus:status];
-                [DFUITools showText:txt onView:win delay:1.0];
-
-                //[self blockWithUUid:entity.mUUID];
+            [multiple connectEntity:entity Result:^(JL_EntityM_Status status) {
+                if (status == JL_EntityM_StatusPaired) {
+                    //插入连接历史记录数据库
+                    [[SqliteManager sharedInstance] installWithDevice:entity];
+                    //[entity.mCmdManager cmdHeatsetAdvEnable:NO];
+                }
+                [JL_Tools mainTask:^{
+                    self->selected = nil;
+                    [tableView reloadData];
+                    [self onDismiss];
+                    
+                    NSString *txt = [JL_RunSDK textEntityStatus:status];
+                    [DFUITools showText:txt onView:win delay:1.0];
+                    
+                }];
             }];
+            
         }];
+        
         return;
     }
        

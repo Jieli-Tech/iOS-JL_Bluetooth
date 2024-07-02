@@ -297,7 +297,6 @@ NSString *kUI_DEVICE_CELL_LONGPRESS = @"UI_DEVICE_CELL_LONGPRESS";
                 subImage_L.hidden = true;
                 subLb_0_W.constant = [self getWidthText:subLb_0.text];
             }
-            
         }
     }else{
         subImage_0.hidden = YES;

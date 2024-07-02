@@ -17,7 +17,7 @@
 #import "JLUI_Cache.h"
 #import "UIImageView+WebCache.h"
 
-@interface KaraokeVC (){
+@interface KaraokeVC ()<JLSoundCardMgrDelegate>{
     __weak IBOutlet NSLayoutConstraint  *topView_H;
     __weak IBOutlet UIButton            *btn_00;
     __weak IBOutlet UIButton            *btn_01;
@@ -157,6 +157,8 @@
     
     topView_H.constant = kJL_HeightNavBar;
     [self setKalaOKData:self.requestNetFlag];
+    JL_ManagerM *manager = [bleSDK.mBleEntityM mCmdManager];
+    manager.mSoundCardManager.delegate = self;
 }
 
 -(void)setupUI{
@@ -251,7 +253,11 @@
             }
             
             [bianShenView onBianShenViewBlock:^(NSInteger tag) {
-                [self->bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKalaokIndex:tag Value:0];
+                
+                JL_ManagerM *manager = [self->bleSDK.mBleEntityM mCmdManager];
+                [manager.mSoundCardManager cmdSetKalaok:manager Index:tag Value:0 result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+                    
+                }];
             }];
             
             [bianShenView onBianShenViewGroupBlock:^(BOOL group) {
@@ -486,7 +492,7 @@
                 
                 if(canShuArray[2]!=nil){
                     if([kJL_GET hasPrefix:@"zh"]){
-                        if([canShuArray[2] isEqualToString:@"eq_advanced_reverberation"]){
+                        if([canShuArray[2] isEqualToString:@"混响"]){
                             [label_3 setText:kJL_TXT("eq_advanced_reverberation")];
                         }
                     }else{
@@ -525,7 +531,7 @@
                 
                 if(canShuArray[3]!=nil){
                     if([kJL_GET hasPrefix:@"zh"]){
-                        if([canShuArray[3] isEqualToString:@"volume_height"]){
+                        if([canShuArray[3] isEqualToString:@"高音"]){
                             [label_4 setText:kJL_TXT("volume_height")];
                         }
                     }else{
@@ -562,7 +568,7 @@
                 [label_5 setTextColor:kDF_RGBA(36, 36, 36, 1.0)];
                 if(canShuArray[4]!=nil){
                     if([kJL_GET hasPrefix:@"zh"]){
-                        if([canShuArray[4] isEqualToString:@"volume_bass"]){
+                        if([canShuArray[4] isEqualToString:@"低音"]){
                             [label_5 setText:kJL_TXT("volume_bass")];
                         }
                     }else{
@@ -653,49 +659,49 @@
                     [mySlier_1 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_1!=nil) && (mySlier_1.isHidden == NO) && ([canShuEnableArray[0] boolValue] == NO)){
-                    [mySlier_1 setUserInteractionEnabled:NO];
+                    [mySlier_1 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_2!=nil) && (mySlier_2.isHidden == NO) && ([canShuEnableArray[1] boolValue])){
                     [mySlier_2 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_2!=nil) && (mySlier_2.isHidden == NO) && ([canShuEnableArray[1] boolValue] == NO)){
-                    [mySlier_2 setUserInteractionEnabled:NO];
+                    [mySlier_2 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_3!=nil) && (mySlier_3.isHidden == NO) && ([canShuEnableArray[2] boolValue])){
                     [mySlier_3 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_3!=nil) && (mySlier_3.isHidden == NO) && ([canShuEnableArray[2] boolValue] == NO)){
-                    [mySlier_3 setUserInteractionEnabled:NO];
+                    [mySlier_3 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_4!=nil) && (mySlier_4.isHidden == NO) && ([canShuEnableArray[3] boolValue])){
                     [mySlier_4 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_4!=nil) && (mySlier_4.isHidden == NO) && ([canShuEnableArray[3] boolValue] == NO)){
-                    [mySlier_4 setUserInteractionEnabled:NO];
+                    [mySlier_4 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_5!=nil) && (mySlier_5.isHidden == NO) && ([canShuEnableArray[4] boolValue])){
                     [mySlier_5 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_5!=nil) && (mySlier_5.isHidden == NO) && ([canShuEnableArray[4] boolValue] == NO)){
-                    [mySlier_5 setUserInteractionEnabled:NO];
+                    [mySlier_5 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_6!=nil) && (mySlier_6.isHidden == NO) && ([canShuEnableArray[5] boolValue])){
                     [mySlier_6 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_6!=nil) && (mySlier_6.isHidden == NO) && ([canShuEnableArray[5] boolValue] == NO)){
-                    [mySlier_6 setUserInteractionEnabled:NO];
+                    [mySlier_6 setUserInteractionEnabled:YES];
                 }
                 
                 if((mySlier_7!=nil) && (mySlier_7.isHidden == NO) && ([canShuEnableArray[6] boolValue])){
                     [mySlier_7 setUserInteractionEnabled:YES];
                 }
                 if((mySlier_7!=nil) && (mySlier_7.isHidden == NO) && ([canShuEnableArray[6] boolValue] == NO)){
-                    [mySlier_7 setUserInteractionEnabled:NO];
+                    [mySlier_7 setUserInteractionEnabled:YES];
                 }
             }
         }
@@ -752,7 +758,11 @@
                 mOtherView = [[OtherView alloc] initWithFrame:mOtherViewRect];
                 mOtherView.otherArray = model.mList;
                 [mOtherView onOtherViewBlock:^(NSInteger tag) {
-                    [self->bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKalaokIndex:tag Value:0];
+
+                    JL_ManagerM *manager = [self->bleSDK.mBleEntityM mCmdManager];
+                    [manager.mSoundCardManager cmdSetKalaok:manager Index:tag Value:0 result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+                        
+                    }];
                 }];
                 [mOtherView setKMaxRowCount:otherKMaxRowCount WithItemCountPerRow:otherkItemCountPerRow];
                 [scrollView addSubview:mOtherView];
@@ -790,7 +800,11 @@
     sliderFlag = YES;
     uint8_t index   = (uint8_t)sender.tag;
     uint16_t value =  (uint16_t)sender.value;
-    [bleSDK.mBleEntityM.mCmdManager.mSoundCardManager cmdSetKalaokIndex:index Value:value];
+    
+    JL_ManagerM *manager = [bleSDK.mBleEntityM mCmdManager];
+    [manager.mSoundCardManager cmdSetKalaok:manager Index:index Value:value result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+    }];
 }
 
 -(void)noteDeviceChange:(NSNotification*)note{
@@ -804,31 +818,10 @@
     }
 }
 
--(void)noteMicCanShu:(NSNotification *)note{
-    if(sliderFlag == NO){
-        NSData *micData = [note object];
-        for (int index = 0 ; index < micData.length; index += 3) {
-            NSData *micIndexData = [JL_Tools data:micData R:index L:1];
-            NSData *micValueData = [JL_Tools data:micData R:index+1 L:2];
-            
-            uint8_t  micIndex = (uint8_t)[JL_Tools dataToInt:micIndexData];
-            uint16_t micValue = (uint16_t)[JL_Tools dataToInt:micValueData];
-            
-            
-            for (UIView *sl in scrollView.subviews) {
-                if ([sl isKindOfClass:[UISlider class]]) {
-                    UISlider *sub_sl = (UISlider *) sl;
-                    if (sub_sl.tag == micIndex) {
-                        sub_sl.value = micValue;
-                    }
-                }
-            }
-        }
-    }
-}
+
 
 -(void)addNote{
-    [JL_Tools add:kJL_MANAGER_KALAOK_Data Action:@selector(noteMicCanShu:) Own:self];
+    
     [JL_Tools add:kUI_JL_DEVICE_CHANGE Action:@selector(noteDeviceChange:) Own:self];
 }
 
@@ -907,6 +900,31 @@
             [imageView setImage:image];
         });
     });
+}
+
+
+//MARK: - handle jlsoundcard
+-(void)jlsoundCardMicFrequency:(NSArray *)frequencyArray{
+    
+}
+
+-(void)jlsoundCardMask:(uint64_t)mask values:(NSArray<JLSoundCardIndexValue *> *)items{
+    
+    for (JLSoundCardIndexValue *item in items) {
+        for (UIView *sl in scrollView.subviews) {
+            if ([sl isKindOfClass:[UISlider class]]) {
+                UISlider *sub_sl = (UISlider *) sl;
+                if (sub_sl.tag == item.index) {
+                    sub_sl.value = item.value;
+                }
+            }
+        }
+    }
+        
+}
+
+- (void)jlsoundCardMicEQ:(NSArray *)eqArray{
+    
 }
 
 @end

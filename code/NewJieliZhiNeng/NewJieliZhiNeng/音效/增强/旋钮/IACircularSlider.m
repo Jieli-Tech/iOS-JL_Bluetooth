@@ -46,13 +46,25 @@ NSString *kUI_JL_REVERBERATION_END_TOUCH= @"UI_JL_REVERBERATION_END_TOUCH";
     [_trackLayer setNeedsDisplay];
     
     CGPoint point = [self mapRadianToPoint:self.radian];
-    
+    NSLog(@"mapRadianToPoint:%f,%f self.radian:%f self.value:%f",point.x,point.y,self.radian,self.value);
     if (!_isInitiallySet) {
         point = [self mapRadianToPoint:[self radianForValue:self.value]];
         _isInitiallySet = YES;
         self.radian = [self radianForValue:self.value];
+//        if(isnan(self.radian)){
+//            self.radian = 2.356194;
+//        }
     }
-    
+//    if(isnan(point.x)||isnan(point.y)){
+////        return;
+//        point.x = 46.391304;
+//    }
+//    if(isnan(point.y)){
+//        point.y = 3.500000;
+//    }
+//    NSLog(@"mapRadianToPoint:%f,%f self.radian:%f self.value:%f",point.x,point.y,self.radian,self.value);
+//    NSLog(@"setFrame:x:%f,y:%f,w:%f,h:%f",point.x-self.thumbWidth/2, point.y-self.thumbWidth/2,
+//          self.thumbWidth, self.thumbWidth);
     [_thumbLayer setFrame:CGRectMake(point.x-self.thumbWidth/2, point.y-self.thumbWidth/2,
                                      self.thumbWidth, self.thumbWidth)];
     [_thumbLayer setNeedsDisplay];
@@ -309,6 +321,7 @@ NSString *kUI_JL_REVERBERATION_END_TOUCH= @"UI_JL_REVERBERATION_END_TOUCH";
     }
     _value = value;
     _isInitiallySet = NO;
+    NSLog(@"setValue------------->%f",value);
     [self updateLayers];
     
 }
