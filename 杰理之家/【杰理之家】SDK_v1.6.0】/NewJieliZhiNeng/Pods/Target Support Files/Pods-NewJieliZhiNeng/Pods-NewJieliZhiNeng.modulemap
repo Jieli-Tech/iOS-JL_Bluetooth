@@ -1,6 +1,0 @@
-module Pods_NewJieliZhiNeng {
-  umbrella header "Pods-NewJieliZhiNeng-umbrella.h"
-
-  export *
-  module * { export * }
-}

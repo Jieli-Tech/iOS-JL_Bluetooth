@@ -1,6 +1,0 @@
-framework module TYCoreText {
-  umbrella header "TYCoreText.h"
-
-  export *
-  module * { export * }
-}

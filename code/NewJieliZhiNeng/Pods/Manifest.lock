@@ -1,0 +1,58 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - Bugly (2.5.91)
+  - Colours (5.13.0):
+    - Colours/ObjC (= 5.13.0)
+  - Colours/ObjC (5.13.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - LMJHorizontalScrollText (2.0.2)
+  - Masonry (1.1.0)
+  - WMZDialog (1.4.6)
+
+DEPENDENCIES:
+  - AFNetworking
+  - Bugly
+  - Colours
+  - FMDB
+  - LMJHorizontalScrollText
+  - Masonry
+  - WMZDialog
+
+SPEC REPOS:
+  https://gitee.com/mirrors/CocoaPods-Specs.git:
+    - AFNetworking
+    - Bugly
+    - Colours
+    - FMDB
+    - LMJHorizontalScrollText
+    - Masonry
+    - WMZDialog
+
+SPEC CHECKSUMS:
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  Bugly: afe841bba2ea6de6d432a3c125240a5e75949c55
+  Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  LMJHorizontalScrollText: ebc9b908db297f603c5b98c9b4e5f4582f5a14b8
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  WMZDialog: 629b5ceaab043291394952143a6cb08b2c1c500d
+
+PODFILE CHECKSUM: 61445ac9d202aafa395f81b8dda6cc3b48d7b017
+
+COCOAPODS: 1.11.3

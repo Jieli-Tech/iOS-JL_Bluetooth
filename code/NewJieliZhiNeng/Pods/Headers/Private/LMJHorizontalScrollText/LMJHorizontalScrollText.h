@@ -1,0 +1,1 @@
+../../../LMJHorizontalScrollText/LMJHorizontalScrollText/LMJHorizontalScrollText.h
