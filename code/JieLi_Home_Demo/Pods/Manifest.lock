@@ -1,0 +1,92 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - Bugly (2.6.1)
+  - Colours (5.13.0):
+    - Colours/ObjC (= 5.13.0)
+  - Colours/ObjC (5.13.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - LMJHorizontalScrollText (2.0.2)
+  - MarqueeLabel (4.3.1)
+  - Masonry (1.1.0)
+  - RxCocoa (6.9.0):
+    - RxRelay (= 6.9.0)
+    - RxSwift (= 6.9.0)
+  - RxRelay (6.9.0):
+    - RxSwift (= 6.9.0)
+  - RxSwift (6.9.0)
+  - SnapKit (5.6.0)
+  - Starscream (4.0.4)
+  - SwiftyAttributes (5.3.0)
+  - Toast-Swift (5.0.1)
+  - WMZDialog (1.5.0)
+
+DEPENDENCIES:
+  - AFNetworking
+  - Bugly
+  - Colours
+  - FMDB
+  - LMJHorizontalScrollText
+  - MarqueeLabel
+  - Masonry
+  - RxCocoa
+  - RxSwift
+  - SnapKit
+  - Starscream
+  - SwiftyAttributes
+  - Toast-Swift (~> 5.0.1)
+  - WMZDialog
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - Bugly
+    - Colours
+    - FMDB
+    - LMJHorizontalScrollText
+    - MarqueeLabel
+    - Masonry
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - SnapKit
+    - Starscream
+    - SwiftyAttributes
+    - Toast-Swift
+    - WMZDialog
+
+SPEC CHECKSUMS:
+  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
+  Bugly: 217ac2ce5f0f2626d43dbaa4f70764c953a26a31
+  Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  LMJHorizontalScrollText: ebc9b908db297f603c5b98c9b4e5f4582f5a14b8
+  MarqueeLabel: da4b9cf619fe70c75d7bab4580b0b4a0b868aa6b
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  RxCocoa: ac16414696ae706516be3e1ab00fcce5bdc9be8a
+  RxRelay: 6b0c930e5cef57d5fe2032571e5e65b78e3cbdb1
+  RxSwift: 31649ace6aceeb422e16ff71c60804f9c3281ed9
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
+  SwiftyAttributes: 6d7386e90ac611b6acac8b59e38f34bfa4621c80
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  WMZDialog: 724777637ca12b1d8078644b9f10aa264dec3a96
+
+PODFILE CHECKSUM: deaeb4a333ccd016eb9eef0a89b3a70e7b184074
+
+COCOAPODS: 1.16.2

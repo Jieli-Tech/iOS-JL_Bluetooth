@@ -1,0 +1,1 @@
+../../../Target Support Files/SwiftyAttributes/SwiftyAttributes-umbrella.h

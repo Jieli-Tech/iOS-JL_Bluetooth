@@ -1,0 +1,600 @@
+3 目录浏览
+****************
+
+3.1 功能描述
+========================
+
+    对设备端的SD卡或者U盘，进行浏览
+
+3.2 示例代码
+========================
+
+.. code-block:: objective-c
+
+    [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager cmdBrowseMonitorResult:^(NSArray * _Nullable array, JL_BrowseReason reason) {
+    switch (reason) {
+        case JL_BrowseReasonReading:{
+            [wself updateData:array];
+            
+            NSLogEx(@"正在读取:%lu",(unsigned long)array.count);
+        }break;
+        case JL_BrowseReasonCommandEnd:{
+            [wself updateData:array];
+            self->reqNum-=10;
+            if (self->reqNum>0) {
+                [wself request:self->reqModel];
+            }
+            NSLogEx(@"读取命令结束:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+        }break;
+        case JL_BrowseReasonFolderEnd:{
+            [wself updateData:array];
+            
+            if (array.count == 0 && self->reqNum != -1) {
+                if ([self->_delegate respondsToSelector:@selector(dmHandleWithItemModelArray:)]) {
+                    [self->_delegate dmHandleWithItemModelArray:array];
+                }
+            }
+            self->reqNum = -1;
+            NSLogEx(@"目录读取结束:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+        }break;
+        case JL_BrowseReasonBusy:{
+            NSLogEx(@"设备在忙");
+        }break;
+        case JL_BrowseReasonDataFail:{
+            NSLogEx(@"数据读取失败");
+        }break;
+        case JL_BrowseReasonPlaySuccess:{
+            [wself updatePlay];
+            self->playItem = NO;
+            NSLogEx(@"播放成功");
+        }break;
+        case JL_BrowseReasonUnknown:{
+            NSLogEx(@"未知错误");
+            self->reqNum = -1;
+            self->playItem = NO;
+            [self requestWith:self->reqModel Number:10];
+        }
+        default:
+            break;
+    }
+    }];
+
+3.2.1 相关接口
+-----------------
+
+.. code:: objectivec
+    
+   typedef NS_ENUM(UInt8, JL_FileOperationEnvironmentType) {
+       JL_FileOperationEnvironmentTypeBigFileTransmission      = 0x00, //大文件传输
+       JL_FileOperationEnvironmentTypeDeleteFile               = 0x01, //删除文件
+       JL_FileOperationEnvironmentTypeFormatting               = 0x02, //格式化
+       JL_FileOperationEnvironmentTypeFatfsTransmission        = 0x03, //FAT文件传输
+   };
+   typedef NS_ENUM(UInt8, JL_DeleteFileLastType) {
+       JL_DeleteFileLastTypeIsNotLast                  = 0x00, //不是最后一个文件
+       JL_DeleteFileLastTypeIsLast                     = 0x01, //是最后一个文件
+   };
+   typedef NS_ENUM(UInt8, JL_BrowseReason) {
+       JL_BrowseReasonCommandEnd       = 0,    //读取完当前命令请求的文件
+       JL_BrowseReasonFolderEnd        = 1,    //读取完当前目录的文件
+       JL_BrowseReasonPlaySuccess      = 2,    //点播成功
+       JL_BrowseReasonBusy             = 3,    //设备繁忙
+       JL_BrowseReasonDataFail         = 4,    //目录数据发送失败
+       JL_BrowseReasonReading          = 0x0f, //正在读取中
+       JL_BrowseReasonUnknown,                 //未知原因
+   };
+   typedef NS_ENUM(UInt8, JL_FileContentResult) {
+       JL_FileContentResultStart       = 0x00, //开始传输
+       JL_FileContentResultReading     = 0x01, //正在读取
+       JL_FileContentResultEnd         = 0x02, //读取结束
+       JL_FileContentResultCancel      = 0x03, //取消读取
+       JL_FileContentResultFail        = 0x04, //读取失败
+       JL_FileContentResultNull        = 0x05, //文件不存在
+       JL_FileContentResultDataError   = 0x06, //数据错误
+       JL_FileContentResultCrcFail     = 0x07, //crc校验失败
+   };
+   typedef NS_ENUM(UInt8, JL_FileDataType) {
+       JL_FileDataTypeDo               = 0,    //开始传输文件数据
+       JL_FileDataTypeDone             = 1,    //结束传输文件数据
+       JL_FileDataTypeDoing            = 2,    //正在传输文件数据
+       JL_FileDataTypeCancel           = 3,    //取消传输文件数据
+       JL_FileDataTypeError            = 4,    //传输文件数据出错
+       JL_FileDataTypeUnknown,
+   };
+   typedef NS_ENUM(UInt8, JL_BigFileTransferCode) {
+       JL_BigFileTransferCodeSuccess       = 0x00, //成功
+       JL_BigFileTransferCodeFail          = 0x01, //写失败
+       JL_BigFileTransferCodeOutOfRange    = 0x02, //数据超出范围
+       JL_BigFileTransferCodeCrcFail       = 0x03, //crc校验失败
+       JL_BigFileTransferCodeOutOfMemory   = 0x04, //内存不足
+   };
+   typedef NS_ENUM(UInt8, JL_BigFileResult) {
+       JL_BigFileTransferStart         = 0x00, //开始大文件数据传输
+       JL_BigFileTransferDownload      = 0x01, //传输大文件有效数据
+       JL_BigFileTransferEnd           = 0x02, //结束大文件数据传输
+       JL_BigFileTransferOutOfRange    = 0x03, //大文件传输数据超范围
+       JL_BigFileTransferFail          = 0x04, //大文件传输失败
+       JL_BigFileCrcError              = 0x05, //大文件校验失败
+       JL_BigFileOutOfMemory           = 0x06, //空间不足
+       JL_BigFileTransferCancel        = 0x07, //取消传输
+       JL_BigFileTransferNoResponse    = 0xF1, //设备没有响应
+   };
+
+   typedef void(^JL_FILE_BK)(NSArray* __nullable array,JL_BrowseReason reason);
+   typedef void(^JL_FILE_CONTENT_BK)(JL_FileContentResult result, uint32_t size, NSData* __nullable data, float progress);
+   typedef void(^JL_FILE_DATA_BK)(NSData* __nullable data, NSString* __nullable path, uint16_t size, JL_FileDataType type);
+   typedef void(^JL_BIGFILE_BK)(NSArray* __nullable array);
+   typedef void(^JL_BIGFILE_RT)(JL_BigFileResult result, float progress);
+
+   @interface JL_FileManager : JL_FunctionBaseManager
+
+   - (void)closeTimer;
+
+   #pragma mark ---> 监听目录数据
+   /**
+    @param result 状态回复
+    */
+   -(void)cmdBrowseMonitorResult:(JL_FILE_BK __nullable)result;
+
+   #pragma mark ---> 浏览目录
+   /**
+    @param model 文件Model
+    @param number 读取的数量
+    */
+   -(void)cmdBrowseModel:(JLModel_File*)model
+                  Number:(uint8_t)number
+                  Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark ---> 删除文件(必须异步执行)
+   /**
+    @param array 文件Model数组
+    */
+   -(BOOL)cmdDeleteFileModels:(NSArray*)array;
+   /**
+    *  删除单个JLModel_File文件
+    *  @param model JLModel_File对象
+    *  @param last 是否最后一个文件
+    *  @param result 删除成功回调
+    */
+   -(void)cmdDeleteFile:(JLModel_File*)model
+                IsLast:(JL_DeleteFileLastType)last
+                Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark 设备格式化
+   //@param model 设备句柄
+   -(void)cmdDeviceFormat:(NSString*)handle Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark ---> 清除设备音乐缓存记录
+   /**
+    @param type 卡的类型
+    */
+   -(void)cmdCleanCacheType:(JL_CardType)type;
+
+   #pragma mark --->【文件传输 固件-->APP】
+   #pragma mark 1.监听文件数据
+   -(void)cmdFileDataMonitorResult:(JL_FILE_DATA_BK __nullable)result;
+
+   #pragma mark 2.允许传输文件数据
+   -(void)cmdAllowFileData;
+
+   #pragma mark 3.拒绝传输文件数据
+   -(void)cmdRejectFileData;
+
+   #pragma mark 4.停止传输文件数据
+   -(void)cmdStopFileData;
+
+   #pragma mark --->【文件传输 APP-->固件】
+   #pragma mark 5.请求传输文件给设备
+   -(void)cmdFileDataSize:(uint8_t)size
+                 SavePath:(NSString*)path;
+
+   #pragma mark 6.推送文件数据给设备
+   -(void)cmdPushFileData:(NSData*)data;
+
+   #pragma mark 【大文件传输 App-->固件】
+   // @param  path       大文件下载文件路径
+   // @param  fileName   大文件下载文件名称
+   // @param  result     大文件下载结果
+   -(void)cmdBigFileData:(NSString *)path WithFileName:(NSString *)fileName
+                  Result:(JL_BIGFILE_RT __nullable)result;
+
+   #pragma mark 取消文件传输
+   -(void)cmdStopBigFileData;
+
+   #pragma mark 通知固件进行环境准备
+   // @param  environment 0:大文件传输 1:删除文件 2：格式化
+   -(void)cmdPreEnvironment:(JL_FileOperationEnvironmentType)environment Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark 通过名字删除文件
+   -(void)cmdFileDeleteWithName:(NSString*)name Result:(JL_CMD_RESPOND __nullable)result;
+
+   #pragma mark 设置文件传输句柄
+   /**
+    *  大文件传输，设置当前传输句柄 for crc16
+    */
+   - (void)setCurrentFileHandleType:(JL_FileHandleType)currentFileHandleType;
+   - (JL_FileHandleType)getCurrentFileHandleType;
+
+   #pragma mark ---> 读取外置卡的文件内容
+   -(void)cmdFileReadContentWithName:(NSString*)name Result:(JL_FILE_CONTENT_BK __nullable)result;
+
+   #pragma mark ---> 簇号方式读取外置卡的文件内容
+   - (void)cmdFileReadContentWithFileClus:(uint32_t)fileClus Result:(JL_FILE_CONTENT_BK __nullable)result;
+
+   #pragma mark ---> 取消读取外置卡的文件内容
+   -(void)cmdFileReadContentCancel;
+
+   @end
+
+
+3.3 流程说明
+====================
+3.3.1 初始化
+----------------
+.. code:: objective-c
+
+    @interface DMusicHandler(){
+        /**
+        层级结构
+            {
+            "uuid0": {//设备uuid
+                "card": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ]
+            },
+            "uuid1": {
+                "card1": "value",
+                "usb": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ]
+            },
+            "uuid2": {
+                "card1": [
+                "fm model0",
+                "fm model1",
+                "fm model2"
+                ],
+                "usb": "usbq"
+            }
+            }
+        */
+        NSMutableDictionary *saveDict;
+        NSString *bleUuid;
+        JL_CardType nowType;
+        NSInteger reqNum;
+        JLModel_File *reqModel;
+        BOOL    playItem;
+    }
+    @end
+
+    @implementation DMusicHandler
+
+    static dispatch_once_t onceToken;
+    static DMusicHandler *_dmh;
+
+    +(instancetype)sharedInstance{
+        dispatch_once(&onceToken, ^{
+            _dmh = [[DMusicHandler alloc] init];
+        });
+        return _dmh;
+    }
+
+    +(void)deallocDMusic{
+        onceToken = 0;
+        _dmh = nil;
+    }
+
+    - (instancetype)init
+    {
+        self = [super init];
+        if (self) {
+            saveDict = [NSMutableDictionary new];
+            [self handleFileMonitor];
+            [self addNote];
+            playItem = NO;
+        }
+        return self;
+    }
+
+    #pragma mark ///处理返回数组
+    -(void)handleFileMonitor{
+        __weak typeof(self) wself = self;
+        [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mFileManager cmdBrowseMonitorResult:^(NSArray * _Nullable array, JL_BrowseReason reason) {
+            switch (reason) {
+                case JL_BrowseReasonReading:{
+                    [wself updateData:array];
+                
+                    NSLogEx(@"正在读取:%lu",(unsigned long)array.count);
+                }break;
+                case JL_BrowseReasonCommandEnd:{
+                    [wself updateData:array];
+                    unsigned long shouldDown = self->reqNum - array.count;
+                    if (shouldDown>0) {
+                        [wself request:self->reqModel];
+                    }else{
+                        self->reqNum = -1;
+                    }
+                    NSLogEx(@"读取命令结束:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+                }break;
+                case JL_BrowseReasonFolderEnd:{
+                    [wself updateData:array];
+                    if (array.count == 0 && self->reqNum != -1) {
+                        if ([self->_delegate respondsToSelector:@selector(dmHandleWithItemModelArray:)]) {
+                            [self->_delegate dmHandleWithItemModelArray:array];
+                        }
+                    }
+                    self->reqNum = -1;
+                    NSLogEx(@"目录读取结束:%lu delegate:%@",(unsigned long)array.count,self->_delegate);
+                }break;
+                case JL_BrowseReasonBusy:{
+                    NSLogEx(@"设备在忙");
+                }break;
+                case JL_BrowseReasonDataFail:{
+                    NSLogEx(@"数据读取失败");
+                }break;
+                case JL_BrowseReasonPlaySuccess:{
+                    [wself updatePlay];
+                    self->playItem = NO;
+                    NSLogEx(@"播放成功");
+                }break;
+                case JL_BrowseReasonUnknown:{
+                    NSLogEx(@"未知错误");
+                    self->reqNum = -1;
+                    self->playItem = NO;
+                    [self requestWith:self->reqModel Number:10];
+                }
+                default:
+                    break;
+            }
+        }];
+    }
+
+    #pragma mark ///更新数据时的通知处理
+    -(void)addNote{
+        [JL_Tools add:kJL_BLE_M_ENTITY_DISCONNECTED Action:@selector(bleDisconnectAction:) Own:self];
+        [JLModel_Device observeModelProperty:@"currentClus" Action:@selector(noteCurrentClus:) Own:self];
+        [JLModel_Device observeModelProperty:@"cardArray" Action:@selector(noteCardArray:) Own:self];
+    }
+
+    
+    -(void)bleDisconnectAction:(NSNotification *)note{
+        CBPeripheral *pl = [note object];
+        NSMutableDictionary *dict = saveDict[pl.identifier.UUIDString];
+        [dict removeAllObjects];
+    }
+
+    -(void)noteCardArray:(NSNotification *)note{
+        
+        BOOL isOk = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOk == NO)return;
+        
+        NSDictionary *tmpDict = [note object];
+        NSString *uuid = tmpDict[kJL_MANAGER_KEY_UUID];
+        if (![uuid isEqualToString:[[JL_RunSDK sharedMe] mBleUUID]]) {
+            return;
+        }
+        NSArray *array = tmpDict[kJL_MANAGER_KEY_OBJECT];
+        NSArray *tmpA = @[@(JL_CardTypeUSB),@(JL_CardTypeSD_0),@(JL_CardTypeSD_1),@(JL_CardTypeFLASH),@(JL_CardTypeLineIn)];
+        for (int i  = 0;i<tmpA.count;i++) {
+            if (![array containsObject:tmpA[i]]) {
+                JL_CardType type = [tmpA[i] integerValue];
+                NSMutableDictionary *dict = saveDict[uuid];
+                [dict removeObjectForKey:[self keyByType:type]];
+            }
+        }
+        if ([_delegate respondsToSelector:@selector(dmCardMessageDismiss:)]) {
+            [_delegate dmCardMessageDismiss:array];
+        }
+    }
+
+    -(void)noteCurrentClus:(NSNotification *)note{
+        BOOL isOk = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOk == NO)return;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updatePlay];
+        });
+    }
+
+3.3.2 接口声明
+----------------------
+
+.. code:: objective-c
+
+    typedef enum : NSUInteger {
+        DM_ERROR_Max_Fold,
+        DM_ERROR_Unknown
+    } DM_ERROR;
+    NS_ASSUME_NONNULL_BEGIN
+    @protocol DMHandlerDelegate <NSObject>
+
+    -(void)dmHandleWithTabTitleArray:(NSArray<JLModel_File *> *)modelA;
+
+    -(void)dmHandleWithItemModelArray:(NSArray<JLModel_File *> *)modelB;
+
+    -(void)dmHandleWithPlayItemOK;
+
+    -(void)dmLoadFailed:(DM_ERROR)err;
+
+    -(void)dmCardMessageDismiss:(NSArray *)nowArray;
+
+    @end
+
+    @interface DMusicHandler : NSObject
+    @property(nonatomic,weak)id<DMHandlerDelegate> delegate;
+    @property(nonatomic,weak)JL_EntityM *nowEntity;
+    +(instancetype)sharedInstance;
+
+    -(void)loadModeData:(JL_CardType)type;
+    /// 点击对应的Title时更新目录
+    /// @param model fileModel
+    -(void)tabArraySelect:(JLModel_File *)model;
+
+    /// 请求目录列表或者点播该文件
+    /// @param model jlfilemodel
+    /// @param n 数目
+    -(void)requestWith:(JLModel_File *)model Number:(NSInteger)n;
+
+    /// 在同一个根目录下加载更多的数据
+    /// @param num 行数
+    -(void)requestModelBy:(NSInteger)num;
+
+
+3.3.3 接口实现
+------------------------------------------------------
+
+.. code:: objective-c
+
+    #pragma mark ///请求数据
+
+    -(void)loadModeData:(JL_CardType)type{
+        nowType = type;
+        BOOL result = [self checkCaChe:type];
+        if (!result) {
+            [self firstLoadData];
+        }else{
+            NSMutableArray *arr = [self checkoutArray:type];
+            if ([_delegate respondsToSelector:@selector(dmHandleWithTabTitleArray:)]) {
+                [_delegate dmHandleWithTabTitleArray:arr];
+            }
+            JLModel_File *model = [self lastPathRequest];
+            [self request:model];
+        }
+    }
+    -(void)firstLoadData{
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+        JLModel_File *fileModel = [JLModel_File new];
+        fileModel.fileType   = JL_BrowseTypeFolder;
+        NSMutableArray *mutbA = [NSMutableArray new];
+        NSMutableDictionary *sDict = saveDict[bleUuid];
+        switch (nowType) {
+            case JL_CardTypeUSB:{
+                fileModel.cardType   = JL_CardTypeUSB;
+                fileModel.fileName   = @"USB";
+                fileModel.folderName = @"USB";
+                fileModel.fileHandle = model.handleUSB;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:USB_Card];
+            }break;
+            case JL_CardTypeSD_0:{
+                fileModel.cardType   = JL_CardTypeSD_0;
+                fileModel.fileName   = @"SD Card";
+                fileModel.folderName = @"SD Card";
+                fileModel.fileHandle = model.handleSD_0;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:SD_0_Card];
+            }break;
+            case JL_CardTypeSD_1:{
+                fileModel.cardType   = JL_CardTypeSD_1;
+                fileModel.fileName   = @"SD Card 2";
+                fileModel.folderName = @"SD Card 2";
+                fileModel.fileHandle = model.handleSD_1;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:SD_1_Card];
+            }break;
+            case JL_CardTypeFLASH:{
+                fileModel.cardType   = JL_CardTypeFLASH;
+                fileModel.fileName   = @"FLASH";
+                fileModel.folderName = @"FLASH";
+                fileModel.fileHandle = model.handleFlash;
+                fileModel.fileClus   = 0;
+                [mutbA addObject:fileModel];
+                [sDict setValue:mutbA forKey:FLASH_Card];
+            }break;
+            default:
+                break;
+        }
+        [self requestWith:fileModel Number:20];
+    }
+
+
+    -(void)requestWith:(JLModel_File *)model Number:(NSInteger)n{
+        reqModel = model;
+        if (model.fileType == JL_BrowseTypeFile) {
+            if (playItem == YES) {
+                return;
+            }
+            playItem = YES;
+            JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+            [entity.mCmdManager.mFileManager cmdBrowseModel:model Number:1 Result:nil];
+        }else{
+            if (reqNum>0) {
+                NSLogEx(@"取消请求%@",model.fileName);
+                return;
+            }
+            reqNum = n;
+            [self addTabArray:model];
+            [self request:model];
+            NSLogEx(@"%@",model.fileName);
+        }
+    }
+
+    -(void)request:(JLModel_File *)model{
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        [entity.mCmdManager.mFileManager cmdBrowseModel:model Number:10 Result:nil];
+    }
+
+    -(void)requestModelBy:(NSInteger)num{
+        JLModel_File *fm = [self lastPathRequest];
+        [self requestWith:fm Number:num];
+    }    
+    /// 点击对应的Title时更新目录
+    /// @param model fileModel
+    -(void)tabArraySelect:(JLModel_File *)model{
+        if (reqNum>0) {
+            NSLogEx(@"取消请求%@",model.fileName);
+            return;
+        }
+        if (playItem == YES) {
+            NSLogEx(@"需要等待播放成功之后才可以继续操控");
+            return;
+        }
+        NSMutableArray *array = [self checkoutArray:nowType];
+        NSMutableArray *newArray = [NSMutableArray new];
+        for (int i = 0; i<array.count; i++) {
+            JLModel_File *fm = array[i];
+            [newArray addObject:array[i]];
+            if ([fm.pathData isEqualToData:model.pathData]) {
+                break;
+            }
+            if (model.pathData == nil) {
+                break;
+            }
+        }
+        NSMutableDictionary *dict = saveDict[bleUuid];
+        NSString *key = [self keyByType:nowType];
+        [dict setValue:newArray forKey:key];
+        if ([_delegate respondsToSelector:@selector(dmHandleWithTabTitleArray:)]) {
+            [_delegate dmHandleWithTabTitleArray:newArray];
+        }
+        JLModel_File *backModel = [self lastPathRequest];
+        reqNum = -1;
+        [self requestWith:backModel Number:20];
+    }
+
+    -(BOOL)shouldBeUpdate:(JLModel_File *)model{
+        NSMutableArray *arr = [self checkoutArray:nowType];
+        JLModel_File *item = [arr lastObject];
+        if (item.pathData == nil) {
+            return YES;
+        }
+        if ([item.pathData isEqualToData:model.pathData]) {
+            return YES;
+        }else{
+            return NO;
+        }
+    }
+
+.. note::
+    
+    使用时注意添加对应的协议 `DMHandlerDelegate`
+
+    

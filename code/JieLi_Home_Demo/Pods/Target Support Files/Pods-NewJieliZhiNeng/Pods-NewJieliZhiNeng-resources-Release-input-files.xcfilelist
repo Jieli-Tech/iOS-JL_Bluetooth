@@ -1,0 +1,5 @@
+${PODS_ROOT}/Target Support Files/Pods-NewJieliZhiNeng/Pods-NewJieliZhiNeng-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift_Privacy.bundle
+${PODS_ROOT}/WMZDialog/WMZDialog/WMZDialog/WMZDialog.bundle

@@ -1,6 +1,0 @@
-framework module SpeexKit {
-  umbrella header "SpeexKit.h"
-
-  export *
-  module * { export * }
-}

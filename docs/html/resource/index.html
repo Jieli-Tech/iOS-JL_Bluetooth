@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. SDK开发包介绍 &mdash; 杰理之家开发文档(IOS) 1.13.0 文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+        <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="测试调试" href="../Other/debug.html" />
+    <link rel="prev" title="3 目录浏览" href="../Development/browse_desc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> 杰理之家开发文档(IOS)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Development/import_desc.html">1.接入流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/function.html">2.功能模块说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Development/browse_desc.html">3 目录浏览</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. SDK开发包介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id1">2. 功能实现参考</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">发布记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/openSourceCommunity.html">开源社区</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">杰理之家开发文档(IOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>1. SDK开发包介绍</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sdk">
+<h1>1. SDK开发包介绍<a class="headerlink" href="#sdk" title="永久链接至标题"></a></h1>
+<p><strong>开发资料文件结构</strong></p>
+<ul class="simple">
+<li><p>code  — 参考Demo源码存</p></li>
+<li><p>doc   — 开发文档</p>
+<ul>
+<li><p>JieLi Bluetooth Control SDK Development Instructions (iOS).pdf</p></li>
+<li><p>tws耳机图片规范_V1.0.0.zip</p></li>
+<li><p>杰理开放平台接入说明文档_V1.0.3.pdf</p></li>
+<li><p>设备使用说明规范_V1.0.0.rar</p></li>
+<li><p>音箱图片规范_V1.0.0.rar</p></li>
+</ul>
+</li>
+<li><p>libs  — 相关库</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>JL_BLEKit.framework</strong> : 蓝牙功能库</p></li>
+<li><p><strong>JL_OTALib.framework</strong> : OTA升级业务库</p></li>
+<li><p><strong>JL_AdvParse.framework</strong> : 杰理蓝牙设备广播包解析业务库</p></li>
+<li><p><strong>JL_HashPair.framework</strong> ： 设备认证业务库</p></li>
+<li><p><strong>JLLogHelper.framework</strong> :日志打印管理库</p></li>
+</ul>
+</div></blockquote>
+<p><strong>可选配置库：</strong></p>
+<ul class="simple">
+<li><p><strong>JLPackageResKit.framework</strong>: 设备提示音/资源打包替换业务库</p></li>
+<li><p><strong>JLBmpConvertKit.framework</strong> : PNG/GIF图片转换库</p></li>
+<li><p><strong>JLDialUnit.framework</strong> ：屏幕/表盘操作库</p></li>
+</ul>
+</section>
+<section id="id1">
+<h1>2. 功能实现参考<a class="headerlink" href="#id1" title="永久链接至标题"></a></h1>
+<p>请查看当前文档。</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Development/browse_desc.html" class="btn btn-neutral float-left" title="3 目录浏览" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../Other/debug.html" class="btn btn-neutral float-right" title="测试调试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, 珠海市杰理科技股份有限公司.
+      <span class="lastupdated">最后更新于 9月 08, 2025.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

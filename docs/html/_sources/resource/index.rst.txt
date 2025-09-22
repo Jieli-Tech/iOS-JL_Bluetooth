@@ -1,0 +1,38 @@
+1. SDK开发包介绍
+================
+
+**开发资料文件结构** 
+
+- code  --- 参考Demo源码存 
+- doc   --- 开发文档 
+
+  - JieLi Bluetooth Control SDK Development Instructions (iOS).pdf
+  - tws耳机图片规范_V1.0.0.zip
+  - 杰理开放平台接入说明文档_V1.0.3.pdf
+  - 设备使用说明规范_V1.0.0.rar
+  - 音箱图片规范_V1.0.0.rar
+  
+- libs  --- 相关库 
+
+ - **JL_BLEKit.framework** : 蓝牙功能库  
+
+ - **JL_OTALib.framework** : OTA升级业务库
+
+ - **JL_AdvParse.framework** : 杰理蓝牙设备广播包解析业务库
+
+ - **JL_HashPair.framework** ： 设备认证业务库
+
+ - **JLLogHelper.framework** :日志打印管理库
+
+**可选配置库：**
+
+- **JLPackageResKit.framework**: 设备提示音/资源打包替换业务库
+
+- **JLBmpConvertKit.framework** : PNG/GIF图片转换库
+
+- **JLDialUnit.framework** ：屏幕/表盘操作库
+ 
+
+2. 功能实现参考
+================
+请查看当前文档。

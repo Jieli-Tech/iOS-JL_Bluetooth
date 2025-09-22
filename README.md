@@ -68,33 +68,48 @@
 iOS-JL_Bluetooth/
 ├── 📂 code/                          # 演示程序源码
 │   ├── 📦 Example of audio encoding and decoding V1.1.0.zip
-│   ├── 📂 JLAudioUnitKitDemo/        # 音频编解码示例项目
-│   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
-│   │   ├── 📱 JLAudioUnitKitDemo/    # Swift示例应用
-│   │   ├── 🎵 JLAudioUnitKit.framework # 音频处理框架
-│   │   ├── 🔧 Tools/                 # 音频工具类
-│   │   ├── 📺 ViewControllers/       # 视图控制器
-│   │   └── 🎛️ Views/                 # 自定义视图组件
-│   └── 📂 NewJieliZhiNeng/           # 主要示例项目
-│       ├── 🏗️ NewJieliZhiNeng.xcworkspace
+│   ├── 📂 JLAudioUnitKitDemo_V1.3.0_Beta1_20250827/ # 音频编解码示例项目 (最新版本)
+│   │   ├── 📂 code/JLAudioUnitKitDemo/
+│   │   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
+│   │   │   ├── 📱 JLAudioUnitKitDemo/    # Swift示例应用
+│   │   │   ├── 🎵 JLAudioUnitKit.xcframework # 音频处理框架
+│   │   │   ├── 📝 JLLogHelper.xcframework # 日志辅助框架
+│   │   │   └── 🔧 Pods/                  # 依赖库
+│   │   ├── 📂 docs/                      # 开发文档
+│   │   ├── 📂 libs/                      # 框架库
+│   │   └── 📄 readme.md                  # 项目说明
+│   └── 📂 JieLi_Home_Demo/           # 杰理之家主应用示例
+│       ├── 🏗️ NewJieliZhiNeng.xcworkspace # 主工作空间
 │       ├── 📱 NewJieliZhiNeng/       # iOS应用源码
-│       ├── 📚 Sources/               # 源代码文件
-│       └── 🔧 Pods/                  # 依赖库
+│       │   ├── 🎯 App设置/            # 应用设置模块
+│       │   ├── 🌐 Http接口/          # 网络接口
+│       │   ├── 🎵 多媒体/            # 多媒体功能
+│       │   ├── 🎤 卡拉OK/            # 卡拉OK功能
+│       │   ├── 📱 设备/              # 设备管理
+│       │   └── 🎛️ 音效/              # 音效处理
+│       ├── 🔧 Frameworks/            # 内置框架库
+│       ├── 📚 Sources/               # 资源文件
+│       ├── 🌍 Languages/             # 多语言支持
+│       └── 🔧 Pods/                  # CocoaPods依赖
 ├── 📂 docs/                          # 文档资源
-│   ├── 📖 JieLiBluetoothControlSDKDevelopmentInstructions(iOS)/
-│   ├── 📄 More/                      # 更多文档
-│   └── 📋 杰理之家SDK(iOS)发布记录.pdf
-└── 📂 libs/                          # 核心SDK库
-    ├── 🔗 JL_BLEKit.framework        # 蓝牙连接核心库
-    ├── 🔧 JL_OTALib.framework        # OTA升级库
-    ├── 🎵 JLDialUnit.framework       # 表盘处理库
-    ├── 🎵 JLAudioUnitKit.framework   # 音频编解码库
-    ├── 🖼️ JLBmpConvertKit.framework   # 图像转换库
-    ├── 🔐 JL_HashPair.framework      # 配对加密库
-    ├── 📡 JL_AdvParse.framework      # 广播解析库
-    ├── 📝 JLLogHelper.framework      # 日志辅助库
-    ├── 🎤 SpeexKit.framework         # 语音编解码库
-    └── 📦 third_party/               # 第三方依赖
+│   ├── 📖 JL_OTALib.framework API 说明.md
+│   ├── 📄 html/                      # HTML格式文档
+│   │   ├── 🏠 index.html             # 文档首页
+│   │   ├── 📁 Development/           # 开发指南
+│   │   ├── 📁 Framework/             # 框架说明
+│   │   └── 📁 Other/                 # 其他文档
+│   ├── 📋 杰理之家SDK(iOS)发布记录.pdf
+│   ├── 📄 杰理开放平台接入说明文档_V1.0.3.pdf
+│   └── 📦 设备规范文档/              # 设备使用规范
+└── 📂 libs/                          # 核心SDK库 (XCFramework格式)
+    ├── 🔗 JL_BLEKit.xcframework      # 蓝牙连接核心库
+    ├── 🔧 JL_OTALib.xcframework      # OTA升级库
+    ├── 🎵 JLDialUnit.xcframework     # 表盘处理库
+    ├── 🖼️ JLBmpConvertKit.xcframework # 图像转换库
+    ├── 📝 JLLogHelper.xcframework    # 日志辅助库
+    ├── 📦 JLPackageResKit.xcframework # 资源包处理库
+    ├── 🔍 JL_AdvParse.xcframework    # 广告解析库
+    └── 🔐 JL_HashPair.xcframework    # 哈希配对库
 ```
 
 ---
@@ -103,6 +118,7 @@ iOS-JL_Bluetooth/
 
 | 版本 | 发布日期 | 编辑者 | 主要更新 |
 |------|----------|--------|----------|
+|**v1.13.0** | 2025/07/18 | EzioChen | • 新增功能<br/>（1）增加彩屏仓功能的支持<br/>（2）增加屏幕亮度控制<br/>（3）增加屏幕保护程序控制<br/>（4）增加同步天气信息 |
 | **v1.12.0** | 2024/11/22 | EzioChen | • 增加兼容 AC707N 的自定义表盘图像转换<br/>• 分离图像转换工具作为独立模块库 |
 | **v1.11.0** | 2024/03/15 | EzioChen | • 新增表盘拓展参数和补充 AI 表盘流程；<br/>• 增加 4G 模块 OTA 功能<br/>• 修复已知问题 |
 | **v1.10.0** | 2023/11/23 | EzioChen | • 新增TWS耳机一拖二功能和接口<br/>• 支持芯片JL701N v1.0.0_patch_06<br/>• 修复已知问题 |

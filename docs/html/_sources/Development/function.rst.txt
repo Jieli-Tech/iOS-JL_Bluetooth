@@ -1,0 +1,3914 @@
+2.功能模块说明
+****************
+
+2.1 基础功能
+=================
+
+.. note:: 
+    1.下列中的数据模型可以通过SDK查看
+
+    2.本文档只展示部分重要数据模型
+
+* 获取系统/状态信息模型
+    * :func:`JLModel_Device` 系统信息变更/状态获取，都是通过该模型获取
+
+
+* 闹钟相关模型
+    * :func:`JLModel_Ring` 闹钟铃声模型
+    * :func:`JLModel_AlarmSetting` 闹钟设置模型
+    * :func:`RTC_RingInfo` 闹钟铃声详情模型，部分设备不支持，需要考虑过固件实际版本
+    * :func:`JLModel_RTC` 闹钟RTC模型
+
+* 设备文件模型
+    * :func:`JLModel_File` 文件模型，此功能用于文件浏览/播放等一系列的文件操作相关功能
+
+* 设备FM模型
+    * :func:`JLModel_FM` FM模型
+ 
+* TWS耳机参数模型
+   * :func:`JLModel_Headset` TWS耳机参数模型 
+
+* 蓝牙相关参数模型
+   * :func:`JLModel_BT` 蓝牙相关参数模型
+
+* 均衡调试器模型
+   * :func:`JLModel_EQ` 均衡调试器模型
+
+* 设备降噪模型
+    * :func:`JLModel_ANC` 设备降噪模型
+
+* 设备灯光模式模型
+    * :func:`JL_LightMode` 设备灯光模式模型
+
+* 设备灯光情景模式模型
+    * :func:`JL_LightSceneMode` 设备灯光情景模式模型
+
+* 设备Flash操作模型
+    * :func:`JLModel_Flash` 设备Flash操作模型
+
+* 设备耳机模型
+    * :func:`JLModel_Headset` 设备耳机模型
+
+* 设备Speex模型
+    * :func:`JLModel_SPEEX` 设备Speex模型
+
+* 设备智能免摘的耳机管理模型
+    * :func:`JLModelSmartPickFree` 设备智能免摘的耳机管理模型
+
+* TWS场景降噪模型
+    * :func:`JLModelSceneNoiseReduction` TWS场景降噪模型
+
+* TWS风噪检测模型
+    * :func:`JLModelNoiseDetection` TWS风噪检测模型
+
+* TWS人声增强模型
+    * :func:`JLModelVocalBoost` TWS人声增强模型
+
+* 模式使能位的模型
+    * :func:`JLModelDevFunc` 模式使能位的模型
+
+* 存储管理的模型
+    * :func:`JLModelCardInfo` 存储管理的模型
+
+* 文件结构的模型
+    * :func:`JLModelFileStruct` 文件结构的模型
+
+* Spdif的模型
+    * :func:`JLModelSPdif` Spdif的模型
+
+* PC模式的模型
+    * :func:`JLModelPCServer` PC模式的模型
+
+2.1.1 请求设备信息
+--------------------
+
+获取设备的基础信息，包括设备电量、设备各个模块状态、所处模式等。
+
+示例代码：
+
+.. code-block:: objective-c
+
+     /*--- 获取设备信息 ---*/
+    [self.mBleEntityM.mCmdManager cmdTargetFeatureResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        JL_CMDStatus st = status;
+        if (st == JL_CMDStatusSuccess) {
+            JLModel_Device *device = [elf.mBleEntityM.mCmdManager outputDeviceModel];
+            NSLog(@"设备信息：%@", device);
+        }
+    }];
+
+2.1.2 查询设备系统信息
+----------------------------
+获取设备系统的信息内容，为后续操作提供基础信息。
+
+示例代码：
+
+.. code-block:: objective-c
+    
+    /*--- 查询设备系统信息 ---*/
+    [wSelf.mBleEntityM.mCmdManager cmdGetSystemInfo:JL_FunctionCodeCOMMON
+                                             Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) 
+     {
+        JL_CMDStatus st = status;
+        if (st == JL_CMDStatusSuccess) {
+            JLModel_SystemInfo *systemInfo = [elf.mBleEntityM.mCmdManager outputSystemInfoModel];
+            NSLog(@"设备系统信息：%@", systemInfo);
+        }
+    }];
+
+
+2.1.3 监听设备状态信息
+-----------------------------
+
+对于设备的状态信息变化，可通过KVO监听设备的状态信息变化，并获取设备的状态信息。
+
+示例代码：
+
+.. code-block:: objective-c
+    
+    /*--- 监听设备状态信息 ---*/
+    -(void)addNote{
+        [JLModel_Device observeModelProperty:@"currentFunc" Action:@selector(noteCurrentFunction:) Own:self];
+    }
+
+    -(void)noteCurrentFunction:(NSNotification*)note{
+        BOOL isOK = [JL_RunSDK isCurrentDeviceCmd:note];
+        if (isOK == NO) return;
+        
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *devel = [entity.mCmdManager outputDeviceModel];
+        if (devel.currentFunc == JL_FunctionCodeBT) {
+        
+        }else{
+            NSLog(@"关闭手机所有音乐.");
+        
+        }
+        
+    }
+
+
+2.1.4 切换设备模式
+------------------------
+
+示例代码：
+
+.. code-block:: objective-c
+    
+    /*--- 切换设备模式 ---*/
+   -(void)changeDeviceMode:(JL_FunctionCode)code{
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    [entity.mCmdManager cmdFunction:JL_FunctionCodeCOMMON Command:code Extend:0x00 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+            if (code == JL_FunctionCodeBT) {
+
+                LocalMusicVC *vc = [[LocalMusicVC alloc] init];
+                vc.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:vc animated:YES completion:nil];
+            }
+            if (code == JL_FunctionCodeFM) {
+                [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeFM Result:nil];
+            }
+            if (code == JL_FunctionCodeFMTX) {
+                [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeFMTX Result:nil];
+            }
+        }];
+    }
+
+
+2.2 音量控制功能
+=======================
+
+2.2.1 设备音量设置
+--------------------
+
+2.2.2 示例代码
+-----------------
+
+.. code-block:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mSystemVolume cmdSetSystemVolume:10 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {            
+       JL_CMDStatus state = status;
+       if(state == JL_CMDStatusFail){
+            //[DFUITools showText:kJL_TXT("settings_failed") onView:self delay:1.0];
+       }
+    }];
+
+
+2.3 设备音乐控制
+=======================
+
+2.3.1 功能描述
+----------------
+
+    当设备处于播放SD卡或U盘/TF卡时，手机端进行控制时用到
+    
+
+2.3.2 示例代码
+----------------
+
+.. code-block:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mMusicControlManager cmdFastPlay:JL_FCmdMusicFastBack
+                                            Second:(uint16_t)fabsf((pg * f_tott - f_curt))
+                                            Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data)  {
+        //progress_sec = (int)(f_tott*pg);
+        //NSLog(@"---------------> To Progress Second: %d",progress_sec);
+
+        if (sv_tott > 60*60) {
+            [JL_Tools delay:0.6 Task:^{
+                NSLog(@"----> delay get music progess 0");
+                [self getDeviceMusicProgress];
+            }];
+        }else{
+            [self getDeviceMusicProgress];
+        }
+   }];
+
+
+2.3.3 相关接口
+----------------
+
+.. code:: objectivec
+
+   typedef NS_ENUM(UInt8, JL_FCmdMusic) {
+       JL_FCmdMusicPP                  = 0x01, //PP按钮
+       JL_FCmdMusicPREV                = 0x02, //上一曲
+       JL_FCmdMusicNEXT                = 0x03, //下一曲
+       JL_FCmdMusicMODE                = 0x04, //切换播放模式
+       JL_FCmdMusicEQ                  = 0x05, //EQ
+       JL_FCmdMusicFastBack            = 0x06, //快退
+       JL_FCmdMusicFastPlay            = 0x07, //快进
+   };
+
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_MusicControlManager : JL_FunctionBaseManager
+
+   #pragma mark ---> 设置播放模式
+   /**
+    @param mode 模式
+    0x01:全部循环; 0x02:设备循环; 0x03:单曲循环; 0x04:随机播放; 0x05:文件夹循环
+    */
+   -(void)cmdSetSystemPlayMode:(JL_MusicMode)mode; // 该接口已废弃
+
+   #pragma mark ---> 快进快退
+   /**
+    @param cmd 快进或者快退枚举
+    @param sec 时间
+    @param result 返回结果
+    */
+   -(void)cmdFastPlay:(JL_FCmdMusic)cmd
+               Second:(uint16_t)sec
+               Result:(JL_CMD_RESPOND __nullable)result; // 该接口已废弃
+
+   @end
+
+ 
+为推行更方便使用的API，当前类将会被废弃，使用新的类： **JLDevPlayerCtrl** 来接替；
+区别在于当前类是存在于 `JL_ManagerM` 类初始化生成而， `JLDevPlayerCtrl` 则是基于实例类，在开发者有需要时即时生成。
+
+.. code:: objective-c
+
+    /// 播放器回调
+    @protocol JLDevPlayerCtrlDelegate<NSObject>
+
+    /// 播放状态
+    /// - Parameters:
+    ///   - ctrl: 播放器
+    ///   - playMode: 播放模式
+    -(void)jlDevPlayerCtrl:(JLDevPlayerCtrl *)ctrl playMode:(uint8_t)playMode;
+
+    /// 播放状态回调
+    /// - Parameters:
+    ///   - ctrl: 播放器
+    ///   - status: 播放状态
+    ///   - card: 当前播放的设备
+    ///   - time: 当前播放的时间
+    ///   - total: 总时长
+    -(void)jlDevPlayerCtrl:(JLDevPlayerCtrl *)ctrl playStatus:(uint8_t)status currentCard:(uint8_t)card currentTime:(uint32_t)time tolalTime:(uint32_t)total;
+
+    /// 播放文件回调
+    /// - Parameters:
+    ///   - ctrl: 播放器
+    ///   - name: 文件名
+    ///   - clus: 文件簇号
+    -(void)jlDevPlayerCtrl:(JLDevPlayerCtrl *)ctrl fileName:(NSString *)name currentClus:(uint32_t)clus;
+
+    @end
+
+
+    /// 设备播放器管理类
+    @interface JLDevPlayerCtrl : JLCmdBasic
+
+    /// 播放状态
+    @property(nonatomic,assign)uint8_t playStatus;
+
+    /// 当前播放的设备
+    /// 0x00 : USB
+    /// 0x01 : SD_0
+    /// 0x02 : SD_1
+    /// 0x03 : FLASH
+    /// 0x04 : LineIn
+    /// 0x05 : FLASH2
+    @property(nonatomic,assign)uint8_t currentCard;
+
+    /// 当前播放时间
+    @property(nonatomic,assign)uint32_t currentTime;
+
+    /// 歌曲总时长
+    @property(nonatomic,assign)uint32_t tolalTime;
+
+    /// 当前播放文件名
+    @property(nonatomic,strong)NSString *fileName;
+
+    /// 当前播放文件的簇号
+    @property(nonatomic,assign)uint32_t currentClus;
+
+    /// 当前播放模式
+    ///  0x01:全部循环;
+    ///  0x02:设备循环;
+    ///  0x03:单曲循环;
+    ///  0x04:随机播放;
+    ///  0x05:文件夹循环
+    @property (nonatomic,assign)uint8_t playMode;
+
+    /// 代理
+    @property(nonatomic,weak)id<JLDevPlayerCtrlDelegate> delegate;
+
+    /// 操控设备播放器设置
+    /// - Parameters:
+    ///   - cmd: 操作命令
+    ///    0x01：PP按钮
+    ///    0x02：上一曲
+    ///    0x03：下一曲
+    ///    0x04：切换播放模式(当前播放模式：不可指定，设备播放模式自增）
+    ///    0x05：EQ
+    ///    0x06：快退
+    ///    0x07：快进
+    ///   - sec: 时间（当快进/快退时需要，其他功能时值为0）
+    ///   - manager: 设备对象
+    ///   - result: 返回结果
+    -(void)cmdPlayerCtrl:(uint8_t)cmd
+                Second:(uint16_t)sec
+                Manager:(JL_ManagerM *)manager
+                Result:(JL_CMD_RESPOND __nullable)result;
+
+
+2.3.3.1 使用范例
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objective-c
+
+    @objcMembers class MediasFuncsView: JLDevPlayerCtrlDelegate {
+       private var devCtrl = JLDevPlayerCtrl()
+       devCtrl.delegate = self
+
+       func jlDevPlayerCtrl(_ ctrl: JLDevPlayerCtrl, playMode: UInt8) {
+          print("playMode:\(playMode)")
+       }
+    
+       func jlDevPlayerCtrl(_ ctrl: JLDevPlayerCtrl, playStatus status: UInt8, currentCard card: UInt8, currentTime time: UInt32, tolalTime total: UInt32) {
+        guard let model = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager.getDeviceModel() else{return}
+        self.updateWith(model: model)
+      }
+    
+      func jlDevPlayerCtrl(_ ctrl: JLDevPlayerCtrl, fileName name: String, currentClus clus: UInt32) {
+         print("fileName:\(fileName)")
+         print("currentClus:\(currentClus)")
+      }
+     }
+
+     //设备播放器管理类的属性，都是通过固件的更新的命令，获取相应更新的值。
+     JLDevPlayerCtrl *devPlayer = [[JLDevPlayerCtrl alloc] init];
+     - (IBAction)actionMode:(id)sender {
+      JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+      JLModel_Device *model = [entity.mCmdManager getDeviceModel];
+      if(model.currentFunc == JL_FunctionCodeMUSIC){
+        JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+        [devPlayer cmdPlayerCtrl:0x04 Second:0 Manager:bleSDK.mBleEntityM.mCmdManager Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {    
+        }];
+      }
+ }
+
+
+2.4 均衡器调试功能
+=========================
+2.4.1 功能描述
+--------------
+
+    均衡器调试功能，对设备的EQ进行设置
+    
+
+2.4.2 示例代码
+--------------
+
+2.4.2.1 系统EQ调试
+^^^^^^^^^^^^^^^^^^^^^^ 
+
+.. code-block:: objective-c
+
+ ///  当前EQ模式
+ @property (assign,nonatomic) JL_EQMode eqMode;
+
+ /// EQ段数类型
+ @property (assign,nonatomic) JL_EQType eqType;
+
+ /// EQ参数值
+ /// （只适用于EQ Mode == CUSTOM情况）
+ @property (strong,  nonatomic) NSArray *eqArray;
+
+ /// 自定义 EQ数组
+ @property (strong,  nonatomic) NSArray *eqCustomArray;
+
+ /// EQ频率
+ @property (strong,  nonatomic) NSArray *eqFrequencyArray;
+
+ /// EQ的预设值数组
+ @property (strong,nonatomic) NSArray <JLModel_EQ*> *eqDefaultArray;
+
+   /**
+   设置系统EQ
+   @param eqMode EQ模式
+   @param params EQ参数(10个参数,仅适用于JL_EQModeCUSTOM情况)
+   */
+   +(void)cmdSetSystemEQ:(JL_EQMode)eqMode Params:(NSArray* __nullable)params;
+
+   /// 查询系统EQ内容
+   -(void)cmdGetSystemEQ:(JLSystemEQResult)result;
+
+   ///  当前EQ模式
+    @property (assign,nonatomic) JL_EQMode eqMode;
+
+    /// EQ段数类型
+    @property (assign,nonatomic) JL_EQType eqType;
+
+2.4.2.2 设置混响/限幅
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+设置混响以及限幅值时需要先判断设备是否支持。
+
+.. code:: objective-c
+
+    JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+    int type = -1; //0:支持混响和限幅器 1：只支持混响 2：只支持限幅器
+    if(model.reverberationTypes.count==2  && [model.reverberationTypes containsObject:@(JL_ReverberationAndDynamicType)] //支持混响和限幅器
+       && [model.reverberationTypes containsObject:@(1)]){
+        type = 0;
+    }
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyReverberationType)]) {//只支持混响
+        type = 1;
+    }
+    if(model.reverberationTypes.count==1  && [model.reverberationTypes containsObject:@(JL_OnlyDynamicLimiterType)]) {//只支持限幅器
+        type = 2;
+    }
+
+
+
+`JL_BinChargeManager` 使用的接口如下：
+
+.. code:: objectivec
+
+    /// 设置混响值
+    /// @param depthValue 深度 0-100
+    /// @param intensityValue 强度 0-100
+    /// @param dynamicLimiterValue 动态限幅值 -60 - 0
+    /// @param reverOn 是否开启
+    /// @param type 混响类型
+    -(void)cmdSetReverberation:(int)depthValue
+                IntensityValue:(int)intensityValue
+        DynamicLimiterValue:(int)dynamicLimiterValue
+            SwtichReverState:(int)reverOn
+                    FunType:(JL_ReverberationFunType)type;
+
+
+2.4.2.3 使用范例
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   // 设置系统EQ
+   -(void)cmdSetSystemEQ{
+     JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+     NSArray *eqArray = [@(2),@(3),@(2),@(2),@(8)];
+     [bleSDK.mBleEntityM.mCmdManager.mSystemEQ cmdSetSystemEQ:JL_EQModeCUSTOM Params:eqArray];
+   }
+
+   // 查询系统EQ内容
+   -(void)cmdGetSystemEQ{
+        JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+        [bleSDK.mBleEntityM.mCmdManager.mSystemEQ cmdGetSystemEQ:^(JL_CMDStatus status, JL_SystemEQ * _Nullable model) {        
+    }];
+    }
+
+   // 设置混响值
+   JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+   int depthValue = 50; //范围是0到100
+   int intensityValue = 70; //范围是0到100
+   int dynamicLimiterValue = -30; //范围是-60到0
+   bool switchState = NO; //混响的开关
+   int type = JL_OnlyReverberationType //支持JL_ReverberationAndDynamicType、JL_OnlyReverberationType、JL_OnlyDynamicLimiterType三种类型
+   [bleSDK.mBleEntityM.mCmdManager.mChargingBinManager cmdSetReverberation:[depthValue]
+                                         IntensityValue:[intensityValue]
+                                    DynamicLimiterValue:[dynamicLimiterValue]
+                                       SwtichReverState:switchState FunType:type];
+
+
+2.5 时钟功能
+========================
+2.5.1 功能描述
+--------------
+
+    同步闹钟设备、管理闹钟包括：读取、修改、删除
+
+
+2.5.2 使用demo
+-------------------
+
+2.5.2.1 同步时间
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objective-c
+
+    //在JLManagerM -> JL_SystemTime -> cmdSetSystemTime
+     /*--- 同步时间戳 ----*/
+    NSLog(@"--->(2) SET Device time.");
+    NSDate *date = [NSDate new];
+    JL_SystemTime *systemTime = self.mBleEntityM.mCmdManager.mSystemTime;
+    [systemTime cmdSetSystemTime:date];
+
+
+
+2.5.2.2 读取闹钟
+^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeRTC SelectionBit:0xF2 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+       //TODO: do something...
+       //拿到的itemArray去做闹钟列表的数据展示
+   }];
+
+
+2.5.2.3 修改闹钟
+^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+
+   //新建一个闹钟
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];
+   rtcmodel.rtcName = kJL_TXT("闹钟");
+   NSDateFormatter *formatter = [NSDateFormatter new];
+   formatter.dateFormat = @"yyyy:MM:DD:HH:mm:ss";
+   NSString *nowStr = [formatter stringFromDate:[NSDate new]];
+   NSArray *timeArr = [nowStr componentsSeparatedByString:@":"];
+   rtcmodel.rtcYear = [timeArr[0] intValue];
+   rtcmodel.rtcMonth = [timeArr[1] intValue];
+   rtcmodel.rtcDay = [timeArr[2] intValue];
+   rtcmodel.rtcHour = [timeArr[3] intValue];
+   rtcmodel.rtcMin = [timeArr[4] intValue];
+   rtcmodel.rtcSec = [timeArr[5] intValue];
+   rtcmodel.rtcMode = 0x00;//响铃类型
+   rtcmodel.rtcEnable = YES;
+   rtcmodel.rtcIndex = 0;//当前闹钟编号
+
+   //一般而言可以通过上述的读取闹钟方法，获取到设备当前所有闹钟，然后根据对应的rtcIndex进行设置
+   //JLModel_RTC *rtcmodel = // cmdGetSystemInfo: SelectionBit: Result:
+
+   JLModel_Device *device = [entity.mCmdManager outputDeviceModel];//获取设备属性详情
+   if (device.rtcDfRings.count>0) {//当设备支持自定义闹铃时
+       JLModel_Ring *ring = device.rtcDfRings[0];//设备所带默认闹铃声音
+       rtcmodel.ringInfo = [RTC_RingInfo new];
+       rtcmodel.ringInfo.type = 0;//闹铃类型：默认或自定义
+       rtcmodel.ringInfo.dev = 0;//铃声存放位置，详情可参考
+       rtcmodel.ringInfo.clust = 0;//自定义闹铃文件簇号
+       rtcmodel.ringInfo.data = [ring.name dataUsingEncoding:NSUTF8StringEncoding];//铃声名字
+       rtcmodel.ringInfo.len = (uint8_t)self.rtcmodel.ringInfo.data.length;//铃声的名字文件长度
+           }
+           //当前闹铃设置包含新增或修改一个/多个的闹铃
+      [entity.mCmdManager.mAlarmClockManager cmdRtcSetArray:@[rtcmodel] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+           //TODO: 返回当前设备的闹铃个数，to do something...
+      }];
+
+2.5.2.4 删除闹钟
+^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JLModel_RTC *rtcmodel = //.... 通过获取设备闹钟得到某个闹钟
+   //JLModel_RTC
+   int rtcIndex = rtcmodel.rtcIndex;//闹钟序号
+     JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+       [entity.mCmdManager.mAlarmClockManager cmdRtcDeleteIndexArray:@[@(rtcIndex)] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data){
+           JL_CMDStatus state = (UInt8)[array[0] intValue];
+           if(state == JL_CMDStatusSuccess){
+               //TODO: do something...
+           }
+           if(state == JL_CMDStatusFail){
+               //ERR: delete failed
+           }
+       }];
+
+2.5.2.5 获取默认铃声选择列表
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+   NSArray *defaultRings =  model.rtcDfRings;
+
+2.5.2.6 闹钟铃声试听
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];//构建或者从设备获取
+   JLModel_Ring *ring = //闹铃对象，通过获取默认或新建;
+   rtcModel.ringInfo.type = 0;//类型
+   /*
+   typedef NS_ENUM(UInt8, JL_CardType) {
+       JL_CardTypeUSB                  = 0, //USB
+       JL_CardTypeSD_0                 = 1, //SD_0
+       JL_CardTypeSD_1                 = 2, //SD_1
+       JL_CardTypeFLASH                = 3, //FLASH
+       JL_CardTypeLineIn               = 4, //LineIn
+       JL_CardTypeFLASH2               = 5, //FLASH2
+   };
+   */
+   rtcModel.ringInfo.dev = JL_CardTypeUSB;//响铃内容来自哪儿
+   rtcModel.ringInfo.clust = ring.index;//文件簇号
+   rtcModel.ringInfo.data = [ring.name dataUsingEncoding:NSUTF8StringEncoding];//文件名
+   rtcModel.ringInfo.len = rtcModel.ringInfo.data.length;//文件长度
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mAlarmClockManager cmdRtcAudition:rtcModel Option:YES result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+   }];
+
+2.5.2.7 停止铃声试听
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mAlarmClockManager cmdRtcStopResult:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+   }];
+
+2.5.2.8 获取闹铃模式设置
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   @interface JLModel_AlarmSetting : NSObject
+   @property(assign,nonatomic)uint8_t index;       //Index of the alarm clock
+   @property(assign,nonatomic)uint8_t isCount;     //Whether the [alarm times] can be set
+   @property(assign,nonatomic)uint8_t count;       //The alarm number
+   @property(assign,nonatomic)uint8_t isInterval;  //Whether the [time interval] can be set
+   @property(assign,nonatomic)uint8_t interval;    //The time interval
+   @property(assign,nonatomic)uint8_t isTime;      //Whether the [time length] can be set
+   @property(assign,nonatomic)uint8_t time;        //Length of time
+   -(NSData*)dataModel;
+   @end
+
+    -(void)getAlarmModelSetting{
+       JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+       JL_ManagerM *mCmdManager = bleSDK.mBleEntityM.mCmdManager;
+       JLModel_Device *model = [mCmdManager outputDeviceModel];
+
+       // 是否支持闹钟设置
+       if (model.rtcAlarmType == YES) {
+         //itemArray是指从读取闹钟里获取到闹钟列表
+         JLModel_RTC *rtcModel = itemArray[0];
+         uint8_t bit = 0x01;
+         uint8_t bit_index = bit << rtcModel.rtcIndex;
+   /**
+    @param operate 0x00:读取 0x01:设置
+    @param index  掩码
+   //Bit0：闹钟0
+   //Bit1：闹钟1
+   //Bit1：闹钟2
+   //Bit1：闹钟3
+   //Bit1：闹钟4
+   如下所示：
+   0b0000 0001：设置闹钟0
+   0b0000 0011：设置闹钟0和闹钟1（其他同理）
+   当如要设置0 3 4闹钟，则index= 0x19
+   如要设置1 2 闹钟，则index = 0x06
+    @param setting 设置选项，读取时无需传入
+    @param result 回复
+    */
+   [mCmdManager.mAlarmClockManager cmdRtcOperate:JL_FlashOperateFlagRead Index:bit_index Setting:nil
+                               Result:^(NSArray<JLModel_AlarmSetting *> * _Nullable array, uint8_t flag) {
+                   }];
+       }
+   }
+
+2.5.2.9 设置闹铃模式
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   @interface JLModel_RTC : NSObject
+   @property (assign,nonatomic) uint16_t       rtcYear; //年
+   @property (assign,nonatomic) uint8_t        rtcMonth;//月
+   @property (assign,nonatomic) uint8_t        rtcDay; //日
+   @property (assign,nonatomic) uint8_t        rtcHour;//时
+   @property (assign,nonatomic) uint8_t        rtcMin; //分
+   @property (assign,nonatomic) uint8_t        rtcSec; //秒
+   @property (assign,nonatomic) BOOL           rtcEnable; //开启关闭
+   //模式：
+   /*
+   情况1:
+   mode=0:只响一次
+   情况2:
+   Bit0:每天
+   Bit1：星期一
+   Bit2：星期二
+   Bit3：星期三
+   Bit4：星期四
+   Bit5：星期五
+   Bit6：星期六
+   Bit7：星期天
+   */
+   @property (assign,nonatomic) uint8_t        rtcMode;
+   @property (assign,nonatomic) uint8_t        rtcIndex; //序号
+   @property (copy  ,nonatomic) NSString       *rtcName; //名称
+   @property (strong,nonatomic) RTC_RingInfo   *ringInfo;//详情
+   @property (strong,nonatomic) NSData         *RingData;//响铃数据
+   @end
+
+   @interface RTC_RingInfo : NSObject
+   //类型：0 ：默认  1：外置
+   @property (assign,nonatomic) uint8_t type;
+   //存放位置
+   /*
+   typedef NS_ENUM(UInt8, JL_CardType) {
+       JL_CardTypeUSB                  = 0, //USB
+       JL_CardTypeSD_0                 = 1, //SD_0
+       JL_CardTypeSD_1                 = 2, //SD_1
+       JL_CardTypeFLASH                = 3, //FLASH
+       JL_CardTypeLineIn               = 4, //LineIn
+       JL_CardTypeFLASH2               = 5, //FLASH2
+   };
+   */
+   @property (assign,nonatomic) uint8_t  dev;
+   //文件簇号
+   @property (assign,nonatomic) uint32_t clust;
+   //铃声名字长度
+   @property (assign,nonatomic) uint8_t len;
+   //铃声名字内容
+   @property (strong,nonatomic) NSData *data;
+   @end
+
+   //响铃周期模式设置
+   -(uint8_t)rtcmode{
+   NSArray *array = @[@1,@3,@5];
+   uint8_t mode = 0x00;
+       if (array.count > 0) {
+           for (NSString *num in array) {
+               uint8_t tmp = 0x01;
+               int n = [num intValue];
+               uint8_t tmp_n = tmp<<n;
+               mode = mode|tmp_n;
+           }
+       }else{
+           mode = 0x01;
+       }
+       return mode;
+   }
+   //新建闹钟
+   JLModel_RTC *rtcmodel = [JLModel_RTC new];
+   //响铃周期模式设置
+   rtcmodel.rtcMode = [self rtcmode];
+   //接口声明
+   #pragma mark ---> 闹铃设置
+   /**
+    @param operate 0x00:读取 0x01:设置
+    @param index 掩码
+   //Bit0：闹钟0
+   //Bit1：闹钟1
+   //Bit1：闹钟2
+   //Bit1：闹钟3
+   //Bit1：闹钟4
+   如下所示：
+   0b0000 0001：设置闹钟0
+   0b0000 0011：设置闹钟0和闹钟1（其他同理）
+   当如要设置0 3 4闹钟，则index= 0x19
+   如要设置1 2 闹钟，则index = 0x06
+    @param setting 设置选项，读取时无需传入
+    @param result 回复
+    */
+   -(void)cmdRtcOperate:(JL_RtcOperate)operate
+                  Index:(uint8_t)index
+                  Setting:(JLModel_AlarmSetting* __nullable)setting
+                  Result:(JL_RTC_ALARM_BK __nullable)result;
+
+   -(void)setRingModel{
+       JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+
+       //可以新建
+       JLModel_AlarmSetting *setting = [JLModel_AlarmSetting new];
+       setting.index = index;
+       setting.isCount = 1;
+       setting.count = mCount;
+       setting.isInterval = 1;
+       setting.interval = mInterval;
+       setting.isTime = 1;
+       setting.time = mTime;
+
+       //也可以通过上面的方式获取闹铃模式后，使用该模式进行设置
+
+       NSLog(@"闹钟Index ---> %d count:%d interval:%d time:%d",index,mCount,mInterval,mTime);
+       [entity.mCmdManager.mAlarmClockManager cmdRtcOperate:JL_FlashOperateFlagWrite Index:index Setting:setting
+                                  Result:^(NSArray<JLModel_AlarmSetting *> * _Nullable array, uint8_t flag)
+       {
+           if (flag == 0) NSLog(@"设置闹钟成功");
+       }];
+   }
+
+2.5.2.10 闹钟正在响或则闹钟停止响
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   extern NSString *kJL_RTC_RINGING;       //闹钟正在响
+   extern NSString *kJL_RTC_RINGSTOP;      //闹钟停止响
+
+2.5.2.11 停止闹钟响声回调
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   停止闹钟响声
+   @param result 回复
+   */
+   +(void)cmdRtcStopResult:(JL_CMD_BK)result;
+
+2.5.2.11.1 使用范例
+####################
+
+.. code:: objectivec
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    [entity.mCmdManager.mAlarmClockManager cmdRtcStopResult:nil];
+
+2.6 外接设备控制功能
+============================
+2.6.1 功能描述
+----------------
+
+   切换到Linein模式,以及LineIn模式下的操作
+    
+
+2.6.2 示例代码
+----------------
+
+.. code-block:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    [entity.mCmdManager cmdFunction:JL_FunctionCodeCOMMON Command:JL_FunctionCodeLINEIN Extend:0x00 Result:nil]; //切换到Linein模式
+    [entity.mCmdManager cmdGetSystemInfo:JL_FunctionCodeLINEIN Result:nil]; //获取Linein模式下的信息
+    //设置Linein下的播放和暂停
+    [entity.mCmdManager cmdFunction:JL_FunctionCodeLINEIN Command:JL_FCmdLineInPP Extend:0 Result:nil];
+
+
+2.6.3 注意事项
+----------------
+
+获取LineIn的状态，通过\ **JL_ManagerM**
+的\ **outputDeviceModel**\ 方法，其中的属性
+
+/*— LineIn Info —*/
+
+**@property** (**assign**,\ **nonatomic**) JL_LineInStatus lineInStatus;
+//LineIn状态
+
+
+2.7 FM控制功能
+===============================
+2.7.1 功能描述
+--------------
+
+    控制固件收音机模块的相关操作\ **FM相关操作**
+    
+
+2.7.2 相关接口
+--------------
+
+.. code-block:: objective-c
+
+    typedef NS_ENUM(UInt8, JL_FCmdFM) {
+       JL_FCmdFMPP                     = 0x01, //FM 暂停/播放
+       JL_FCmdFMPonitBefore            = 0x02, //上一个频点
+       JL_FCmdFMPonitNext              = 0x03, //下一个频点
+       JL_FCmdFMChannelBefore          = 0x04, //上一个频道
+       JL_FCmdFMChannelNext            = 0x05, //下一个频道
+       JL_FCmdFMSearch                 = 0x06, //扫描
+       JL_FCmdFMChannelSelect          = 0x07, //选择频道
+       JL_FCmdFMChannelDelete          = 0x08, //删除频道
+       JL_FCmdFMFrequencySelect        = 0x09, //选择频点
+       JL_FCmdFMFrequencyDelete        = 0x0a, //删除频点
+   };
+
+   typedef NS_ENUM(UInt8, JL_FMSearch) {
+       JL_FMSearchALL                  = 0x00, //FM 暂停/播放
+       JL_FMSearchForward              = 0x01, //向前搜索
+       JL_FMSearchBackward             = 0x02, //向后搜索
+       JL_FMSearchStop                 = 0x03, //停止搜索
+   };
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_FmManager : JL_FunctionBaseManager
+    ///Fm状态
+    @property (assign,nonatomic) JL_FMStatus        fmStatus;
+
+    ///Fm 频段范围
+    ///76.5-108.0Mhz
+    ///87.5-108.0Mhz
+    @property (assign,nonatomic) JL_FMMode          fmMode;
+
+    ///当前fm
+    @property (strong,nonatomic) JLModel_FM          *currentFm;
+
+    ///Fm列表
+    @property (strong,nonatomic) NSArray            *fmArray;
+
+    #pragma mark ---> FM相关操作
+    /**
+    @param cmd FM功能
+    @param search FM搜索
+    @param channel FM频道
+    @param frequency FM频点
+    @param result 返回结果
+    */
+    -(void)cmdFm:(JL_FCmdFM)cmd
+        Saerch:(JL_FMSearch)search
+        Channel:(uint8_t)channel
+    Frequency:(uint16_t)frequency
+        Result:(JL_CMD_RESPOND __nullable)result;
+    @end
+
+2.7.3 示例代码
+--------------
+
+.. code-block:: objective-c
+
+    ///上一个节点
+   - (void)btn_lastPoint {
+       JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+       JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+       if (model.currentFunc == JL_FunctionCodeFM) {
+           [entity.mCmdManager.mFmManager cmdFm:JL_FCmdFMChannelBefore
+                      Saerch:0x00 Channel:0x00
+                   Frequency:0x00 Result:nil];
+       }
+   }
+
+2.8 灯光控制功能
+============================
+2.8.1 功能描述
+----------------------
+
+    设备设置灯光相关的内容
+    
+
+2.8.2 相关接口
+----------------
+
+
+.. code:: objectivec
+
+   NS_ASSUME_NONNULL_BEGIN
+
+   @interface JL_LightManager : JL_FunctionBaseManager
+
+   #pragma mark ---> 设置灯光
+   /**
+    *  设置灯光
+    *  @param lightState 灯光状态
+    *  @param lightMode 灯光模式
+    *  @param red 红色色值
+    *  @param green 绿色色值
+    *  @param blue 蓝色色值
+    *  @param flashIndex 闪烁模式index
+    *  @param flashFreqIndex 闪烁频率
+    *  @param sceneIndex 情景模式
+    *  @param hue 色调，范围0-360
+    *  @param saturation 饱和度，0-100
+    *  @param lightness 亮度，0-100
+    */
+   -(void)cmdSetState:(JL_LightState)lightState
+                 Mode:(JL_LightMode)lightMode
+                  Red:(uint8_t)red
+                Green:(uint8_t)green
+                 Blue:(uint8_t)blue
+            FlashInex:(JL_LightFlashModeIndex)flashIndex
+            FlashFreq:(JL_LightFlashModeFrequency)flashFreqIndex
+           SceneIndex:(JL_LightSceneMode)sceneIndex
+                  Hue:(uint16_t)hue
+           Saturation:(uint8_t)saturation
+            Lightness:(uint8_t)lightness;
+
+   @end
+
+2.8.3 示例代码
+----------------
+
+.. code:: objectivec
+
+   #pragma mark 发送命令给固件
+   -(void)sendMessageLightState:(int )lightState withLightMode:(int) lightMode{
+
+      COLOR_HSL hsl = {360*(sliderSewen_0.value),100*(sliderSewen_1.value),100*(sliderSewen_2.value)};
+      COLOR_RGB rgb = {0,0,0};
+      HSLtoRGB(&hsl, &rgb);
+      
+      btnColor.backgroundColor = kDF_RGBA(rgb.red, rgb.green, rgb.blue, 1.0);
+      addColor = kDF_RGBA(rgb.red, rgb.green, rgb.blue, 1.0);
+      
+      float hue = 360*(sliderSewen_0.value);
+      float saturation = 100*(sliderSewen_1.value);
+      float lightness = 100*(sliderSewen_2.value);
+
+      JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+      [bleSDK.mBleEntityM.mCmdManager.mLightManager cmdSetState:lightState Mode:lightMode
+                                              Red:rgb.red Green:rgb.green Blue:rgb.blue
+                                        FlashInex:flashIndex FlashFreq:freqenyIndex SceneIndex:sceneIndex
+                                              Hue:hue Saturation:saturation Lightness:lightness];
+   }
+
+2.9 ID3信息控制功能
+================================
+
+设备通过ID3向APP发送在播歌曲的相关信息，APP这边可通过以下接口进行控制
+
+ 
+2.9.1 控制类相关接口
+----------------------
+
+.. code:: objectivec
+
+   //播放/暂停
+   +(void)cmdID3_PP;
+
+   //上一曲
+   +(void)cmdID3_Before;
+
+   //下一曲
+   +(void)cmdID3_Next;
+
+   // 开启/暂停 音乐信息推送
+   +(void)cmdID3_PushEnable:(BOOL)enable;
+
+   //主动设置ID3播放状态
+   +(void)setID3_Status:(uint8_t)st;
+
+2.9.1.1 使用范例
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+   
+   // 播放/暂停
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mChargingBinManager cmdID3_PP];
+
+   // 上一曲
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mChargingBinManager cmdID3_Before];
+
+   // 下一曲
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mChargingBinManager cmdID3_Next];
+
+   // 开启/暂停 音乐信息推送
+   JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+   [entity.mCmdManager.mChargingBinManager cmdID3_PushEnable:YES];
+
+   //主动设置ID3播放状态
+   JLModel_Device *model = [entity.mCmdManager getDeviceModel];
+     if (model.ID3_Status == 1) { //播放
+          [entity.mCmdManager.mChargingBinManager setID3_Status:0];
+      } else{ //暂停
+          [entity.mCmdManager.mChargingBinManager setID3_Status:1];
+    }
+
+2.9.2 监听以及使用方法
+---------------------------
+
+ID3 是手机其他的播放器在播放音乐时，向手机发送的一些信息，手机可以通过以下接口监听到这些信息，注意的是：需要开发者主动定时查询变化
+
+.. code:: objectivec
+
+    -(void)addNote{
+        //监听ID3播放状态
+        [JL_Tools add:kUI_JL_SHOW_ID3 Action:@selector(noteShowId3:) Own:self];
+    }
+    -(void)noteShowId3:(NSNotification*)note{
+        //第三方音乐，关闭设备音乐的定时器.
+        [DFAction timingStop:myTimer];
+        NSLog(@"----------> showID3UI 1111");
+        [self showID3UI:YES];
+
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+        NSString *name_0 = [NSString stringWithFormat:@"%@",model.ID3_Title];
+        NSString *name_1 = [NSString stringWithFormat:@"%@",model.ID3_Artist];
+        NSString *name_2 = [NSString stringWithFormat:@"%@",model.ID3_AlBum];
+    }
+
+
+
+2.9.3 设备LRC歌词显示
+-------------------------
+2.9.3.1 功能描述
+^^^^^^^^^^^^^^^^^^
+
+    对固件传输的歌词进行显示
+    
+
+2.9.3.2 示例代码
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: objective-c
+
+    -(void)speexTest {
+       JL_ManagerM *manager =  [[JL_ManagerM alloc] init];
+       [manager.mLrcManager cmdLrcMonitorResult:^(NSString * _Nullable lrc, JL_LRCType type) {
+          //TODO:
+       }];
+   }
+
+
+2.10 TWS功能
+=================
+2.10.1 功能描述
+----------------
+
+    对TWS耳机操作的相关接口
+    
+
+2.10.2 示例代码
+----------------
+
+2.10.2.1 智能充电仓相关
+^^^^^^^^^^^^^^^^^^^^^^^
+
+    智能充电仓操作，通知固件App的信息，开启设备蓝⽛扫描、返回结果，其他操作等 (目前Demo工程没有使用这些接口)
+    
+
+- 示例代码
+
+.. code:: objectivec
+
+   // 通知固件App的信息
+   // @param flag  未知
+   +(void)cmdSetAppInfo:(uint8_t)flag;
+
+   // 设置通讯MTU
+   // @param mtu app请求mtu⼤⼩
+   // @param result 实际设置的Mtu⼤⼩
+   +(void)cmdSetMTU:(uint16_t)mtu Result:(JL_CMD_VALUE_BK)result;
+
+   // 开启蓝⽛扫描
+   // @param timeout 超时时间
+   // @param result  0:成功 1:失败
+   +(void)cmdBTScanStartTimeout:(uint16_t)timeout Result:(JL_CMD_VALUE_BK)result;
+
+   // 推送蓝⽛扫描结果
+   // 返回【蓝⽛数据结构】数组
+   // @see JLBTModel
+   extern NSString *kJL_BT_LIST_RESULT;
+
+   // 停⽌蓝⽛扫描（APP-->固件）
+   // @param reason  0：超时结束  1：打断结束  2：开启扫描失败  3：正在扫描
+   // @param result  0：成功  1：失败
+   +(void)cmdBTScanStopReason:(uint8_t)reason Result:(JL_CMD_VALUE_BK)result;
+
+   // 停⽌蓝⽛扫描（固件-->APP）
+   // 0：超时结束  1：打断结束  2：开启扫描失败  3：正在扫描
+   extern NSString *kJL_BT_SCAN_STOP_NOTE;
+
+   // 通知固件连接指定的蓝⽛设备
+   // @param addr 蓝⽛设备地址
+   // @param result  0：成功  1：失败
+   +(void)cmdBTConnectAddress:(NSData*)addr Result:(JL_CMD_VALUE_BK)result;
+
+   //文件传输 【固件-->APP】
+   //1.监听文件数据
+   +(void)cmdFileDataMonitorResult:(JL_FILE_DATA_BK)result;
+
+   //2.允许传输文件数据
+   +(void)cmdAllowFileData;
+
+   //3.拒绝传输文件数据
+   +(void)cmdRejectFileData;
+
+   //4.停止传输文件数据
+   +(void)cmdStopFileData;
+
+   //文件传输 【APP-->固件】
+   //5.请求传输文件给设备
+   +(void)cmdFileDataSize:(uint8_t)size
+                SavePath:(NSString*)path;
+
+   //6.推送文件数据给设备
+   +(void)cmdPushFileData:(NSData*)data;
+
+
+
+2.10.2.2 获取设备的图片
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ 接⼝说明： 
+ 根据设备的 pid 以及 vid 获取加载时设备显示的图⽚，但此⽅法要求在服务器端存在对应可加载的内容。
+
+.. code:: objectivec
+
+   /**
+   获取设备的图片。
+   @param vid 设备vid
+   @param pid 设备pid
+   @param result 图片数据
+   */
+   +(void)cmdRequestDeviceImageVid:(NSString*)vid
+   Pid:(NSString*)pid
+   Result:(JL_IMAGE_RT __nullable)result;
+
+2.10.2.2.1 使用范例
+####################
+
+.. code:: objectivec
+
+        JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+        NSString *uid = bleSDK.mBleEntityM.mUID;
+        NSString *pid = bleSDK.mBleEntityM.mPID;
+
+        NSNumber *vidNumber = [NSNumber numberWithLong:strtoul(uid.UTF8String, 0, 16)];
+        NSString *vidStr = [vidNumber stringValue];
+        
+        NSNumber *pidNumber = [NSNumber numberWithLong:strtoul(pid.UTF8String, 0, 16)];
+        NSString *pidStr = [pidNumber stringValue];
+        
+        
+        NSArray *itemArr = @[@"PRODUCT_MESSAGE"];
+        
+        JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+        [bleSDK.mBleEntityM.mCmdManager cmdRequestDeviceImageVid:vidStr Pid:pidStr
+                                                       ItemArray:itemArr Result:^(NSMutableDictionary * _Nullable dict) {
+            if (dict) {
+                NSData *data = dict[@"PRODUCT_MESSAGE"][@"IMG"];
+                if (!data) return nil;
+                NSDictionary totalDict = [NSJSONSerialization JSONObjectWithData:data
+                                             options:NSJSONReadingMutableLeaves
+                                               error:nil];
+                NSDictionary *myDic = totalDict[@"device"];
+                kJLLog(JLLOG_DEBUG,@"Image Data ----->%@",myDic);
+            }
+        }];
+
+2.10.2.3 设置EDR名字
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   //对耳相关API
+   /**
+   设置EDR名字
+   @param name
+   */
+   +(void)cmdHeatsetEdrName:(NSData*)name;
+
+2.10.2.3.1 使用范例
+####################
+
+.. code:: objectivec
+
+    NSString *text = "AC69X_CY1"; // EDR的名字
+    NSData *data =[text dataUsingEncoding:NSUTF8StringEncoding];
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeadsetEdrName:data];
+
+2.10.2.4 按键设置(对耳)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   按键设置(对耳)
+   @param key 左耳0x01 右耳0x02
+   @param act 单击0x01 双击0x02
+   @param fuc 0x00    无作用
+   0x01    开机
+   0x02    关机
+   0x03    上一曲
+   0x04    下一曲
+   0x05    播放/暂停
+   0x06    接听/挂断
+   0x07    拒听
+   0x08    拍照
+   */
+   +(void)cmdHeatsetKeySettingKey:(uint8_t)key
+   Action:(uint8_t)act
+   Function:(uint8_t)fuc;
+
+2.10.2.4.1 使用范例
+####################
+
+.. code:: objectivec
+
+    int keyIndex = 0x02 // 右耳
+    int actionIndex = 0x01 // 单击
+    int funcIndex = 0x01 // 开机
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeadsetKeySettingKey:keyIndex Action:actionIndex Function:funcIndex];
+
+2.10.2.5 LED设置(对耳)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   LED设置(对耳)
+   @param scene 未配对     0x01
+   未连接     0x02
+   连接       0x03
+   @param effect  0x00    全灭
+   0x01    红灯常亮
+   0x02    蓝灯常亮
+   0x03    红灯呼吸
+   0x04    蓝灯呼吸
+   0x05    红蓝交替快闪
+   0x06    红蓝交替慢闪
+   */
+   +(void)cmdHeatsetLedSettingScene:(uint8_t)scene
+   Effect:(uint8_t)effect;
+
+2.10.2.5.1 使用范例
+####################
+
+.. code:: objectivec
+
+    int sceneIndex = 0x01 // 未配对
+    int effectIndex = 0x03 // 红灯呼吸
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeatsetLedSettingScene:sceneIndex Effect:effectIndex];
+
+2.10.2.6 MIC设置(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   MIC设置(耳机)
+   @param mode 0： 仅左耳
+   1： 仅右耳
+   2： 自动选择
+   */
+   -(void)cmdHeadsetMicSettingMode:(JL_HeadsetMicSettingMode)mode
+                         Result:(JL_CMD_RESPOND __nullable)result;
+
+2.10.2.6.1 使用范例
+####################
+
+.. code:: objectivec
+
+    int modeIndex = 1 // 仅右耳
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeadsetMicSettingMode:modeIndex Result:nil];
+
+
+2.10.2.7 工作模式(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   工作模式(耳机)
+   @param mode 0： 普通模式
+   1： 游戏模式
+   */
+   +(void)cmdHeatsetWorkSettingMode:(uint8_t)mode;
+
+2.10.2.7.1 使用范例
+####################
+
+.. code:: objectivec
+
+    int modeIndex = 0 // 普通模式
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeatsetWorkSettingMode:modeIndex];
+
+2.10.2.8 同步时间戳(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+    同步时间戳(耳机)
+    @param date  当前系统时间
+   */
+   +(void)cmdHeatsetTimeSetting:(NSDate*)date;
+
+2.10.2.8.1 使用范例
+####################
+
+.. code:: objectivec
+
+   NSDate *date = [NSDate new];
+   JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+   [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeatsetTimeSetting:date];
+
+2.10.2.9 获取设备信息(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   获取设备信息(耳机)
+   @param flag BIT0    小机电量获取 格式为3个字节 参考广播包格式
+   BIT1    Edr 名称
+   BIT2    按键功能
+   BIT3    LED 显示状态
+   BIT4    MIC 模式
+   BIT5    工作模式
+
+   @param result 返回字典：
+   @"ISCHARGING_L"
+   @"ISCHARGING_R"
+   @"ISCHARGING_C"
+   @"POWER_L"
+   @"POWER_R"
+   @"POWER_C"
+   @"EDR"
+   @"KEY_LR"
+   @"KEY_ACTION"
+   @"KEY_FUNCTION"
+   @"LED_SCENE"
+   @"LED_EFFECT"
+   @"MIC_MODE"
+   @"WORK_MODE"
+   */
+   +(void)cmdHeatsetGetAdvFlag:(uint32_t)flag
+   Result:(JL_HEADSET_BK __nullable)result;
+
+2.10.2.9.1 使用范例
+####################
+
+.. code:: objectivec
+
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeadsetGetAdvFlag:0x3F
+                                                              Result:^(NSDictionary * _Nullable dict) {
+        if (dict[@"KEY_SETTING"]){
+            NSDictionary *headsetDict = dict;
+            kJLLog(JLLOG_DEBUG,@"headsetDict:%@",headsetDict);
+        }
+    }];
+
+2.10.2.10 设备广播通知(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   设备广播通知(耳机)
+   @{@"JLID": 杰理ID,
+   @"VID": ,
+   @"PID":  ,
+   @"EDR": ,
+   @"SCENE": ,
+   @"ISCHARGING_L": ,
+   @"ISCHARGING_R": ,
+   @"ISCHARGING_C": ,
+   @"POWER_L": ,
+   @"POWER_R": ,
+   @"POWER_C": ,
+   @"CHIP_TYPE": ,
+   @"PROTOCOL_TYPE": ,
+   @"SEQ": };
+   */
+   extern NSString *kJL_MANAGER_HEADSET_ADV;
+
+2.10.2.10.1 使用范例
+######################
+
+.. code:: objectivec
+
+   [JL_Tools add:kJL_MANAGER_HEADSET_ADV Action:@selector(noteHeadsetInfo:) Own:self];
+   
+   -(void)noteHeadsetInfo:(NSNotification*)note{
+    NSDictionary *info = note.object;
+    NSString *uuid = info[kJL_MANAGER_KEY_UUID];
+    NSDictionary *dict = info[kJL_MANAGER_KEY_OBJECT];
+    kJLLog(JLLOG_DEBUG,@"dict:%@",dict);
+   }
+
+2.10.2.11 关闭或开启设备广播(耳机)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   关闭或开启设备广播(耳机)
+   @param enable 使能位
+   */
+   +(void)cmdHeatsetAdvEnable:(BOOL)enable;
+
+2.10.2.11.1 使用范例
+######################
+
+.. code:: objectivec
+
+   BOOL enable = NO;
+   JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+   [bleSDK.mBleEntityM.mCmdManager.mTwsManager cmdHeatsetAdvEnable:enable];
+
+
+2.10.2.12 用于ADV设置同步后需要主机操作的行为
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+    用于ADV设置同步后需要主机操作的行为。
+     1：更新配置信息，需要重启生效。
+    */
+   extern NSString *kJL_MANAGER_HEADSET_TIPS;
+
+2.10.2.12.1 使用范例
+######################
+
+.. code:: objectivec
+
+   [JL_Tools add:kJL_MANAGER_HEADSET_TIPS Action:@selector(handleHeadsetTips:) Own:self];
+
+   //MARK: - 设备请求主机TWS操作
+  -(void)handleHeadsetTips:(NSNotification *)note {
+    kJLLog(JLLOG_INFO, @"JLTranslationManager handleHeadsetTips");
+    NSDictionary *dict = note.object;
+    int op = [dict[@"JL_MANAGER_KEY_OBJECT"] intValue];
+    if (op == 0x04) { // 请求同步设备信息
+        for (NSString *key in queueDict) {
+            JLTranslatQueue *queue = queueDict[key];
+            [queue resRequest];
+        }
+    }
+ }
+
+
+2.10.2.13 对挂脖耳机类型支持
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+挂脖耳机的功能和前面所提及的对耳、TWS耳机功能类似，只是产品造型方式不一致，APP这边就按照TWS对耳的方式来进行解析。
+
+详见\ **JL_EntityM**\ 类的以下属性：
+
+.. code:: objectivec
+
+   /**
+       JL_DeviceTypeSoundBox           = 0,     //AI音箱类型
+       JL_DeviceTypeChargingBin        = 1,     //充电仓类型
+       JL_DeviceTypeTWS                = 2,     //TWS耳机类型
+       JL_DeviceTypeHeadset            = 3,     //普通耳机类型
+       JL_DeviceTypeSoundCard          = 4,     //声卡类型
+       JL_DeviceTypeWatch              = 5,     //手表类型
+       JL_DeviceTypeTradition          = -1,    //传统设备类型
+    */
+   @property(assign,nonatomic) JL_DeviceType   mType; //这里标记为：TWS耳机类型
+
+   @property(assign,nonatomic) BOOL            isCharging_L; //左耳状态显示为整个耳机的电量
+   @property(assign,nonatomic) BOOL            isCharging_R;//为零或无参考意义
+   @property(assign,nonatomic) BOOL            isCharging_C;//为零或无参考意义
+   @property(assign,nonatomic) uint8_t         mPower;  //左耳电量显示为整个耳机的电量
+   @property(assign,nonatomic) uint8_t         mPower_L; //左耳电量显示为整个耳机的电量
+   @property(assign,nonatomic) uint8_t         mPower_R; //为零或无参考意义
+   @property(assign,nonatomic) uint8_t         mPower_C;//为零或无参考意义
+
+   @property(assign,nonatomic) uint8_t         mProtocolType; //当为挂脖耳机时，此属性显示值为0x03 ，当设备是普通TWS耳机是0x02
+
+其他的属性与设置和\ `TWS功能属性 <##11.%20TWS功能>`__\ 保持一致
+
+2.10.2.14 辅听耳机验配功能
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    辅听功能，是作用于TWS耳机设置的内容，其他设备不支持。实现需要依赖于\ `JL_EntityM`\ 类的以下属性：\ `mCmdManager`\ 属性。
+
+
+- 判断当前设备是否支持辅听功能：
+  
+    当前是是否支持辅听功能，可以通过\ `JLModel_Device`\ 类的以下属性：\ `isSupportDhaFitting`\ 属性来判断。
+    
+    \ `JLModel_Device`\ 类对象是通过，\ `JL_EntityM`\ 类的以下属性：\ `mCmdManager`\ 属性的，\ `outputDeviceModel`\方法来获取。
+
+
+.. code:: objectivec
+
+    /// 是否支持辅听设置
+    @property (assign,nonatomic) BOOL               isSupportDhaFitting;
+    ///验配信息交互：版本、通道数、通道频率
+    @property (strong,nonatomic) DhaFittingInfo     *dhaFitInfo;
+    /// 验配中断/开启的对象，仅限于监听
+    @property (strong,nonatomic) DhaFittingSwitch   *dhaFitSwitch;
+
+
+
+- 获取设备当前辅听的基础信息：版本、通道数、通道频率
+
+.. code:: objectivec
+
+    [JLDhaFitting auxiGetInfo:^(DhaFittingInfo * _Nonnull info, NSArray<NSNumber *> * _Nonnull gains) {
+        if (info) {
+            if (info.ch_num != 0) {
+                [self.navigationController pushViewController:vc animated:true];
+            }else{
+                Dialog()
+                //位置
+                    .wToastPositionSet(DialogToastBottom)
+                    .wTypeSet(DialogTypeToast)
+                    .wMessageSet(kJL_TXT("msg_read_file_err_reading"))
+                //调整宽度
+                    .wMainOffsetXSet(30)
+                    .wStart();
+            }
+        }else{
+            Dialog()
+            //位置
+                .wToastPositionSet(DialogToastBottom)
+                .wTypeSet(DialogTypeToast)
+                .wMessageSet(kJL_TXT("msg_read_file_err_reading"))
+            //调整宽度
+                .wMainOffsetXSet(30)
+                .wStart();
+        }
+    } Manager:[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager];
+
+
+- 进行辅听验配：
+
+ .. code:: objectivec
+
+    dhaManager = [[JLDhaFitting alloc] init];
+    JL_ManagerM *cmd = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+     DhaFittingData *dataInfo = [DhaFittingData new];
+    dataInfo.leftOn = NO;//左耳是否开启
+    dataInfo.rightOn = NO;//右耳是否开启
+    dataInfo.freq = 0;//频率
+    dataInfo.gain = 0.0;//增益
+    [dhaManager auxiCheckByStep:dataInfo Manager:cmd Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        NSLog(@"验配：channecl:%d freq:%d gains:%.2f",dataInfo.channel,dataInfo.freq,dataInfo.gain);
+        
+    }];
+
+- 保存验配设置:
+  
+.. warning::
+
+    这里需要注意的是，保存验配设置，需要把前面验配好的N条\ `DhaFittingData`\ 数据，重新整理发送到设备。
+
+
+
+.. code:: objectivec
+
+    NSMutableArray *newArray = [NSMutableArray new];
+    for (FittingMgr *item in self.results) {
+        for (DhaFittingData *item2 in item.dhaList) {
+            [newArray addObject:item2];
+        }
+    }
+    JL_ManagerM *mgr = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    
+    [fitting auxiSaveGainsList:newArray Manager:mgr Type:[self getType] Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        //保存成功或失败
+    }];
+
+
+
+
+- 退出辅听验配：
+
+.. code:: objectivec
+
+    JL_ManagerM *cmd = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    [[JLDhaFitting new] auxiCloseManager:cmd Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        NSLog(@"退出验配");
+    }];
+    
+
+
+
+.. warning::
+
+    当前协议版本，只针对辅听开关只通过固件按键进行设置，所以设备会在辅听开关开启的时候，自动进入辅听验配状态。每次只要请求设备信息，回复正确时，设备就会进入辅听验配状态。
+    在此特定条件下，需要注意及时执行退出辅听验配的操作。
+
+- 监听设备推出辅听验配状态：
+
+使用KVO的方式监听设备推出辅听验配状态，当设备推出辅听验配状态时，会触发该回调。
+
+.. code:: objectivec
+
+    @interface FittingBasicVC (){
+        JLModel_Device *devModel;
+    }
+    @end
+
+    @implementation FittingBasicVC
+    - (void)viewDidLoad {
+        static void *dhaFitSwitchContext = &dhaFitSwitchContext;
+
+        devModel = [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager getDeviceModel];
+        [devModel addObserver:self forKeyPath:@"dhaFitSwitch" options:NSKeyValueObservingOptionNew context:dhaFitSwitchContext];
+    }
+
+    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+    {
+        
+        if (context == dhaFitSwitchContext) {
+            if ([change objectForKey:@"new"]) {
+                
+                JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+                TwsElectricity *electricity = manager.mTwsManager.electricity;
+                DhaFittingSwitch *sw = [change objectForKey:@"new"];
+                if (electricity.powerLeft > 0 && electricity.powerRight>0) {
+                    //双耳
+                    if (sw.rightOn == NO || sw.leftOn == NO) {
+                        [self goBackToRoot];
+                    }
+                }
+                if (electricity.powerLeft == 0 && electricity.powerRight>0) {
+                    //右耳
+                    if (sw.rightOn == NO) {
+                        [self goBackToRoot];
+                    }
+                   
+                }
+                if (electricity.powerRight == 0 && electricity.powerLeft>0) {
+                    //左耳
+                    if (sw.leftOn == NO) {
+                        [self goBackToRoot];
+                    }
+                }
+                
+            }
+        } else {
+            [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        }
+    }
+    -(void)viewDidDisappear:(BOOL)animated{
+        [super viewDidDisappear:animated];
+        [devModel removeObserver:self forKeyPath:@"dhaFitSwitch" context:dhaFitSwitchContext];
+    }
+    -(void)goBackToRoot{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    @end
+
+
+
+
+2.10.2.15 一拖二耳机功能支持
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+一拖二功能的支持可以通过 `JL_TwsManager` 类的扩展功能支持属性 **TwsSupportFuncs *supports;**，下的 `isSupportDragWithMore;` 来判断是否支持；
+
+- 获取设备已连接的手机名
+
+.. code:: objectivec
+
+    NSMutableArray *itemList = [NSMutableArray new];
+
+    JL_TwsManager *tws = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mTwsManager;
+
+    [tws cmdGetDeviceInfoListResult:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+        if (status == JL_CMDStatusSuccess){
+            
+            [self->itemList setArray:phoneInfos];
+            for (JLTWSAddrNameInfo *info in phoneInfos){
+                [info logProperties];
+            }
+            
+            NSData *addr = [[NSUserDefaults standardUserDefaults] valueForKey:PhoneEdrAddr];
+
+            if (phoneInfos.count == 1){
+                JLTWSAddrNameInfo *info = phoneInfos.firstObject;
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                //绑定
+                [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                    [self->subTable reloadData];
+                }];
+            }
+            if (phoneInfos.count == 2){
+                for (JLTWSAddrNameInfo *info in phoneInfos) {
+                    if (info.isBind){
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                            
+                        }
+                    }else{
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+        [self->subTable reloadData];
+    }];
+
+
+以上逻辑是一个判断本机对应的蓝牙地址的判断：
+
+.. warning:: 
+
+    #. 当设备返回只有一台手机信息的时候，手机本地需要更新并记录该名字与地址（无论本身是否已经记录过），如果手机本地记录（名字或地址）有更改，请绑定后重新发送C031；
+    #. 当设备返回两台手机信息都没有绑定的时候，手机不做任何操作；
+    #. 当设备返回两台手机信息其中一台有绑定、另外一台没有绑定时：
+    #. 如果绑定的地址与手机本地的相符，查看是否有更新，如果有更新则重新发送C031命令，没有更新则不作处理；
+    #. 如果绑定的地址与手机本地的不相符（包括手机本地），则没有绑定的手机信息是当前手机的信息，绑定后重新发送C031命令。
+
+一拖二设备列表信息也能通过以下通知获得：
+
+
+.. code:: 
+
+    /// 设备上传一拖二设备信息列表
+    extern NSString* kJL_MULIT_NAME_LIST;
+
+
+- 通知设备一连上手机地址和绑定信息
+    此接口需要配合上述的获取设备已连接手机信息接口使用，具体绑定规则如上述注意点所述
+
+.. code:: objective-c
+
+    /// 通知设备一连上手机地址和绑定信息
+    /// - Parameters:
+    ///   - addr: 手机EDR地址
+    ///   - name: 手机蓝牙名称
+    ///   - result: 结果
+    -(void)cmdBindDeviceInfo:(NSData *)addr phone:(NSString *)name result:(JL_MulitLinksInfo_BK)result
+
+2.10.2.15.1 使用范例
+######################
+
+.. code:: objectivec
+
+    -(void)initData{
+    JL_TwsManager *tws = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mTwsManager;
+    
+    [itemList removeAllObjects];
+    [tws cmdGetDeviceInfoListResult:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+        if (status == JL_CMDStatusSuccess){
+            
+            [self->itemList setArray:phoneInfos];
+            for (JLTWSAddrNameInfo *info in phoneInfos){
+                [info logProperties];
+            }
+            
+            NSData *addr = [[NSUserDefaults standardUserDefaults] valueForKey:PhoneEdrAddr];
+
+            if (phoneInfos.count == 1){
+                JLTWSAddrNameInfo *info = phoneInfos.firstObject;
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                //绑定
+                [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                    [self->subTable reloadData];
+                }];
+            }
+            if (phoneInfos.count == 2){
+                for (JLTWSAddrNameInfo *info in phoneInfos) {
+                    if (info.isBind){
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                            
+                        }
+                    }else{
+                        if ([info.phoneEdrAddr isEqualToData:addr]){
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneEdrAddr forKey:PhoneEdrAddr];
+                            [[NSUserDefaults standardUserDefaults] setValue:info.phoneName forKey:PhoneName];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            //绑定
+                            [tws cmdBindDeviceInfo:info.phoneEdrAddr phone:info.phoneName result:^(JL_CMDStatus status, NSArray<JLTWSAddrNameInfo *> * _Nullable phoneInfos) {
+                                [self->subTable reloadData];
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+        [self->subTable reloadData];
+    }];
+ }
+
+- 设备开启/关闭多连接手机接口
+
+.. code:: objective-c
+
+    /// 一拖二开关
+    /// @param dragWithMore 开关状态
+    /// @param addr 手机的经典蓝牙地址（通过cmdGetDeviceInfoList获取）
+    /// @param result   结果回调
+    -(void)setDragWithMore:(BOOL)dragWithMore phoneBleAddr:(NSData *) addr result:(JL_CMD_RESPOND)result
+
+- 设备开启/关闭多连接手机接口的使用范例
+
+.. code:: objective-c
+
+    JL_TwsManager *tws = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mTwsManager;
+    BOOL isOn = YES;
+    [tws setDragWithMore:isOn phoneBleAddr:addr result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+            kJLLog(JLLOG_DEBUG,@"status:%@",status);
+    }];
+
+
+2.11 ANC设置功能
+==========================
+
+2.11.1 功能说明
+------------------------------
+
+当前接口只针对具备降噪功能的耳机起作用，属于公共接口。
+
+2.11.2 耳机SDK添加ANC(主动降噪)
+--------------------------------
+
+-  耳机主动降噪支持模式
+
+.. code:: objectivec
+
+   @property (copy  ,nonatomic) NSMutableArray     *mAncModeArray;         //ANC模式数组
+
+-  耳机主动降噪当前的模式
+
+.. code:: objectivec
+
+   @property (copy  ,nonatomic) JLModel_ANC        *mAncModeCurrent;       //当前ANC的模式
+
+-  对耳机主动降噪进行设置
+
+.. code:: objectivec
+
+   @interface JLModel_ANC : NSObject
+   @property(assign,nonatomic)JL_AncMode       mAncMode;               //耳机降噪模式
+   @property(assign,nonatomic) uint16_t        mAncMax_L;              //左耳最大增益
+   @property(assign,nonatomic) uint16_t        mAncCurrent_L;          //左耳当前增益
+   @property(assign,nonatomic) uint16_t        mAncMax_R;              //右耳最大增益
+   @property(assign,nonatomic) uint16_t        mAncCurrent_R;          //右耳当前增益
+   -(NSData*)dataModel;
+
+   #pragma mark ---> 耳机主动降噪ANC设置
+   -(void)cmdSetANC:(JLModel_ANC*)model;
+
+2.11.2.1 使用范例
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+  JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    JLModel_Device *model = [entity.mCmdManager outputDeviceModel];
+    if (model.mAncModeCurrent.mAncMode == JL_AncMode_NoiseReduction ||
+        model.mAncModeCurrent.mAncMode == JL_AncMode_Transparent ) {
+        JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+        JLModel_Device *deviceModel = [entity.mCmdManager getDeviceModel];
+        JLModel_ANC *modelANC = deviceModel.mAncModeCurrent
+        modelANC.mAncCurrent_L = leftCurrentValue;
+        modelANC.mAncCurrent_R = rightCurrentValue;
+        [entity.mCmdManager.mTwsManager cmdSetANC:modelANC];
+    }
+
+2.12 声卡功能配置
+=========================================
+2.12.1 功能描述
+----------------
+
+    对声卡设备的处理
+    
+
+2.12.2 示例代码
+----------------
+
+
+.. code:: objc
+
+    
+    /// 声卡功能
+    @interface JLSoundCardIndexValue : NSObject
+
+    @property (assign,nonatomic)uint8_t index;
+
+    @property (assign,nonatomic)uint16_t value;
+
+    @end
+
+    @protocol JLSoundCardMgrDelegate <NSObject>
+
+    /// 声卡控制回调
+    /// - Parameters:
+    ///   - mask: 掩码
+    ///   - items: 掩码对应的值
+    -(void)jlsoundCardMask:(uint64_t)mask values:(NSArray <JLSoundCardIndexValue *> *)items;
+
+    /// 声卡控制回调
+    /// - Parameter frequencyArray: 频率数组
+    -(void)jlsoundCardMicFrequency:(NSArray*)frequencyArray;
+
+    /// 声卡控制回调
+    /// - Parameter eqArray: EQ数组
+    -(void)jlsoundCardMicEQ:(NSArray*)eqArray;
+
+    @end
+
+
+    /// 卡拉OK（声卡控制相关）
+    @interface JL_SoundCardManager : NSObject
+
+    /// 卡拉OK 组件索引
+    @property (assign,nonatomic)long index;
+
+    /// 卡拉OK 组件的值
+    @property (assign,nonatomic)long value;
+
+    /// 卡拉OK 固件返回的掩码
+    @property (assign,nonatomic)uint64_t mask;
+
+    /// 声卡功能参数列表
+    @property (strong,nonatomic)NSArray <JLSoundCardIndexValue *>* iVitems;
+
+    /// 卡拉OK 频率数组
+    @property (strong,nonatomic)NSArray *micFrequencyArray;
+
+    /// 卡拉OK EQ数组
+    @property (strong,nonatomic)NSArray *micEQArray;
+
+    /// 代理
+    @property (weak,nonatomic)id<JLSoundCardMgrDelegate> delegate;
+
+    /// 设置卡拉OK【index、value】
+    /// - Parameters:
+    ///  - manager: 设备对象
+    ///  - index: index 参数类型 JL_KalaoIndex 目前支持混响、延时、音量的设置。（具体可以看固件的json文件）
+    ///  - value:  0-100
+    ///  - result: 设置结果
+    -(void)cmdSetKalaok:(JL_ManagerM *)manager Index:(JL_KalaoIndex)index Value:(uint16_t)value result:(JL_CMD_RESPOND)result;
+
+    /// 设置卡拉OK【MIC EQ增益】
+    /// - Parameters:
+    ///  - manager: 设备对象
+    ///  - array:  @[@(0),@(0),@(0),@(0),@(0)]  单个取值范围 [-8.0 , +8.0]。
+    ///  - result: 设置结果
+    -(void)cmdSetKaraoke:(JL_ManagerM *)manager micEQ:(NSArray*)array result:(JL_CMD_RESPOND)result;
+
+2.12.2.1 使用范例
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+ // 使用 JLSoundCardMgrDelegate 的示例
+
+ // 1. 创建一个遵循 JLSoundCardMgrDelegate 协议的类
+ @interface MySoundCardManager : NSObject <JLSoundCardMgrDelegate>
+ @end
+
+ @implementation MySoundCardManager
+
+ // 2. 设置代理
+ - (void)init{
+      JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+      manager.mSoundCardManager.delegate = self
+ }
+
+ // 3. 实现声卡控制回调方法 - 掩码回调
+    /// - Parameters:
+    ///   - mask: 掩码
+    ///   - items: 掩码对应的值
+    -(void)jlsoundCardMask:(uint64_t)mask values:(NSArray <JLSoundCardIndexValue *> *)items{
+        for(JLSoundCardIndexValue *item in items){
+          NSLog(@"掩码索引:%d", item.index);
+          NSLog(@"掩码的值:%d", item.value);
+        }  
+    }
+
+ // 4. 实现声卡控制回调方法 - 频率回调
+ - (void)jlsoundCardMicFrequency:(NSArray *)frequencyArray {
+    // 处理频率数据
+    if (frequencyArray && frequencyArray.count > 0) {
+        // 遍历频率数组中的每个频率值
+        for (NSNumber *frequencyValue in frequencyArray) {
+            CGFloat frequency = [frequencyValue floatValue];
+            NSLog(@"频率值: %f Hz", frequency);
+        }
+        
+        if (frequencyArray.count >= 2) {
+            CGFloat leftChannel = [frequencyArray[0] floatValue];
+            CGFloat rightChannel = [frequencyArray[1] floatValue];
+            NSLog(@"左声道: %f Hz, 右声道: %f Hz", leftChannel, rightChannel);
+        }
+    }
+ }
+
+ // 5. 实现声卡控制回调方法 - EQ回调
+ - (void)jlsoundCardMicEQ:(NSArray *)eqArray {
+     // 处理EQ数据
+    if (eqArray && eqArray.count > 0) {
+        // 示例：假设EQ数组包含多个频段的增益值
+        for (int i = 0; i < eqArray.count; i++) {
+            NSNumber *eqGain = eqArray[i];
+            CGFloat gainValue = [eqGain floatValue];
+            
+            // 处理每个EQ频段的增益值
+            NSLog(@"EQ频段 %d: 增益 %f dB", i, gainValue);
+        }
+    }
+ }
+
+ // 6.设置卡拉OK【index、value】(index包括JL_KalaoIndexReverberation、JL_KalaoIndexDelayed、JL_KalaoIndexVolume;value的范围是0到100)
+    JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+    JL_ManagerM *manager = [bleSDK.mBleEntityM mCmdManager];
+    [manager.mSoundCardManager cmdSetKalaok:manager Index:JL_KalaoIndexVolume Value:75 result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        
+    }];
+
+ // 7.设置卡拉OK【MIC EQ增益】
+  NSArray *eqArray = @[@(100),@(500),@(1000),@(4000),@(8000)];
+  JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
+  JL_ManagerM *manager = [bleSDK.mBleEntityM mCmdManager];
+  manager.mSoundCardManager cmdSetKaraoke:manager micEQ:eqArray result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+                
+  }];
+
+   
+2.12.3 配置文档
+------------------------------
+
+**sound_card_json.txt**  
+
+.. code-block:: json
+
+    {
+        "hasEq": "true",
+        "function": [
+        {
+            "id": 0,
+            "title": {
+            "zh": "变声",
+            "en": "Voice"
+            },
+            "type": "select",
+            "icon_url": "icon_voice_nol.png",
+            "column": 3,
+            "paging": false,
+            "list": [
+            {
+                "title": {
+                "zh": "正常",
+                "en": "Normal"
+                },
+                "index": 0
+            },
+            {
+                "title": {
+                "zh": "男声",
+                "en": "Boy"
+                },
+                "index": 1
+            },
+            {
+                "title": {
+                "zh": "女声",
+                "en": "Girl"
+                },
+                "index": 2
+            },
+            {
+                "title": {
+                "zh": "童音",
+                "en": "Children"
+                },
+                "index": 3
+            },
+            {
+                "title": {
+                "zh": "魔音",
+                "en": "Magic"
+                },
+                "index": 4
+            },
+            {
+                "title": {
+                "zh": "电音",
+                "en": "EM"
+                },
+                "group": true,
+                "list": [
+                {
+                    "title": {
+                    "zh": "A大调",
+                    "en": "A major"
+                    },
+                    "index": 5
+                },
+                {
+                    "title": {
+                    "zh": "升A大调",
+                    "en": "L A major"
+                    },
+                    "index": 6
+                },
+                {
+                    "title": {
+                    "zh": "B大调",
+                    "en": "B major"
+                    },
+                    "index": 7
+                },
+                {
+                    "title": {
+                    "zh": "C大调",
+                    "en": "C major"
+                    },
+                "index": 8
+                },
+                {
+                    "title": {
+                    "zh": "升C大调",
+                    "en": "L C major"
+                    },
+                "index": 9
+                },
+                {
+                    "title": {
+                    "zh": "D大调",
+                    "en": "D major"
+                    },
+                    "index": 10
+                },
+                {
+                    "title": {
+                    "zh": "升D大调",
+                    "en": "L D major"
+                    },
+                    "index": 11
+                },
+                {
+                    "title": {
+                    "zh": "E大调",
+                    "en": "E major"
+                    },
+                    "index": 12
+                },
+                {
+                    "title": {
+                    "zh": "F大调",
+                    "en": "F major"
+                    },
+                    "index": 13
+                },
+                {
+                    "title": {
+                    "zh": "升F大调",
+                    "en": "L F major"
+                    },
+                    "index": 14
+                },
+                {
+                    "title": {
+                    "zh": "G大调",
+                    "en": "G major"
+                    },
+                    "index": 15
+                },
+                {
+                    "title": {
+                    "zh": "升G大调",
+                    "en": "L G major"
+                    },
+                    "index": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+            "title": {
+            "zh": "其他",
+            "en": "Other"
+            },
+            "id": 3,
+            "icon_url": "icon_others_nol.png",
+            "type": "select",
+            "column": 3,
+            "paging": false,
+            "list": [
+            {
+                "title": {
+                "zh": "爆音",
+                "en": "Popping"
+                },
+                "index": 36
+            },
+            {
+                "title": {
+                "zh": "喊麦",
+                "en": "Shout"
+                },
+                "index": 37
+            },
+            {
+                "title": {
+                "zh": "闪避",
+                "en": "Dodge"
+                },
+                "index": 38
+            }
+          ]
+        },
+        {
+            "title": {
+            "zh": "气氛",
+            "en": "AtmosPhere"
+            },
+            "id": "1",
+            "icon_url": "icon_effect_nol.png",
+            "type": "img_select",
+            "column": 4,
+            "paging": true,
+            "row": 2,
+            "list": [
+            {
+                "title": {
+                "zh": "欢呼",
+                "en": "Cheers"
+                },
+                "index": 17,
+                "icon_url": "img_cheer.png"
+            },
+            {
+                "title": {
+                "zh": "尴尬",
+                "en": "Awkward"
+                },
+                "index": 18,
+                "icon_url": "img_awkward.png"
+            },
+            {
+                "title": {
+                "zh": "枪声",
+                "en": "Gunfire"
+                },
+                "index": 19,
+                "icon_url": "img_gun.png"
+            },
+            {
+                "title": {
+                "zh": "鄙视",
+                "en": "Despise"
+                },
+                "index": 20,
+                "icon_url": "img_despise.png"
+            },
+            {
+                "title": {
+                "zh": "开场",
+                "en": "Stage"
+                },
+                "index": 21,
+                "icon_url": "img_stage.png"
+            },
+            {
+                "title": {
+                "zh": "飞吻",
+                "en": "Kiss"
+                },
+                "index": 22,
+                "icon_url": "img_kiss.png"
+            },
+            {
+                "title": {
+                "zh": "笑声",
+                "en": "Laugh"
+                },
+                "index": 23,
+                "icon_url": "img_laugh.png"
+            },
+            {
+                "title": {
+                "zh": "掌声",
+                "en": "Applause"
+                },
+                "index": 24,
+                "icon_url": "img_applause.png"
+            },
+            {
+                "title": {
+                "zh": "请关注",
+                "en": "Attention"
+                },
+                "index": 25,
+                "icon_url": "img_follow.png"
+            },
+            {
+                "title": {
+                "zh": "么么哒",
+                "en": "Mua"
+                },
+                "index": 26,
+                "icon_url": "img_memeda.png"
+            },
+            {
+                "title": {
+                 "zh": "贼啦啦",
+                "en": "Song01"
+                },
+                "index": 27,
+                "icon_url": "img_song_01.png"
+            },
+            {
+                "title": {
+                "zh": "非诚勿扰",
+                "en": "Song02"
+                },
+                "index": 28,
+                "icon_url": "img_song_02.png"
+            }
+          ]
+        },
+        {
+            "title": {
+            "zh": "Mic参数",
+            "en": "Mic Args"
+            },
+            "id": 2,
+            "icon_url": "icon_settle_nol.png",
+            "type": "slider",
+            "list": [
+             {
+                "title": {
+                "zh": "麦音量",
+                "en": "Mic Vol"
+                },
+                "index": 29,
+                "max": 30,
+                "enable": true
+            },
+            {
+                "title": {
+                "zh": "录音音量",
+                "en": "Record Vol"
+                },
+                "index": 30,
+                "enable": true,
+                "max": 30
+            },
+            {
+                "title": {
+                "zh": "混响",
+                "en": "Reverberation"
+                },
+                "index": 31,
+                "enable": true,
+                "max": 30
+            },
+            {
+                "title": {
+                "zh": "高音",
+                "en": "High"
+                },
+                "index": 32,
+                "enable": true,
+                "max": 10
+            },
+            {
+                "title": {
+                "zh": "低音",
+                "en": "Bass"
+                },
+                "index": 33,
+                "enable": true,
+                "max": 10
+            },
+            {
+                "title": {
+                "zh": "伴奏音量",
+                "en": "Accomp Vol"
+                },
+                "index": 34,
+                "enable": true,
+                "max": 30
+            },
+            {
+                "title": {
+                "zh": "监听音量",
+                "en": "Monitor Vol"
+                },
+                "index": 35,
+                "enable": true,
+                "max": 30
+            }
+          ]
+        }
+      ]
+    }
+
+
+**字段说明**
+
+===================== ===========================================================
+  字段                   描述
+===================== ===========================================================
+ id                    区分分类
+ title                 标题
+ icon_url              项目图标链接
+ type                 | 子项的控件类型：
+                      | 目前支持：
+                      | img_select(可以设置图片),select,slider
+ column               | 控件列数，
+                      | 当type==slider,无效
+ row                  | 控件行数，
+                      | 需要结合colume使用且paging==true有效
+ paging               | 控件的唯一表示码，全局唯一，
+                      | group为true时,index无效
+ max                  | 最大值,
+                      | type==slider时有效
+ group                | 是否组类型,
+                      | true则没有index字段,当type为select有效
+ enable               | slider类型有效,
+                      | true:app可以调节, false:app不可已调节
+===================== ===========================================================
+
+注意事项:该sound_card_json.txt在服务器上也有一份，当服务器请求失败，才会从本地读取。
+
+2.12.3.1 使用范例
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+ // NSData转换成NSDictionary
+ -(id)jsonWithData:(NSData*)data{
+    if (!data) return nil;
+    id dic = [NSJSONSerialization JSONObjectWithData:data
+                                             options:NSJSONReadingMutableLeaves
+                                               error:nil];
+    return dic;
+ }
+
+ // 请求本地Json文件
+ -(void)requestLocalJson{
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"sound_card_json.txt" ofType:nil];
+    NSData *localData = [NSData dataWithContentsOfFile:path];
+    NSDictionary *dic = [self jsonWithData:localData];
+    [self parseJson:dic];
+ }
+
+ // 解析Json文件
+ -(void)parseJson:(NSDictionary *) dic{
+    hasEq = dic[@"hasEq"];
+    NSMutableArray *tempArray = [NSMutableArray new];
+    NSArray *functionArray = dic[@"function"];
+    for (int i = 0; i < functionArray.count; i++) {
+        KalaokModel *myModel = [KalaokModel new];
+        NSDictionary *data = functionArray[i];
+        myModel.mId = [data[@"id"] integerValue];
+        myModel.zh_name = data[@"title"][@"zh"];
+        myModel.en_name = data[@"title"][@"en"];
+        myModel.type = data[@"type"];
+        myModel.icon_url = data[@"icon_url"];
+        myModel.column = [data[@"column"] integerValue];
+        myModel.row = [data[@"row"] integerValue];
+        myModel.paging = [data[@"paging"] boolValue];
+        myModel.mList = data[@"list"];
+        
+        [tempArray addObject:myModel];
+    }
+    NSLog("获取到的Json数组 %@",tempArray);
+ }
+
+2.13 查找设备功能
+===================
+2.13.1 功能描述
+----------------
+
+   接收到设备的命令后，通过播放手机的音频，从而使用户找到手机，或手机通过发送命令到设备，设备发出声响。
+    
+
+2.13.2 示例代码
+----------------
+
+设备查找手机的通知，携带了响铃时长
+
+.. code:: objectivec
+
+   extern NSString *kJL_BT_FIND_PHONE;
+
+查找设备命令
+
+.. code:: objectivec
+
+   /// 查找设备命令
+   /// @param isVoice 是否发声
+   /// @param timeout 超时时间
+   /// @param isIphone 是否设备查找手机（默认是手机找设备）
+   /// @param opDict 这是一个可选项，若tws未连接，则该值无效，默认是全部播放
+ -(void)cmdFindDevice:(BOOL)isVoice
+             timeOut:(uint16_t)timeout
+          findIphone:(BOOL)isIphone
+           Operation:( NSDictionary * _Nullable )opDict;
+
+2.13.2.1 使用范例
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+  [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mFindDeviceManager cmdFindDevice:NO timeOut:10 findIphone:YES Operation:nil];
+
+2.14 用户自定义命令功能
+===========================
+2.14.1 功能描述
+-----------------------
+
+    通过此接口可以收发自定义数据。
+    
+
+2.14.2 示例代码
+----------------
+
+.. code-block:: objective-c
+    
+   //发送自定义数据
+   NSData *data = [NSData new];
+   [[[JL_RunSDK sharedMe] mBleEntityM].mCmdManager.mCustomManager cmdCustomData:data isNeedResponse:YES
+                                                       Result:^(JL_CMDStatus status,
+                                                                uint8_t sn, NSData * _Nullable data) {
+       if (status == JL_CMDStatusSuccess) {
+           NSLog(@"发数成功...");
+       }else{
+           NSLog(@"发数失败~");
+       }
+   }];
+
+   //接收自定义数据
+   [JL_Tools add:kJL_MANAGER_CUSTOM_DATA Action:@selector(noteCustomData:) Own:self];
+
+   -(void)noteCustomData:(NSNotification *)note{
+     NSData *data = note.object;
+     NSLog("固件返回的自定义数据:%@",data);
+   }
+
+2.14.3 注意事项
+----------------
+
+发数成功会有\ ``JL_CMDStatusSuccess``\ 回调。
+
+
+
+
+
+
+
+2.15 OTA
+========================
+2.15.1 功能描述
+--------------------------
+
+    对设备进行升级,详细版参考：\ `【杰理OTA升级(iOS)开发说明】 <https://doc.zh-jieli.com/Apps/iOS/ota/zh-cn/master/index.html>`__
+    
+
+2.15.2 使用demo
+-----------------
+
+2.15.2.1 OTA升级文件下载
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+若使用杰理提供的服务器资源，则协商后可使用以下接口进行升级文件下载。
+
+.. code:: objectivec
+
+   /**
+   OTA升级文件下载
+   @param key 授权key
+   @param code 授权code
+   @param result 回复
+   */
+   +(void)cmdGetOtaFileKey:(NSString*)key
+   Code:(NSString*)code
+   Result:(JL_OTA_URL __nullable)result;
+
+   /**
+   OTA升级文件下载【MD5】
+   @param key 授权key
+   @param code 授权code
+   @param hash  MD5值
+   @param result 回复
+   */
+   +(void)cmdGetOtaFileKey:(NSString*)key
+                      Code:(NSString*)code
+                      hash:(NSString*)hash
+                    Result:(JL_OTA_URL __nullable)result;
+
+2.15.2.2 OTA升级设备
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   /**
+   OTA升级设备
+   @param data 升级数据
+   @param result 升级结果
+   */
+   +(void)cmdOTAData:(NSData*)data
+   Result:(JL_OTA_RT __nullable)result;
+
+2.15.2.3 OTA的升级状态
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_OtaStatusNormal              = 0,    //正常升级
+   JL_OtaStatusForce               = 1,    //强制升级
+
+2.15.2.4 OTA的返回结果
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   JL_OTAResultSuccess             = 0x00, //OTA升级成功
+   JL_OTAResultFail                = 0x01, //OTA升级失败
+   JL_OTAResultDataIsNull          = 0x02, //OTA升级数据为空
+   JL_OTAResultCommandFail         = 0x03, //OTA指令失败
+   JL_OTAResultSeekFail            = 0x04, //OTA标示偏移查找失败
+   JL_OTAResultInfoFail            = 0x05, //OTA升级固件信息错误
+   JL_OTAResultLowPower            = 0x06, //OTA升级设备电压低
+   JL_OTAResultEnterFail           = 0x07, //未能进入OTA升级模式
+   JL_OTAResultUpgrading           = 0x08, //OTA升级中
+   JL_OTAResultReconnect           = 0x09, //OTA需重连设备
+   JL_OTAResultReboot              = 0x0a, //OTA需设备重启
+   JL_OTAResultPreparing           = 0x0b, //OTA准备中
+   JL_OTAResultPrepared            = 0x0f, //OTA准备完成
+   JL_OTAResultFailVerification    = 0xf1, //升级数据校验失败
+   JL_OTAResultFailCompletely      = 0xf2, //升级失败
+   JL_OTAResultFailKey             = 0xf3, //升级数据校验失败
+   JL_OTAResultFailErrorFile       = 0xf4, //升级文件出错
+   JL_OTAResultFailUboot           = 0xf5, //uboot不匹配
+   JL_OTAResultFailLenght          = 0xf6, //升级过程长度出错
+   JL_OTAResultFailFlash           = 0xf7, //升级过程flash读写失败
+   JL_OTAResultFailCmdTimeout      = 0xf8, //升级过程指令超时
+   JL_OTAResultFailSameVersion     = 0xf9, //相同版本
+   JL_OTAResultFailTWSDisconnect   = 0xfa, //TWS耳机未连接
+   JL_OTAResultFailNotInBin        = 0xfb, //耳机未在充电仓
+   JL_OTAResultUnknown,                    //OTA未知错误
+
+2.15.2.5 获取MD5的数据
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   #pragma mark 获取MD5数据
+   +(void)cmdGetMD5_Result:(JL_CMD_BK __nullable)result;
+
+2.15.2.6 版本校对,并获取升级文件
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   -(void)checkVersion{
+
+   #if (LT==0)
+
+   //    //有新版本
+   //    self->shouldUp = YES;
+   //    self->downloadUrl = [JL_Tools find:@"update_yx_hp_93.ufw"];
+   //    savePath = [JL_Tools find:@"update_yx_hp_93.ufw"];
+   //    dispatch_async(dispatch_get_main_queue(), ^{
+   //        [self->upgradeView initWithNews:@"1.0.0.0" tips:@"升级测试"];
+   //        [self.view addSubview:self->upgradeView];
+   //    });
+   //    [self.upgradeTable reloadData];
+   //    return;
+       
+       JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+       if (model.md5Type == YES) {
+           /*---- OTA升级使用MD5校验 ----*/
+           [self.otaEntity.mCmdManager cmdGetMD5_Result:^(NSArray * _Nullable array) {
+               if (array.count >= 3) {
+                   NSData *data_md5 = array[2];
+                   NSString *str_md5 = [[NSString alloc] initWithData:data_md5 encoding:NSUTF8StringEncoding];
+                   NSLog(@"MD5 ----> %@",str_md5);
+                   //NSString* test = @"eb5eaa7e89664adc2c840230fc494656";
+                   [self.otaEntity.mCmdManager cmdGetOtaFileKey:model.authKey Code:model.proCode hash:str_md5
+                                         Result:^(JL_OTAUrlResult result,
+                                                  NSString * _Nullable version,
+                                                  NSString * _Nullable url,
+                                                  NSString * _Nullable explain) {
+                       [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+                   }];
+               }
+           }];
+       }else{
+           /*--- 传统OTA升级 ---*/
+           NSString *authKey = @"";
+           NSString *proCode = @"";
+           if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
+
+               DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+               authKey = m1.authKey;
+               proCode = m1.proCode;
+           }else{
+               authKey = model.authKey;
+               proCode = model.proCode;
+           }
+           [self.otaEntity.mCmdManager cmdGetOtaFileKey:authKey Code:proCode
+                                 Result:^(JL_OTAUrlResult result,
+                                          NSString * _Nullable version,
+                                          NSString * _Nullable url,
+                                          NSString * _Nullable explain) {
+               [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+           }];
+       }
+   #else
+       JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+       NSString *authKey = @"";
+       NSString *proCode = @"";
+       if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
+
+           DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+           authKey = m1.authKey;
+           proCode = m1.proCode;
+       }else{
+           authKey = model.authKey;
+           proCode = model.proCode;
+       }
+       //有新版本
+       shouldUp = YES;
+       NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+       path = [path stringByAppendingPathComponent:@"update.ufw"];
+       savePath = path;
+      
+       [upgradeView initWithNews:@"Max" tips:@"无限制升级"];
+       [self.view addSubview:upgradeView];
+      
+       
+   #endif
+       
+   }
+
+2.15.2.7 执行OTA升级
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: objectivec
+
+   [self.otaEntity.mCmdManager cmdOTAData:data Result:^(JL_OTAResult result, float progress) {
+       if (result == JL_OTAResultSuccess) {
+           [self->transportView update:1.0 Text:nil];
+           self->transportView.alpha = 0.0;
+           
+           [[JLUI_Cache sharedInstance] setOtaUUID:nil];
+           
+           [weakSelf upgradeFinish];
+       }
+       if (result == JL_OTAResultFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA升级失败")];
+       }
+       if (result == JL_OTAResultDataIsNull) {
+           [weakSelf failedWithAction:kJL_TXT("OTA升级数据为空!")];
+       }
+       if (result == JL_OTAResultCommandFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA指令失败!")];
+       }
+       if (result == JL_OTAResultSeekFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA标示偏移查找失败!")];
+       }
+       if (result == JL_OTAResultInfoFail) {
+           [weakSelf failedWithAction:kJL_TXT("OTA升级固件信息错误!")];
+       }
+       if (result == JL_OTAResultLowPower) {
+           [weakSelf failedWithAction:kJL_TXT("OTA升级设备电压低!")];
+       }
+       if (result == JL_OTAResultEnterFail) {
+           [weakSelf failedWithAction:kJL_TXT("未能进入OTA升级模式!")];
+       }
+       if (result == JL_OTAResultUnknown) {
+           [weakSelf failedWithAction:kJL_TXT("OTA未知错误!")];
+       }
+       if (result == JL_OTAResultFailSameVersion) {
+           [weakSelf failedWithAction:kJL_TXT("相同版本！")];
+       }
+       if (result == JL_OTAResultFailTWSDisconnect) {
+           [weakSelf failedWithAction:kJL_TXT("TWS耳机未连接")];
+       }
+       if (result == JL_OTAResultFailNotInBin) {
+           [weakSelf failedWithAction:kJL_TXT("耳机未在充电仓")];
+       }
+       
+       if (result == JL_OTAResultPreparing ||
+           result == JL_OTAResultUpgrading)
+       {
+           if (result == JL_OTAResultUpgrading) [self->transportView update:progress Text:kJL_TXT("正在升级")];
+           if (result == JL_OTAResultPreparing) [self->transportView update:progress Text:@"检验文件"];
+           [self otaTimeCheck];//增加超时检测
+       }
+       
+       if (result == JL_OTAResultPrepared) {
+           [self otaTimeCheck];//增加超时检测
+       }
+       if (result == JL_OTAResultReconnect) {
+           [self otaTimeCheck];//增加超时检测
+           
+           NSLog(@"---> OTA正在回连设备... %@",self.otaEntity.mItem);
+           [self->bleSDK.mBleMultiple connectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
+               if (status != JL_EntityM_StatusPaired) {
+                   [weakSelf failedWithAction:kJL_TXT("OTA升级超时")];
+               }
+           }];
+       }
+   }];
+
+
+
+2.16 设备提示音替换
+========================
+2.16.1 功能描述
+--------------------------
+
+    对设备端的提示音进行批量更换
+
+2.16.2 音频文件转码 .WTS
+----------------------------
+
+    将PCM音频文件转换为.WTS特殊格式的文件，当前要求的PCM文件参数为：
+    采样率: 16000
+    声道数: 1
+    位深: 16
+    采样格式: 16位 PCM
+
+代码示例参考如下：
+
+.. code:: swift
+
+    //这里是先从本地的沙盒中读取文件，然后转换为WTS格式
+    let wtsPath = R.path.tipsVoice + "/" + model.fileName
+    try?FileManager.default.removeItem(atPath: wtsPath)
+    JLPcmToWts.share().pcm(toWts: R.path.library+"/temp.pcm", bitOutFileName: wtsPath, targetRate: 20000, sr_in: 16000, vadthr: 0, usesavemodef: 0) { status, data ,path in
+        if status{
+            ECPrintDebug("pcm2wts success", self, "\(#function)", #line)
+            self.view.makeToast("生成成功")
+            self.finishIndex+=1
+            let md = TipsVoiceModel(name:model.nickName , file: model.fileName, path: wtsPath, type: false)
+            self.tipsVoiceInfos.append(md)
+            self.subTable.reloadData()
+            self.tipsView.isHidden = true
+        }
+    }   
+
+
+接口参考：
+
+.. code:: objective-c
+
+    /// PCM 转换 WTS
+    @interface JLPcmToWts : NSObject
+
+    /// 单例
+    +(instancetype)share;
+
+    /// PCM 文件编码 WTS 文件
+    /// - Parameters:
+    ///   - speechInFileName: PCM 文件路径
+    ///   - bitOutFileName: WTS 文件路径
+    ///   - targetRate: wts 文件的目标码率
+    ///   - sr_in: pcm 文件的采样率
+    ///   - vadthr: vad 阈值
+    ///   - usesavemodef: 0:位流优先 1:质量优先
+    ///   - block: 数据回调
+    -(void)pcmToWts:(NSString *)speechInFileName bitOutFileName:(NSString *)bitOutFileName targetRate:(int)targetRate sr_in:(int)sr_in vadthr:(float)vadthr usesavemodef:(int)usesavemodef Result:(wtsResultBlock)block;
+
+
+
+2.16.3 打包/解包音频文件
+----------------------------
+    
+    提示音替换时，需要对多个WTS文件进行打包，然后传输给到设备
+
+    注意：打包后的文件不能超过设备所支持的最大空间值，具体可以参考查询命令 **voicesReplaceGetVoiceInfo** 的返回值
+
+
+示例代码参考：
+
+.. code:: swift
+
+    var paths = [String]()//存放WTS文件的路径
+    var names = [String]()//存放WTS文件的名字
+    for item in self.items.value{
+        if item.type{
+            paths.append(item.path)
+            names.append(item.nickName)
+        }
+    }
+    if paths.count > 0{
+        self.statusLab.text = "正在生成..."
+
+        let dt = JLVoicePackageManager.makePks(paths, fileNames: names,info: info)
+
+        self.statusLab.text = "生成成功"
+        let filePath = R.path.document+"/tone.cfg"
+        try?FileManager.default.removeItem(atPath: filePath)
+        FileManager.default.createFile(atPath: filePath, contents: dt)
+    }
+
+
+接口说明：
+
+.. code:: objective-c
+
+    /// 打包多个 .wts 文件成 tone.cfg 数据
+    /// - Parameters:
+    ///   - paths: 文件存放路径
+    ///   - names: 文件在设备端使用时的名称
+    ///   - info: 设备限制的信息
+    +(NSData *)makePks:(NSArray *)paths FileNames:(NSArray *)names Info:(JLVoiceReplaceInfo*)info;
+
+    /// 解包 tone.cfg 数据
+    /// - Parameter data: tone.cfg 数据
+    +(NSArray<JLToneCfgModel*> *)parsePks:(NSData *)data; 
+
+    /// 当前 SDK 版本
+    +(NSString *)getVersion;
+
+
+
+2.16.4 获取设备的提示音信息
+----------------------------
+
+    获取设备的提示音信息，用于提示音替换
+
+示例代码参考：
+
+.. code:: swift
+
+    guard let cmdMgr = BleManager.shared.currentCmdMgr else {return}
+    let voiceReplace = JLVoicePackageManager.share()
+    voiceReplace.voicesReplaceGetVoiceInfo(cmdMgr, result: { cmdStatus ,info in
+        if cmdStatus != .success {
+            self.view.makeToast("请求设备信息错误：\(cmdStatus)")
+            return
+        }
+        self.voiceInfo = info
+        guard let info = info else {
+            return;
+        }
+        self.infoLab.text = "文件数目：" + String(info.maxNum) + "\n文件名称：" + info.fileName + "\n预留区域大小：" + String(info.blockSize)
+        self.items.accept(info.infoArray)
+        
+    })
+
+
+
+接口说明：
+
+.. code:: objective-c
+
+    /// 单例
+    +(instancetype)share;
+
+    /// 是否处于替换中
+    -(BOOL)isReplacing;
+
+    /// 是否支持提示音替换查询
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - result: 回调结果
+    -(void)isSupportTipsVoiceReplace:(JL_ManagerM *)manager result:(JLConfigTwsRsp)result;
+
+    /// 获取设备端提示音的信息
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - result: 回调
+    -(void)voicesReplaceGetVoiceInfo:(JL_ManagerM *)manager Result:(JLTipsVoiceBlock)result;
+
+
+
+2.16.5 替换设备的提示音
+----------------------------
+
+    替换设备的提示音
+
+示例代码参考：
+
+.. code:: swift
+
+    guard let cmdMgr = BleManager.shared.currentCmdMgr else{return}
+    let filePath = R.path.document+"/tone.cfg"
+    let url = URL(fileURLWithPath: filePath)
+    guard let dt = try?Data(contentsOf:url) else{return}
+    let model = cmdMgr.getDeviceModel()
+    
+    self.voiceManager.voicesReplacePushDataRequest(cmdMgr, devHandle:model.cardInfo.flashHandle , tonePath: filePath, isReborn: true) { transportStatus, progress in
+        switch transportStatus{
+        case .transferStart:
+            print("开始传输")
+            break
+        case .transferDownload:
+            print("传输中")
+            self.progressView.progress = progress
+            self.statusLab.text = "\(progress*100)%"
+        case .transferEnd:
+            print("传输完成")
+            self.view.makeToast("传输完成",position: .center)
+        case .transferOutOfRange:
+            print("超出范围")
+            self.view.makeToast("超出范围",position: .center)
+            break
+        case .transferFail:
+            print("传输失败")
+            self.view.makeToast("传输失败",position: .center)
+            break
+        case .crcError:
+            print("CRC错误")
+            self.view.makeToast("CRC错误",position: .center)
+            break
+        case .outOfMemory:
+            print("内存不足")
+            self.view.makeToast("内存不足",position: .center)
+            break
+        case .transferCancel:
+            print("取消传输")
+            break
+        case .transferNoResponse:
+            print("没有响应")
+            break
+        @unknown default:
+            break
+        }
+    }
+
+
+接口说明：
+
+.. code:: objective-c
+     
+    /// 推送提示音数据到设备
+    /// - Parameters:
+    ///   - mgr: 设备
+    ///   - devhandle: 设备句柄，当前句柄需要通过获取设备存储信息获得，可参考 JLModel_Device 类的 cardInfo 属性，当设备不作要求时，此值填 0xffffffff
+    ///   - path: 提示音本地存放路径
+    ///   - isReborn: 完成后是否重启设备
+    ///   - result: 回调结果
+    -(void)voicesReplacePushDataRequest:(JL_ManagerM *)mgr DevHandle:(NSData *)devhandle TonePath:(NSString *)path IsReborn:(BOOL)isReborn Result:(JL_BIGFILE_RT __nullable)result;
+
+
+.. _带屏幕设备功能设置:
+
+2.17 带屏幕设备功能设置
+========================
+2.17.1 功能描述
+--------------------------
+
+    如果开发者所使用设备为带屏设备，并支持RCSP协议，则可以使用以下的相关接口内容；
+    当前带屏幕设备设置功能主要包含了：
+
+    1. 静态图片设置到设备以及动态图片设置到设备作为屏保；
+    2. 屏幕亮度设置/获取
+    3. 手电筒开关设置/获取
+
+
+2.17.2 屏幕亮度设置/获取
+--------------------------------
+
+此类属于公共属性设置类，开发者可以在 **JLPublicSetting** 中进行获取和设置，具体接口如下：
+
+.. code:: objective-c
+
+    /// 读取设备当前屏幕亮度
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - block: 回调
+    -(void)cmdScreenLightGet:(JL_ManagerM *)manager result:(JLPSScreenLightCbk)block;
+
+    /// 设置设备的屏幕亮度
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - value: 亮度值 0～100
+    ///   - block: 回调
+    -(void)cmdScreenLightSet:(JL_ManagerM *)manager  Value:(uint8_t)value result:(JLPSScreenLightCbk)block;
+
+    JL_ManagerM *cmdMgr = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    __weak typeof(self) weakSelf = self;
+
+    //获取
+    [publicSetting cmdScreenLightGet:cmdMgr result:^(JL_CMDStatus status, uint8_t value) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf){
+            [strongSelf->lightSetView setLightValue:value];
+        }
+    }];
+
+    //设置
+    [publicSetting cmdScreenLightSet:cmdMgr Value:20 result:^(JL_CMDStatus status, uint8_t value) {
+        
+    }];
+
+
+
+2.17.3 手电筒设置/获取
+------------------------
+
+此类属于公共属性设置类，开发者可以在 **JLPublicSetting** 中进行获取和设置，具体接口如下：
+
+.. code:: objective-c
+
+    /// 读取手电筒开关
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - block: 回调
+    -(void)cmdFlashLightGet:(JL_ManagerM *)manager result:(JLPSFlashLightCbk)block;
+
+    /// 设置手电筒开关
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - isOn: 开关
+    ///   - block: 回调
+    -(void)cmdFlashLightSet:(JL_ManagerM *)manager  Status:(BOOL)isOn result:(JLPSFlashLightCbk)block;
+
+
+2.17.4 当前设备使用的屏显信息获取
+---------------------------------
+
+此类属于公共属性设置类，开发者可以在 **JLPublicSetting** 中进行获取，具体接口如下：
+
+以下方法是用于获取当前设备所使用的资源信息：
+
+.. code:: objective-c
+
+    /// 获取功能使用资源设置（彩屏舱）
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - funcType: 功能码
+    ///   0x01 屏幕保护程序
+    ///   0x02 开机动画
+    ///   - block: 回调
+    -(void)cmdDeviceFuncUsedSourceGet:(JL_ManagerM *)manager Type:(uint8_t)funcType result:(JLPSSourceInfoCbk)block;
+
+
+屏幕的参数扩展内容获取，需要通过 **JLDialInfoExtentManager** 获取设备屏幕信息：
+
+.. code:: objective-c
+
+    //// 屏幕参数扩展内容获取
+    [[JLDialInfoExtentManager share] getDialInfoExtented: entity.mCmdManager result:^(JL_CMDStatus status, JLDialInfoExtentedModel * _Nullable op) {
+        if (status == JL_CMDStatusSuccess) {
+            [[JL_RunSDK sharedMe] setDialInfoExtentedModel:op];
+        }else{
+            NSLog(@"getDialInfoExtented fail :%d",status);
+        }
+    }];
+
+
+**设备 SDK 信息获取**
+获取内容的接口在 **JLPublicSetting** 中，可以通过 **cmdDeviceGetDeviceSDKInfo** 获取
+
+.. code:: objective-c
+
+    /// 获取设备 SDK 信息
+    /// - Parameters:
+    ///   - manager: 设备
+    ///   - block: 回调
+    -(void)cmdDeviceGetDeviceSDKInfo:(JL_ManagerM *)manager result:(JLPSSDKInfoCbk)block;
+
+当前SDK信息包含了以下信息:
+
+.. code:: objective-c
+
+    /// 设备 SDK 信息
+    @interface JLPublicSDKInfoModel : NSObject
+
+    /// 项目对应 ID
+    /// 0x0001 充电仓
+    @property(nonatomic,assign)uint16_t projectId;
+
+    /// 产品对应 ID
+    /// 0x0001 彩屏舱
+    @property(nonatomic,assign)uint16_t productId;
+
+    /// 芯片 ID
+    /// 0x0001 AC701N
+    /// 0x0002 AC707N
+    @property(nonatomic,assign)uint16_t chipId;
+
+    /// 是否支持 gif
+    @property(nonatomic,assign)BOOL isSupportGif;
+
+
+我们可以通过队列加载的形式来获取到对应内容：
+
+.. code:: objective-c
+
+    //MARK: - 充电仓特殊处理
+    -(void)handleWithChargeBin {
+        JLModel_Device *dev = [self.mBleEntityM.mCmdManager getDeviceModel];
+        if (dev.sdkType == JL_SDKTypeChargingCase) {
+            JLPublicSetting *set = [[JL_RunSDK sharedMe] publicSetMgr];
+            JL_ManagerM *mgr = self.mBleEntityM.mCmdManager;
+            JLTaskChain *chain = [JLTaskChain new];
+            //获取SDK信息
+            [chain addTask:^(id  _Nonnull input, void (^ _Nonnull completion)(id _Nullable, NSError * _Nullable)) {
+                [set cmdDeviceGetDeviceSDKInfo:mgr result:^(JL_CMDStatus status, JLPublicSDKInfoModel * _Nullable model) {
+                    if (status == JL_CMDStatusSuccess) {
+                        [[JL_RunSDK sharedMe] setPublicSDKInfoModel:model];
+                        completion(model, nil);
+                    } else {
+                        completion(nil, nil);
+                    }
+                }];
+            }];
+            
+            //获取表盘信息
+            [chain addTask:^(id  _Nonnull input, void (^ _Nonnull completion)(id _Nullable, NSError * _Nullable)) {
+                JLPublicSDKInfoModel *model = input;
+                if (model.productId == 0x0001 && model.chipId == 0x0002) {
+                    [JL_RunSDK sharedMe].dialUnitMgr = [[JLDialUnitMgr alloc] initWithManager:mgr completion:^(NSError * _Nullable err) {
+                        if (err != nil) {
+                            completion(nil, err);
+                        } else {
+                            completion([JL_RunSDK sharedMe].dialUnitMgr, nil);
+                        }
+                    }];
+                } else {
+                completion(nil, nil);
+                }
+            }];
+            
+            //获取表盘的文件数据
+            [chain addTask:^(id  _Nonnull input, void (^ _Nonnull completion)(id _Nullable, NSError * _Nullable)) {
+                JLDialUnitMgr *manager = input;
+                if (manager) {
+                    [manager getFileList:JL_CardTypeFLASH count:100 completion:^(NSArray<JLDialSourceModel *> * _Nullable list, NSError * _Nullable err) {
+                        if (err != nil) {
+                            completion(nil, err);
+                        } else {
+                            completion(list, nil);
+                        }
+                    }];
+                }else{
+                    completion(nil, nil);
+                }
+            }];
+            
+            [chain runWithInitialInput:nil completion:^(id  _Nullable result, NSError * _Nullable error) {
+                if (error != nil) {
+                    kJLLog(JLLOG_ERROR, @"--->update Get file list error.");
+                }
+            }];
+
+        }
+    }
+
+
+
+2.17.5 屏幕保护程序背景获取
+------------------------------------------------
+
+此功能需要先对设备进行上述的获取屏幕参数后，才允许进行调用使用，否则会出现传过去的图片，设备端显示不匹配;
+由于新旧业务的更迭，获取的方法需要先根据所获取到是设备SDK信息区分是哪一款芯片，然后在行获取。
+
+- 获取具体的芯片型号：  
+
+.. code:: objective-c
+
+    -(NSString *)witchChipType{
+        JLPublicSDKInfoModel *model = [JL_RunSDK sharedMe].publicSDKInfoModel;
+        if (model.chipId == 0x02 && model.productId == 0x01 && model.projectId == 0x01) {
+            return "AC_707";
+        }
+        if (model.chipId == 0x01 && model.productId == 0x01 && model.projectId == 0x02) {
+            return "AC_701";
+        }
+        return nil;
+    }
+
+
+- 若固件上 AC70N 系列的芯片，则使用如下的方法进行获取：
+
+.. code:: objective-c
+    
+    -(void)request701NScreenSaver {
+        JLPublicSetting *publicMgr = self.publicSetMgr;
+        JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+        
+        [publicMgr cmdDeviceFuncUsedSourceGet:manager Type:0x01 result:^(JL_CMDStatus status, JLPublicSourceInfoModel * _Nullable model) {
+            //TODO: 处理返回的当前屏保信息内容
+        }]; 
+    }
+
+
+- 若固件上 AC707N 系列的芯片，则使用如下的方法进行获取：
+
+因为707N系列芯片是复用了表盘信息内容所以需要先初始化表盘内容，即系当前的设备有一个固定的空白表盘，当前轮番切换或者插入屏幕保护背景图片时，
+等同于给手表设备进行表盘自定义背景的替换、切换。
+以下内容需要接 **2.17.4 当前设备使用的屏显信息获取**
+
+.. code:: objective-c
+
+    -(void)request707NScreenSaver {
+        JLPublicSetting *publicMgr = self.publicSetMgr;
+        JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+        JLDialUnitMgr *dialUnitMgr = [[JL_RunSDK sharedMe] dialUnitMgr];     
+        //请求设备端有多少个屏幕保护背景（表盘背景）列表
+        //这里需要指定存储的句柄位置以及请求个数
+        [dialUnitMgr getFileList:JL_CardTypeFLASH count:100 completion:^(NSArray<JLDialSourceModel *> * _Nullable list, NSError * _Nullable err) {
+            if (err != nil) {
+                kJLLog(JLLOG_ERROR, @"--->update Get file list error.");
+            }else{
+                kJLLog(JLLOG_ERROR, @"--->update Get file list success.");
+                for (JLDialSourceModel *model in list) {
+                    [model logProperties];
+                }
+            }
+        }];
+        
+        //请求当前正在使用的屏幕保护背景（表盘背景）
+        [dialUnitMgr dialGetCurrentBackground:^(JLDialSourceModel * _Nullable model, NSError * _Nullable error) {
+            kJLLog(JLLOG_ERROR, @"--->update Get file list success.%@", model);
+        }];
+    }
+
+
+2.17.6 屏幕图片设置
+----------------------
+
+- 若固件上 AC70N 系列的芯片，则使用如下的方法进行设置：
+
+此功能需要先对设备进行上述的获取屏幕参数后，才允许进行调用使用，否则会出现传过去的图片，设备端显示不匹配；
+
+当所传输的图片是静态图时，使用以下的方法进行设置：
+
+
+.. code:: objective-c
+
+    JLDialInfoExtentedModel *model = [[JL_RunSDK sharedMe] dialInfoExtentedModel];
+    CGSize size = CGSizeMake(320, 172);
+    if(model.size.width != 0){
+        size = [model size];
+    }
+    UIImage *targetImage = [UIImage new]; //FIXME: 目标图片
+    NSData *imgData = [JLBmpConvert resizeImage:targetImage andResizeTo:size];
+    JLBmpConvertOption *option = [[JLBmpConvertOption alloc] init];
+    option.convertType = JLBmpConvertType701N_RBG;
+    JLImageConvertResult *result = [JLBmpConvert convert:option ImageData:imgData];
+    //开始传输屏幕保护程序
+    [DialManager addFile:@"VIE_1" Content:result.outFileData Result:^(DialOperateType type, float progress) {
+        
+    }];
+
+
+
+如果开发者所下发的图片是GIF的时候，需要先对图片进行转换才可以下发到设备，由于GIF的尺寸比较大，开发者需要先与固件端协商好所使用的GIF大小：
+注意：这里还需要根据获取到的设备信息进行查看是否支持GIF
+
+.. code:: objective-c
+
+    NSString * gifUrl = @"xxxxx/xxxxxx/xxxx.gif"; //FIXME: - gifUrl
+    NSData *data = [NSData dataWithContentsOfURL:gifUrl];
+    NSString *tmpBin = [NSString stringWithFormat:@"%@/tmp.bin",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, true) firstObject]];
+    NSString *fileName = @"VIE_1";
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@.gif",gifUrl,fileName];
+    __weak typeof(self)weakSelf = self;
+    [JLGifBin makeDataToBin:data Level:1 ChipType:JLGIFBinChipJL_701N Result:^(int code, NSData * _Nullable binData) {
+        __strong typeof(weakSelf)strongSelf = weakSelf;
+        if (code == 0 && binData){
+            NSFileManager *fm = [NSFileManager defaultManager];
+            [fm removeItemAtPath:tmpBin error:nil];
+            [fm createFileAtPath:tmpBin contents:binData attributes:nil];
+            
+            NSString *name = [NSString stringWithFormat:@"/%@.RES",fileName];
+            [DialManager addFile:name Content:binData Result:^(DialOperateType type, float progress) {
+                
+            }];
+        }
+    }];
+
+
+- 若固件上 AC707N 系列的芯片，则使用如下的方法进行获取：
+
+因为707N系列芯片是复用了表盘信息内容所以需要先初始化表盘内容，即系当前的设备有一个固定的空白表盘，当前轮番切换或者插入屏幕保护背景图片时，
+等同于给手表设备进行表盘自定义背景的替换、切换。
+以下内容需要接 **2.17.4 当前设备使用的屏显信息获取**
+
+.. code:: objective-c
+
+    JLDialUnitMgr *dialUnitMgr = [[JL_RunSDK sharedMe] dialUnitMgr];
+    JLDialInfoExtentedModel *model = [[JL_RunSDK sharedMe] dialInfoExtentedModel];
+    CGSize size = CGSizeMake(320, 172);
+    if(model.size.width != 0){
+        size = [model size];
+    }
+    UIImage *targetImage = [UIImage new]; //FIXME: 目标图片
+    NSData *imgData = [JLBmpConvert resizeImage:targetImage andResizeTo:size];
+    JLBmpConvertOption *option = [[JLBmpConvertOption alloc] init];
+    option.convertType = JLBmpConvertType701N_RBG;
+    JLImageConvertResult *result = [JLBmpConvert convert:option ImageData:imgData];
+    
+    //若为 GIF
+    //    [JLGifBin makeDataToBin:data Level:1 ChipType:JLGIFBinChipJL_701N Result:^(int code, NSData * _Nullable binData) {
+    //        __strong typeof(weakSelf)strongSelf = weakSelf;
+    //        if (code == 0 && binData){
+    //            NSFileManager *fm = [NSFileManager defaultManager];
+    //            [fm removeItemAtPath:tmpBin error:nil];
+    //            [fm createFileAtPath:tmpBin contents:binData attributes:nil];
+    //            
+    //            NSString *name = [NSString stringWithFormat:@"/%@.RES",fileName];
+    //            //TODO: 上传文件
+    //        }
+    //    }];
+    
+    [dialUnitMgr updateFileToDevice:JL_FileHandleTypeFLASH Data:result.outFileData FilePath:@"/VIE_1" completion:^(int status, double progress, NSError * _Nullable err) {
+        //0:成功 1:传输中 -1:失败
+        if (status == -1) {
+            //失败
+        }
+        if (status == 0) {
+            //成功
+            
+            //激活表盘操作
+            JLDialSourceModel *model = [[JLDialSourceModel alloc] init];
+            model.fileName = @"VIE_1";
+            [dialUnitMgr dialActiveCustomBackground:model Completion:^(BOOL state, NSError * _Nullable error) {
+               
+            }];
+        }
+        if (status == 1) {
+            //传输中
+        }
+    }];
+    
+    
+
+
+
+2.17.7 同步天气到设备
+----------------------------
+
+此部分功能需要利用第三方服务，先获取了地理位置后再获取天气信息，具体使用可参考以下：
+
+.. code:: objective-c
+
+    AMapLocalWeatherLive *live = response.lives[0];
+    [live logProperties];
+    NSDateFormatter *fm = [NSDateFormatter new];
+    fm.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    JL_MSG_Weather *weather = [JL_MSG_Weather new];
+    weather.date = [fm dateFromString:live.reportTime];
+    weather.province = live.province;
+    weather.city = live.city;
+    weather.code = [self weatherTypeFromString:live.weather];
+    weather.temperature = live.temperature.integerValue;
+    weather.humidity = live.humidity.integerValue;
+    
+    NSCharacterSet *nonDigitsSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *digitsOnlyString = [live.windPower stringByReplacingOccurrencesOfString:@"" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, live.windPower.length)];
+    weather.wind = digitsOnlyString.integerValue;
+    weather.direction = [self wDirectionTypeFrom:live.windDirection];
+    [[JLWearable sharedInstance] w_syncWeather:weather withEntity:[[JL_RunSDK sharedMe] mBleEntityM] result:^(BOOL succeed) {
+        NSLog(@"weather sync to device isSuccess:%d", succeed);
+    }];
+
+
+
+
+.. _SPDIF模式:
+
+2.18 SPDIF模式
+========================
+2.18.1 功能描述
+--------------------------
+
+    该功能可调用功能设置相关RCSP的底层接口，通过 0x07/0x08/0x09等命令进行获取/设置和推送等，
+    其功能在于控制设备端的播放状态以及音源切换，诸如HDMI/光纤/同轴等切换。
+
+
+2.18.2 更新SPDIF模式
+--------------------------------
+
+.. code:: objective-c
+
+    /// 更新SPDIF模式
+    /// - Parameter spdifModel: SPDIF模式
+    -(void)updateSpdifModel:(JLModelSpdif *)spdifModel;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+    let spdifModelListen = PublishSubject<JLModelSpdif>()
+    extension SpdifPcViewModel:JLSpdifPCProtocol {
+    func updateSpdifModel(_ spdifModel: JLModelSpdif) {
+        self.spdifModelListen.onNext(spdifModel)
+      }    
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+
+            SpdifPcViewModel.share.spdifModelListen.subscribe() { [weak self] model in
+            guard let `self` = self else {return}
+            
+            if model.playStatus {
+                // 更新播放暂停按钮，播放状态下的图片
+            }else{
+                // 更新播放暂停按钮，暂停状态下的图片
+            }
+            switch model.audioType {
+            case .HDMI:
+                // 当前是HDMI类型，更新HDMI按钮的选中状态
+            case .FO:
+                // 当前是光纤类型，更新光纤按钮的选中状态
+            case .coaxial:
+                // 当前是同轴类型，更新同轴按钮的选中状态
+            default:
+                break
+            }
+        }.disposed(by: disposeBag)
+
+2.18.3 获取SPDIF模式的状态
+--------------------------------
+
+.. code:: objective-c
+
+    /// 获取SPDIF模式的状态
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)getSpdifStatus:(JL_ManagerM *)manager callBack:(JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+    func getSpdifStatus(_ mgr:JL_EntityM? = nil){
+        if mgr == nil {
+            guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+            manager.getSpdifStatus(mgr) { _, _, _ in
+            }
+         }else{
+            manager.getSpdifStatus(mgr!.mCmdManager) { _, _, _ in
+            }
+         }
+     }
+
+.. UI层调用SpdifPcViewModel中的代码参考：
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: objective-c
+
+    JL_EntityM *entity = [[JL_RunSDK sharedMe] mBleEntityM];
+    [entity.mCmdManager cmdFunction:JL_FunctionCodeCOMMON Command:code Extend:0x00 Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+        if (code == JL_FunctionCodeSPDIF){
+            [[SpdifPcViewModel share] getSpdifStatus:entity];
+            [self showToolViewWithBit:0x0080];
+        }
+    }];
+
+2.18.4 设置SPDIF模式的播放状态
+--------------------------------
+
+.. code:: objective-c
+
+    /// 设置SPDIF模式的播放状态
+    /// - Parameter status: 播放状态
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)setSpdifPlayStatus:(BOOL)status Manager:(JL_ManagerM *)manager callBack:(JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+        func setSpdifPlayStatus(){
+        guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+        let status = manager.spdifModel.playStatus
+        manager.setSpdifPlayStatus(!status, manager: mgr) { status, _, _ in
+            if status == .success {
+                self.manager.spdifModel.playStatus = !self.manager.spdifModel.playStatus
+                self.spdifModelListen.onNext(self.manager.spdifModel)
+            }
+        }
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+
+        ppBtn.rx.tap.subscribe { _ in
+            SpdifPcViewModel.share.setSpdifPlayStatus()
+        }.disposed(by: disposeBag)
+
+2.18.5 设置SPDIF模式音源
+--------------------------------
+
+.. code:: objective-c
+
+    /// - Parameter type: 音源类型
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)setSpdifAction:(JLSpdifAudioType)type Manager:(JL_ManagerM *)manager callBack:(JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+        func setSpdifAudioType(_ type:JLSpdifAudioType){
+        guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+        manager.setSpdifAction(type, manager: mgr, callBack: { status,  _, _ in
+            if status == .success {
+                self.manager.spdifModel.audioType = type
+                self.spdifModelListen.onNext(self.manager.spdifModel)
+            }
+        })
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+
+        hdmiBtn.rx.tap.subscribe { _ in
+            SpdifPcViewModel.share.setSpdifAudioType(.HDMI)
+        }.disposed(by: disposeBag)
+        
+        foBtn.rx.tap.subscribe { [weak self] _ in
+            guard let `self` = self else {return}
+            SpdifPcViewModel.share.setSpdifAudioType(.FO)
+        }.disposed(by: disposeBag)
+        
+        coaxialBtn.rx.tap.subscribe { [weak self] _ in
+            guard let `self` = self else {return}
+            SpdifPcViewModel.share.setSpdifAudioType(.coaxial)
+        }.disposed(by: disposeBag)
+
+
+.. _PC从机模式:
+
+2.19 PC从机模式
+========================
+2.19.1 功能描述
+--------------------------
+
+    新增PC从机模式，该功能可调用功能设置相关RCSP的底层接口，通过 0x07/0x08/0x09等命令进行获取/设置和推送等，
+    其功能在于控制设备端的播放状态、上下曲。
+
+2.19.2 更新PC从机模式
+--------------------------------
+
+.. code:: objective-c
+
+    /// 更新PC从机模式
+    /// - Parameter pcServerModel: PC Server
+    -(void)updatePcServerModel:(JLModelPCServer *)pcServerModel;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+    let pcServerModelListen = PublishSubject<JLModelPCServer>()
+    extension SpdifPcViewModel:JLSpdifPCProtocol {
+    func updatePcServerModel(_ pcServerModel: JLModelPCServer) {
+        self.pcServerModelListen.onNext(pcServerModel)
+      }
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+
+            SpdifPcViewModel.share.pcServerModelListen.subscribe() { [weak self] model in
+                guard let `self` = self else {return}
+            if model.playStatus {
+                // 更新播放暂停按钮，播放状态下的图片
+            }else{
+                // 更新播放暂停按钮，暂停状态下的图片
+            }
+        }.disposed(by: disposeBag)
+
+2.19.3 获取PC从机模式的状态
+--------------------------------
+
+.. code:: objective-c
+
+    /// 获取PC从机模式的状态
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)getPcServerStatus:(JL_ManagerM *)manager callBack: (JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+        let manager = JLSpdifPCManager()
+        func getPcServiceStatus(_ mgr:JL_EntityM? = nil){
+        if mgr == nil {
+            guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+            manager.getPcServerStatus(mgr) { _, _, _ in
+            }
+        }else{
+            manager.getPcServerStatus(mgr!.mCmdManager) { _, _, _ in
+            }
+        }
+    }
+
+2.19.4 设置PC从机模式的播放状态
+--------------------------------
+
+.. code:: objective-c
+
+    /// 设置PC从机模式的播放状态
+    /// - Parameter status: 播放状态
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)setPcServerPlayStatus:(BOOL)status Manager:(JL_ManagerM *)manager callBack:(JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+        func setPCPlayStatus(){
+        guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+        let manager = JLSpdifPCManager()
+        let status = manager.pcServerModel.playStatus
+        manager.setPcServerPlayStatus(!status, manager: mgr) { status, _, _ in
+            if status == .success {
+                self.manager.pcServerModel.playStatus = !self.manager.pcServerModel.playStatus
+                self.pcServerModelListen.onNext(self.manager.pcServerModel)
+            }
+        }
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+ 
+  func pcPPState(){
+    SpdifPcViewModel.share.setPCPlayStatus()
+  }
+
+2.19.5 设置PC从机模式的操作类型
+--------------------------------
+
+.. code:: objective-c
+
+    /// - Parameter type: 操作类型
+    /// - Parameter manager: 设备对象
+    /// - Parameter callBack: 回调
+    -(void)setPcServerAction:(JLPcServerOpType)type Manager:(JL_ManagerM *)manager callBack:(JL_CMD_RESPOND)callBack;
+
+SpdifPcViewModel调用代码参考：
+
+.. code:: swift
+
+    func pcNextOrPrivious(_ type:JLPcServerOpType){
+        guard let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else {return}
+        let manager = JLSpdifPCManager()
+        manager.setPcServerAction(type, manager: mgr, callBack: { status,  _, _ in
+        })
+    }
+
+UI层调用SpdifPcViewModel中的代码参考：
+
+.. code:: swift
+  
+  func pcPrivious() {
+    SpdifPcViewModel.share.pcNextOrPrivious(.previous)
+  }
+
+  func pcNext(){
+    SpdifPcViewModel.share.pcNextOrPrivious(.next)
+  }
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+#source 'https://gitee.com/mirrors/CocoaPods-Specs.git'
+#source 'https://github.com/CocoaPods/Specs.git'
+
+platform:ios,'10.0'
+
+target:'NewJieliZhiNeng' do
+
+pod 'LMJHorizontalScrollText'
+
+pod 'FMDB'
+
+pod 'AFNetworking'
+
+pod 'Masonry'
+
+pod 'Colours'
+
+pod 'WMZDialog'
+
+pod 'Bugly'
+
+pod 'SnapKit'
+
+pod 'RxSwift'
+
+pod 'RxCocoa'
+
+pod 'MarqueeLabel'
+
+pod 'Toast-Swift','~> 5.0.1'
+
+pod 'SwiftyAttributes'
+
+pod 'Starscream'
+
+end
+

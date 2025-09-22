@@ -1,0 +1,6 @@
+framework module NSObjectSafe {
+  umbrella header "NSObjectSafe.h"
+  export *
+
+  module * { export * }
+}

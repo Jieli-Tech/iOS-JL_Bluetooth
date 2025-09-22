@@ -68,33 +68,48 @@ To help developers quickly integrate the JieLi Home SDK, please read carefully b
 iOS-JL_Bluetooth/
 ├── 📂 code/                          # Demo program source code
 │   ├── 📦 Example of audio encoding and decoding V1.1.0.zip
-│   ├── 📂 JLAudioUnitKitDemo/        # Audio codec demo project
-│   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
-│   │   ├── 📱 JLAudioUnitKitDemo/    # Swift demo application
-│   │   ├── 🎵 JLAudioUnitKit.framework # Audio processing framework
-│   │   ├── 🔧 Tools/                 # Audio utility classes
-│   │   ├── 📺 ViewControllers/       # View controllers
-│   │   └── 🎛️ Views/                 # Custom view components
-│   └── 📂 NewJieliZhiNeng/           # Main example project
-│       ├── 🏗️ NewJieliZhiNeng.xcworkspace
+│   ├── 📂 JLAudioUnitKitDemo_V1.3.0_Beta1_20250827/ # Audio codec demo project (Latest Version)
+│   │   ├── 📂 code/JLAudioUnitKitDemo/
+│   │   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
+│   │   │   ├── 📱 JLAudioUnitKitDemo/    # Swift demo application
+│   │   │   ├── 🎵 JLAudioUnitKit.xcframework # Audio processing framework
+│   │   │   ├── 📝 JLLogHelper.xcframework # Log helper framework
+│   │   │   └── 🔧 Pods/                  # Dependencies
+│   │   ├── 📂 docs/                      # Development documentation
+│   │   ├── 📂 libs/                      # Framework libraries
+│   │   └── 📄 readme.md                  # Project description
+│   └── 📂 JieLi_Home_Demo/           # JieLi Home main application demo
+│       ├── 🏗️ NewJieliZhiNeng.xcworkspace # Main workspace
 │       ├── 📱 NewJieliZhiNeng/       # iOS application source code
-│       ├── 📚 Sources/               # Source code files
-│       └── 🔧 Pods/                  # Dependencies
+│       │   ├── 🎯 App Settings/       # App settings module
+│       │   ├── 🌐 Http Interfaces/   # Network interfaces
+│       │   ├── 🎵 Multimedia/        # Multimedia features
+│       │   ├── 🎤 Karaoke/           # Karaoke features
+│       │   ├── 📱 Device/            # Device management
+│       │   └── 🎛️ Audio Effects/     # Audio effects
+│       ├── 🔧 Frameworks/            # Built-in framework libraries
+│       ├── 📚 Sources/               # Resource files
+│       ├── 🌍 Languages/             # Multi-language support
+│       └── 🔧 Pods/                  # CocoaPods dependencies
 ├── 📂 docs/                          # Documentation resources
-│   ├── 📖 JieLiBluetoothControlSDKDevelopmentInstructions(iOS)/
-│   ├── 📄 More/                      # Additional documentation
-│   └── 📋 JieLi Home SDK(iOS) Release Record.pdf
-└── 📂 libs/                          # Core SDK libraries
-    ├── 🔗 JL_BLEKit.framework        # Bluetooth connection core library
-    ├── 🔧 JL_OTALib.framework        # OTA upgrade library
-    ├── 🎵 JLDialUnit.framework       # Watch face processing library
-    ├── 🎵 JLAudioUnitKit.framework   # Audio codec library
-    ├── 🖼️ JLBmpConvertKit.framework   # Image conversion library
-    ├── 🔐 JL_HashPair.framework      # Pairing encryption library
-    ├── 📡 JL_AdvParse.framework      # Advertisement parsing library
-    ├── 📝 JLLogHelper.framework      # Log helper library
-    ├── 🎤 SpeexKit.framework         # Voice codec library
-    └── 📦 third_party/               # Third-party dependencies
+│   ├── 📖 JL_OTALib.framework API Documentation.md
+│   ├── 📄 html/                      # HTML format documentation
+│   │   ├── 🏠 index.html             # Documentation homepage
+│   │   ├── 📁 Development/           # Development guide
+│   │   ├── 📁 Framework/             # Framework documentation
+│   │   └── 📁 Other/                 # Other documentation
+│   ├── 📋 JieLi Home SDK(iOS) Release Record.pdf
+│   ├── 📄 JieLi Open Platform Integration Guide_V1.0.3.pdf
+│   └── 📦 Device Specification Documents/ # Device usage specifications
+└── 📂 libs/                          # Core SDK libraries (XCFramework format)
+    ├── 🔗 JL_BLEKit.xcframework      # Bluetooth connection core library
+    ├── 🔧 JL_OTALib.xcframework      # OTA upgrade library
+    ├── 🎵 JLDialUnit.xcframework     # Watch face processing library
+    ├── 🖼️ JLBmpConvertKit.xcframework # Image conversion library
+    ├── 📝 JLLogHelper.xcframework    # Log helper library
+    ├── 📦 JLPackageResKit.xcframework # Resource package processing library
+    ├── 🔍 JL_AdvParse.xcframework    # Advertisement parsing library
+    └── 🔐 JL_HashPair.xcframework    # Hash pairing library
 ```
 
 ---
@@ -103,6 +118,7 @@ iOS-JL_Bluetooth/
 
 | Version | Release Date | Editor | Major Updates |
 |---------|--------------|--------|---------------|
+| **v1.13.0** | 2025/07/18 | EzioChen | • Added color screen case feature support<br/>• Added screen brightness control<br/>• Added screen saver program control<br/>• Added weather information synchronization |
 | **v1.12.0** | 2024/11/22 | EzioChen | • Added AC707N compatible custom watch face image conversion<br/>• Separated image conversion tool as independent module library |
 | **v1.11.0** | 2024/03/15 | EzioChen | • Added watch face extension parameters and supplemented AI watch face process<br/>• Added 4G module OTA functionality<br/>• Fixed known issues |
 | **v1.10.0** | 2023/11/23 | EzioChen | • Added TWS earphone one-to-two functionality and interface<br/>• Support for chip JL701N v1.0.0_patch_06<br/>• Fixed known issues |
