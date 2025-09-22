@@ -65,6 +65,10 @@ extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
  */
 -(void)scanStop;
 
+
+/// 蓝牙中心管理器
+-(CBCentralManager *)getCenterManaer;
+
 /**
  通过UUID生成Entity。
  */

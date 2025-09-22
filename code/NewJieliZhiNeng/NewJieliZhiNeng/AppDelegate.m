@@ -59,7 +59,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     /*--- 记录NSLOG ---*/
-    [JL_Tools openLogTextFile];
+    [JLLogManager setLog:true IsMore:false Level:JLLOG_DEBUG];
+    [JLLogManager clearLog];//执行这个会清理上一次的日志，如果想一直保留，此方法可注释
+    [JLLogManager logWithTimestamp:true];
+    [JLLogManager saveLogAsFile:true];
     
     /*--- 设置屏幕常亮 ---*/
     [UIApplication sharedApplication].idleTimerDisabled = YES;

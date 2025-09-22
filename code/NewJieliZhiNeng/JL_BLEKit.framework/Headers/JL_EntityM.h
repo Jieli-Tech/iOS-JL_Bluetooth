@@ -170,15 +170,10 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 调整发数参数
 @param isGame 是否为游戏模式
 @param mtu 每包发数字节数
-@param delay 延时时间
+@param delay 延时时间 (毫秒）
 */
 -(void)setGameMode:(BOOL)isGame MTU:(NSUInteger)mtu Delay:(int)delay;
 
-/**
-开启GCD发数定时器
-@param delay 发数时间间隔
-*/
--(void)installTimingModeDelay:(NSTimeInterval)delay;
 
 -(void)flashFinishedAction;
 

@@ -22,6 +22,8 @@
 
 - 🎵 支持音箱、耳机等多种设备类型
 - 🔊 完整的音频控制功能
+- 🎤 专业的音频编解码库（Opus、Speex）
+- 🖼️ 图像转换和表盘处理功能
 - 📱 原生iOS开发体验
 - 🔗 基于RCSP协议的稳定连接
 - 🎧 支持TWS耳机一拖二功能
@@ -66,6 +68,13 @@
 iOS-JL_Bluetooth/
 ├── 📂 code/                          # 演示程序源码
 │   ├── 📦 Example of audio encoding and decoding V1.1.0.zip
+│   ├── 📂 JLAudioUnitKitDemo/        # 音频编解码示例项目
+│   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
+│   │   ├── 📱 JLAudioUnitKitDemo/    # Swift示例应用
+│   │   ├── 🎵 JLAudioUnitKit.framework # 音频处理框架
+│   │   ├── 🔧 Tools/                 # 音频工具类
+│   │   ├── 📺 ViewControllers/       # 视图控制器
+│   │   └── 🎛️ Views/                 # 自定义视图组件
 │   └── 📂 NewJieliZhiNeng/           # 主要示例项目
 │       ├── 🏗️ NewJieliZhiNeng.xcworkspace
 │       ├── 📱 NewJieliZhiNeng/       # iOS应用源码
@@ -78,9 +87,12 @@ iOS-JL_Bluetooth/
 └── 📂 libs/                          # 核心SDK库
     ├── 🔗 JL_BLEKit.framework        # 蓝牙连接核心库
     ├── 🔧 JL_OTALib.framework        # OTA升级库
-    ├── 🎵 JLDialUnit.framework       # 音频处理库
+    ├── 🎵 JLDialUnit.framework       # 表盘处理库
+    ├── 🎵 JLAudioUnitKit.framework   # 音频编解码库
+    ├── 🖼️ JLBmpConvertKit.framework   # 图像转换库
     ├── 🔐 JL_HashPair.framework      # 配对加密库
     ├── 📡 JL_AdvParse.framework      # 广播解析库
+    ├── 📝 JLLogHelper.framework      # 日志辅助库
     ├── 🎤 SpeexKit.framework         # 语音编解码库
     └── 📦 third_party/               # 第三方依赖
 ```
@@ -91,6 +103,7 @@ iOS-JL_Bluetooth/
 
 | 版本 | 发布日期 | 编辑者 | 主要更新 |
 |------|----------|--------|----------|
+| **v1.12.0** | 2024/11/22 | EzioChen | • 增加兼容 AC707N 的自定义表盘图像转换<br/>• 分离图像转换工具作为独立模块库 |
 | **v1.11.0** | 2024/03/15 | EzioChen | • 新增表盘拓展参数和补充 AI 表盘流程；<br/>• 增加 4G 模块 OTA 功能<br/>• 修复已知问题 |
 | **v1.10.0** | 2023/11/23 | EzioChen | • 新增TWS耳机一拖二功能和接口<br/>• 支持芯片JL701N v1.0.0_patch_06<br/>• 修复已知问题 |
 | **v1.6.4** | 2022/08/12 | EzioChen | • 新增辅听耳机的验配功能 |

@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 屏幕形状
 /// shape of screen
+/// 默认形状 0x01
+/// default 0x01 circular
 /// 0x01 - 圆形 circular
 /// 0x02 - 矩形 rectangle
 /// 0x03 - 圆角矩形 rounded rectangle
@@ -31,8 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 背景颜色
 /// background color
+/// default is clean color
 @property(nonatomic, strong) UIColor *backgroundColor;
 
+/// 屏幕尺寸
+/// 此项默认值为（240 * 240）
+/// default is (240 * 240)
+/// device screen sice
+@property(nonatomic, assign) CGSize size;
 
 
 /// 初始化

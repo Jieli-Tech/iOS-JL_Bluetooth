@@ -55,13 +55,14 @@
 		1D55B39A2482321D008DA808 /* Alert697xTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D55B3952482321C008DA808 /* Alert697xTools.m */; };
 		1D55B39B2482321D008DA808 /* Alert697xView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D55B3982482321D008DA808 /* Alert697xView.m */; };
 		1D55B39C2482321D008DA808 /* Alert697xView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D55B3992482321D008DA808 /* Alert697xView.xib */; };
-		1D5B31952E811DE40017F4E3 /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */; };
-		1D5B31962E811DE40017F4E3 /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */; };
-		1D5B31972E811DE40017F4E3 /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */; };
-		1D5B31982E811DE40017F4E3 /* JLDialUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */; };
-		1D5B31992E811DE40017F4E3 /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */; };
-		1D5B319C2E811FD10017F4E3 /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319A2E811DF70017F4E3 /* ZipZap.framework */; };
-		1D5B319D2E811FD10017F4E3 /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319A2E811DF70017F4E3 /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1D5B31A42E8128A00017F4E3 /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319F2E8128A00017F4E3 /* JL_BLEKit.framework */; };
+		1D5B31A52E8128A00017F4E3 /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31A02E8128A00017F4E3 /* JL_HashPair.framework */; };
+		1D5B31A62E8128A00017F4E3 /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319E2E8128A00017F4E3 /* JL_AdvParse.framework */; };
+		1D5B31A72E8128A00017F4E3 /* JLDialUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31A22E8128A00017F4E3 /* JLDialUnit.framework */; };
+		1D5B31A82E8128A00017F4E3 /* JLLogHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31A32E8128A00017F4E3 /* JLLogHelper.framework */; };
+		1D5B31A92E8128A00017F4E3 /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31A12E8128A00017F4E3 /* JL_OTALib.framework */; };
+		1D5B31AC2E812AEB0017F4E3 /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31AA2E812A970017F4E3 /* ZipZap.framework */; };
+		1D5B31AD2E812AEB0017F4E3 /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31AA2E812A970017F4E3 /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D5DA7BA28FD450A00A398EA /* DebugFuncsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7B928FD450A00A398EA /* DebugFuncsViewController.m */; };
 		1D5DA7C028FD470700A398EA /* JLShareLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7BD28FD470600A398EA /* JLShareLogViewController.m */; };
 		1D5DA7C128FD470700A398EA /* JLShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7BE28FD470600A398EA /* JLShareDetailViewController.m */; };
@@ -402,7 +403,7 @@
 			files = (
 				1D9DD63F24F8E01E004B07BF /* IJKMediaFrameworkWithSSL.framework in Embed Frameworks */,
 				1DE9C4EF2872C4CC0017E40A /* Charts.framework in Embed Frameworks */,
-				1D5B319D2E811FD10017F4E3 /* ZipZap.framework in Embed Frameworks */,
+				1D5B31AD2E812AEB0017F4E3 /* ZipZap.framework in Embed Frameworks */,
 				1D46B3CF286EFCE700A8DC8A /* TYCoreText.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -481,12 +482,13 @@
 		1D55B3972482321D008DA808 /* Alert697xTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alert697xTools.h; sourceTree = "<group>"; };
 		1D55B3982482321D008DA808 /* Alert697xView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alert697xView.m; sourceTree = "<group>"; };
 		1D55B3992482321D008DA808 /* Alert697xView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Alert697xView.xib; sourceTree = "<group>"; };
-		1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
-		1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
-		1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
-		1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
-		1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JLDialUnit.framework; sourceTree = "<group>"; };
-		1D5B319A2E811DF70017F4E3 /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = "<group>"; };
+		1D5B319E2E8128A00017F4E3 /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
+		1D5B319F2E8128A00017F4E3 /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
+		1D5B31A02E8128A00017F4E3 /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
+		1D5B31A12E8128A00017F4E3 /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
+		1D5B31A22E8128A00017F4E3 /* JLDialUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JLDialUnit.framework; sourceTree = "<group>"; };
+		1D5B31A32E8128A00017F4E3 /* JLLogHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JLLogHelper.framework; sourceTree = "<group>"; };
+		1D5B31AA2E812A970017F4E3 /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = "<group>"; };
 		1D5DA7B828FD450A00A398EA /* DebugFuncsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DebugFuncsViewController.h; sourceTree = "<group>"; };
 		1D5DA7B928FD450A00A398EA /* DebugFuncsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DebugFuncsViewController.m; sourceTree = "<group>"; };
 		1D5DA7BC28FD470600A398EA /* JLShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLShareDetailViewController.h; sourceTree = "<group>"; };
@@ -1047,12 +1049,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D5B31AC2E812AEB0017F4E3 /* ZipZap.framework in Frameworks */,
 				1D17CA6624C9DA4800275A20 /* AMapLocationKit.framework in Frameworks */,
-				1D5B31952E811DE40017F4E3 /* JL_OTALib.framework in Frameworks */,
-				1D5B31962E811DE40017F4E3 /* JL_HashPair.framework in Frameworks */,
-				1D5B31972E811DE40017F4E3 /* JL_AdvParse.framework in Frameworks */,
-				1D5B31982E811DE40017F4E3 /* JLDialUnit.framework in Frameworks */,
-				1D5B31992E811DE40017F4E3 /* JL_BLEKit.framework in Frameworks */,
 				1D17CA6224C9DA3C00275A20 /* MAMapKit.framework in Frameworks */,
 				1D17CA6824C9DA4B00275A20 /* AMapSearchKit.framework in Frameworks */,
 				1DDA23F124B8408500E02757 /* ExternalAccessory.framework in Frameworks */,
@@ -1061,6 +1059,12 @@
 				1D5E6CB624AEC52200F68B7C /* CoreTelephony.framework in Frameworks */,
 				1D9DD63E24F8E01E004B07BF /* IJKMediaFrameworkWithSSL.framework in Frameworks */,
 				1DEA784524CFFCF600C752F0 /* libbz2.tbd in Frameworks */,
+				1D5B31A42E8128A00017F4E3 /* JL_BLEKit.framework in Frameworks */,
+				1D5B31A52E8128A00017F4E3 /* JL_HashPair.framework in Frameworks */,
+				1D5B31A62E8128A00017F4E3 /* JL_AdvParse.framework in Frameworks */,
+				1D5B31A72E8128A00017F4E3 /* JLDialUnit.framework in Frameworks */,
+				1D5B31A82E8128A00017F4E3 /* JLLogHelper.framework in Frameworks */,
+				1D5B31A92E8128A00017F4E3 /* JL_OTALib.framework in Frameworks */,
 				4AE208562473E7400060473A /* WebKit.framework in Frameworks */,
 				1D17CA6424C9DA4600275A20 /* AMapFoundationKit.framework in Frameworks */,
 				1D17CA6A24C9DBD800275A20 /* DFUnits.framework in Frameworks */,
@@ -1070,7 +1074,6 @@
 				1D5E6CB424AEC52200F68B7C /* SystemConfiguration.framework in Frameworks */,
 				1DE9C4EE2872C4CC0017E40A /* Charts.framework in Frameworks */,
 				5EC9B8D81BD30A82159D8603 /* libPods-NewJieliZhiNeng.a in Frameworks */,
-				1D5B319C2E811FD10017F4E3 /* ZipZap.framework in Frameworks */,
 				1DEE9670287FC2A0002C919C /* Bugly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2301,12 +2304,13 @@
 		4A13CCB2246BD45700BEE488 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */,
-				1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */,
-				1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */,
-				1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */,
-				1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */,
-				1D5B319A2E811DF70017F4E3 /* ZipZap.framework */,
+				1D5B31AA2E812A970017F4E3 /* ZipZap.framework */,
+				1D5B319E2E8128A00017F4E3 /* JL_AdvParse.framework */,
+				1D5B319F2E8128A00017F4E3 /* JL_BLEKit.framework */,
+				1D5B31A02E8128A00017F4E3 /* JL_HashPair.framework */,
+				1D5B31A12E8128A00017F4E3 /* JL_OTALib.framework */,
+				1D5B31A22E8128A00017F4E3 /* JLDialUnit.framework */,
+				1D5B31A32E8128A00017F4E3 /* JLLogHelper.framework */,
 				1DEE966E287FC29F002C919C /* Bugly.framework */,
 				1DE9C4EC2872C4560017E40A /* Charts.framework */,
 				1D46B3CC286EFCD200A8DC8A /* TYCoreText.framework */,

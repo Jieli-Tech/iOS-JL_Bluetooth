@@ -7,16 +7,11 @@
 
 #import <Foundation/Foundation.h>
 #import <JLDialUnit/FatfsObject.h>
+#import <JLLogHelper/JLLogHelper.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 
-typedef NS_ENUM(NSInteger, DAIL_LEVEL) {
-    DAIL_DEBUG = 0,
-    DAIL_INFO  = 1,
-    DAIL_WARN  = 2,
-    DAIL_ERROR = 3,
-};
 
 typedef NS_ENUM(NSInteger, DialOperateType) {
     DialOperateTypeNoSpace     = 0,     //空间不足
@@ -38,11 +33,13 @@ typedef NS_ENUM(NSInteger, DialUpdateResult) {
     DialUpdateResultNoSpace     = 6,    //空间不足
     DialUpdateResultZipError    = 7,    //ZIP资源文件错误
     DialUpdateResultCompareFail = 8,    //表盘资源对比失败
+    DialUpdateResultUpdateUfw   = 9,    //更新固件 ufw
 };
 typedef void(^DialOperateBK)(DialOperateType type, float progress);
 typedef void(^DialListBK)(DialOperateType type, NSArray* __nullable array);
 typedef void(^DialUpdateBK)(DialUpdateResult updateResult,
                             NSArray* __nullable array,
+                            NSString * _Nullable filePath,
                             NSInteger index ,float progress);
 
 typedef void(^FatfsFreeBlock)(uint32_t freeSize);
@@ -124,24 +121,6 @@ typedef void(^FatfsFreeBlock)(uint32_t freeSize);
 /// @param fileName 文件名
 +(void)setFileSize:(uint32_t)size FileName:(NSString*)fileName;
 
-
-///LOG使能与等级，默认开启且debug等级。
-/// @param enable LOG使能
-/// @param isMore 是否打印【函数名&行号】
-/// @param level   LOG等级
-+(void)setLog:(BOOL)enable IsMore:(BOOL)isMore Level:(DAIL_LEVEL)level;
-
-/// 打印宏
-#define kDAILLog(level,fmt...) [DialManager Log:level Func:__FUNCTION__ Line:__LINE__ format:fmt]
-/// 打印函数
-/// @param level     LOG等级
-/// @param func       函数名
-/// @param line       行号
-/// @param format   内容
-+(void)Log:(DAIL_LEVEL)level
-          Func:(const char* _Nullable)func
-          Line:(const int)line
-        format:(NSString * _Nonnull)format,...;
 
 @end
 

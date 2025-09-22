@@ -15,20 +15,24 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class JL_ManagerM;
+@class JL_SpeexManager;
 
 /// 录音状态代理处理
 @protocol JL_SpeexManagerDelegate <NSObject>
 /// 录音状态回调
 /// - Parameters:
+///   - manager: 操作设备
 ///   - status: 录音状态
 ///   - originator: 状态变更发起端
 ///   当发起者是Device时，才会具备params的参数，其中结束录音时，params的属性仅有mVadWay为可使用内容
 ///   - params: 录音参数
--(void)speexManagerStatus:(JL_SpeakType)status By:(JLCMDOriginator)originator With:(JLRecordParams *_Nullable) params;
+-(void)speexManager:(JL_SpeexManager *)manager Status:(JL_SpeakType)status By:(JLCMDOriginator)originator With:(JLRecordParams *_Nullable) params;
 
 /// 录音数据回调
-/// - Parameter data: 数据
--(void)speexManagerAudio:(NSData *)data;
+/// - Parameters:
+///   - manager: 操作设备
+///   - data: 数据
+-(void)speexManager:(JL_SpeexManager *)manager Audio:(NSData *)data;
 
 @end
 

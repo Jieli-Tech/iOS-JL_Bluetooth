@@ -26,6 +26,15 @@ extern NSString *kOPUS_DECODE_DATA;
 
 + (void)opusIsLog:(BOOL)log;
 
+#pragma mark - Opus参数
+/**
+ *  设置参数
+ *  @param rate    采样率 例如：48000、24000、16000、12000、8000（默认 16000）
+ *  @param kbps    比特率 例如：16000、32000、64000（默认 16000）
+ *  @param channel    声道 例如：1、2 （默认 1）
+ */
++(void)opusSetSampleRate:(int)rate Kbps:(int)kbps Channels:(int)channel;
+
 #pragma mark - Opus解码
 
 /**

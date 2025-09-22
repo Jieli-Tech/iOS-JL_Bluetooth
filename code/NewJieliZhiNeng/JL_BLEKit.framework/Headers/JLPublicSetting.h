@@ -96,8 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameters:
 ///   - manager: 设备
 ///   - funcType: 功能码
-///   0x00 屏幕保护程序
-///   0x01 开机动画
+///   0x01 屏幕保护程序
+///   0x02 开机动画
 ///   - block: 回调
 -(void)cmdDeviceFuncUsedSourceGet:(JL_ManagerM *)manager Type:(uint8_t)funcType result:(JLPSSourceInfoCbk)block;
 

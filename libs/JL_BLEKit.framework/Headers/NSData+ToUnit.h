@@ -54,4 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)appendUint32:(uint32_t)k;
 @end
 
+
+@interface NSString(WithUnit)
+
+-(NSString *)formatLog;
+
+@end
+
 NS_ASSUME_NONNULL_END

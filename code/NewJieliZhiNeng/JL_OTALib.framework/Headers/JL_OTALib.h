@@ -17,3 +17,4 @@ FOUNDATION_EXPORT const unsigned char JL_OTALibVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <JL_OTALib/PublicHeader.h>
 #import <JL_OTALib/JL_OTAManager.h>
 #import <JL_OTALib/jl_ufw.h>
+#import <JL_OTALib/JLOTAFile.h>

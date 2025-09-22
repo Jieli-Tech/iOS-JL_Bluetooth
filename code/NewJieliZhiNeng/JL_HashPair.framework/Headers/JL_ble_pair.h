@@ -10,6 +10,7 @@
 #define JL_ble_pair_h
 
 #include <stdio.h>
+#include <stdint.h>
 
 void function_jieli(uint8_t *address,uint8_t *RAND,uint8_t *K,uint8_t *result);
 

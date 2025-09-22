@@ -91,16 +91,12 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/JL_SDM_OxSaturation.h>
 #import <JL_BLEKit/JL_SDM_SportMessage.h>
 #import <JL_BLEKit/JL_SDM_Header.h>
-#import <JL_BLEKit/JLSportRecordModel.h>
 #import <JL_BLEKit/NSData+ToUnit.h>
 #import <JL_BLEKit/JL_MSG_Weather.h>
 #import <JL_BlEKit/JL_MSG_Func.h>
 #import <JL_BLEKit/JL_NFC.h>
 #import <JL_BLEKit/JLWatchEnum.h>
 #import <JL_BLEKit/JL_WatchProtocol.h>
-
-#import <JL_BlEKit/bmp_convert.h>
-#import <JL_BLEKit/BitmapTool.h>
 
 #import <JL_BLEKit/ECThreadHelper.h>
 #import <JL_BLEKit/JLHttpHelper.h>

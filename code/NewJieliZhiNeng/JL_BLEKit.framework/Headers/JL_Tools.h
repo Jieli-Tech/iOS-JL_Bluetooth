@@ -8,19 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <JL_BLEKit/NSObject+JLTools.h>
+#import <JLLogHelper/JLLogHelper.h>
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^JL_Action)(void);
 typedef void(^JL_Timer_BK)(void);
-
-typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
-    JLLOG_COMPLETE  = 0,
-    JLLOG_DEBUG     = 1,
-    JLLOG_INFO      = 2,
-    JLLOG_WARN      = 3,
-    JLLOG_ERROR     = 4,
-};
-
 
 @class JL_Timer;
 @interface JL_Tools : NSObject
@@ -172,7 +164,7 @@ typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
  @param key 键值
  @return 返回对象
  */
-+(id)getUserByKey:(NSString*)key;
++(id _Nullable)getUserByKey:(NSString*)key;
 
 /**
  移除NSUserDefault相对应的对象
@@ -403,30 +395,7 @@ typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
 /// @param data 数据
 +(NSData *)beLtv:(uint8_t)type Data:(NSData*)data;
 
-/**
- *    打印文本
- */
-+(void)openLogTextFile;
 
-
-
-///LOG使能与等级，默认开启且debug等级。
-/// @param enable LOG使能
-/// @param isMore 是否打印【函数名&行号】
-/// @param level   LOG等级
-+(void)setLog:(BOOL)enable IsMore:(BOOL)isMore Level:(JLLOG_LEVEL)level;
-
-/// 打印宏
-#define kJLLog(level,fmt...) [JL_Tools Log:level Func:__FUNCTION__ Line:__LINE__ format:fmt]
-/// 打印函数
-/// @param level     LOG等级
-/// @param func       函数名
-/// @param line       行号
-/// @param format   内容
-+(void)Log:(JLLOG_LEVEL)level
-      Func:(const char* _Nullable)func
-      Line:(const int)line
-    format:(NSString * _Nonnull)format,...;
 
 @end
 
@@ -434,6 +403,7 @@ typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
 @property(nonatomic,assign)NSInteger            subTimeout; //超时时间(默认5s)
 @property(nonatomic,assign)NSTimeInterval       subScale;   //默认1.0s
 -(void)waitForTimeoutResult:(JL_Timer_BK)result;
+-(void)continueTimeout;
 -(void)cancelTimeout;
 -(void)threadWait;
 -(void)threadContinue;

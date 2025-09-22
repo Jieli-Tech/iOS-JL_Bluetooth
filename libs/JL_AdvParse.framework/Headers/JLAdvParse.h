@@ -7,16 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JLLogHelper/JLLogHelper.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef NS_ENUM(NSInteger, ADV_LEVEL) {
-    ADV_DEBUG = 0,
-    ADV_INFO  = 1,
-    ADV_WARN  = 2,
-    ADV_ERROR = 3,
-};
-
 
 typedef NS_ENUM(UInt8,JL_AdvType) {
     JL_AdvTypeSoundBox              = 0,     //音箱类型
@@ -66,23 +59,7 @@ typedef NS_ENUM(NSInteger,JL_DeviceType) {
  */
 + (Boolean)otaBleMacAddress:(NSString *)otaBleMacAddress isEqualToCBAdvDataManufacturerData:(NSData *)kCBAdvDataManufacturerData;
 
-///LOG使能与等级，默认开启且debug等级。
-/// @param enable LOG使能
-/// @param isMore 是否打印【函数名&行号】
-/// @param level   LOG等级
-+(void)setLog:(BOOL)enable IsMore:(BOOL)isMore Level:(ADV_LEVEL)level;
 
-/// 打印宏
-#define kADVLog(level,fmt...) [JLAdvParse Log:level Func:__FUNCTION__ Line:__LINE__ format:fmt]
-/// 打印函数
-/// @param level     LOG等级
-/// @param func       函数名
-/// @param line       行号
-/// @param format   内容
-+(void)Log:(ADV_LEVEL)level
-          Func:(const char* _Nullable)func
-          Line:(const int)line
-        format:(NSString * _Nonnull)format,...;
 
 
 @end
