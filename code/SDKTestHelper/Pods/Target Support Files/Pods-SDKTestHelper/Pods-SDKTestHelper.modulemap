@@ -1,0 +1,6 @@
+module Pods_SDKTestHelper {
+  umbrella header "Pods-SDKTestHelper-umbrella.h"
+
+  export *
+  module * { export * }
+}

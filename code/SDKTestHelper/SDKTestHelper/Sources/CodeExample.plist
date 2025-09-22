@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Notify/Close ANC Change</key>
+	<string> private var ancObc: NSKeyValueObservation?
+        isNotifyAncChange.toggle()
+        guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        let deviceModel = mManager.getDeviceModel()
+        if isNotifyAncChange {
+            ancObc = deviceModel.observe(\.mAncModeCurrent) { deviceModel, change in
+                JLLogManager.logLevel(.DEBUG, content: &quot;mAncModeCurrent: \(deviceModel.mAncModeCurrent.logProperties())&quot;)
+            }
+        } else {
+            ancObc?.invalidate()
+        }</string>
+	<key>Open/Close Notify</key>
+	<string>  private func openCloseNotify() {
+        guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        self.isOpenNotify.toggle()
+        mManager.mTwsManager.cmdHeadsetAdvEnable(self.isOpenNotify)
+        if isOpenNotify {
+            NotificationCenter.default.addObserver(self, selector: #selector(handleAdvNote(_:)), name: Notification.Name(rawValue: kJL_MANAGER_HEADSET_ADV), object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: kJL_MANAGER_HEADSET_ADV), object: nil)
+        }
+    }
+    
+    @objc private func handleAdvNote(_ note: Notification) {
+        guard let advInfo = note.object as? Dictionary&lt;String, Any&gt; else { return }
+        JLLogManager.logLevel(.DEBUG, content: &quot;advInfo: \(advInfo)&quot;)
+    }</string>
+	<key>Get Tws Info</key>
+	<string> guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        mManager.mTwsManager.cmdHeadsetGetAdvFlag(.all) { result in
+            JLLogManager.logLevel(.DEBUG, content: &quot;\(String(describing: result))&quot;)
+        }</string>
+	<key>Game Mode Set</key>
+	<string> guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        // 从设备端读取到当前的 ANC 模式
+        let modeInfo = mManager.getDeviceModel()
+        let currentAncMode = modeInfo.mAncModeCurrent
+        // 读取 tws 对象
+        let twsMgr = mManager.mTwsManager
+        if !twsMgr.supports.isSupportAnc {
+            view.makeToast(&quot;设备不支持 ANC 模式&quot;)
+            return
+        }
+        // 切换 ANC 模式
+        if currentAncMode.mAncMode == .noiseReduction {
+            currentAncMode.mAncMode = .transparent
+        } else if currentAncMode.mAncMode == .transparent {
+            currentAncMode.mAncMode = .normal
+        } else {
+            currentAncMode.mAncMode = .noiseReduction
+        }
+        twsMgr.cmdSetANC(currentAncMode)</string>
+	<key>ANC Set</key>
+	<string>guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        // 从设备端读取到当前的 ANC 模式
+        let modeInfo = mManager.getDeviceModel()
+        let currentAncMode = modeInfo.mAncModeCurrent
+        // 读取 tws 对象
+        let twsMgr = mManager.mTwsManager
+        if !twsMgr.supports.isSupportAnc {
+            view.makeToast(&quot;设备不支持 ANC 模式&quot;)
+            return
+        }
+        // 切换 ANC 模式
+        if currentAncMode.mAncMode == .noiseReduction {
+            currentAncMode.mAncMode = .transparent
+        } else if currentAncMode.mAncMode == .transparent {
+            currentAncMode.mAncMode = .normal
+        } else {
+            currentAncMode.mAncMode = .noiseReduction
+        }
+        twsMgr.cmdSetANC(currentAncMode)</string>
+	<key>tws Rename</key>
+	<string>guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        let name = &quot;test&quot; + UUID().uuidString
+        let nameDt = Data(name.utf8)
+        // nameDt 最大长度不能超过 20 Byte
+        mManager.mTwsManager.cmdHeadsetEdrName(nameDt)</string>
+</dict>
+</plist>

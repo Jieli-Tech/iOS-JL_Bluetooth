@@ -1,0 +1,6 @@
+framework module JLAV2Lib {
+  umbrella header "JLAV2Lib.h"
+
+  export *
+  module * { export * }
+}

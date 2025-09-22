@@ -1,0 +1,10 @@
+${PODS_ROOT}/Target Support Files/Pods-SDKTestHelper/Pods-SDKTestHelper-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/FMDB/FMDB_Privacy.bundle
+${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh/MJRefresh.Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RxCocoa/RxCocoa_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RxRelay/RxRelay_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RxSwift/RxSwift_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/SnapKit/SnapKit_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/Starscream/Starscream_Privacy.bundle
+${PODS_ROOT}/WMZDialog/WMZDialog/WMZDialog/WMZDialog.bundle
