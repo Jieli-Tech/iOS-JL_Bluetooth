@@ -28,6 +28,8 @@ JieLi Bluetooth Speaker SDK is a professional Bluetooth control development plat
 - 🔗 Stable connection based on RCSP protocol
 - 🎧 Support for TWS earphone one-to-two functionality
 - 🔇 Support for ANC active noise cancellation
+- 🧪 Provides SDK test helper tool for development and debugging
+- 📡 Support for Auracast audio broadcasting functionality
 
 ---
 
@@ -60,6 +62,22 @@ To help developers quickly integrate the JieLi Home SDK, please read carefully b
 4. **Initialize SDK** - Refer to example code for initialization
 5. **Start Development** - Use APIs for feature development
 
+### 🧪 SDK Test Helper Tool
+
+**SDKTestHelper** is a Swift testing tool specifically designed for developers with the following features:
+
+- 🔍 **SDK Function Testing** - Complete SDK API testing interface
+- 📱 **Device Connection Debugging** - Bluetooth device scanning, connection, and disconnection testing
+- 🎵 **Audio Function Verification** - Audio codec and playback control testing
+- 📡 **Auracast Broadcasting** - Audio broadcast function testing and debugging
+- 🔧 **Development Assistance** - Log viewing, data analysis, and issue diagnosis
+- 📊 **Performance Monitoring** - Real-time monitoring of connection status and audio quality
+
+**Usage Instructions:**
+1. Open `code/SDKTestHelper/SDKTestHelper.xcworkspace`
+2. Run the project on an iOS device
+3. Use various testing features to verify SDK integration effectiveness
+
 ---
 
 ## 📁 Project Structure
@@ -91,6 +109,20 @@ iOS-JL_Bluetooth/
 │       ├── 📚 Sources/               # Resource files
 │       ├── 🌍 Languages/             # Multi-language support
 │       └── 🔧 Pods/                  # CocoaPods dependencies
+│   └── 📂 SDKTestHelper/             # SDK Test Helper Tool (Swift Project)
+│       ├── 🏗️ SDKTestHelper.xcworkspace # Test tool workspace
+│       ├── 📱 SDKTestHelper/         # Swift test application source code
+│       │   ├── 🎯 Controllers/       # Controller modules
+│       │   ├── 🔧 Tools/             # Utility classes
+│       │   ├── 📊 Models/            # Data models
+│       │   ├── 🎨 Views/             # View components
+│       │   ├── 🔗 Bluetooth/         # Bluetooth connection module
+│       │   └── 💾 DataBase/          # Database management
+│       ├── 🎵 JLAudioUnitKit.framework # Audio codec framework
+│       ├── 🎬 JLAV2Lib.framework    # AV2 audio codec library
+│       ├── 📡 JLAuracastKit.xcframework # Auracast broadcast framework
+│       ├── 🔧 SpeexKit.framework    # Speex voice codec
+│       └── 🔧 Pods/                  # Third-party dependencies
 ├── 📂 docs/                          # Documentation resources
 │   ├── 📖 JL_OTALib.framework API Documentation.md
 │   ├── 📄 html/                      # HTML format documentation

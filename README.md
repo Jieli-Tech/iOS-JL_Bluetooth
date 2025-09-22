@@ -28,6 +28,8 @@
 - 🔗 基于RCSP协议的稳定连接
 - 🎧 支持TWS耳机一拖二功能
 - 🔇 支持ANC主动降噪功能
+- 🧪 提供SDK测试助手工具，便于开发调试
+- 📡 支持Auracast音频广播功能
 
 ---
 
@@ -60,6 +62,22 @@
 4. **初始化SDK** - 参考示例代码进行初始化
 5. **开始开发** - 使用API进行功能开发
 
+### 🧪 SDK测试助手工具
+
+**SDKTestHelper** 是专为开发者提供的Swift测试工具，具备以下功能：
+
+- 🔍 **SDK功能测试** - 完整的SDK API测试界面
+- 📱 **设备连接调试** - 蓝牙设备扫描、连接、断开测试
+- 🎵 **音频功能验证** - 音频编解码、播放控制测试
+- 📡 **Auracast广播** - 音频广播功能测试和调试
+- 🔧 **开发辅助** - 日志查看、数据分析、问题诊断
+- 📊 **性能监控** - 连接状态、音频质量实时监控
+
+**使用方法：**
+1. 打开 `code/SDKTestHelper/SDKTestHelper.xcworkspace`
+2. 运行项目到iOS设备
+3. 使用各项测试功能验证SDK集成效果
+
 ---
 
 ## 📁 项目结构
@@ -91,6 +109,20 @@ iOS-JL_Bluetooth/
 │       ├── 📚 Sources/               # 资源文件
 │       ├── 🌍 Languages/             # 多语言支持
 │       └── 🔧 Pods/                  # CocoaPods依赖
+│   └── 📂 SDKTestHelper/             # SDK测试助手工具 (Swift项目)
+│       ├── 🏗️ SDKTestHelper.xcworkspace # 测试工具工作空间
+│       ├── 📱 SDKTestHelper/         # Swift测试应用源码
+│       │   ├── 🎯 Controllers/       # 控制器模块
+│       │   ├── 🔧 Tools/             # 工具类
+│       │   ├── 📊 Models/            # 数据模型
+│       │   ├── 🎨 Views/             # 视图组件
+│       │   ├── 🔗 Bluetooth/         # 蓝牙连接模块
+│       │   └── 💾 DataBase/          # 数据库管理
+│       ├── 🎵 JLAudioUnitKit.framework # 音频编解码框架
+│       ├── 🎬 JLAV2Lib.framework    # AV2音频编解码库
+│       ├── 📡 JLAuracastKit.xcframework # Auracast广播框架
+│       ├── 🔧 SpeexKit.framework    # Speex语音编解码
+│       └── 🔧 Pods/                  # 第三方依赖库
 ├── 📂 docs/                          # 文档资源
 │   ├── 📖 JL_OTALib.framework API 说明.md
 │   ├── 📄 html/                      # HTML格式文档
