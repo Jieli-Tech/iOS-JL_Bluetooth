@@ -1,39 +1,115 @@
 # iOS-JL_Bluetooth
 
-## 1. 概述
+<div align="center">
 
-杰理蓝牙音箱SDK是珠海市杰理科技股份有限公司(以下简称“本公司”)开发，专门为本公司音箱耳机类产品提供蓝牙控制开发平台。
+![iOS](https://img.shields.io/badge/iOS-12.0+-blue.svg)
+![Xcode](https://img.shields.io/badge/Xcode-Latest-orange.svg)
+![License](https://img.shields.io/badge/License-Proprietary-red.svg)
 
-### 1.1 运行环境
+**杰理蓝牙音箱 iOS SDK**
 
-| 类别     | 兼容范围           | 备注                            |
-| -------- | ------------------ | ------------------------------- |
-| iOS 系统 | iOS 12.0+          | 支持 BLE 功能                   |
-| 硬件要求 | 支持RCSP协议的固件 | AC693X， AC697X， AC695X等等SDK |
-| 开发平台 | xcode              | 建议使用最新版本开发            |
+*专业的蓝牙音箱耳机控制开发平台*
 
-### 1.2 快速接入
+</div>
 
-为了帮助开发者快速接入杰理之家SDK，请开发前详细阅读[SDK接入文档](https://doc.zh-jieli.com/Apps/iOS/jielihome/zh-cn/master/index.html)
+---
 
-## 2. 目录结构
+## 📖 概述
+
+杰理蓝牙音箱SDK是由**珠海市杰理科技股份有限公司**开发的专业蓝牙控制开发平台，专门为杰理音箱耳机类产品提供完整的iOS端控制解决方案。
+
+### ✨ 主要特性
+
+- 🎵 支持音箱、耳机等多种设备类型
+- 🔊 完整的音频控制功能
+- 📱 原生iOS开发体验
+- 🔗 基于RCSP协议的稳定连接
+- 🎧 支持TWS耳机一拖二功能
+- 🔇 支持ANC主动降噪功能
+
+---
+
+## 🛠 运行环境
+
+| 类别 | 要求 | 说明 |
+|------|------|------|
+| **iOS系统** | iOS 12.0+ | 支持BLE功能 |
+| **硬件要求** | 支持RCSP协议的固件 | AC693X、AC697X、AC695X等SDK |
+| **开发平台** | Xcode | 建议使用最新版本 |
+| **语言支持** | Objective-C / Swift | 完整API支持 |
+
+---
+
+## 🚀 快速开始
+
+### 📚 文档资源
+
+为了帮助开发者快速接入杰理之家SDK，请在开发前详细阅读：
+
+- 📖 [SDK接入文档](https://doc.zh-jieli.com/Apps/iOS/jielihome/zh-cn/master/index.html)
+- 📄 [开发说明文档](./docs/)
+- 🔧 [API参考手册](./docs/JieLiBluetoothControlSDKDevelopmentInstructions(iOS)/)
+
+### 💻 集成步骤
+
+1. **下载SDK** - 从本仓库获取最新版本
+2. **导入框架** - 将libs目录下的framework添加到项目
+3. **配置权限** - 添加蓝牙相关权限
+4. **初始化SDK** - 参考示例代码进行初始化
+5. **开始开发** - 使用API进行功能开发
+
+---
+
+## 📁 项目结构
 
 ```
-|- code -- 演示程序源码
-    |- JieLiHome
-    	|- NewJieliZhiNeng
-|- docs
-	  |- ReleseRecord.pdf
-|- libs -- 核心库
+iOS-JL_Bluetooth/
+├── 📂 code/                          # 演示程序源码
+│   ├── 📦 Example of audio encoding and decoding V1.1.0.zip
+│   └── 📂 NewJieliZhiNeng/           # 主要示例项目
+│       ├── 🏗️ NewJieliZhiNeng.xcworkspace
+│       ├── 📱 NewJieliZhiNeng/       # iOS应用源码
+│       ├── 📚 Sources/               # 源代码文件
+│       └── 🔧 Pods/                  # 依赖库
+├── 📂 docs/                          # 文档资源
+│   ├── 📖 JieLiBluetoothControlSDKDevelopmentInstructions(iOS)/
+│   ├── 📄 More/                      # 更多文档
+│   └── 📋 杰理之家SDK(iOS)发布记录.pdf
+└── 📂 libs/                          # 核心SDK库
+    ├── 🔗 JL_BLEKit.framework        # 蓝牙连接核心库
+    ├── 🔧 JL_OTALib.framework        # OTA升级库
+    ├── 🎵 JLDialUnit.framework       # 音频处理库
+    ├── 🔐 JL_HashPair.framework      # 配对加密库
+    ├── 📡 JL_AdvParse.framework      # 广播解析库
+    ├── 🎤 SpeexKit.framework         # 语音编解码库
+    └── 📦 third_party/               # 第三方依赖
 ```
 
+---
 
+## 📋 版本历史
 
-## 3. 版本
+| 版本 | 发布日期 | 编辑者 | 主要更新 |
+|------|----------|--------|----------|
+| **v1.11.0** | 2024/03/15 | EzioChen | • 新增表盘拓展参数和补充 AI 表盘流程；<br/>• 增加 4G 模块 OTA 功能<br/>• 修复已知问题 |
+| **v1.10.0** | 2023/11/23 | EzioChen | • 新增TWS耳机一拖二功能和接口<br/>• 支持芯片JL701N v1.0.0_patch_06<br/>• 修复已知问题 |
+| **v1.6.4** | 2022/08/12 | EzioChen | • 新增辅听耳机的验配功能 |
+| **v1.6.3** | 2022/07/20 | EzioChen | • 增加支持挂脖耳机UI |
+| **v1.5.0** | 2021/08/12 | 冯洪鹏 | • 增加音箱SDK闹钟贪睡模式<br/>• 支持响铃时长、再响间隔设置<br/>• 增加耳机SDK的ANC主动降噪<br/>• 支持降噪、通透模式切换 |
 
-| SDK 版本 | 日期       | 编辑     | 修改内容                                                     |
-| -------- | ---------- | -------- | ------------------------------------------------------------ |
-| v1.10.0  | 2023/11/23 | EzioChen | 1. 新增 TWS 耳机一拖二功能和接口(对应芯片 JL701N v1..0.0_patch_06)<br />2. 修复已知问题 |
-| v1.6.4   | 2022/08/12 | EzioChen | 新增辅听耳机的验配功能                                       |
-| V1.6.3   | 2022/07/20 | EzioChen | 增加支持挂脖耳机 UI                                          |
-| v1.5.0   | 2021/8/12  | 冯 洪鹏  | 1. 增加音箱 SDK 的闹钟贪睡模式 可以对响铃时长、再响间隔进行设置<br />2. 增加耳机 SDK 的 ANC(主动降噪) 可以通过降噪、通透模式，切换耳机不同的模式 |
+---
+
+## 📞 技术支持
+
+- 🌐 **官方网站**: [杰理科技](https://www.zh-jieli.com/)
+- 📧 **技术支持**: 请通过官方渠道联系
+- 📖 **在线文档**: [SDK开发文档](https://doc.zh-jieli.com/)
+- 🔗 **自定义接入**: [蓝牙接入方式](./docs/自定义蓝牙接入方式.url)
+
+---
+
+<div align="center">
+
+**© 2023 珠海市杰理科技股份有限公司 版权所有**
+
+</div>

@@ -49,6 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 进入/退出AI表盘
 @property (nonatomic, assign) BOOL isCreateing;
 
+/// 缩略图尺寸 默认 200*200
+/// scale zoom size default 200*200
+@property (nonatomic,assign) CGSize scaleZoomSize;
+
+
 /// 代理
 @property (nonatomic, weak) id<JLAIDialManagerDelegate> delegate;
 

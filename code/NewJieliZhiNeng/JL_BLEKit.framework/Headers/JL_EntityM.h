@@ -33,21 +33,35 @@ typedef NS_ENUM(NSInteger, JL_EntityM_Status) {
 typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 
 @interface JL_EntityM : NSObject<NSCopying>
-@property(nonatomic,strong) JL_ManagerM   *mCmdManager;             //命令中心
 
-@property(nonatomic,readonly,copy) CBPeripheral  *mPeripheral;      //BLE外设备
-@property(nonatomic,strong) NSString        *mSERVICE;              //服务号AE00
-@property(nonatomic,strong) NSString        *mRCSP_W;               //命令【写】通道AE01
-@property(nonatomic,strong) NSString        *mRCSP_R;               //命令【读】通道AE02
-@property(nonatomic,strong) NSData *__nullable mFilterKey;          //过滤码
-@property(nonatomic,strong) NSData *__nullable mPairKey;            //配对码
+///命令中心
+@property(nonatomic,strong) JL_ManagerM   *mCmdManager;
+
+/// BLE外设备
+@property(nonatomic,readonly,copy) CBPeripheral  *mPeripheral;
+///服务号AE00
+@property(nonatomic,strong) NSString        *mSERVICE;
+///命令【写】通道AE01
+@property(nonatomic,strong) NSString        *mRCSP_W;
+///命令【读】通道AE02
+@property(nonatomic,strong) NSString        *mRCSP_R;
+///过滤码
+@property(nonatomic,strong) NSData *__nullable mFilterKey;
+///配对码
+@property(nonatomic,strong) NSData *__nullable mPairKey;
+///广播数据
 @property(strong,nonatomic) NSData          *mAdvData;
 
-@property(nonatomic,assign) int             mBLE_TIMEOUT;           //连接超时时间
-@property(nonatomic,assign) BOOL            mBLE_FILTER_ENABLE;     //是否【开启过滤】
-@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE;       //是否【开启配对】
-@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED;         //是否完成配对
-@property(nonatomic,assign) BOOL            mBLE_NEED_OTA;          //是否需要OTA
+///连接超时时间
+@property(nonatomic,assign) int             mBLE_TIMEOUT;
+///是否【开启过滤】
+@property(nonatomic,assign) BOOL            mBLE_FILTER_ENABLE;
+///是否【开启配对】
+@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE;
+///是否完成配对
+@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED;
+///是否需要OTA
+@property(nonatomic,assign) BOOL            mBLE_NEED_OTA;
 @property(nonatomic,assign) BOOL            isFrom_HISTROY;
 @property(nonatomic,assign) BOOL            isBLE_CHANGE;
 @property(nonatomic,assign) BOOL            isCMD_PREPARED;
@@ -99,12 +113,23 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
     Android 和 iOS 显示配对操作方式
  */
 @property(assign,nonatomic) int8_t          mScene;
-@property(assign,nonatomic) uint8_t         mSeq;                   //Seq 每次开机会加 1，用于app区分是否同一次开机
-@property(assign,nonatomic) uint8_t         mTWS_Paired;            //TWS配对标识，0:未配对 1:已配对
-@property(assign,nonatomic) uint8_t         mTWS_Cap;               //0:关盖 1:开盖
-@property(assign,nonatomic) uint8_t         mTWS_Mode;              //0:充电模式 1:发射模式
-@property(assign,nonatomic) uint8_t         mHeadsetMaster;         //主从标识 (0:从机， 1:主机)
-@property(assign,nonatomic) uint8_t         mHeadsetLinkEnable;     //连接标识 (0:可以连接 1:不可连接)
+
+///Seq 每次开机会加 1，用于app区分是否同一次开机
+@property(assign,nonatomic) uint8_t         mSeq;
+
+///TWS配对标识，0:未配对 1:已配对
+@property(assign,nonatomic) uint8_t         mTWS_Paired;
+
+///0:关盖 1:开盖
+@property(assign,nonatomic) uint8_t         mTWS_Cap;
+
+///0:充电模式 1:发射模式
+@property(assign,nonatomic) uint8_t         mTWS_Mode;
+///主从标识 (0:从机， 1:主机)
+@property(assign,nonatomic) uint8_t         mHeadsetMaster;
+
+///连接标识 (0:可以连接 1:不可连接)
+@property(assign,nonatomic) uint8_t         mHeadsetLinkEnable;
 /**
  *  mWatchScene值说明:
  *  0x00:经典蓝牙未连接
@@ -112,8 +137,12 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
  *  0x02:设备正在回连
  *  0x03:设备不可连接 (需要手动进入配对模式)
  */
-@property(assign,nonatomic) uint8_t         mWatchScene;            //连接标识 (0:可以连接 1:不可连接)
-@property(assign,nonatomic) uint8_t         mWatchWay;              //连接方式 0:ble 1:spp
+///连接标识 (0:可以连接 1:不可连接)
+@property(assign,nonatomic) uint8_t         mWatchScene;
+
+///连接方式 0:ble 1:spp
+@property(assign,nonatomic) uint8_t         mWatchWay;
+
 /// 设备特殊类型
 @property(assign,nonatomic) JLDevSpecialType  mSpecialType;
 

@@ -100,6 +100,7 @@ typedef NS_ENUM(UInt8, JLRecordSampleRate) {
 /// 文本类型
 /// 0 ： 手表本地文本(语音识别)
 /// 1 ： AI应答文本
+/// 2 ： 错误提示文本
 @property(nonatomic,assign)uint8_t type;
 
 /// 供应商

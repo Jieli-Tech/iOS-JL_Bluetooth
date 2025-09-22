@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 原始数据
 @property(nonatomic,copy)NSData *basicData;
 
+-(instancetype)initData:(NSData *)data;
+
 @end
 
 /// 平台接口认证信息
@@ -33,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)uint8_t version;
 /// 支持平台信息
 @property(nonatomic,copy)NSArray <JLOpenPlatformInfo *>* infoArray;
+
+-(instancetype)initData:(NSData *)dt;
 
 @end
 
@@ -45,6 +49,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设备回调/推送结果
 /// - Parameter mgr: JLAiManager
 -(void)jlaiUpdateStatus:(JLAiManager *)mgr;
+
+@optional
+///  设备主动推送JLOpenPlatformInfo信息
+/// - Parameters:
+///   - mgr: 设备
+///   - infoArray: [JLOpenPlatformInfo]
+-(void)jlaiUpdateDevAiOpenPlatforms:(JLAiManager *)mgr Info:(JLOpenPlatformMessage *)info;
+
 
 @end
 

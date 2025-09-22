@@ -59,6 +59,9 @@ typedef void(^JL_FlashUpdate_BK)(uint8_t flag);
 typedef void(^JL_FlashFileInfo_BK)(uint32_t size,uint16_t crc16);
 typedef void(^JL_FlashLeftSize_BK)(uint32_t leftSize);
 
+/// Flash Info 
+@property(nonatomic,strong)JLModel_Flash *flashInfo;
+
 #pragma mark ---> 获取外置Flash信息
 /**
  获取外置Flash信息

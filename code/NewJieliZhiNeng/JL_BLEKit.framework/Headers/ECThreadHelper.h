@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ECThreadHelperPtl <NSObject>
 
 -(void)startAction:(id)objc;
+-(void)finishThreadTaskAction;
 
 @end
 
@@ -26,6 +27,8 @@ typedef void(^EcThreadAction)(id objc);
 @property (nonatomic, copy) EcThreadAction action;
 
 +(instancetype)share;
+
+-(instancetype)init;
 
 -(void)addTask:(id<NSCopying>)any;
 

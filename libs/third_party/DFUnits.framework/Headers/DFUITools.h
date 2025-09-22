@@ -78,7 +78,8 @@ typedef void (^TipsCompletion) (void);
  */
 +(void)languageSet:(NSString*)lan;
 
-+(NSString *)getLanguage;
++(NSString*)getLanguage;
+
 /**
  *  多语言化：翻译
  */

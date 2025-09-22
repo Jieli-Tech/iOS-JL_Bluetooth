@@ -78,7 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JLSportRecordModel : NSObject
 
 /// 运动模式
-@property(nonatomic,assign)WatchSportType modelType;
+/// 0x00 非运动模式
+/// 0x01 户外跑步
+/// 0x02 室内跑步
+@property(nonatomic,assign)uint8_t modelType;
 /// 版本号
 @property(nonatomic,assign)UInt8 version;
 

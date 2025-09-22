@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 3：AI云
 /// * 4：TTS语音合成
 /// * 5：平台接口认证信息
+/// * 6：esim 卡信息
+/// * 7:4G 模块升级数据
 @property (nonatomic, assign) uint8_t type;
 
 /// 版本
@@ -121,10 +123,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// * 3：AI云
 /// * 4：TTS语音合成
 /// * 5：平台接口认证信息
+/// * 6：esim 卡信息
+/// * 7:4G 模块升级数据
 @property (nonatomic, assign) uint8_t type;
 
-/// 版本
-@property (nonatomic, assign) uint8_t version;
 
 /// 标识位
 /// YES：结束

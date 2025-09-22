@@ -13,6 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^JL_Action)(void);
 typedef void(^JL_Timer_BK)(void);
 
+typedef NS_ENUM(NSInteger, JLLOG_LEVEL) {
+    JLLOG_COMPLETE  = 0,
+    JLLOG_DEBUG     = 1,
+    JLLOG_INFO      = 2,
+    JLLOG_WARN      = 3,
+    JLLOG_ERROR     = 4,
+};
+
+
 @class JL_Timer;
 @interface JL_Tools : NSObject
 
@@ -362,9 +371,17 @@ typedef void(^JL_Timer_BK)(void);
 ///   - encodeType: 编码格式
 +(NSData *)stringBigFileUnicode:(NSString *)name withFileNameIndex:(int)fileNameIndex WithEncode:(NSStringEncoding) encodeType;
 /**
- * 移除不必要字符  \ / : " < > . space
+ * 移除不必要字符  \ / : " < > . 
  */
 +(NSString *)removeUnnecessaryPunctuationCharactersWithString:(NSString *)textString;
+
+/**
+ * 名字移除目标字符
+ * @param pattern 目标需要移除的字符
+ * NSString *pattern = @"[/:*?\"<>|]";
+ * @param textString 源字符串
+ */
++(NSString *)removeCharacters:(NSString*)pattern WithString:(NSString *)textString;
 
 /**
  *  大文件传输，长短文件名
@@ -387,9 +404,29 @@ typedef void(^JL_Timer_BK)(void);
 +(NSData *)beLtv:(uint8_t)type Data:(NSData*)data;
 
 /**
- *  开启打印
+ *    打印文本
  */
 +(void)openLogTextFile;
+
+
+
+///LOG使能与等级，默认开启且debug等级。
+/// @param enable LOG使能
+/// @param isMore 是否打印【函数名&行号】
+/// @param level   LOG等级
++(void)setLog:(BOOL)enable IsMore:(BOOL)isMore Level:(JLLOG_LEVEL)level;
+
+/// 打印宏
+#define kJLLog(level,fmt...) [JL_Tools Log:level Func:__FUNCTION__ Line:__LINE__ format:fmt]
+/// 打印函数
+/// @param level     LOG等级
+/// @param func       函数名
+/// @param line       行号
+/// @param format   内容
++(void)Log:(JLLOG_LEVEL)level
+      Func:(const char* _Nullable)func
+      Line:(const int)line
+    format:(NSString * _Nonnull)format,...;
 
 @end
 

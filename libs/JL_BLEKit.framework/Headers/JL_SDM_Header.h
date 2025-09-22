@@ -46,6 +46,7 @@
 #import "JLWearSyncHealthSleepChart.h"
 #import "JLWearSyncHealthStepChart.h"
 #import "JLWearSyncHealthWeightChart.h"
+#import "JLeSimManager.h"
 
 
 #include <syslog.h>

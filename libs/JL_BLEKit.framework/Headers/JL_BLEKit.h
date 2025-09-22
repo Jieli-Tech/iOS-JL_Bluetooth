@@ -103,6 +103,15 @@ FOUNDATION_EXPORT const unsigned char JL_BLEKitVersionString[];
 #import <JL_BLEKit/BitmapTool.h>
 
 #import <JL_BLEKit/ECThreadHelper.h>
+#import <JL_BLEKit/JLHttpHelper.h>
 #import <JL_BLEKit/ECBDTObjc.h>
 #import <JL_BLEKit/ECBDTManager.h>
+#import <JL_BLEKit/JLModelDevFunc.h>
+#import <JL_BLEKit/JLModelCardInfo.h>
+#import <JL_BLEKit/JLPublicSetting.h>
+#import <JL_BLEKit/JL4GUpgradeManager.h>
+#import <JL_BLEKit/JLDeviceConfigTws.h>
+#import <JL_BLEKit/JLDialInfoExtentedModel.h>
+#import <JL_BLEKit/JLDialInfoExtentManager.h>
+
 

@@ -6,6 +6,7 @@
 //  Copyright © 2018年 DFung. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 #include <AssertMacros.h>

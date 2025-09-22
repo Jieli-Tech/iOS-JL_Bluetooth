@@ -11,6 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, OTA_LEVEL) {
+    OTA_DEBUG = 0,
+    OTA_INFO  = 1,
+    OTA_WARN  = 2,
+    OTA_ERROR = 3,
+};
 
 typedef NS_ENUM(UInt8, JL_OTAResult) {
     JL_OTAResultSuccess             = 0x00, //OTA升级成功
@@ -28,7 +34,7 @@ typedef NS_ENUM(UInt8, JL_OTAResult) {
     JL_OTAResultPrepared            = 0x0f, //OTA准备完成
     JL_OTAResultFailVerification    = 0xf1, //升级数据校验失败
     JL_OTAResultFailCompletely      = 0xf2, //升级失败
-    JL_OTAResultFailKey             = 0xf3, //升级数据校验失败
+    JL_OTAResultFailKey             = 0xf3, //升级数据校验失败，加密Key不对
     JL_OTAResultFailErrorFile       = 0xf4, //升级文件出错
     JL_OTAResultFailUboot           = 0xf5, //uboot不匹配
     JL_OTAResultFailLenght          = 0xf6, //升级过程长度出错
@@ -230,6 +236,24 @@ typedef void(^JL_OTA_RESULT)(uint8_t status, uint8_t sn, NSData* __nullable data
 
 /// 打印OTA SDK版本
 +(NSString *)logSDKVersion;
+
+///LOG使能与等级，默认开启且debug等级。
+/// @param enable LOG使能
+/// @param isMore 是否打印【函数名&行号】
+/// @param level   LOG等级
++(void)setLog:(BOOL)enable IsMore:(BOOL)isMore Level:(OTA_LEVEL)level;
+
+/// 打印宏
+#define kOTALog(level,fmt...) [JL_OTAManager Log:level Func:__FUNCTION__ Line:__LINE__ format:fmt]
+/// 打印函数
+/// @param level     LOG等级
+/// @param func       函数名
+/// @param line       行号
+/// @param format   内容
++(void)Log:(OTA_LEVEL)level
+          Func:(const char* _Nullable)func
+          Line:(const int)line
+        format:(NSString * _Nonnull)format,...;
 
 @end
 

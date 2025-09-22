@@ -17,6 +17,8 @@
 #import <JL_BLEKit/JLModel_EQ.h>
 #import <JL_BLEKit/JLDhaFitting.h>
 #import <JL_OTALib/JL_OTALib.h>
+#import <JL_BLEKit/JLModelCardInfo.h>
+#import <JL_BLEKit/JLModelDevFunc.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,6 +41,8 @@ typedef NS_ENUM(UInt8, JL_SDKType) {
     JL_SDKType701xWATCH             = 0x9,    //BR28 Watch
     JL_SDKTypeManifestEarphone      = 0x0A,   //ManifestEarphone
     JL_SDKTypeManifestSoundbox      = 0x0B,   //ManifestSoundbox
+    ///ChargingCase 彩屏充电仓
+    JL_SDKTypeChargingCase          = 0x0C,
     JL_SDKTypeUnknown,
 };
 typedef NS_ENUM(UInt8, JL_FunctionCode) {
@@ -180,6 +184,7 @@ typedef NS_ENUM(UInt8, JL_FileHandleType) {     //文件句柄
     JL_FileHandleTypeUSB                  = 3,    //USB
     JL_FileHandleTypeLineIn               = 4,    //LineIn
     JL_FileHandleTypeFLASH2               = 5,    //FLASH2
+    JL_FileHandleTypeFLASH3               = 6,    //FLASH3
 };
 
 typedef NS_ENUM(UInt8, JL_MusicMode) {
@@ -288,6 +293,9 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 
 ///USb,SD,LineIn,网络电台是否在线
 @property (assign,nonatomic) uint8_t            funcOnlineStatus;
+
+/// 设备功能模式支持
+@property (strong,nonatomic) JLModelDevFunc     *deviceFuncs;
 
 ///uboot版本
 @property (copy,  nonatomic) NSString           *versionUBoot;
@@ -407,28 +415,39 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 @property (assign,nonatomic) JL_SmallFileWayType smallFileWayType;
 
 /*--- 公用INFO ---*/
+//MARK: - 存储信息
 ///卡的数组
-@property (copy,  nonatomic) NSArray            *cardArray;
+@property (copy,  nonatomic) NSArray            *cardArray __attribute__((deprecated ( "Use the instance property cardArray of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///USB   handle
-@property (copy,  nonatomic) NSString           *handleUSB;
+@property (copy,  nonatomic) NSString           *handleUSB __attribute__((deprecated ( "Use the instance property usbHandle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///SD_0  handle
-@property (copy,  nonatomic) NSString           *handleSD_0;
+@property (copy,  nonatomic) NSString           *handleSD_0 __attribute__((deprecated ( "Use the instance property sd0Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///SD_1  handle
-@property (copy,  nonatomic) NSString           *handleSD_1;
+@property (copy,  nonatomic) NSString           *handleSD_1 __attribute__((deprecated ( "Use the instance property sd1Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///Flash handle
-@property (copy,  nonatomic) NSString           *handleFlash;
-///Flash handle2
-@property (copy,  nonatomic) NSString           *handleFlash2;
+@property (copy,  nonatomic) NSString           *handleFlash __attribute__((deprecated ( "Use the instance property flashHandle of the JLModelCardInfo class instead, this property is about to become invalid")));
+///Flash2 handle
+@property (copy,  nonatomic) NSString           *handleFlash2 __attribute__((deprecated ( "Use the instance property flash2Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
+
+///Flash3 handle
+@property (copy,  nonatomic) NSString           *handleFlash3 __attribute__((deprecated ( "Use the instance property flash3Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
+
 ///USB    handle Data
-@property (copy,  nonatomic) NSData             *handleUSBData;
+@property (copy,  nonatomic) NSData             *handleUSBData __attribute__((deprecated ( "Use the instance property usbHandle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///SD_0   handle Data
-@property (copy,  nonatomic) NSData             *handleSD_0Data;
+@property (copy,  nonatomic) NSData             *handleSD_0Data __attribute__((deprecated ( "Use the instance property sd0Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///SD_1   handle Data
-@property (copy,  nonatomic) NSData             *handleSD_1Data;
+@property (copy,  nonatomic) NSData             *handleSD_1Data __attribute__((deprecated ( "Use the instance property sd1Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///Flash  handle Data
-@property (copy,  nonatomic) NSData             *handleFlashData;
+@property (copy,  nonatomic) NSData             *handleFlashData __attribute__((deprecated ( "Use the instance property flashHandle of the JLModelCardInfo class instead, this property is about to become invalid")));
 ///Flash2 handle Data
-@property (copy,  nonatomic) NSData             *handleFlash2Data;
+@property (copy,  nonatomic) NSData             *handleFlash2Data __attribute__((deprecated ( "Use the instance property flash2Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
+
+///Flash3 handle Data
+@property (copy,  nonatomic) NSData             *handleFlash3Data __attribute__((deprecated ( "Use the instance property flash3Handle of the JLModelCardInfo class instead, this property is about to become invalid")));
+
+/// 设备存储信息（卡信息）
+@property (strong, nonatomic)JLModelCardInfo    *cardInfo;
 
 /// 错误原因
 @property (copy,  nonatomic) NSString           *errReason;
@@ -445,7 +464,6 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 @property (copy  ,nonatomic) JLModel_ANC        *mAncModeCurrent;
 /// ANC模式数组
 @property (copy  ,nonatomic) NSMutableArray     *mAncModeArray;
-
 ///通话状态
 @property (assign,nonatomic) JL_CALLType        mCallType;
 
@@ -462,13 +480,13 @@ typedef NS_ENUM(UInt8,JL_ReverberationType) {
 
 //MARK: - 卡拉OK
 ///卡拉OK 固件返回的掩码
-@property (assign,nonatomic)uint64_t kalaokMask __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalidd")));
+@property (assign,nonatomic)uint64_t kalaokMask __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalid")));
 
 ///卡拉OK 频率数组
-@property (strong,nonatomic)NSArray *mKaraokeMicFrequencyArray __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalidd")));
+@property (strong,nonatomic)NSArray *mKaraokeMicFrequencyArray __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalid")));
 
 ///卡拉OK EQ数组
-@property (strong,nonatomic)NSArray *mKaraokeMicEQArray __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalidd")));
+@property (strong,nonatomic)NSArray *mKaraokeMicEQArray __attribute__((deprecated ( "Use the instance property rtcVersion of the JL_SoundCardManager class instead, this property is about to become invalid")));
 
 //MARK: - EQ 属性列表
 /// EQ模式

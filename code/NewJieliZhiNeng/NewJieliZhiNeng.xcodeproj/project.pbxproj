@@ -27,8 +27,6 @@
 		1D17CA6A24C9DBD800275A20 /* DFUnits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A13CCBE246BDA1600BEE488 /* DFUnits.framework */; };
 		1D248A63288FF17E00F8C823 /* FittingBasicVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D248A62288FF17E00F8C823 /* FittingBasicVC.m */; };
 		1D248A662890CA8F00F8C823 /* HeadSetANC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D248A652890CA8F00F8C823 /* HeadSetANC.m */; };
-		1D2810072580BB3E00682CD2 /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D2810052580BB2B00682CD2 /* ZipZap.framework */; };
-		1D2810082580BB3E00682CD2 /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D2810052580BB2B00682CD2 /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D2E9AD528A5E53500A20CE3 /* ac696x_soundbox_tws_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1D2E9AD128A5E53400A20CE3 /* ac696x_soundbox_tws_json.txt */; };
 		1D2E9AD628A5E53500A20CE3 /* ac697x_headset_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1D2E9AD328A5E53400A20CE3 /* ac697x_headset_json.txt */; };
 		1D2E9ADA28A5E58300A20CE3 /* ac693x_headset_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1D2E9AD828A5E58300A20CE3 /* ac693x_headset_json.txt */; };
@@ -57,6 +55,13 @@
 		1D55B39A2482321D008DA808 /* Alert697xTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D55B3952482321C008DA808 /* Alert697xTools.m */; };
 		1D55B39B2482321D008DA808 /* Alert697xView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D55B3982482321D008DA808 /* Alert697xView.m */; };
 		1D55B39C2482321D008DA808 /* Alert697xView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D55B3992482321D008DA808 /* Alert697xView.xib */; };
+		1D5B31952E811DE40017F4E3 /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */; };
+		1D5B31962E811DE40017F4E3 /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */; };
+		1D5B31972E811DE40017F4E3 /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */; };
+		1D5B31982E811DE40017F4E3 /* JLDialUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */; };
+		1D5B31992E811DE40017F4E3 /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */; };
+		1D5B319C2E811FD10017F4E3 /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319A2E811DF70017F4E3 /* ZipZap.framework */; };
+		1D5B319D2E811FD10017F4E3 /* ZipZap.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5B319A2E811DF70017F4E3 /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D5DA7BA28FD450A00A398EA /* DebugFuncsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7B928FD450A00A398EA /* DebugFuncsViewController.m */; };
 		1D5DA7C028FD470700A398EA /* JLShareLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7BD28FD470600A398EA /* JLShareLogViewController.m */; };
 		1D5DA7C128FD470700A398EA /* JLShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5DA7BE28FD470600A398EA /* JLShareDetailViewController.m */; };
@@ -68,10 +73,6 @@
 		1D5E6CB824AEC53C00F68B7C /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1D5E6CB724AEC53C00F68B7C /* AMap.bundle */; };
 		1D5E6CBD24AEC59800F68B7C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D5E6CBB24AEC59800F68B7C /* MapViewController.m */; };
 		1D5E6CBE24AEC59800F68B7C /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D5E6CBC24AEC59800F68B7C /* MapViewController.xib */; };
-		1D6A28AD2B0F24E700A484CD /* JL_BLEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6A28A92B0F24E700A484CD /* JL_BLEKit.framework */; };
-		1D6A28AE2B0F24E700A484CD /* JL_OTALib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6A28AA2B0F24E700A484CD /* JL_OTALib.framework */; };
-		1D6A28AF2B0F24E700A484CD /* JL_AdvParse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6A28AB2B0F24E700A484CD /* JL_AdvParse.framework */; };
-		1D6A28B02B0F24E700A484CD /* JL_HashPair.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6A28AC2B0F24E700A484CD /* JL_HashPair.framework */; };
 		1D719AF52850370800853D3F /* ShackHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D719AE92850370800853D3F /* ShackHandler.m */; };
 		1D719AF62850370800853D3F /* AppAboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D719AEB2850370800853D3F /* AppAboutVC.m */; };
 		1D719AF72850370800853D3F /* AppAboutVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D719AEC2850370800853D3F /* AppAboutVC.xib */; };
@@ -401,8 +402,8 @@
 			files = (
 				1D9DD63F24F8E01E004B07BF /* IJKMediaFrameworkWithSSL.framework in Embed Frameworks */,
 				1DE9C4EF2872C4CC0017E40A /* Charts.framework in Embed Frameworks */,
+				1D5B319D2E811FD10017F4E3 /* ZipZap.framework in Embed Frameworks */,
 				1D46B3CF286EFCE700A8DC8A /* TYCoreText.framework in Embed Frameworks */,
-				1D2810082580BB3E00682CD2 /* ZipZap.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,7 +436,6 @@
 		1D248A62288FF17E00F8C823 /* FittingBasicVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FittingBasicVC.m; sourceTree = "<group>"; };
 		1D248A642890CA8F00F8C823 /* HeadSetANC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeadSetANC.h; sourceTree = "<group>"; };
 		1D248A652890CA8F00F8C823 /* HeadSetANC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeadSetANC.m; sourceTree = "<group>"; };
-		1D2810052580BB2B00682CD2 /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = "<group>"; };
 		1D2E9AD128A5E53400A20CE3 /* ac696x_soundbox_tws_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac696x_soundbox_tws_json.txt; sourceTree = "<group>"; };
 		1D2E9AD328A5E53400A20CE3 /* ac697x_headset_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac697x_headset_json.txt; sourceTree = "<group>"; };
 		1D2E9AD828A5E58300A20CE3 /* ac693x_headset_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac693x_headset_json.txt; sourceTree = "<group>"; };
@@ -481,6 +481,12 @@
 		1D55B3972482321D008DA808 /* Alert697xTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alert697xTools.h; sourceTree = "<group>"; };
 		1D55B3982482321D008DA808 /* Alert697xView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alert697xView.m; sourceTree = "<group>"; };
 		1D55B3992482321D008DA808 /* Alert697xView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Alert697xView.xib; sourceTree = "<group>"; };
+		1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
+		1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
+		1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
+		1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
+		1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JLDialUnit.framework; sourceTree = "<group>"; };
+		1D5B319A2E811DF70017F4E3 /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = "<group>"; };
 		1D5DA7B828FD450A00A398EA /* DebugFuncsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DebugFuncsViewController.h; sourceTree = "<group>"; };
 		1D5DA7B928FD450A00A398EA /* DebugFuncsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DebugFuncsViewController.m; sourceTree = "<group>"; };
 		1D5DA7BC28FD470600A398EA /* JLShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLShareDetailViewController.h; sourceTree = "<group>"; };
@@ -500,10 +506,6 @@
 		1D5E6CBA24AEC59800F68B7C /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		1D5E6CBB24AEC59800F68B7C /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		1D5E6CBC24AEC59800F68B7C /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
-		1D6A28A92B0F24E700A484CD /* JL_BLEKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_BLEKit.framework; sourceTree = "<group>"; };
-		1D6A28AA2B0F24E700A484CD /* JL_OTALib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_OTALib.framework; sourceTree = "<group>"; };
-		1D6A28AB2B0F24E700A484CD /* JL_AdvParse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_AdvParse.framework; sourceTree = "<group>"; };
-		1D6A28AC2B0F24E700A484CD /* JL_HashPair.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JL_HashPair.framework; sourceTree = "<group>"; };
 		1D719AE72850370800853D3F /* AppAboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppAboutVC.h; sourceTree = "<group>"; };
 		1D719AE92850370800853D3F /* ShackHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShackHandler.m; sourceTree = "<group>"; };
 		1D719AEA2850370800853D3F /* ShackHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShackHandler.h; sourceTree = "<group>"; };
@@ -1046,17 +1048,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D17CA6624C9DA4800275A20 /* AMapLocationKit.framework in Frameworks */,
+				1D5B31952E811DE40017F4E3 /* JL_OTALib.framework in Frameworks */,
+				1D5B31962E811DE40017F4E3 /* JL_HashPair.framework in Frameworks */,
+				1D5B31972E811DE40017F4E3 /* JL_AdvParse.framework in Frameworks */,
+				1D5B31982E811DE40017F4E3 /* JLDialUnit.framework in Frameworks */,
+				1D5B31992E811DE40017F4E3 /* JL_BLEKit.framework in Frameworks */,
 				1D17CA6224C9DA3C00275A20 /* MAMapKit.framework in Frameworks */,
 				1D17CA6824C9DA4B00275A20 /* AMapSearchKit.framework in Frameworks */,
 				1DDA23F124B8408500E02757 /* ExternalAccessory.framework in Frameworks */,
-				1D6A28AF2B0F24E700A484CD /* JL_AdvParse.framework in Frameworks */,
 				1DEA784424CFFCF600C752F0 /* libz.tbd in Frameworks */,
-				1D6A28B02B0F24E700A484CD /* JL_HashPair.framework in Frameworks */,
 				1D46B3CE286EFCE700A8DC8A /* TYCoreText.framework in Frameworks */,
 				1D5E6CB624AEC52200F68B7C /* CoreTelephony.framework in Frameworks */,
 				1D9DD63E24F8E01E004B07BF /* IJKMediaFrameworkWithSSL.framework in Frameworks */,
 				1DEA784524CFFCF600C752F0 /* libbz2.tbd in Frameworks */,
-				1D6A28AD2B0F24E700A484CD /* JL_BLEKit.framework in Frameworks */,
 				4AE208562473E7400060473A /* WebKit.framework in Frameworks */,
 				1D17CA6424C9DA4600275A20 /* AMapFoundationKit.framework in Frameworks */,
 				1D17CA6A24C9DBD800275A20 /* DFUnits.framework in Frameworks */,
@@ -1064,11 +1068,10 @@
 				1D5E6CB224AEC52100F68B7C /* libc++.tbd in Frameworks */,
 				1D7E3766246FD28A00E4408B /* libsqlite3.tbd in Frameworks */,
 				1D5E6CB424AEC52200F68B7C /* SystemConfiguration.framework in Frameworks */,
-				1D2810072580BB3E00682CD2 /* ZipZap.framework in Frameworks */,
 				1DE9C4EE2872C4CC0017E40A /* Charts.framework in Frameworks */,
 				5EC9B8D81BD30A82159D8603 /* libPods-NewJieliZhiNeng.a in Frameworks */,
+				1D5B319C2E811FD10017F4E3 /* ZipZap.framework in Frameworks */,
 				1DEE9670287FC2A0002C919C /* Bugly.framework in Frameworks */,
-				1D6A28AE2B0F24E700A484CD /* JL_OTALib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2298,14 +2301,15 @@
 		4A13CCB2246BD45700BEE488 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1D6A28AB2B0F24E700A484CD /* JL_AdvParse.framework */,
-				1D6A28A92B0F24E700A484CD /* JL_BLEKit.framework */,
-				1D6A28AC2B0F24E700A484CD /* JL_HashPair.framework */,
-				1D6A28AA2B0F24E700A484CD /* JL_OTALib.framework */,
+				1D5B31902E811DE40017F4E3 /* JL_AdvParse.framework */,
+				1D5B31912E811DE40017F4E3 /* JL_BLEKit.framework */,
+				1D5B31922E811DE40017F4E3 /* JL_HashPair.framework */,
+				1D5B31932E811DE40017F4E3 /* JL_OTALib.framework */,
+				1D5B31942E811DE40017F4E3 /* JLDialUnit.framework */,
+				1D5B319A2E811DF70017F4E3 /* ZipZap.framework */,
 				1DEE966E287FC29F002C919C /* Bugly.framework */,
 				1DE9C4EC2872C4560017E40A /* Charts.framework */,
 				1D46B3CC286EFCD200A8DC8A /* TYCoreText.framework */,
-				1D2810052580BB2B00682CD2 /* ZipZap.framework */,
 				1D9DD63C24F8DFE5004B07BF /* IJKMediaFrameworkWithSSL.framework */,
 				1DEA783D24CFFCF600C752F0 /* AudioToolbox.framework */,
 				1DEA784324CFFCF600C752F0 /* AVFoundation.framework */,
@@ -2885,9 +2889,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-NewJieliZhiNeng/Pods-NewJieliZhiNeng-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-NewJieliZhiNeng/Pods-NewJieliZhiNeng-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
