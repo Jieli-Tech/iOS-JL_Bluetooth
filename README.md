@@ -4,7 +4,7 @@
 
 ![iOS](https://img.shields.io/badge/iOS-12.0+-blue.svg)
 ![Xcode](https://img.shields.io/badge/Xcode-Latest-orange.svg)
-![License](https://img.shields.io/badge/License-Proprietary-red.svg)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
 **杰理蓝牙音箱 iOS SDK**
 
@@ -108,8 +108,30 @@ iOS-JL_Bluetooth/
 
 ---
 
+## 📄 许可证
+
+本项目采用 [Apache License 2.0](./LICENSE) 开源协议。
+
+```
+Copyright 2024 珠海市杰理科技股份有限公司
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+---
+
 <div align="center">
 
-**© 2023 珠海市杰理科技股份有限公司 版权所有**
+**© 2024 珠海市杰理科技股份有限公司 | Licensed under Apache License 2.0**
 
 </div>
