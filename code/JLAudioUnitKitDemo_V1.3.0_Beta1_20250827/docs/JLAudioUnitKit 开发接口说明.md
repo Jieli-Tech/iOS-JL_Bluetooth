@@ -1,18 +1,24 @@
-### JLAudioUnitKit 开发接口说明
+## JLAudioUnitKit 开发接口说明
+
+[toc]
 
 
 #### **概述**  
+
 JLAudioUnitKit 是一个专注于音频处理的工具库，提供音频播放、编解码及格式转换功能。支持格式包括 MP3/WAV/AAC/PCM/Opus/Speex 等，适用于 iOS/macOS 平台的 Objective-C 项目。本接口文档涵盖主要功能模块的使用方法及代码示例。
 
 
 ### **核心组件与接口**
 
 #### **1. 音频播放器 `JLAudioUnitPlayer`**
+
 ##### **功能**  
+
 - 支持 **MP3/WAV/AAC 文件播放**（基于 AVAudioPlayer）  
 - 支持 **PCM 流式播放**（基于 Audio Queue）  
 
 ##### **接口说明**  
+
 ```objective-c
 // 初始化（文件播放）
 - (instancetype)initWithAudioFile:(NSString *)filePath;
@@ -32,6 +38,7 @@ JLAudioUnitKit 是一个专注于音频处理的工具库，提供音频播放�
 ```
 
 ##### **代理协议 `JLAudioPlayerDelegate`**  
+
 ```objective-c
 @optional
 - (void)audioPlayer:(JLAudioUnitPlayer *)player didUpdateProgress:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration;
@@ -40,6 +47,7 @@ JLAudioUnitKit 是一个专注于音频处理的工具库，提供音频播放�
 ```
 
 ##### **示例**  
+
 ```objective-c
 // 文件播放
 JLAudioUnitPlayer *filePlayer = [[JLAudioUnitPlayer alloc] initWithAudioFile:@"/path/to/audio.mp3"];
@@ -59,8 +67,11 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 ---
 
 #### **2. Opus 编解码器**
+
 ##### **解码器 `JLOpusDecoder`**  
+
 ##### **接口说明**  
+
 ```objective-c
 // 初始化
 - (instancetype)initDecoder:(JLOpusFormat *)format delegate:(id<JLOpusDecoderDelegate>)delegate;
@@ -73,11 +84,13 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 ```
 
 ##### **代理协议 `JLOpusDecoderDelegate`**  
+
 ```objective-c
 - (void)opusDecoder:(JLOpusDecoder *)decoder Data:(NSData *)data error:(NSError *)error;
 ```
 
 ##### **示例**  
+
 ```objective-c
 JLOpusFormat *format = [JLOpusFormat defaultFormats];
 JLOpusDecoder *decoder = [[JLOpusDecoder alloc] initDecoder:format delegate:self];
@@ -92,10 +105,12 @@ JLOpusDecoder *decoder = [[JLOpusDecoder alloc] initDecoder:format delegate:self
 ```
 
 ##### **编码器 `JLOpusEncoder`**  
+
 ##### **接口说明**  
+
 ```objective-c
 // 初始化
-- (instancetype)initFormat:(JLOpusFormat *)format delegate:(id<JLOpusEncoderDelegate>)delegate;
+- (instancetype)initFormat:(JLOpusEncodeConfig *)format delegate:(id<JLOpusEncoderDelegate>)delegate;
 
 // 输入 PCM 数据
 - (void)opusEncodeData:(NSData *)data;
@@ -105,13 +120,15 @@ JLOpusDecoder *decoder = [[JLOpusDecoder alloc] initDecoder:format delegate:self
 ```
 
 ##### **代理协议 `JLOpusEncoderDelegate`**  
+
 ```objective-c
 - (void)opusEncoder:(JLOpusEncoder *)encoder Data:(NSData *)data error:(NSError *)error;
 ```
 
 ##### **示例**  
+
 ```objective-c
-JLOpusFormat *format = [JLOpusFormat defaultFormats];
+JLOpusEncodeConfig *format = [JLOpusEncodeConfig defaultFormatJL];
 JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:format delegate:self];
 [encoder opusEncodeData:pcmData];
 
@@ -123,10 +140,16 @@ JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:format delegate:self]
 }];
 ```
 
+##### 输出格式与容器说明
+
+- 若在配置中启用了 `hasDataHeader = YES`，编码器会在输出中写入每帧的长度等索引信息（便于解析与随机访问）；关闭该选项则输出“无头”裸帧，适用于杰理定制场景。
+
 ---
 
 #### **3. PCM 转 WAV `JLPcmToWav`**
+
 ##### **接口说明**  
+
 ```objective-c
 // 流式编码初始化
 - (instancetype)initWithOutputPath:(NSString *)outputPath
@@ -150,6 +173,7 @@ JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:format delegate:self]
 ```
 
 ##### **示例**  
+
 ```objective-c
 // 流式转换
 JLPcmToWav *pcmToWav = [[JLPcmToWav alloc] initWithOutputPath:@"/path/to/output.wav"
@@ -169,7 +193,9 @@ JLPcmToWav *pcmToWav = [[JLPcmToWav alloc] initWithOutputPath:@"/path/to/output.
 ```
 
 #### **4. PCM 转 WTG `JLPcmToWtg`**
+
 ##### **接口说明**  
+
 ```objective-c
 // 初始化
 - (instancetype)initWithDelegate:(id<JLPcmToWtgDelegate>)delegate;
@@ -179,11 +205,13 @@ JLPcmToWav *pcmToWav = [[JLPcmToWav alloc] initWithOutputPath:@"/path/to/output.
 ```
 
 ##### **代理协议 `JLPcmToWtgDelegate`**  
+
 ```objective-c
 - (void)convertPcmToWtgDone:(JLPcm2WtgModel *)model;
 ```
 
 ##### **示例**  
+
 ```objective-c
 JLPcm2WtgModel *model = [[JLPcm2WtgModel alloc] init];
 model.pcmPath = @"/path/to/input.pcm";
@@ -194,7 +222,9 @@ JLPcmToWtg *converter = [[JLPcmToWtg alloc] initWithDelegate:self];
 ```
 
 #### **5. Speex 解码器 `JLSpeexDecoder`**
+
 ##### **接口说明**  
+
 ```objective-c
 // 初始化
 - (instancetype)initWithDelegate:(id<JLSpeexDelegate>)delegate;
@@ -207,11 +237,13 @@ JLPcmToWtg *converter = [[JLPcmToWtg alloc] initWithDelegate:self];
 ```
 
 ##### **代理协议 `JLSpeexDelegate`**  
+
 ```objective-c
 - (void)speexDecoder:(JLSpeexDecoder *)decoder Data:(NSData *)data error:(NSError *)error;
 ```
 
 ##### **示例**  
+
 ```objective-c
 JLSpeexDecoder *decoder = [[JLSpeexDecoder alloc] initWithDelegate:self];
 [decoder speexInputData:speexData];
@@ -226,9 +258,13 @@ JLSpeexDecoder *decoder = [[JLSpeexDecoder alloc] initWithDelegate:self];
 
 ---
 
-### 6. Opus 转 OGG
+#### **6. Opus 转 OGG `JLOpusToOgg.h`**  
+
+##### **接口说明**
 
 `JLOpusToOgg.h` 是一个用于将 Opus 编码的音频数据转换为 Ogg 格式的类。它提供了两个主要方法：
+
+**类方法（一次性转换）**
 
 1. **convertOpusDataToOgg:error:**
    - 将内存中的 Opus 数据（NSData）转换为 Ogg 格式的 NSData。
@@ -239,7 +275,7 @@ JLSpeexDecoder *decoder = [[JLSpeexDecoder alloc] initWithDelegate:self];
 
 这两个方法都专门针对“杰理”的无头裸 Opus 数据/文件进行处理，这意味着输入的数据或文件没有包含标准 Opus 头信息。
 
-### 使用示例说明
+##### **示例**
 
 ** 示例一：使用 `convertOpusDataToOgg:error:` 方法**
 
@@ -283,61 +319,260 @@ if ([[NSFileManager defaultManager] fileExistsAtPath:oggFilePath]) {
 
 这里，首先指定了 Opus 文件的路径和期望生成的 Ogg 文件路径，然后调用了 `convertOpusFileToOgg:oggFilePath:` 方法来执行转换。最后，通过检查 Ogg 文件是否存在来验证转换是否成功。
 
-### **注意事项**  
+**注意事项**  
 
 1. **代理协议**：所有接口均需绑定对应的代理以接收事件或错误信息。  
 2. **参数校验**：初始化时需确保参数（如采样率、文件路径）正确，避免运行时崩溃。  
 3. **资源释放**：调用 `opusOnRelease` 或 `speexOnRelease` 释放编解码器资源。  
 4. **线程安全**：涉及文件操作的方法（如 `convertPCMData:toWAVFile:`）需在主线程外执行以避免阻塞 UI。  
-5. **格式兼容性**：WTG 转换要求输入 PCM 文件为 8kHz 16bit 小端格式。  
+5. **格式兼容性**：WTG 转换要求输入 PCM 文件为 8kHz 16bit 小端格式。 
 
+**对象方法（流式转换）**
+
+```objective-c
+// 初始化对象并设置帧长（默认 40）
+- (instancetype)initWithFrameLength:(uint32_t)frameLen;
+
+// 开始流式转换
+- (void)startStream;
+
+// 添加 Opus 数据进行转换
+- (void)appendOpusData:(NSData *)opusData;
+
+// 关闭流式转换，完成输出
+- (void)closeStream;
+
+// 设置回调（在 append 时不断收到 ogg 数据块）
+@property(nonatomic,strong) JLOpusToOggConvertBlock _Nullable convertBlock;
+
+```
+
+**注意事项：**
+
+- 输入数据需为 16kHz 单声道裸 Opus（无 Ogg/Opus 头）。
+
+- frameLen 必须匹配编码帧长（常用为 40ms）。
+
+- 若使用流式转换，请在调用 startStream 后添加数据，并在完成所有输入后调用 closeStream，触发最终 Ogg 封包。
+
+- 使用场景包括实时语音数据流转封装成 Ogg、逐段处理等。
+
+**示例三：流式转换**
+
+```objective-c
+JLOpusToOgg *converter = [[JLOpusToOgg alloc] initWithFrameLength:40];
+converter.convertBlock = ^(NSData * _Nullable oggData, BOOL isLast, NSError * _Nullable error) {
+    if (oggData) {
+        NSLog(@"收到 Ogg 数据块，大小：%lu", (unsigned long)oggData.length);
+        // 可写入文件或缓存
+    } else if (error) {
+        NSLog(@"流式转换错误：%@", error.localizedDescription);
+    }
+
+    if (isLast) {
+        NSLog(@"流式转换结束");
+    }
+};
+
+[converter startStream];
+
+// 模拟逐段添加 opus 数据
+[converter appendOpusData:opusChunk1];
+[converter appendOpusData:opusChunk2];
+// ...
+[converter closeStream];
+
+```
 
 ### **附录**  
-#### **Opus 默认配置 `JLOpusFormat`**  
 
-**常量配置**：
-```
-OPUS_JL_MAX_FRAME_SIZE：最大帧大小，单位是字节，等于 48000 * 2。
-OPUS_JL_MAX_PACKET_SIZE：最大数据包大小，单位是字节，值为 1500。
-```
-主要属性说明：
+#### **Opus 默认编码配置 `JLOpusFormat`**  
 
-- sampleRate：采样率，表示每秒采样次数（例如：16000Hz）。
+##### 常量
 
-- channels：声道数，1 为单声道，2 为双声道。
+* `OPUS_JL_MAX_FRAME_SIZE`：最大帧大小，单位是字节，等于 48000 \* 2。
+* `OPUS_JL_MAX_PACKET_SIZE`：最大数据包大小，单位是字节，值为 1500。
 
-- frameDuration：每帧的时长（默认为 20 毫秒）。
+##### 属性
 
-- bitRate：比特率，影响音频质量和压缩率。
+* `sampleRate`：采样率，表示每秒采样次数（例如：16000Hz）。
+* `channels`：声道数，1 为单声道，2 为双声道。
+* `frameDuration`：每帧的时长（默认为 20 毫秒）。
+* `bitRate`：比特率，影响音频质量和压缩率。
+* `frameSize`：只读属性，计算得到的每帧大小。
+* `dataSize`：每帧数据的大小。
+* `hasDataHeader`：是否包含数据头部。
+* `usVoipSlik`：是否启用 Slik 语音优化（主要针对 VoIP 语音优化）。
 
-- frameSize：只读属性，计算得到的每帧大小。
+##### 方法
 
-- dataSize：每帧数据的大小。
-
-- hasDataHeader：是否包含数据头部。
-
-- usVoipSlik：是否启用 Slik 语音优化（主要针对 VoIP 语音优化）。
-
-`+(JLOpusFormat*)defaultFormats：`类方法，返回一个默认配置的 JLOpusFormat 实例，包含了一些常见的默认值，如：采样率 16000，单声道，帧长度 20ms，比特率 16000 等。
+* `+(JLOpusFormat*)defaultFormats`：类方法，返回一个默认配置的 `JLOpusFormat` 实例，包含了一些常见的默认值，如：采样率 16000，单声道，帧长度 20ms，比特率 16000 等。
 
 ```objective-c
 JLOpusFormat *format = [JLOpusFormat defaultFormats];
-// 若果需要设置自定义参数，可直接修改 format 的属性
-format.sampleRate = 16000;
-format.channels = 1;
-format.frameDuration = 20;
-format.bitRate = 16000;
-format.hasDataHeader = YES;
-format.usVoipSlik = YES;
 NSLog(@"采样率: %d", format.sampleRate);     // 16000  
 NSLog(@"帧长度: %dms", format.frameDuration); // 20ms  
 NSLog(@"BitRate: %dkbps", format.bitRate);   // 自动计算  
 ```
+#### **Opus 编码配置 `JLOpusEncodeConfig` 使用说明**
+
+`JLOpusEncodeConfig` 是用于 Opus 音频编码器的配置类。它封装了 Opus 编码器的所有关键参数，可以用于初始化 `JLOpusEncoder` 或直接进行文件/数据编码。
+
+##### 属性说明
+
+| 属性                  | 类型   | 默认值                           | 说明                                                         |
+| --------------------- | ------ | -------------------------------- | ------------------------------------------------------------ |
+| `sampleRate`          | `int`  | 16000                            | 音频采样率（Hz）。常用值：8000、16000、24000、48000。        |
+| `channels`            | `int`  | 1                                | 声道数：1=单声道，2=双声道。                                 |
+| `frameDuration`       | `int`  | 20                               | 帧时长（ms）。Opus 默认 20ms，可选 2.5/5/10/20/40/60ms。     |
+| `frameSize`           | `int`  | 采样率 \* frameDuration / 1000   | 每帧采样点数，由 `frameDuration` 和 `sampleRate` 计算得出。  |
+| `bitRate`             | `int`  | 16000                            | 编码比特率（bps）。CBR 或 VBR 下都可设置。                   |
+| `useVBR`              | `BOOL` | NO                               | 是否使用可变比特率（VBR）。NO 表示使用恒定比特率（CBR）。    |
+| `constrainedVBR`      | `BOOL` | NO                               | VBR 限制模式，启用后 VBR 不会超过设定比特率。                |
+| `complexity`          | `int`  | 5                                | 编码复杂度，0\~10。数值越高编码质量越好，但 CPU 消耗也越高。 |
+| `forceChannels`       | `int`  | -1                               | 强制输出声道数。-1=自适应，1=单声道，2=双声道。              |
+| `useDTX`              | `BOOL` | NO                               | 启用 DTX（静音段不发送数据）可降低带宽消耗。                 |
+| `packetLossPercent`   | `int`  | 0                                | 网络丢包率百分比，用于优化编码器抗丢包能力。                 |
+| `bandwidth`           | `int`  | `JLOpusEncoderBandwidthFullband` | 最大带宽限制，对应 Opus 的 `OPUS_BANDWIDTH_*`。              |
+| `lsbDepth`            | `int`  | 16                               | PCM 输入有效位深，通常 16bit。                               |
+| `expertFrameDuration` | `int`  | 与 `frameDuration` 一致          | 专家模式下帧时长（ms）。用于控制 Opus 内部帧长度。           |
+| `hasDataHeader`       | `BOOL` | YES                              | 是否在编码输出中写入数据头。<br>如果启用，编码器会写入每帧长度和偏移信息；<br>关闭则使用杰理自定义无头编码。 |
+
+
+#### 默认配置方法
+
+##### 1. `defaultConfig`
+
+```objc
+JLOpusEncodeConfig *config = [JLOpusEncodeConfig defaultConfig];
+```
+
+* 适用于标准 Opus 编码场景。
+* 默认参数示例：
+
+```text
+sampleRate: 16000 Hz
+channels: 1
+frameDuration: 20 ms
+bitRate: 16000 bps
+useVBR: NO
+constrainedVBR: NO
+complexity: 5
+forceChannels: -1 (auto)
+useDTX: NO
+packetLossPercent: 0
+bandwidth: Fullband
+lsbDepth: 16
+expertFrameDuration: 20 ms
+hasDataHeader: YES
+```
+
+* 使用 `defaultConfig` 可以直接初始化编码器，保证兼容标准 Opus 数据格式。
+
+##### 2. `defaultJL`
+
+```objc
+JLOpusEncodeConfig *jlConfig = [JLOpusEncodeConfig defaultJL];
+```
+
+* 杰理定制的“无头”配置。
+* 适用于无需数据头、固定 16kHz、单声道、SILK 模式的场景。
+* 默认参数示例：
+
+```text
+sampleRate: 16000 Hz
+channels: 1
+frameDuration: 20 ms
+bitRate: 16000 bps
+useVBR: NO
+constrainedVBR: NO
+complexity: 5
+forceChannels: -1
+useDTX: NO
+packetLossPercent: 0
+bandwidth: Wideband
+lsbDepth: 16
+expertFrameDuration: 20 ms
+hasDataHeader: NO
+```
+
+* 初始化 `JLOpusEncoder` 时，会自动覆盖一些特殊参数：
+
+  * `signal = OPUS_SIGNAL_VOICE`
+  * `max_bandwidth = OPUS_BANDWIDTH_WIDEBAND`
+  * 禁用 FEC 和 DTX
+
+
+#### 使用示例
+
+#### 1. 使用标准配置编码 PCM 数据
+
+```objc
+JLOpusEncodeConfig *config = [JLOpusEncodeConfig defaultConfig];
+JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:config delegate:self];
+
+NSData *pcmData = ...; // PCM 数据
+[encoder opusEncodeData:pcmData];
+```
+
+#### 2. 使用杰理无头配置进行文件编码
+
+```objc
+JLOpusEncodeConfig *jlConfig = [JLOpusEncodeConfig defaultJL];
+JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:jlConfig delegate:self];
+
+[encoder opusEncodeFile:@"input.pcm" outPut:@"output.opus" Resoult:^(NSString * _Nullable path, NSError * _Nullable error) {
+    if (error) {
+        NSLog(@"编码失败: %@", error);
+    } else {
+        NSLog(@"编码成功, 输出文件: %@", path);
+    }
+}];
+```
+#### 注意事项
+
+1. **frameDuration 和 frameSize 的关系**
+
+   ```text
+   frameSize = sampleRate * frameDuration / 1000
+   ```
+
+   推荐使用默认 20ms 帧长度，Opus 支持的帧长：2.5、5、10、20、40、60ms。
+
+2. **VBR 与 CBR**
+
+   * `useVBR = YES` 表示可变比特率，可在保证质量的同时动态调整码率。
+   * `useVBR = NO` 表示恒定码率（CBR），码率稳定，便于带宽规划。
+
+3. **输出容器与兼容性**
+
+   * `JLOpusEncoder` 输出为裸 Opus 帧，不包含 Ogg 容器。部分通用播放器可能无法直接播放该输出文件。
+
+4. **hasDataHeader 的影响**
+
+   * 若 `hasDataHeader = YES`，编码器会在输出中写入每帧的长度/偏移等头部索引信息，便于解析与随机访问；
+   * 若 `hasDataHeader = NO`，输出为“无头”裸帧，更轻量，但上层读取时需按配置的 `frameDuration`、`sampleRate` 等参数进行解析与拼帧。
+   * `useVBR = NO` 表示恒定比特率（CBR），适合实时通信。
+
+3. **hasDataHeader**
+
+   * YES：生成标准 Opus 帧头，适合存储或网络传输。
+   * NO：生成杰理自定义无头格式，适合嵌入式设备或自定义解析。
+
+4. **bandwidth**
+
+   * 不同场景选择不同带宽：
+     * Narrowband: 4kHz
+     * Mediumband: 6kHz
+     * Wideband: 8kHz
+     * Superwideband: 12kHz
+     * Fullband: 20kHz
+
 
 #### **常见错误码**  
+
 | 错误码 | 描述                   |
 | ------ | ---------------------- |
 | `-1`   | 文件路径无效或权限不足 |
 | `-2`   | 音频格式不支持         |
 | `-3`   | 内存分配失败           |
-

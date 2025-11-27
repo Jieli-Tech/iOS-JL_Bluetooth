@@ -504,6 +504,16 @@
 		FE0D38ACE181BEB466903F6E /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25639AFC506622281EA27160 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1D50E1E82EAEFAB70026B607 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A13CC8E246BD3A000BEE488 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A13CC95246BD3A000BEE488;
+			remoteInfo = NewJieliZhiNeng;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		1D7E3769246FD2A100E4408B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -538,7 +548,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1B0AEA30B2AED23DFA1BD349 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
+		1B0AEA30B2AED23DFA1BD349 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
 		1D036C6D2DEEE92B009C1369 /* ProtectPreviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectPreviewVC.swift; sourceTree = "<group>"; };
 		1D036C6F2DEEF0D3009C1369 /* ProtectUpdateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectUpdateVC.swift; sourceTree = "<group>"; };
 		1D05644A246E326B00CEDF6C /* LocalMusicVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalMusicVC.h; sourceTree = "<group>"; };
@@ -1082,8 +1092,8 @@
 		22C4F829248674B200064810 /* EQCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EQCell.h; sourceTree = "<group>"; };
 		22C4F82A248674B200064810 /* EQCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EQCell.m; sourceTree = "<group>"; };
 		22C4F82B248674B200064810 /* EQCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EQCell.xib; sourceTree = "<group>"; };
-		25639AFC506622281EA27160 /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
-		278ADD941322FDD5AD1F35A7 /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
+		25639AFC506622281EA27160 /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
+		278ADD941322FDD5AD1F35A7 /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
 		4A04354324C7E5F900872D54 /* ac696x_soundbox_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac696x_soundbox_json.txt; sourceTree = "<group>"; };
 		4A04354B24C82EF400872D54 /* FlashCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashCell.h; sourceTree = "<group>"; };
 		4A04354D24C82EF400872D54 /* RSColorFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSColorFunctions.m; sourceTree = "<group>"; };
@@ -1252,11 +1262,11 @@
 		4ADA0C4C2511DD430028B191 /* update_yx_hp_ota.ufw */ = {isa = PBXFileReference; lastKnownFileType = file; path = update_yx_hp_ota.ufw; sourceTree = "<group>"; };
 		4AE208552473E73F0060473A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		4AE82B5524E0F2D30076E86E /* JieLiAppHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JieLiAppHeader.pch; sourceTree = "<group>"; };
-		883FF2C30668A12C81715D72 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
-		8CE7F1F772C673B2E37954AE /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
-		8D4E6A6278628B31CC2FD211 /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
-		989C707F390AE9C040322D2C /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
-		B8FCC2CE8358AB0D8CFCA451 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
+		883FF2C30668A12C81715D72 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
+		8CE7F1F772C673B2E37954AE /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
+		8D4E6A6278628B31CC2FD211 /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
+		989C707F390AE9C040322D2C /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
+		B8FCC2CE8358AB0D8CFCA451 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
 		BE4E455B29E640B8002262CA /* manifest_soundbox_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = manifest_soundbox_json.txt; sourceTree = "<group>"; };
 		BE4E455D29E6411F002262CA /* manifest_headset_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = manifest_headset_json.txt; sourceTree = "<group>"; };
 		C2698B7F260C662C007F42E4 /* DenoiseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DenoiseVC.h; sourceTree = "<group>"; };
@@ -1594,13 +1604,6 @@
 				1D55B3992482321D008DA808 /* Alert697xView.xib */,
 			);
 			path = Alert697x;
-			sourceTree = "<group>";
-		};
-		1D59E4E42BD7A97F00434186 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		1D5DA7BB28FD470600A398EA /* ShareLog */ = {
@@ -3428,11 +3431,6 @@
 			mainGroup = 4A13CC8D246BD3A000BEE488;
 			productRefGroup = 4A13CC97246BD3A000BEE488 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 1D59E4E42BD7A97F00434186 /* Products */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				4A13CC95246BD3A000BEE488 /* NewJieliZhiNeng */,
@@ -3970,6 +3968,7 @@
 		1DCA1FB42876E4D800F73BDF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4A13CC95246BD3A000BEE488 /* NewJieliZhiNeng */;
+			targetProxy = 1D50E1E82EAEFAB70026B607 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
