@@ -1,7 +1,5 @@
 ## JLAudioUnitKit 开发接口说明
 
-[toc]
-
 
 #### **概述**  
 
@@ -76,32 +74,60 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 // 初始化
 - (instancetype)initDecoder:(JLOpusFormat *)format delegate:(id<JLOpusDecoderDelegate>)delegate;
 
-// 输入 Opus 数据
+// 重置解码格式（运行时切换采样率/声道/帧长等）
+- (void)resetOpusFramet:(JLOpusFormat *)format;
+
+// 输入 Opus 数据（流式）
 - (void)opusDecoderInputData:(NSData *)data;
 
-// 文件解码
-- (void)opusDecodeFile:(NSString *)input outPut:(NSString *)outPut Resoult:(JLOpusDecoderConvertBlock)result;
+// 文件解码（回调返回 PCM 文件路径或错误）
+- (void)opusDecodeFile:(NSString *)input outPut:(NSString *_Nullable)outPut Resoult:(JLOpusDecoderConvertBlock _Nullable)result;
+
+// 释放资源
+- (void)opusOnRelease;
 ```
 
 ##### **代理协议 `JLOpusDecoderDelegate`**  
 
 ```objective-c
-- (void)opusDecoder:(JLOpusDecoder *)decoder Data:(NSData *)data error:(NSError *)error;
+-(void)opusDecoder:(JLOpusDecoder *)decoder Data:(NSData* _Nullable)data error:(NSError* _Nullable)error;
 ```
 
-##### **示例**  
+##### **示例（流式 / 文件 / 动态切换）**  
 
 ```objective-c
-JLOpusFormat *format = [JLOpusFormat defaultFormats];
-JLOpusDecoder *decoder = [[JLOpusDecoder alloc] initDecoder:format delegate:self];
-[decoder opusDecoderInputData:opusData];
+// 1) 流式解码：逐段输入 Opus 数据，PCM 数据通过代理返回
+JLOpusFormat *streamFmt = [JLOpusFormat defaultFormats];
+JLOpusDecoder *streamDecoder = [[JLOpusDecoder alloc] initDecoder:streamFmt delegate:self];
+[streamDecoder opusDecoderInputData:opusChunk1];
+[streamDecoder opusDecoderInputData:opusChunk2];
+// ... 更多数据块
+[streamDecoder opusOnRelease];
 
-// 文件解码
-[decoder opusDecodeFile:@"/path/to/input.opus" outPut:@"/path/to/output.pcm" Resoult:^(NSString *pcmPath, NSError *error) {
-    if (!error) {
-        NSLog(@"Opus 解码完成: %@", pcmPath);
+// 代理接收 PCM 数据
+- (void)opusDecoder:(JLOpusDecoder *)decoder Data:(NSData * _Nullable)data error:(NSError * _Nullable)error {
+    if (data) {
+        // 处理 PCM 数据块（写入文件 / 播放 / 可视化）
+    } else if (error) {
+        NSLog(@"解码错误: %@", error.localizedDescription);
+    }
+}
+
+// 2) 文件解码：输入 Opus 文件，输出 PCM 文件
+JLOpusFormat *fileFmt = [JLOpusFormat defaultFormats];
+JLOpusDecoder *fileDecoder = [[JLOpusDecoder alloc] initDecoder:fileFmt delegate:self];
+[fileDecoder opusDecodeFile:@"/path/to/input.opus" outPut:@"/path/to/output.pcm" Resoult:^(NSString * _Nullable pcmPath, NSError * _Nullable error) {
+    if (!error && pcmPath) {
+        NSLog(@"Opus 文件解码完成: %@", pcmPath);
     }
 }];
+
+// 3) 动态切换格式：运行中重置参数（如采样率/声道/帧长）
+JLOpusFormat *newFmt = [JLOpusFormat defaultFormats];
+newFmt.sampleRate = 16000;
+newFmt.channels = 1;
+[streamDecoder resetOpusFramet:newFmt];
+[streamDecoder opusDecoderInputData:opusChunk3];
 ```
 
 ##### **编码器 `JLOpusEncoder`**  
@@ -112,30 +138,49 @@ JLOpusDecoder *decoder = [[JLOpusDecoder alloc] initDecoder:format delegate:self
 // 初始化
 - (instancetype)initFormat:(JLOpusEncodeConfig *)format delegate:(id<JLOpusEncoderDelegate>)delegate;
 
-// 输入 PCM 数据
+// 流式编码（输入 PCM 数据块）
 - (void)opusEncodeData:(NSData *)data;
 
-// 文件编码
-- (void)opusEncodeFile:(NSString *)pcmPath outPut:(NSString *)outPut Resoult:(JLOpusEncoderConvertBlock)result;
+// 文件编码（新：流式读取，避免一次性加载内存）
+- (void)opusEncodeFile:(NSString *)pcmPath output:(NSString *_Nullable)output result:(JLOpusEncoderConvertBlock _Nullable)result;
+
+// 释放资源
+- (void)opusOnRelease;
+
+// 兼容旧接口（已废弃）
+- (void)opusEncodeFile:(NSString *)pcmPath outPut:(NSString *_Nullable)outPut Resoult:(JLOpusEncoderConvertBlock _Nullable)result;
 ```
 
 ##### **代理协议 `JLOpusEncoderDelegate`**  
 
 ```objective-c
-- (void)opusEncoder:(JLOpusEncoder *)encoder Data:(NSData *)data error:(NSError *)error;
+-(void)opusEncoder:(JLOpusEncoder *)encoder Data:(NSData* _Nullable)data error:(NSError* _Nullable)error;
 ```
 
-##### **示例**  
+##### **示例（流式与文件编码）**  
 
 ```objective-c
-JLOpusEncodeConfig *format = [JLOpusEncodeConfig defaultFormatJL];
-JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:format delegate:self];
-[encoder opusEncodeData:pcmData];
+// 流式编码示例：逐段传入 PCM 数据
+JLOpusEncodeConfig *streamCfg = [JLOpusEncodeConfig defaultJL];
+JLOpusEncoder *streamEncoder = [[JLOpusEncoder alloc] initFormat:streamCfg delegate:self];
+[streamEncoder opusEncodeData:pcmChunk1];
+[streamEncoder opusEncodeData:pcmChunk2];
+// ... 更多数据块
+[streamEncoder opusOnRelease];
 
-// 文件编码
-[encoder opusEncodeFile:@"/path/to/input.pcm" outPut:@"/path/to/output.opus" Resoult:^(NSString *opusPath, NSError *error) {
-    if (!error) {
-        NSLog(@"Opus 编码完成: %@", opusPath);
+// 文件编码示例（新接口）：output 为空时使用默认路径 ~/Documents/pcmToOpus.opus
+JLOpusEncodeConfig *fileCfg = [JLOpusEncodeConfig defaultJL];
+JLOpusEncoder *fileEncoder = [[JLOpusEncoder alloc] initFormat:fileCfg delegate:self];
+[fileEncoder opusEncodeFile:@"/path/to/input.pcm" output:nil result:^(NSString * _Nullable path, NSError * _Nullable error) {
+    if (!error && path) {
+        NSLog(@"Opus 编码完成: %@", path);
+    }
+}];
+
+// 旧接口（不推荐，仅兼容迁移）
+[fileEncoder opusEncodeFile:@"/path/to/input.pcm" outPut:@"/path/to/output.opus" Resoult:^(NSString * _Nullable path, NSError * _Nullable error) {
+    if (!error && path) {
+        NSLog(@"Opus 编码完成(旧接口): %@", path);
     }
 }];
 ```
@@ -576,3 +621,5 @@ JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:jlConfig delegate:sel
 | `-1`   | 文件路径无效或权限不足 |
 | `-2`   | 音频格式不支持         |
 | `-3`   | 内存分配失败           |
+
+
