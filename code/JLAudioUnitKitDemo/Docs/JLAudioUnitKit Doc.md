@@ -85,6 +85,13 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 // 文件解码（回调返回 PCM 文件路径或错误）
 - (void)opusDecodeFile:(NSString *)input outPut:(NSString *_Nullable)outPut Resoult:(JLOpusDecoderConvertBlock _Nullable)result;
 
+// 面向大型 Opus 文件的双缓冲重叠 IO/解码接口（可调聚合阈值；仅最终回调，不逐帧回调）
+- (void)opusDecodeLargeFileEx:(NSString *)input
+                        output:(NSString *_Nullable)output
+                     chunkBytes:(NSUInteger)chunkBytes
+             aggregateThreshold:(NSUInteger)aggregateThreshold
+                         result:(JLOpusDecoderConvertBlock _Nullable)result;
+
 // 释放资源
 - (void)opusOnRelease;
 ```
@@ -145,6 +152,23 @@ newFmt.sampleRate = 16000;
 newFmt.channels = 1;
 [streamDecoder resetOpusFramet:newFmt];
 [streamDecoder opusDecoderInputData:opusChunk3];
+```
+
+```objective-c
+// 4) 大文件解码（Ex：带聚合阈值，最终一次性回调；不逐帧触发代理）
+JLOpusFormat *largeFmt = [JLOpusFormat defaultFormats];
+JLOpusDecoder *largeDecoder = [[JLOpusDecoder alloc] initDecoder:largeFmt delegate:nil];
+[largeDecoder opusDecodeLargeFileEx:@"/path/to/input.opus"
+                             output:@"/path/to/output.pcm"
+                          chunkBytes:(1024*1024) // 1MB
+                  aggregateThreshold:(256*1024) // 256KB
+                               result:^(NSString * _Nullable pcmPath, NSError * _Nullable error) {
+    if (!error && pcmPath) {
+        NSLog(@"Opus 大文件解码完成: %@", pcmPath);
+    } else {
+        NSLog(@"解码错误: %@", error.localizedDescription);
+    }
+}];
 ```
 
 ##### **示例（Swift - 立体声回调与本地保存）**
@@ -225,6 +249,13 @@ while len + fixed <= data.count {
 // 文件编码（新：流式读取，避免一次性加载内存）
 - (void)opusEncodeFile:(NSString *)pcmPath output:(NSString *_Nullable)output result:(JLOpusEncoderConvertBlock _Nullable)result;
 
+// 面向大型 PCM 的流式编码接口（带聚合阈值；文件模式不逐帧触发代理，仅最终回调）
+- (void)opusEncodeFileEx:(NSString *)pcmPath
+                   output:(NSString *_Nullable)output
+                chunkBytes:(NSUInteger)chunkBytes
+        aggregateThreshold:(NSUInteger)aggregateThreshold
+                    result:(JLOpusEncoderConvertBlock _Nullable)result;
+
 // 释放资源
 - (void)opusOnRelease;
 
@@ -237,6 +268,11 @@ while len + fixed <= data.count {
 ```objective-c
 -(void)opusEncoder:(JLOpusEncoder *)encoder Data:(NSData* _Nullable)data error:(NSError* _Nullable)error;
 ```
+
+说明：
+- 流式编码（`opusEncodeData:`）逐帧触发代理回调，便于实时观察或传输。
+- 文件编码（`opusEncodeFile:`、`opusEncodeFileEx:`）在文件模式下不逐帧触发代理；仅在编码完成后通过 `result` 回调返回输出路径或错误。
+- 若启用 `hasDataHeader=YES`，文件输出为每帧写入 8 字节索引信息（长度 + final_range），便于解析与随机访问。
 
 ##### **示例（流式与文件编码）**  
 
@@ -266,9 +302,45 @@ JLOpusEncoder *fileEncoder = [[JLOpusEncoder alloc] initFormat:fileCfg delegate:
 }];
 ```
 
+```objective-c
+// 大文件编码示例（Ex：带聚合阈值；不逐帧回调，仅最终回调）
+JLOpusEncodeConfig *largeCfg = [JLOpusEncodeConfig defaultJL];
+largeCfg.hasDataHeader = YES; // 可选：为每帧输出头信息
+JLOpusEncoder *largeEncoder = [[JLOpusEncoder alloc] initFormat:largeCfg delegate:nil];
+[largeEncoder opusEncodeFileEx:@"/path/to/input.pcm"
+                       output:@"/path/to/output.opus"
+                    chunkBytes:(1024*1024) // 1MB
+            aggregateThreshold:(256*1024)  // 256KB
+                        result:^(NSString * _Nullable path, NSError * _Nullable error) {
+    if (!error && path) {
+        NSLog(@"Opus 大文件编码完成: %@", path);
+    } else {
+        NSLog(@"编码错误: %@", error.localizedDescription);
+    }
+}];
+```
+
 ##### 输出格式与容器说明
 
 - 若在配置中启用了 `hasDataHeader = YES`，编码器会在输出中写入每帧的长度等索引信息（便于解析与随机访问）；关闭该选项则输出“无头”裸帧，适用于杰理定制场景。
+
+##### 性能与监控
+
+- 解码 Ex 日志
+  - `Large decode(ex) begin: chunkBytes=<B>, agg=<B>, header=<0/1>, dataSize=<bytes>`
+  - `Large decode(ex) done: opus=<bytes>, pcm=<bytes>, time=<sec>, throughput=<MB/s>`
+  - `Large decode(ex) breakdown: read=<sec>, decode=<sec>, write=<sec>, chunks=<count>, frames=<count>, aggFlush=<count>`
+- 编码 Ex 日志
+  - `Large encode begin: chunkBytes=<B>, agg=<B>, frameBytes=<bytes>`
+  - `Large encode done: pcm=<bytes>, time=<sec>, throughput=<MB/s>`
+  - `Large encode breakdown: read=<sec>, encode=<sec>, write=<sec>, chunks=<count>, aggFlush=<count>`
+- 指标说明
+  - `read`：分块读取累计耗时；`decode/encode`：逐帧解码/编码累计耗时；`write`：写盘累计耗时
+  - `throughput`：输出字节 / 秒（MB/s）；`chunks`：读取块次数；`frames`：成功解码帧数；`aggFlush`：达到聚合阈值的批量写次数
+- 调优建议
+  - 增大 `chunkBytes` 可减少 IO 频度，但可能增加峰值内存；减小 `chunkBytes` 可提升调度灵活性
+  - 增大 `aggregateThreshold` 可减少写盘次数但增大缓冲；减小则更实时但写盘更频繁
+  - 通过“breakdown”日志观察瓶颈位于读、编解码或写盘环节，结合设备存储与 CPU 特性调整参数
 
 ---
 

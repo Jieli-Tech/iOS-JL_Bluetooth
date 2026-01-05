@@ -61,11 +61,23 @@ typedef void(^JLOpusDecoderConvertBlock)(NSString *_Nullable pcmPath,NSError *_N
 -(void)opusDecoderInputData:(NSData *)data;
 
 /// 解码文件
+///  note: 该方法会一次性读取文件到内存，适用于小文件解码，而且采取的是一帧一帧的解析方式（较慢）
+/// 如果需要解码大文件需要使用 opusDecodeLargeFile:output:chunkBytes:result: 方法
 /// - Parameters:
 ///   - input: opus 文件
 ///   - outPut: 输出路径
 ///   - result: 结果回调
 -(void)opusDecodeFile:(NSString *)input outPut:(NSString *_Nullable)outPut Resoult:(JLOpusDecoderConvertBlock _Nullable)result;
+
+
+/// 面向大型 Opus 文件的双缓冲重叠 IO/解码接口（可调聚合阈值）
+/// - Parameters:
+///   - input: 输入 Opus 文件路径
+///   - output: 输出 PCM 文件路径（为空则写入 Documents/opusLargeToPcm.pcm）
+///   - chunkBytes: 流式读取块大小（字节），为 0 时默认 1048576（1MB）
+///   - aggregateThreshold: 写盘聚合阈值（字节），为 0 时默认 262144（256KB）
+///   - result: 完成回调，返回输出路径或错误
+-(void)opusDecodeLargeFileEx:(NSString *)input output:(NSString *_Nullable)output chunkBytes:(NSUInteger)chunkBytes aggregateThreshold:(NSUInteger)aggregateThreshold result:(JLOpusDecoderConvertBlock _Nullable)result;
 
 /// 释放
 -(void)opusOnRelease;

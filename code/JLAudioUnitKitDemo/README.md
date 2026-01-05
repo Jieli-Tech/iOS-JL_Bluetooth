@@ -5,6 +5,7 @@
 ## 版本历史（摘要）
 | 版本 | 日期 | 类型 | 主要变更 |
 | --- | --- | --- | --- |
+| 1.5.0_Beta1 | 2025-12-26 | release | 增加 opus 的大文件编解码接口，支持大文件编解码以增加速率 |
 | 1.4.0_Beta2 | 2025-12-04 | release | 添加立体声（双声道 opus）分离回调支持并更新Demo |
 | 1.3.1_Beta1 | 2025-11-27 | release | 升级发布流程与架构：移除 i386/armv7，新增 arm64 模拟器；集成发布脚本与 Demo 配置；文档与忽略规则优化 |
 | — | 2025-12-03 | feat | 音频播放器线程安全改进；添加解码后 PCM 记录；Demo 增加本地分包读取与顺序重组示例；新增 `opus_inspector.py` |
@@ -29,29 +30,20 @@
 - 获取 SDK
   - 使用发布包中的 `Release/Libs/JLAudioUnitKit.xcframework`，或 Demo 内 `JLAudioUnitKit/XCFrameworks/JLAudioUnitKit.xcframework`
   - 使用发布包中的 `Release/Libs/JLLogHelper.xcframework`，或 Demo 内 `JLAudioUnitKit/XCFrameworks/JLLogHelper.xcframework`
-  
 - 集成步骤
   - 将 `JLAudioUnitKit.xcframework`, `JLLogHelper.xcframework` 添加到工程
   - 在 Target → Build Phases → Embed Frameworks 设置为 Embed & Sign（必须）
   - Swift：`import JLAudioUnitKit`；Objective‑C：`#import <JLAudioUnitKit/JLAudioUnitKit.h>`
-  
 - 能力总览（JLAudioUnitKit.framework）
   - 编解码：`JLOpusDecoder`、`JLOpusEncoder`、`JLSpeexDecoder`
-  
   - 配置：`JLOpusFormat`、`JLOpusEncodeConfig`
-  
   - 转换：`JLOpusToOgg`、`JLPcmToWav`、`JLPcmToWtg`、`JLAudioConverter`（MP3→UMP3）
-  
   - 播放：`JLAudioUnitPlayer`
-  
   - Demo 能力：本地分包读取、立体声分离回调、PCM 录制与元数据
-  
 - 工程初始化（JLAudioUnitKitDemo）
   - 工程使用了 Cocoapod 依赖：`pod 'RxSwift' `, `pod 'RxCocoa'`, `pod 'SnapKit'`, `pod 'R.swift'`, `pod 'Toast-Swift'`，需要先安装 Cocoapod 并执行 `pod install`。
-  
 - 开发文档
   - 参见 `Docs/JLAudioUnitKit Doc.md`（接口说明、分包策略、回调示例）
-  
 - 示例参考
   - 解码演示：`JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusDecodeVC.swift`
   - 转 Ogg：`JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusToOggVC.swift`

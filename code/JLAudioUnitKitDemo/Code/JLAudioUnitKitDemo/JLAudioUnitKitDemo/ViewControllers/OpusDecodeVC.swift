@@ -15,7 +15,6 @@ import AudioToolbox
 import JLLogHelper
 
 /// 基于 JLAudioUnitKit 的 OPUS 解码演示控制器：
-/// 提供本地分包读取与 PCM 数据记录保存能力，支持随机分包大小但保持顺序，确保数据完整性，并以流式方式写入 Documents 下的同名 .pcm 文件及配套元数据，满足线程安全与内存高效要求。
 class OpusDecodeVC: BaseViewController {
     private let fileListView = FileListView()
     private let startBtn = UIButton()
@@ -27,8 +26,20 @@ class OpusDecodeVC: BaseViewController {
     private let drawView = SpectrogramView()
     private var isJLHeaderLab = UILabel()
     private var headerSwitch = UISwitch()
+    private var decodeWithFileLab = UILabel()
+    private var decodeWithFileSwitch = UISwitch()
+    private var largeFileDecodeLab = UILabel()
+    private var largeFileDecodeSwitch = UISwitch()
+    private var chunkSizeLab = UILabel()
+    private var chunkSizePicker = UIPickerView()
+    private var aggThresholdLab = UILabel()
+    private var aggThresholdPicker = UIPickerView()
     private var format = JLOpusFormat.defaultFormats()
-    private let pickerData = BehaviorRelay<[String]>(value: ["8000", "16000", "24000", "32000", "44100", "48000", "96000"])
+    private let pickerData = BehaviorRelay<[String]>(value: ["8000", "16000", "24000", "48000"])
+    private let chunkSizeData = BehaviorRelay<[String]>(value: ["512KB", "1MB", "2MB"])
+    private var selectedChunkBytes: Int = 1024 * 1024
+    private let aggSizeData = BehaviorRelay<[String]>(value: ["128KB", "256KB", "512KB"])
+    private var selectedAggBytes: Int = 256 * 1024
     private var audioFormat = AudioStreamBasicDescription(
                                                             mSampleRate: 16000, // 采样率
                                                             mFormatID: kAudioFormatLinearPCM,
@@ -67,6 +78,14 @@ class OpusDecodeVC: BaseViewController {
         view.addSubview(isJLHeaderLab)
         view.addSubview(headerSwitch)
         view.addSubview(sampleRateLab)
+        view.addSubview(decodeWithFileLab)
+        view.addSubview(decodeWithFileSwitch)
+        view.addSubview(largeFileDecodeLab)
+        view.addSubview(largeFileDecodeSwitch)
+        view.addSubview(chunkSizeLab)
+        view.addSubview(chunkSizePicker)
+        view.addSubview(aggThresholdLab)
+        view.addSubview(aggThresholdPicker)
         view.addSubview(drawView)
         
         
@@ -88,6 +107,20 @@ class OpusDecodeVC: BaseViewController {
         
         sampleRateLab.text = "Sample Rate:"
         sampleRateLab.textColor = R.color.fontBackText_90()
+        
+        decodeWithFileLab.text = "Decode With File:"
+        decodeWithFileLab.textColor = R.color.fontBackText_90()
+
+        decodeWithFileSwitch.isOn = false
+
+        largeFileDecodeLab.text = "Large File Decode:"
+        largeFileDecodeLab.textColor = R.color.fontBackText_90()
+
+        largeFileDecodeSwitch.isOn = false
+        chunkSizeLab.text = "Chunk Size:"
+        chunkSizeLab.textColor = R.color.fontBackText_90()
+        aggThresholdLab.text = "Aggregate Threshold:"
+        aggThresholdLab.textColor = R.color.fontBackText_90()
         
         drawView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 40, height: 200)
         
@@ -137,12 +170,60 @@ class OpusDecodeVC: BaseViewController {
             make.centerY.equalTo(isJLHeaderLab.snp.centerY)
         }
         
-        drawView.snp.makeConstraints { make in
-            make.left.right.equalTo(view).inset(20)
-            make.top.equalTo(isJLHeaderLab.snp.bottom).offset(10)
-            make.bottom.equalToSuperview().inset(20)
+        decodeWithFileLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(isJLHeaderLab.snp.bottom).offset(5)
         }
         
+        decodeWithFileSwitch.snp.makeConstraints { make in
+            make.left.equalTo(decodeWithFileLab.snp.right).offset(10)
+            make.centerY.equalTo(decodeWithFileLab.snp.centerY)
+        }
+
+        largeFileDecodeLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(decodeWithFileLab.snp.bottom).offset(5)
+        }
+
+        largeFileDecodeSwitch.snp.makeConstraints { make in
+            make.left.equalTo(largeFileDecodeLab.snp.right).offset(10)
+            make.centerY.equalTo(largeFileDecodeLab.snp.centerY)
+        }
+
+        chunkSizeLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(largeFileDecodeLab.snp.bottom).offset(5)
+        }
+
+        chunkSizePicker.snp.makeConstraints { make in
+            make.left.equalTo(chunkSizeLab.snp.right).offset(10)
+            make.width.equalTo(160)
+            make.height.equalTo(40)
+            make.centerY.equalTo(chunkSizeLab.snp.centerY)
+        }
+
+        aggThresholdLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(chunkSizeLab.snp.bottom).offset(5)
+        }
+
+        aggThresholdPicker.snp.makeConstraints { make in
+            make.left.equalTo(aggThresholdLab.snp.right).offset(10)
+            make.width.equalTo(160)
+            make.height.equalTo(40)
+            make.centerY.equalTo(aggThresholdLab.snp.centerY)
+        }
+        
+        drawView.snp.makeConstraints { make in
+            make.left.right.equalTo(view).inset(20)
+            make.top.equalTo(aggThresholdPicker.snp.bottom).offset(10)
+            make.bottom.equalToSuperview().inset(20)
+        }
+
         
     }
     
@@ -164,13 +245,72 @@ class OpusDecodeVC: BaseViewController {
                 self.view.makeToast("File not found", position: .center)
                 return
             }
-            self.prepareRecorder(baseName: fileName, sourcePath: fullPath)
-            self.startLocalPacketRead(filePath: fullPath)
+            if self.largeFileDecodeSwitch.isOn {
+                let outPath = fullPath.replacingOccurrences(of: ".opus", with: ".pcm")
+                JLLogManager.logLevel(.DEBUG, content: "Start large file decode, chunkBytes=\(self.selectedChunkBytes), agg=\(self.selectedAggBytes)")
+                self.opusDecoder.opusDecodeLargeFileEx(fullPath, output: outPath, chunkBytes: UInt(self.selectedChunkBytes), aggregateThreshold: UInt(self.selectedAggBytes)) { result, err in
+                    if let err = err {
+                        self.view.makeToast(err.localizedDescription, position: .center)
+                    } else if let result = result {
+                        self.view.makeToast("Large Decode Success:\(result)", position: .center)
+                        self.fileListView.loadFoldFile(Tools.opusPath)
+                    }
+                }
+            } else if self.decodeWithFileSwitch.isOn == false {
+                self.prepareRecorder(baseName: fileName, sourcePath: fullPath)
+                self.startLocalPacketRead(filePath: fullPath)
+            }else{
+                guard let _ = NSData(contentsOfFile: fullPath) as? Data else {
+                    self.view.makeToast("File not found", position: .center)
+                    return
+                }
+                self.opusDecoder.opusDecodeFile(fullPath, outPut: fullPath.replacingOccurrences(of: ".opus", with: ".pcm")) { result,err  in
+                    if let err = err {
+                        self.view.makeToast(err.localizedDescription, position: .center)
+                    }else{
+                        guard let result = result else { return }
+                        self.view.makeToast("Decode Success:\(result)", position: .center)
+                        self.fileListView.loadFoldFile(Tools.opusPath)
+                    }
+                }
+            }
         }).disposed(by: disposeBag)
         
         pickerData.bind(to: packerView.rx.itemTitles) { _, item in
             return item
         }.disposed(by: disposeBag)
+
+        chunkSizeData.bind(to: chunkSizePicker.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+
+        aggSizeData.bind(to: aggThresholdPicker.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+
+        chunkSizePicker.rx.itemSelected.subscribe(onNext: { [weak self] index in
+            guard let self = self else { return }
+            let value = self.chunkSizeData.value[index.row]
+            switch value {
+            case "512KB": self.selectedChunkBytes = 512 * 1024
+            case "1MB": self.selectedChunkBytes = 1024 * 1024
+            case "2MB": self.selectedChunkBytes = 2 * 1024 * 1024
+            default: self.selectedChunkBytes = 1024 * 1024
+            }
+            JLLogManager.logLevel(.DEBUG, content: "Selected chunk size: \(value) -> \(self.selectedChunkBytes) bytes")
+        }).disposed(by: disposeBag)
+
+        aggThresholdPicker.rx.itemSelected.subscribe(onNext: { [weak self] index in
+            guard let self = self else { return }
+            let value = self.aggSizeData.value[index.row]
+            switch value {
+            case "128KB": self.selectedAggBytes = 128 * 1024
+            case "256KB": self.selectedAggBytes = 256 * 1024
+            case "512KB": self.selectedAggBytes = 512 * 1024
+            default: self.selectedAggBytes = 256 * 1024
+            }
+            JLLogManager.logLevel(.DEBUG, content: "Selected aggregate threshold: \(value) -> \(self.selectedAggBytes) bytes")
+        }).disposed(by: disposeBag)
         
         packerView.rx.itemSelected.subscribe(onNext: { [weak self] index in
             guard let self = self else { return }
@@ -199,12 +339,29 @@ class OpusDecodeVC: BaseViewController {
             self.isJLHeaderLab.text = "JL Header: \(self.format.hasDataHeader)"
             self.opusDecoder.resetOpusFramet(self.format)
         }).disposed(by: disposeBag)
+
+        largeFileDecodeSwitch.rx.value.subscribe(onNext: { [weak self] on in
+            guard let self = self else { return }
+            let hidden = !on
+            JLLogManager.logLevel(.DEBUG, content: "Large file decode: \(on ? "ON" : "OFF")")
+            self.chunkSizeLab.isHidden = hidden
+            self.chunkSizePicker.isHidden = hidden
+            self.aggThresholdLab.isHidden = hidden
+            self.aggThresholdPicker.isHidden = hidden
+        }).disposed(by: disposeBag)
+
+        chunkSizeLab.isHidden = !largeFileDecodeSwitch.isOn
+        chunkSizePicker.isHidden = !largeFileDecodeSwitch.isOn
+        aggThresholdLab.isHidden = !largeFileDecodeSwitch.isOn
+        aggThresholdPicker.isHidden = !largeFileDecodeSwitch.isOn
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         packerView.selectRow(1, inComponent: 0, animated: true)
+        chunkSizePicker.selectRow(1, inComponent: 0, animated: true)
+        aggThresholdPicker.selectRow(1, inComponent: 0, animated: true)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

@@ -24,6 +24,16 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
     private var encoder:JLOpusEncoder!
     private var format = JLOpusFormat.defaultFormats()
     private var encodeConfig = JLOpusEncodeConfig.defaultJL()
+    private let largeFileEncodeLab = UILabel()
+    private let largeFileEncodeSwitch = UISwitch()
+    private let chunkSizeLab = UILabel()
+    private let chunkSizePicker = UIPickerView()
+    private let aggThresholdLab = UILabel()
+    private let aggThresholdPicker = UIPickerView()
+    private let chunkSizeData = BehaviorRelay<[String]>(value: ["512KB", "1MB", "2MB"])
+    private let aggSizeData = BehaviorRelay<[String]>(value: ["128KB", "256KB", "512KB"])
+    private var selectedChunkBytes: Int = 1024 * 1024
+    private var selectedAggBytes: Int = 256 * 1024
 
     override func initUI() {
         super.initUI()
@@ -36,6 +46,12 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
         view.addSubview(playRecord)
         view.addSubview(convertBtn)
         view.addSubview(convertBackBtn)
+        view.addSubview(largeFileEncodeLab)
+        view.addSubview(largeFileEncodeSwitch)
+        view.addSubview(chunkSizeLab)
+        view.addSubview(chunkSizePicker)
+        view.addSubview(aggThresholdLab)
+        view.addSubview(aggThresholdPicker)
         view.addSubview(drawView)
         
         startRecord.setTitle("Start Record", for: .normal)
@@ -67,6 +83,13 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
         convertBackBtn.backgroundColor = UIColor.random()
         convertBackBtn.layer.cornerRadius = 8
         convertBackBtn.layer.masksToBounds = true
+        largeFileEncodeLab.text = "Large File Encode:"
+        largeFileEncodeLab.textColor = R.color.fontBackText_90()
+        largeFileEncodeSwitch.isOn = false
+        chunkSizeLab.text = "Chunk Size:"
+        chunkSizeLab.textColor = R.color.fontBackText_90()
+        aggThresholdLab.text = "Aggregate Threshold:"
+        aggThresholdLab.textColor = R.color.fontBackText_90()
         
         fileListView.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(12)
@@ -105,11 +128,43 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
             make.height.equalTo(40)
             make.centerY.equalTo(convertBtn.snp.centerY)
         }
+
+        largeFileEncodeLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(convertBackBtn.snp.bottom).offset(6)
+        }
+        largeFileEncodeSwitch.snp.makeConstraints { make in
+            make.left.equalTo(largeFileEncodeLab.snp.right).offset(10)
+            make.centerY.equalTo(largeFileEncodeLab.snp.centerY)
+        }
+        chunkSizeLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(largeFileEncodeLab.snp.bottom).offset(6)
+        }
+        chunkSizePicker.snp.makeConstraints { make in
+            make.left.equalTo(chunkSizeLab.snp.right).offset(10)
+            make.width.equalTo(160)
+            make.height.equalTo(40)
+            make.centerY.equalTo(chunkSizeLab.snp.centerY)
+        }
+        aggThresholdLab.snp.makeConstraints { make in
+            make.left.equalTo(view).inset(20)
+            make.height.equalTo(40)
+            make.top.equalTo(chunkSizeLab.snp.bottom).offset(6)
+        }
+        aggThresholdPicker.snp.makeConstraints { make in
+            make.left.equalTo(aggThresholdLab.snp.right).offset(10)
+            make.width.equalTo(160)
+            make.height.equalTo(40)
+            make.centerY.equalTo(aggThresholdLab.snp.centerY)
+        }
         
         playRecord.snp.makeConstraints { make in
             make.left.right.equalTo(view).inset(20)
             make.height.equalTo(40)
-            make.top.equalTo(convertBackBtn.snp.bottom).offset(6)
+            make.top.equalTo(aggThresholdPicker.snp.bottom).offset(6)
         }
         
         drawView.snp.makeConstraints { make in
@@ -167,17 +222,28 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
         convertBtn.rx.tap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             if self.fileListView.fileDidSelect.hasSuffix(".pcm") {
-                if let opusData = NSData(contentsOfFile: Tools.opusEncodePath + "/" + self.fileListView.fileDidSelect) as? Data {
-//                    self.encoder.opusEncodeFile(Tools.opusEncodePath + "/" + self.fileListView.fileDidSelect, outPut: Tools.opusEncodePath + "/converted.opus") { _, err in
-//                        if err == nil {
-//                            self.view.makeToast("Convert Success",position: .center)
-//                            self.fileListView.loadFoldFile(Tools.opusEncodePath)
-//                        }
-//                    }
-                    self.encoder.opusEncode(opusData)
-                    
-                }else{
-                    self.view.makeToast("Please select a file",position: .center)
+                if self.largeFileEncodeSwitch.isOn {
+                    let input = Tools.opusEncodePath + "/" + self.fileListView.fileDidSelect
+                    let output = Tools.opusEncodePath + "/converted.opus"
+                    JLLogManager.logLevel(.DEBUG, content: "Start large file encode, chunkBytes=\(self.selectedChunkBytes), agg=\(self.selectedAggBytes)")
+                    self.encoder.opusEncodeFileEx(input, output: output, chunkBytes: UInt(self.selectedChunkBytes), aggregateThreshold: UInt(self.selectedAggBytes)) { path, err in
+                        if let err = err {
+                            self.view.makeToast(err.localizedDescription, position: .center)
+                        } else {
+                            self.view.makeToast("Convert Success", position: .center)
+                            self.fileListView.loadFoldFile(Tools.opusEncodePath)
+                        }
+                    }
+                } else {
+                    let input = Tools.opusEncodePath + "/" + self.fileListView.fileDidSelect
+                    if let pcmData = NSData(contentsOfFile: input) as? Data {
+                        JLLogManager.logLevel(.DEBUG, content: "Start small encode (memory), size=\(pcmData.count) bytes")
+                        self.encoder.opusEncode(pcmData)
+                        self.view.makeToast("Convert Success (memory)", position: .center)
+                        self.fileListView.loadFoldFile(Tools.opusEncodePath)
+                    } else {
+                        self.view.makeToast("File read failed", position: .center)
+                    }
                 }
             }else{
                 self.view.makeToast("Please select a pcm file",position: .center)
@@ -197,11 +263,59 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
                 self.view.makeToast("Please select a opus file",position: .center)
             }
         }).disposed(by: disposeBag)
+
+        chunkSizeData.bind(to: chunkSizePicker.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+        aggSizeData.bind(to: aggThresholdPicker.rx.itemTitles) { _, item in
+            return item
+        }.disposed(by: disposeBag)
+
+        chunkSizePicker.rx.itemSelected.subscribe(onNext: { [weak self] index in
+            guard let self = self else { return }
+            let value = self.chunkSizeData.value[index.row]
+            switch value {
+            case "512KB": self.selectedChunkBytes = 512 * 1024
+            case "1MB": self.selectedChunkBytes = 1024 * 1024
+            case "2MB": self.selectedChunkBytes = 2 * 1024 * 1024
+            default: self.selectedChunkBytes = 1024 * 1024
+            }
+            JLLogManager.logLevel(.DEBUG, content: "Selected chunk size: \(value) -> \(self.selectedChunkBytes) bytes")
+        }).disposed(by: disposeBag)
+
+        aggThresholdPicker.rx.itemSelected.subscribe(onNext: { [weak self] index in
+            guard let self = self else { return }
+            let value = self.aggSizeData.value[index.row]
+            switch value {
+            case "128KB": self.selectedAggBytes = 128 * 1024
+            case "256KB": self.selectedAggBytes = 256 * 1024
+            case "512KB": self.selectedAggBytes = 512 * 1024
+            default: self.selectedAggBytes = 256 * 1024
+            }
+            JLLogManager.logLevel(.DEBUG, content: "Selected aggregate threshold: \(value) -> \(self.selectedAggBytes) bytes")
+        }).disposed(by: disposeBag)
+
+        largeFileEncodeSwitch.rx.value.subscribe(onNext: { [weak self] on in
+            guard let self = self else { return }
+            let hidden = !on
+            JLLogManager.logLevel(.DEBUG, content: "Large file encode: \(on ? "ON" : "OFF")")
+            self.chunkSizeLab.isHidden = hidden
+            self.chunkSizePicker.isHidden = hidden
+            self.aggThresholdLab.isHidden = hidden
+            self.aggThresholdPicker.isHidden = hidden
+        }).disposed(by: disposeBag)
+
+        chunkSizeLab.isHidden = !largeFileEncodeSwitch.isOn
+        chunkSizePicker.isHidden = !largeFileEncodeSwitch.isOn
+        aggThresholdLab.isHidden = !largeFileEncodeSwitch.isOn
+        aggThresholdPicker.isHidden = !largeFileEncodeSwitch.isOn
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fileListView.loadFoldFile(Tools.opusEncodePath)
+        chunkSizePicker.selectRow(1, inComponent: 0, animated: true)
+        aggThresholdPicker.selectRow(1, inComponent: 0, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

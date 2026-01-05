@@ -86,15 +86,15 @@
 iOS-JL_Bluetooth/
 ├── 📂 code/                          # 演示程序源码
 │   ├── 📦 Example of audio encoding and decoding V1.1.0.zip
-│   ├── 📂 JLAudioUnitKitDemo_V1.3.0_Beta1_20250827/ # 音频编解码示例项目 (最新版本)
-│   │   ├── 📂 code/JLAudioUnitKitDemo/
+│   ├── 📂 JLAudioUnitKitDemo/ # 音频编解码示例项目 (最新版本)
+│   │   ├── 📂 Code/JLAudioUnitKitDemo/
 │   │   │   ├── 🏗️ JLAudioUnitKitDemo.xcworkspace
 │   │   │   ├── 📱 JLAudioUnitKitDemo/    # Swift示例应用
 │   │   │   ├── 🎵 JLAudioUnitKit.xcframework # 音频处理框架
 │   │   │   ├── 📝 JLLogHelper.xcframework # 日志辅助框架
 │   │   │   └── 🔧 Pods/                  # 依赖库
-│   │   ├── 📂 docs/                      # 开发文档
-│   │   ├── 📂 libs/                      # 框架库
+│   │   ├── 📂 Docs/                      # 开发文档
+│   │   ├── 📂 Libs/                      # 框架库
 │   │   └── 📄 readme.md                  # 项目说明
 │   └── 📂 JieLi_Home_Demo/           # 杰理之家主应用示例
 │       ├── 🏗️ NewJieliZhiNeng.xcworkspace # 主工作空间

@@ -54,6 +54,15 @@ typedef void(^JLOpusEncoderConvertBlock)(NSString *_Nullable pcmPath,NSError *_N
 ///   - result: 结果回调，回传输出路径或错误
 -(void)opusEncodeFile:(NSString *)pcmPath output:(NSString *_Nullable)output result:(JLOpusEncoderConvertBlock _Nullable)result;
 
+/// 面向大型 PCM 的流式编码接口（双缓冲重叠 IO/编码 + 可调聚合阈值）
+/// - Parameters:
+///   - pcmPath: PCM 文件存放路径
+///   - output: 文件输出路径（可空，默认 ~/Documents/pcmToOpus.opus）
+///   - chunkBytes: 流式读取块大小（字节），为 0 时按 1MB；自动按帧对齐
+///   - aggregateThreshold: 写盘聚合阈值（字节），为 0 时按 256KB；当达到阈值时批量写盘
+///   - result: 结果回调，回传输出路径或错误
+-(void)opusEncodeFileEx:(NSString *)pcmPath output:(NSString *_Nullable)output chunkBytes:(NSUInteger)chunkBytes aggregateThreshold:(NSUInteger)aggregateThreshold result:(JLOpusEncoderConvertBlock _Nullable)result;
+
 /// 兼容旧接口（已废弃：命名拼写问题，且旧实现一次性读入文件）
 /// - Parameters:
 ///   - pcmPath: PCM 文件存放路径
