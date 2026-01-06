@@ -66,7 +66,12 @@ class FileListView: BaseView {
         itemArray.bind(to: subTableView.rx.items(cellIdentifier: "FileListCell", cellType: UITableViewCell.self)) { row, element, cell in
             cell.backgroundColor = .random()
             cell.textLabel?.textColor = .white
-            cell.textLabel?.text = element
+            let sizeText = self.fileSizeText(for: element)
+            if sizeText.isEmpty {
+                cell.textLabel?.text = element
+            } else {
+                cell.textLabel?.text = "\(element) (\(sizeText))"
+            }
             if element == self.fileDidSelect {
                 cell.accessoryType = .checkmark
             }else{
@@ -106,6 +111,27 @@ class FileListView: BaseView {
         let fileManager = FileManager.default
         let fileArray = fileManager.subpaths(atPath: path)
         itemArray.accept(fileArray ?? [])
+    }
+    
+    private func readableFileSize(_ size: Int64) -> String {
+        if size < 1024 { return "\(size) B" }
+        let kb = Double(size) / 1024.0
+        if kb < 1024 { return String(format: "%.1f KB", kb) }
+        let mb = kb / 1024.0
+        if mb < 1024 { return String(format: "%.1f MB", mb) }
+        let gb = mb / 1024.0
+        return String(format: "%.2f GB", gb)
+    }
+    
+    private func fileSizeText(for element: String) -> String {
+        let path = currentPath + "/" + element
+        var isDir: ObjCBool = false
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: path, isDirectory: &isDir), !isDir.boolValue else { return "" }
+        if let attrs = try? fm.attributesOfItem(atPath: path), let n = attrs[.size] as? NSNumber {
+            return readableFileSize(n.int64Value)
+        }
+        return ""
     }
     
 

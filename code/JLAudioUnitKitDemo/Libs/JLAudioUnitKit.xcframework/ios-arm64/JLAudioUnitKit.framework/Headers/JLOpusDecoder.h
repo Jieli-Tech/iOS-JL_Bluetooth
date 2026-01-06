@@ -35,6 +35,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^JLOpusDecoderConvertBlock)(NSString *_Nullable pcmPath,NSError *_Nullable error);
 
+/// JLOpusDecoder
+///
+/// 负责 Opus → PCM 的解码能力，支持小文件一次性解码与大文件分包流式解码。
+/// 大文件接口支持双缓冲重叠 IO/解码，并提供聚合写盘阈值以降低磁盘写入频次。
+///
+/// 内存预算：当 chunkBytes 传入为 0 时，将根据设备物理内存动态选择默认读取块大小；
+/// 同时对用户传入过大的 chunkBytes 进行上限裁剪（动态 MAX_CHUNK_BYTES），并打印警告。
+/// 在低内存设备上默认 512KB，中等内存 1MB，较高内存 2MB，桌面/高内存可达 4MB。
+///
+/// 日志：关键阶段包含开始/完成日志与吞吐/耗时分解，便于性能监控与问题定位。
+///
+/// 注意：若 hasDataHeader = YES，解码将按帧头长度进行分包；否则按固定数据长度 dataSize 解析。
+/// 若 dataSize 未配置且无头信息，无法可靠分包解析，需结合业务定义。
 /// Opus 解码
 @interface JLOpusDecoder : NSObject
 
@@ -70,11 +83,12 @@ typedef void(^JLOpusDecoderConvertBlock)(NSString *_Nullable pcmPath,NSError *_N
 -(void)opusDecodeFile:(NSString *)input outPut:(NSString *_Nullable)outPut Resoult:(JLOpusDecoderConvertBlock _Nullable)result;
 
 
-/// 面向大型 Opus 文件的双缓冲重叠 IO/解码接口（可调聚合阈值）
+/// 面向大型 Opus 文件的双缓冲重叠 IO/解码接口
 /// - Parameters:
 ///   - input: 输入 Opus 文件路径
 ///   - output: 输出 PCM 文件路径（为空则写入 Documents/opusLargeToPcm.pcm）
-///   - chunkBytes: 流式读取块大小（字节），为 0 时默认 1048576（1MB）
+///   - chunkBytes: 流式读取块大小（字节），为 0 时按设备内存动态选择（低内存 512KB，中等 1MB，较高 2MB，高内存 4MB）；
+///                 同时对传入值应用动态 MAX_CHUNK_BYTES 上限裁剪
 ///   - aggregateThreshold: 写盘聚合阈值（字节），为 0 时默认 262144（256KB）
 ///   - result: 完成回调，返回输出路径或错误
 -(void)opusDecodeLargeFileEx:(NSString *)input output:(NSString *_Nullable)output chunkBytes:(NSUInteger)chunkBytes aggregateThreshold:(NSUInteger)aggregateThreshold result:(JLOpusDecoderConvertBlock _Nullable)result;

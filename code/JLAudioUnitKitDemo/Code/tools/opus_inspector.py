@@ -8,7 +8,7 @@ from typing import Optional, Tuple, List, Dict
 
 
 class OpusInspector:
-    """OPUS 文件解析器：支持 Ogg Opus 容器与裸包的头部检测与参数提取"""
+    """OPUS 文件解析器：支持 Ogg Opus 容器与裸包的头部检测、帧结构解析与完整性判断"""
 
     def __init__(self, data: bytes):
         self.data = data
@@ -32,15 +32,37 @@ class OpusInspector:
             audio_packet = None
             vendor = None
             comments: List[str] = []
+            checked_packets = 0
+            incomplete_packets = 0
+            unknown_packets = 0
+            last_packet_complete: Optional[bool] = None
             for page in pages:
                 if page[3].startswith(b"OpusTags"):
                     v, cs = self._parse_opus_tags(page[3])
                     vendor, comments = v, cs
                     continue
                 pkts = self._split_ogg_packets(page[3], page[2])
-                if pkts:
-                    audio_packet = pkts[0]
-                    break
+                for pkt in pkts:
+                    if audio_packet is None:
+                        audio_packet = pkt
+                    comp, reason = self._is_complete_packet(pkt)
+                    if comp is True:
+                        checked_packets += 1
+                        last_packet_complete = True
+                    elif comp is False:
+                        checked_packets += 1
+                        incomplete_packets += 1
+                        last_packet_complete = False
+                    else:
+                        unknown_packets += 1
+                        last_packet_complete = None
+            frames_complete: Optional[bool]
+            if checked_packets == 0 and unknown_packets > 0:
+                frames_complete = None
+            elif unknown_packets > 0:
+                frames_complete = None
+            else:
+                frames_complete = (incomplete_packets == 0)
             toc_info = self._parse_toc(audio_packet[0]) if audio_packet else None
             frame_sizes = self._parse_packet_frames(audio_packet) if audio_packet else None
             frame_count = len(frame_sizes) if frame_sizes else (1 if toc_info and toc_info.frame_count_code == 0 else (2 if toc_info and toc_info.frame_count_code == 1 else None))
@@ -61,6 +83,11 @@ class OpusInspector:
                 tags_vendor=vendor,
                 tags_comments=comments,
                 notes=None,
+                frames_complete=frames_complete,
+                checked_packets=checked_packets,
+                incomplete_packets=incomplete_packets,
+                unknown_packets=unknown_packets,
+                last_packet_complete=last_packet_complete,
             )
             return report.to_dict()
         except Exception as e:
@@ -80,6 +107,11 @@ class OpusInspector:
                 tags_vendor=None,
                 tags_comments=None,
                 notes=str(e),
+                frames_complete=None,
+                checked_packets=None,
+                incomplete_packets=None,
+                unknown_packets=None,
+                last_packet_complete=None,
             ).to_dict()
 
     def _analyze_raw_opus(self, data: bytes) -> Dict:
@@ -91,6 +123,30 @@ class OpusInspector:
             frame_sizes = self._parse_packet_frames(data)
             frame_count = len(frame_sizes) if frame_sizes else (1 if toc_info and toc_info.frame_count_code == 0 else (2 if toc_info and toc_info.frame_count_code == 1 else None))
             frame_bytes = frame_sizes[0] if frame_sizes and len(set(frame_sizes)) == 1 else None
+            comp, reason = self._is_complete_packet(data)
+            frames_complete: Optional[bool]
+            checked_packets: Optional[int]
+            incomplete_packets: Optional[int]
+            unknown_packets: Optional[int]
+            last_packet_complete: Optional[bool]
+            if comp is True:
+                frames_complete = True
+                checked_packets = 1
+                incomplete_packets = 0
+                unknown_packets = 0
+                last_packet_complete = True
+            elif comp is False:
+                frames_complete = False
+                checked_packets = 1
+                incomplete_packets = 1
+                unknown_packets = 0
+                last_packet_complete = False
+            else:
+                frames_complete = None
+                checked_packets = 0
+                incomplete_packets = 0
+                unknown_packets = 1
+                last_packet_complete = None
             report = OpusReport(
                 container_valid=False,
                 header_valid=False,
@@ -106,7 +162,12 @@ class OpusInspector:
                 frame_sizes=frame_sizes,
                 tags_vendor=None,
                 tags_comments=None,
-                notes="裸包模式：仅基于 TOC 推断部分参数",
+                notes=("裸包模式：仅基于 TOC 推断部分参数" + (f"；完整性提示：{reason}" if reason else "")),
+                frames_complete=frames_complete,
+                checked_packets=checked_packets,
+                incomplete_packets=incomplete_packets,
+                unknown_packets=unknown_packets,
+                last_packet_complete=last_packet_complete,
             )
             return report.to_dict()
         except Exception as e:
@@ -126,6 +187,11 @@ class OpusInspector:
                 tags_vendor=None,
                 tags_comments=None,
                 notes=str(e),
+                frames_complete=None,
+                checked_packets=None,
+                incomplete_packets=None,
+                unknown_packets=None,
+                last_packet_complete=None,
             ).to_dict()
 
     def _iter_ogg_pages(self, data: bytes):
@@ -272,6 +338,41 @@ class OpusInspector:
             return None
         return None
 
+    def _is_complete_packet(self, packet: Optional[bytes]) -> Tuple[Optional[bool], Optional[str]]:
+        """判断单个 Opus 包的帧是否完整
+
+        返回 (完整性, 原因)。完整性为 True/False/None（None 表示无法判断）。
+        依据 TOC 的帧数编码：
+        - fc==0：单帧，无长度表，视为完整（无法进一步验证是否被截断）
+        - fc==1：双帧等长，负载需为偶数，否则视为不完整
+        - fc==3：CBR 多帧，需满足剩余字节能被帧数整除，否则不完整
+        - fc==2：VBR 多帧，长度表解析复杂，此处返回未知
+        """
+        if not packet or len(packet) < 2:
+            return False, "数据长度不足以解析 TOC"
+        toc = packet[0]
+        fc = (toc >> 6) & 0x03
+        payload = packet[1:]
+        if fc == 0:
+            return True, None
+        if fc == 1:
+            if len(payload) % 2 == 0:
+                return True, None
+            return False, "双帧等长但负载字节非偶数"
+        if fc == 3:
+            if len(payload) < 1:
+                return False, "CBR 模式缺少帧数字段"
+            nframes = payload[0]
+            remaining = payload[1:]
+            if nframes <= 0:
+                return False, "CBR 模式帧数为 0"
+            if len(remaining) % nframes == 0:
+                return True, None
+            return False, "CBR 模式剩余字节无法整除帧数"
+        if fc == 2:
+            return None, "VBR 模式无法可靠判断完整性"
+        return None, "未知帧数编码"
+
 
 @dataclass
 class OpusHead:
@@ -295,7 +396,7 @@ class TocInfo:
 
 @dataclass
 class OpusReport:
-    """OPUS 解析报告：容器与头部有效性、核心音频参数与错误说明"""
+    """OPUS 解析报告：容器与头部有效性、核心音频参数、帧完整性统计与错误说明"""
     container_valid: bool
     header_valid: bool
     channels: Optional[int]
@@ -311,6 +412,11 @@ class OpusReport:
     tags_vendor: Optional[str]
     tags_comments: Optional[List[str]]
     notes: Optional[str]
+    frames_complete: Optional[bool]
+    checked_packets: Optional[int]
+    incomplete_packets: Optional[int]
+    unknown_packets: Optional[int]
+    last_packet_complete: Optional[bool]
 
     def to_dict(self) -> Dict:
         return asdict(self)

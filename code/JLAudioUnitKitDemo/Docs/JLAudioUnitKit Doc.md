@@ -2,7 +2,6 @@
 
 [toc]
 
-
 #### **概述**  
 
 JLAudioUnitKit 是一个专注于音频处理的工具库，提供音频播放、编解码及格式转换功能。支持格式包括 MP3/WAV/AAC/PCM/Opus/Speex 等，适用于 iOS/macOS 平台的 Objective-C 项目。本接口文档涵盖主要功能模块的使用方法及代码示例。
@@ -69,6 +68,11 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 #### **2. Opus 编解码器**
 
 ##### **解码器 `JLOpusDecoder`**  
+###### 用法速览
+- 流式解码：逐段输入，代理回传 PCM。
+- 文件解码：输入 Opus，输出 PCM 文件。
+- 大文件解码（Ex）：双缓冲 IO+聚合写，适合超大文件。
+- 动态切换：运行时更新采样率/声道/帧长。
 
 ##### **接口说明**  
 
@@ -109,8 +113,13 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 
 ##### **示例（流式 / 文件 / 动态切换）**  
 
+###### 流式解码：逐段输入 Opus 数据，PCM 数据通过代理返回
+- 前置条件：
+- - format.sampleRate 与源一致；channels 与源一致。
+- - 有头源建议 hasDataHeader=true；无头源需确保 dataSize 正确（固定帧）。
+
 ```objective-c
-// 1) 流式解码：逐段输入 Opus 数据，PCM 数据通过代理返回
+
 JLOpusFormat *streamFmt = [JLOpusFormat defaultFormats];
 JLOpusDecoder *streamDecoder = [[JLOpusDecoder alloc] initDecoder:streamFmt delegate:self];
 [streamDecoder opusDecoderInputData:opusChunk1];
@@ -127,7 +136,10 @@ JLOpusDecoder *streamDecoder = [[JLOpusDecoder alloc] initDecoder:streamFmt dele
     }
 }
 
-// 2) 立体声可选回调：仅在 channels==2 时触发，分别返回左/右声道单声道 PCM 数据
+```
+
+###### 立体声可选回调：仅在 channels==2 时触发，分别返回左/右声道单声道 PCM 数据
+```objective-c
 - (void)opusDecoderStereo:(JLOpusDecoder *)decoder Left:(NSData * _Nullable)left Right:(NSData * _Nullable)right error:(NSError * _Nullable)error {
     if (left) {
         // 处理左声道，例如写入 <源名>_L.pcm
@@ -136,17 +148,25 @@ JLOpusDecoder *streamDecoder = [[JLOpusDecoder alloc] initDecoder:streamFmt dele
         // 处理右声道，例如写入 <源名>_R.pcm
     }
 }
+```
+###### 文件解码：输入 Opus 文件，输出 PCM 文件
+- 前置条件：
+- - 目标输出路径可为空（默认写入 ~/Documents/opusToPcm.pcm 或文档示例路径）。
+- - 若源为杰理无头裸帧，请确保 JLOpusFormat.dataSize 与实际帧长一致。
 
-// 2) 文件解码：输入 Opus 文件，输出 PCM 文件
+```objective-c  
 JLOpusFormat *fileFmt = [JLOpusFormat defaultFormats];
 JLOpusDecoder *fileDecoder = [[JLOpusDecoder alloc] initDecoder:fileFmt delegate:self];
 [fileDecoder opusDecodeFile:@"/path/to/input.opus" outPut:@"/path/to/output.pcm" Resoult:^(NSString * _Nullable pcmPath, NSError * _Nullable error) {
     if (!error && pcmPath) {
         NSLog(@"Opus 文件解码完成: %@", pcmPath);
+    } else if (error) {
+        NSLog(@"解码错误: %@", error.localizedDescription);
     }
 }];
 
-// 3) 动态切换格式：运行中重置参数（如采样率/声道/帧长）
+###### 动态切换格式：运行中重置参数（如采样率/声道/帧长）
+```objective-c  
 JLOpusFormat *newFmt = [JLOpusFormat defaultFormats];
 newFmt.sampleRate = 16000;
 newFmt.channels = 1;
@@ -154,8 +174,9 @@ newFmt.channels = 1;
 [streamDecoder opusDecoderInputData:opusChunk3];
 ```
 
-```objective-c
-// 4) 大文件解码（Ex：带聚合阈值，最终一次性回调；不逐帧触发代理）
+###### 大文件解码（Ex：带聚合阈值，最终一次性回调；不逐帧触发代理）
+
+```objective-c  
 JLOpusFormat *largeFmt = [JLOpusFormat defaultFormats];
 JLOpusDecoder *largeDecoder = [[JLOpusDecoder alloc] initDecoder:largeFmt delegate:nil];
 [largeDecoder opusDecodeLargeFileEx:@"/path/to/input.opus"
@@ -180,6 +201,11 @@ func opusDecoderStereo(_ decoder: JLOpusDecoder, left: Data?, right: Data?, erro
     if let r = right { pcmRecorderRight?.append(r) }
 }
 ```
+
+- 参数建议：
+- - chunkBytes：按设备内存选择（低内存 512KB/中等 1MB/较高 2MB/高内存 4MB）。
+- - aggregateThreshold：建议 128–512KB，提升吞吐同时控制缓冲占用。
+- - EOF 边界处理：尾部不足帧会自动补零至帧长后解码；有头模式需至少保留完整 8 字节头以解析 frameSize。
 
 ##### **Demo 更新要点：OpusDecodeVC 本地分包读取与保存**
 
@@ -234,6 +260,20 @@ while len + fixed <= data.count {
 ###### 注意
 - 无头模式更依赖正确的 `dataSize` 配置；Demo 中 `Channels` 开关会同步设置 `dataSize`（单声道 40、双声道 80）。
 - 为提高鲁棒性，建议优先使用有头模式（hasDataHeader=true），或在投递前对包做合法性校验（例如基于 TOC 使用 `opus_packet_get_nb_frames` 验证）。
+
+##### **辅助工具：Opus Inspector 完整性检测**
+- 用途：快速判断包是否完整、统计不完整/未知包数量，定位尾帧截断与容器损坏。
+- 使用：
+
+```bash
+python3 tools/opus_inspector.py /path/to/file.opus --json
+```
+
+- 关键字段：
+- - frames_complete：整体是否完整（或未知）。
+- - checked_packets / incomplete_packets / unknown_packets：完整性统计。
+- - last_packet_complete：最后一个音频包是否完整（或未知）。
+
 
 ##### **编码器 `JLOpusEncoder`**  
 
