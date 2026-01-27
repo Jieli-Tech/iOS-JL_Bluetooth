@@ -1,0 +1,457 @@
+
+5. Auracast 设备广播与发射设置交互
+******************************************
+
+**JLAuracastManager 与 JLAuracastLancerManager** 是杰理科技蓝牙开发套件(JL_BLEKit)中用于管理 Auracast 功能的两个核心管理类，提供了广播扫描、当前音源管理、设备状态获取，以及发射端登录与设置的读取/下发等能力。
+
+**主要功能**
+
+- 接收端功能
+
+  - 扫描与维护广播列表
+  - 添加/移除/查询当前播放源
+  - 获取设备端状态
+
+- 发射端功能
+
+  - 获取设备端状态
+  - 发射端登录验证与修改密码
+  - 读取/设置发射端配置（广播名、音频格式、加密信息、功率）
+  - 设备控制（关机、重启、恢复出厂设置）
+
+5.1 前置条件（设备能力）
+=========================
+
+- 使用 Auracast 相关功能前，设备需具备对应能力，可通过 ``JLDeviceConfig`` 与 ``JLDeviceConfigDongle`` 获取：
+
+  - ``isSupportAuracast``：是否支持 Auracast
+  - ``isSupportReceiveAuracast``：是否支持接收端 Auracast
+  - ``isSupportLancerAuracast``：是否支持发射端 Auracast
+
+.. code-block:: objective-c
+
+    #import "JLDeviceConfig.h"
+    #import "JLDeviceConfigDongle.h"
+
+    @interface MyClass () <JLConfigPtl>
+    @property (nonatomic, strong) JL_ManagerM *bleManager;
+    @end
+
+    - (void)setupConfig {
+        JLDeviceConfig *cfg = [JLDeviceConfig share];
+        cfg.delegate = self;
+        [cfg deviceGetConfig:self.bleManager result:^(JL_CMDStatus status, uint8_t sn, JLDeviceConfigModel * _Nullable config) {
+            // 可选：使用通用配置；Auracast 能力通过回调或缓存读取
+        }];
+    }
+
+    // Auracast 能力回调
+    - (void)deviceAuracastConfigWith:(JLDeviceConfigDongle *)configModel {
+        BOOL support = configModel.isSupportAuracast;
+        BOOL recv = configModel.isSupportReceiveAuracast;
+        BOOL lancer = configModel.isSupportLancerAuracast;
+        // 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口
+    }
+    /// 音箱配置回调
+    /// - Parameters:
+    ///   - configModel: 音箱配置模型
+    -(void)deviceSoundBoxConfigWith:(JLDeviceConfigSoundBox *)configModel {
+        BOOL support = configModel.isSupportAuracast;
+        BOOL recv = configModel.isSupportReceiveAuracast;
+        BOOL lancer = configModel.isSupportLancerAuracast;
+        // 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口
+    }
+
+    /// TWS监听回调协议
+    /// - Parameter configModel: 固件设置配置回调
+    -(void)deviceTwsConfigWith:(JLDeviceConfigTws *)configModel {
+        BOOL support = configModel.isSupportAuracast;
+        BOOL recv = configModel.isSupportReceiveAuracast;
+        BOOL lancer = configModel.isSupportLancerAuracast;
+        // 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口
+    }
+
+
+    // 通过 UUID 获取已缓存的 Auracast 配置
+    - (void)useCachedAuracastConfig:(NSString *)uuidStr {
+        JLDeviceConfigDongle *auracast = [[JLDeviceConfig share] deviceGetAuracastConfigWithUUID:uuidStr];
+        if (auracast) {
+            // 使用 auracast.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast
+        }
+        JLDeviceConfigSoundBox *soundBox = [[JLDeviceConfig share] deviceGetSoundBoxConfigWithUUID:uuidStr];
+        if (soundBox) {
+            // 使用 soundBox.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast
+        }
+        JLDeviceConfigTws *tws = [[JLDeviceConfig share] deviceGetTwsConfigWithUUID:uuidStr];
+        if (tws) {
+            // 使用 tws.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast
+        }
+    }
+
+5.2 使用步骤
+==============
+
+- 1. 初始化并设置代理
+
+.. code-block:: objective-c
+
+    #import <JL_BLEKit/JL_BLEKit.h>
+    #import "JLAuracastManager.h"
+    #import "JLAuracastLancerManager.h"
+
+    @interface MyClass () <JLAuracastManagerDelegate, JLAuracastLancerManagerDelegate>
+    @property (nonatomic, strong) JL_ManagerM *bleManager;
+    @property (nonatomic, strong) JLAuracastManager *recvMgr;
+    @property (nonatomic, strong) JLAuracastLancerManager *sendMgr;
+    @end
+
+    - (void)setup {
+        self.bleManager = [JL_ManagerM sharedInstance];
+        self.recvMgr = [[JLAuracastManager alloc] initWithManager:self.bleManager];
+        self.recvMgr.delegate = self;
+
+        self.sendMgr = [[JLAuracastLancerManager alloc] initWithManager:self.bleManager];
+        self.sendMgr.delegate = self;
+    }
+
+- 2. 浏览广播与选择音源(接收端)
+
+.. code-block:: objective-c
+
+    // 开始扫描广播（使用枚举类型）
+    [self.recvMgr auracastScanBroadcast:JLAuracastScanTypeStart];
+
+    // 扫描广播回调（新增 error 参数）
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateSearchState:(BOOL)state Error:(NSError * _Nullable)error {
+        if (error) {
+            // 根据错误信息提示或重试（设备繁忙、收听过程中禁止扫描等）
+        }
+        if (state) {
+            // 正在扫描
+        } else {
+            // 已停止扫描
+        }
+    }
+
+
+
+    // 广播列表回调
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateBroadcastList:(NSArray<JLBroadcastDataModel *> *)list {
+        // 选择一个广播后停止扫描并添加音源
+        JLBroadcastDataModel *chosen = list.firstObject;
+        if (!chosen) return;
+        [self.recvMgr auracastScanBroadcast:JLAuracastScanTypeStop];
+        // 添加当前播放源（命令收发回执，不代表添加成功）
+        [self.recvMgr addSourceToDev:chosen result:^(JL_CMDStatus status, NSError * _Nullable error) {
+            // 仅表示命令交互成功与否，成功并不代表设备已开始收听
+            // 请结合 didUpdateCurrentSource 回调判断真正的播放源状态
+        }];
+    }
+
+    // 当前播放源更新
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateCurrentSource:(JLBroadcastDataModel * _Nullable)source {
+        // 更新 UI 展示当前播放源
+    }
+
+    // 主动查询当前播放源
+    [self.recvMgr getCurrentOperationSource:^(JLBroadcastDataModel *model) {
+        // 使用 model 同步 UI
+    }];
+
+    // 移除当前播放源（命令收发回执）
+    [self.recvMgr removeDevCurrentSource:^(JL_CMDStatus status, NSError * _Nullable error) {
+        // 仅表示命令交互成功与否
+    }];
+
+- 3. 获取设备状态(接收端/发射端)
+
+.. code-block:: objective-c
+
+    // 拉取设备常用状态（接收端/发射端）
+    [self.recvMgr auracastGetDevState];
+    [self.sendMgr auracastGetDevState];
+
+    // 状态更新回调(接收端)
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateDeviceState:(JLAuracastDevStateModel *)state {
+        // 使用 state.loginState 刷新 UI
+    }
+
+    /// 设备状态更新(发射端)
+    /// - Parameters:
+    ///   - mgr: 管理器
+    ///   - state: 最新设备状态
+    -(void)lancerManager:(JLAuracastLancerManager *)mgr didUpdateDeviceState:(JLAuracastDevStateModel *)state {
+        // 使用 state.loginState 刷新 UI
+    }
+
+- 4. 发射端登录与设置
+
+.. code-block:: objective-c
+
+    // 登录验证
+    [self.sendMgr loginVerify:@"123456" Result:^(JLAuracastLancerLoginVerifyType status) {
+        // 根据 status 展示结果
+    }];
+
+    // 修改密码
+    [self.sendMgr changePassword:@"old" newPassword:@"newpwd" Result:^(JLAuracastLancerChangePwdResult status) {
+        // 展示修改结果
+    }];
+
+    // 读取单项设置（示例：广播名称）
+    [self.sendMgr getBroadcastLancerSetting:0x01];
+
+    // 读取全部设置
+    [self.sendMgr getBroadcastLancerSetting];
+
+    // 设置项更新回调
+    - (void)lancerManager:(JLAuracastLancerManager *)mgr didUpdateSetting:(JLAuracastLancerSettingMode *)mode {
+        // 使用 mode.broadcastName、mode.audioFormatIndex、mode.encryptEnabled、mode.powerLevel
+    }
+
+    // 单独下发设置
+    [self.sendMgr setBroadcastName:@"DemoBroadcast"];
+    [self.sendMgr setAudioFormatIndex:11];
+    NSData *code = ...; // 16 字节密钥
+    [self.sendMgr setEncryptEnabled:YES code:code];
+    [self.sendMgr setPowerLevel:5];
+
+    // 合并下发全部设置
+    JLAuracastLancerSettingMode *mode = [JLAuracastLancerSettingMode new];
+    mode.broadcastName = @"DemoBroadcast";
+    mode.audioFormatIndex = 11;
+    mode.encryptEnabled = YES;
+    mode.broadcastCode = code; // 16 字节
+    mode.powerLevel = 5;
+
+    [self.sendMgr setBroadcastLancerSetting:mode];
+    // 或使用内部维护的 settingMode
+    [self.sendMgr setToBroadcastLancerSetting];
+
+- 5. 设备控制(发射端)
+
+.. code-block:: objective-c
+
+    // 根据场景进行设备控制
+    [self.sendMgr shoudown];
+    [self.sendMgr restart];
+    [self.sendMgr reset];
+
+5.3 完整示例代码
+=======================
+
+.. code-block:: objective-c
+
+    #import <JL_BLEKit/JL_BLEKit.h>
+    #import "JLAuracastManager.h"
+    #import "JLAuracastLancerManager.h"
+
+    @interface ViewController () <JLAuracastManagerDelegate, JLAuracastLancerManagerDelegate>
+    @property (nonatomic, strong) JL_ManagerM *bleManager;
+    @property (nonatomic, strong) JLAuracastManager *recvMgr;
+    @property (nonatomic, strong) JLAuracastLancerManager *sendMgr;
+    @end
+
+    @implementation ViewController
+
+    - (void)viewDidLoad {
+        [super viewDidLoad];
+        self.bleManager = [JL_ManagerM sharedInstance];
+        self.recvMgr = [[JLAuracastManager alloc] initWithManager:self.bleManager];
+        self.recvMgr.delegate = self;
+        self.sendMgr = [[JLAuracastLancerManager alloc] initWithManager:self.bleManager];
+        self.sendMgr.delegate = self;
+    }
+
+    #pragma mark - JLAuracastManagerDelegate
+
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateBroadcastList:(NSArray<JLBroadcastDataModel *> *)list {
+        JLBroadcastDataModel *chosen = list.firstObject;
+        if (!chosen) return;
+        [self.recvMgr auracastScanBroadcast:JLAuracastScanTypeStop];
+        // 添加当前播放源（命令收发回执，不代表添加成功）
+        [self.recvMgr addSourceToDev:chosen result:^(JL_CMDStatus status, NSError * _Nullable error) {
+            // 仅表示命令交互成功与否，成功并不代表设备已开始收听
+            // 请结合 didUpdateCurrentSource 回调判断真正的播放源状态
+        }];
+    }
+
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateDeviceState:(JLAuracastDevStateModel *)state {
+        (void)state; // 更新 UI
+    }
+
+    - (void)auracastManager:(JLAuracastManager *)mgr didUpdateCurrentSource:(JLBroadcastDataModel * _Nullable)source {
+        (void)source; // 展示当前播放源
+    }
+
+    #pragma mark - JLAuracastLancerManagerDelegate
+
+    - (void)lancerManager:(JLAuracastLancerManager *)mgr didUpdateSetting:(JLAuracastLancerSettingMode *)mode {
+        (void)mode; // 更新设置界面
+    }
+
+    @end
+
+5.4 注意事项
+=================
+
+- 使用前确保已正确初始化 ``JL_ManagerM`` 并建立蓝牙连接
+- 加密广播添加音源需提供正确的密钥（长度 16 字节）
+- ``addSourceToDev:result:`` 的回调仅表示命令交互是否成功，设备是否真正开始收听以 ``didUpdateCurrentSource`` 回调为准
+- 使用枚举 ``JLAuracastScanTypeStart`` / ``Stop`` / ``Query`` 控制扫描流程；结合 ``didUpdateSearchState:Error:`` 处理设备忙与禁止扫描等场景
+- 某些设置项可能需要设备重启后生效，可在设置成功后提示是否重启
+- 广播列表可能频繁更新，注意 UI 刷新性能与去重策略
+- 建议在主线程派发 UI 更新回调
+- 在页面销毁或不再使用管理器时调用 ``onDestory`` 以释放资源并移除内部监听
+
+5.5 参数说明
+=================
+
+- 1. 广播数据模型 (JLBroadcastDataModel)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 属性
+     - 类型
+     - 说明
+   * - broadcastName
+     - NSString
+     - 广播名称
+   * - broadcastID
+     - NSData
+     - 广播 ID
+   * - features
+     - uint8_t
+     - 广播特性位
+   * - encrypted
+     - BOOL
+     - 是否加密
+   * - advertiserAddress
+     - NSData
+     - 广播地址原始数据
+   * - advertiserAddressString
+     - NSString
+     - 广播地址字符串
+   * - broadcastKey
+     - NSData
+     - 广播密钥（16 字节）
+   * - syncState
+     - 枚举
+     - 同步状态
+   * - errorCode
+     - 枚举
+     - 错误码
+
+- 2. 设备状态模型 (JLAuracastDevStateModel)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 属性
+     - 类型
+     - 说明
+   * - loginState
+     - 枚举(JLAuracastLoginState)
+     - 登录状态
+
+说明：当前设备状态模型仅包含登录状态；其他状态字段请以设备端实际支持的模型为准。
+
+- 3. 发射端设置模型 (JLAuracastLancerSettingMode)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 属性
+     - 类型
+     - 说明
+   * - broadcastName
+     - NSString
+     - 广播名称
+   * - audioFormatIndex
+     - uint8_t
+     - 音频格式序号
+   * - encryptEnabled
+     - BOOL
+     - 是否开启加密
+   * - broadcastCode
+     - NSData
+     - 广播密钥（16 字节）
+   * - powerLevel
+     - uint8_t
+     - 发射功率（1~10 档）
+
+- 4. 管理器关键方法 (JLAuracastManager)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 方法
+     - 说明
+   * - auracastScanBroadcast:
+     - 开始/停止扫描
+   * - addSourceToDev:result:
+     - 添加当前播放源（回调为命令收发回执，成功不代表添加成功；以 didUpdateCurrentSource 为准）
+   * - removeDevCurrentSource:
+     - 移除当前播放源（回调为命令收发回执）
+   * - getCurrentOperationSource:
+     - 查询当前播放源
+   * - auracastGetDevState
+     - 拉取常用设备状态
+
+- 5. 发射端设置方法 (JLAuracastLancerManager)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 方法
+     - 说明
+   * - auracastGetDevState
+     - 拉取常用设备状态(发射端)
+   * - loginVerify:Result:
+     - 登录验证
+   * - changePassword:newPassword:Result:
+     - 修改密码
+   * - getBroadcastLancerSetting:
+     - 读取单项设置
+   * - getBroadcastLancerSetting
+     - 读取全部设置
+   * - setBroadcastName:
+     - 单独下发广播名称
+   * - setAudioFormatIndex:
+     - 单独下发音频格式序号
+   * - setEncryptEnabled:code:
+     - 单独下发加密设置与密钥
+   * - setPowerLevel:
+     - 单独下发发射功率
+   * - setBroadcastLancerSetting:
+     - 合并下发全部设置
+   * - setToBroadcastLancerSetting
+     - 使用内部模式合并下发
+
+- 6. 设备能力配置 (JLDeviceConfigDongle / JLDeviceConfig/ JLDeviceConfigSoundBox)
+
+.. list-table::
+   :widths: auto
+   :header-rows: 1
+
+   * - 接口/属性
+     - 说明
+   * - JLDeviceConfigDongle.isSupportAuracast
+     - 是否支持 Auracast
+   * - .isSupportReceiveAuracast
+     - 是否支持接收端 Auracast
+   * - .isSupportLancerAuracast
+     - 是否支持发射端 Auracast
+   * - JLDeviceConfig.deviceAuracastConfigWith:
+     - 设备能力配置回调（Auracast 专属）
+   * - JLDeviceConfig.deviceGetAuracastConfigWithUUID:
+     - 通过 UUID 获取缓存配置
+
+.. note::
+   注意：以上接口和字段均来自公开的头文件，示例代码仅用于展示调用流程，实际项目需根据设备能力与业务逻辑进行适配。

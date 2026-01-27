@@ -56,7 +56,9 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///过滤码
 @property(nonatomic,strong) NSData *__nullable mFilterKey;
 ///配对码
-@property(nonatomic,strong) NSData *__nullable mPairKey;
+@property(nonatomic,strong) NSData *__nullable mPairKey __attribute__((deprecated("Use mAuthKey instead")));
+/// 设备认证码
+@property(nonatomic,copy) NSData *__nullable mAuthKey;
 ///广播数据
 @property(strong,nonatomic) NSData          *mAdvData;
 
@@ -65,9 +67,13 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///是否【开启过滤】
 @property(nonatomic,assign) BOOL            mBLE_FILTER_ENABLE;
 ///是否【开启配对】
-@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE;
+@property(nonatomic,assign) BOOL            mBLE_PAIR_ENABLE __attribute__((deprecated("Use mAuthEnable instead")));
+/// 是否开启设备认证
+@property(nonatomic,assign) BOOL            mAuthEnable;
 ///是否完成配对
-@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED;
+@property(nonatomic,assign) BOOL            mBLE_IS_PAIRED __attribute__((deprecated("Use mIsAuth instead")));
+/// 是否已认证
+@property(nonatomic,assign) BOOL            mIsAuth;
 ///是否需要OTA
 @property(nonatomic,assign) BOOL            mBLE_NEED_OTA;
 @property(nonatomic,assign) BOOL            isFrom_HISTROY;
@@ -154,6 +160,18 @@ typedef void(^JL_EntityM_STATUS_BK)(JL_EntityM_Status status);
 ///1:spp
 ///2:att
 @property(assign,nonatomic) JLEntityConnectType      mConnectWay;
+
+/// 是否支持充电仓
+@property(assign,nonatomic) BOOL mIsSupportChargeBin;
+
+/// 是否支持蓝牙Le Audio音频
+@property(assign,nonatomic) BOOL mIsSupportLeAudio;
+
+/// Le Audio 的连接状态
+@property(assign,nonatomic) BOOL mLeAudioConnected;
+
+/// RCSP 是否复用 LEAudio 的地址
+@property(assign,nonatomic) BOOL mLeAudioIsReUseRCSPAddr;
 
 /// 设备特殊类型
 @property(assign,nonatomic) JLDevSpecialType  mSpecialType;

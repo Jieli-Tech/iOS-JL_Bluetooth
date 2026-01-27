@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JLBmpConvertKit/JLBmpConvertKit.h>
 #if TARGET_OS_IOS || TARGET_OS_MACCATALYST
 #import <UIKit/UIKit.h>
 #elif TARGET_OS_OSX
@@ -15,11 +16,36 @@
 
 
 NS_ASSUME_NONNULL_BEGIN
-@class JLBmpConvertOption;
 @class JLImageConvertResult;
+
+typedef void(^JLBmpCovertCallBack)(NSString *inFilePath,NSString *__nullable outFilePath,NSError *__nullable error) __deprecated_msg("This interface is deprecated. Please use convert:inFilePath:outFilePath: or convert:Image: instead.");
+
+typedef void(^JLBmpCovertCallBack2)(NSData *__nullable outFileData,NSError *__nullable error) __deprecated_msg("This interface is deprecated. Please use convert:inFilePath:outFilePath: or convert:Image: instead.");
+
+
 /// 图像转换
 @interface JLBmpConvert : NSObject
 #if TARGET_OS_IOS || TARGET_OS_MACCATALYST
+
+/// 图片转换
+/// - Parameters:
+///   - type: 转换类型
+///   - inFilePath: 输入文件
+///   - outFilePath: 输出文件
+///   - completion: 回调
++(void)covert:(JLBmpConvertType)type
+  inFilePath:(NSString *_Nonnull)inFilePath
+ outFilePath:(NSString * __nullable)outFilePath
+  completion:(JLBmpCovertCallBack _Nonnull)completion __deprecated_msg("This interface is deprecated. Please use convert:inFilePath:outFilePath: or convert:Image: instead.");
+
+/// 图片转换
+/// - Parameters:
+///   - type: 转换类型
+///   - inImage: 输入图片
+///   - completion: 回调
++(void)covert:(JLBmpConvertType)type
+  Image:(UIImage *)inImage
+  completion:(JLBmpCovertCallBack2 _Nonnull)completion __deprecated_msg("This interface is deprecated. Please use convert:inFilePath:outFilePath: or convert:Image: instead.");
 
 /// 图片转换
 /// - Parameters:

@@ -57,6 +57,12 @@ import Foundation
         FileManager.default.createFile(atPath: path, contents: dt)
     }
     
+    static let shared = SwiftHelper()
+    func testTranslate(){
+        TextTranslateMgr.share.startTranslate(groupID: Date().getDateStr, origin: "I am an e-ink screen wireless network driver board. I can get picture information from a PC or smartphone via WiFi or Bluetooth.", Date: Date()) { record in
+            
+        }
+    }
 }
 
 extension String{

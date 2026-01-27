@@ -18,21 +18,31 @@ PODS:
   - Colours (5.13.0):
     - Colours/ObjC (= 5.13.0)
   - Colours/ObjC (5.13.0)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
+  - DGCharts (5.1.0):
+    - DGCharts/Core (= 5.1.0)
+  - DGCharts/Core (5.1.0)
+  - FMDB (2.7.12):
+    - FMDB/standard (= 2.7.12)
+  - FMDB/Core (2.7.12)
+  - FMDB/standard (2.7.12):
+    - FMDB/Core
   - LMJHorizontalScrollText (2.0.2)
-  - MarqueeLabel (4.3.1)
+  - MarqueeLabel (4.5.3)
   - Masonry (1.1.0)
+  - MJRefresh (3.7.9)
+  - R.swift (7.8.0)
   - RxCocoa (6.9.0):
     - RxRelay (= 6.9.0)
     - RxSwift (= 6.9.0)
   - RxRelay (6.9.0):
     - RxSwift (= 6.9.0)
   - RxSwift (6.9.0)
-  - SnapKit (5.6.0)
-  - Starscream (4.0.4)
-  - SwiftyAttributes (5.3.0)
+  - SDWebImage (5.21.5):
+    - SDWebImage/Core (= 5.21.5)
+  - SDWebImage/Core (5.21.5)
+  - SnapKit (5.7.1)
+  - Starscream (4.0.8)
+  - SwiftyAttributes (5.4.0)
   - Toast-Swift (5.0.1)
   - WMZDialog (1.5.0)
 
@@ -40,12 +50,16 @@ DEPENDENCIES:
   - AFNetworking
   - Bugly
   - Colours
+  - DGCharts
   - FMDB
   - LMJHorizontalScrollText
   - MarqueeLabel
   - Masonry
+  - MJRefresh
+  - R.swift
   - RxCocoa
   - RxSwift
+  - SDWebImage
   - SnapKit
   - Starscream
   - SwiftyAttributes
@@ -57,13 +71,17 @@ SPEC REPOS:
     - AFNetworking
     - Bugly
     - Colours
+    - DGCharts
     - FMDB
     - LMJHorizontalScrollText
     - MarqueeLabel
     - Masonry
+    - MJRefresh
+    - R.swift
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SDWebImage
     - SnapKit
     - Starscream
     - SwiftyAttributes
@@ -74,19 +92,23 @@ SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   Bugly: 217ac2ce5f0f2626d43dbaa4f70764c953a26a31
   Colours: f24220c38f13deac88612667e9b4a7fb96b871d4
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  DGCharts: 1c6daf585b6cfc78807af44ea690d357c410627f
+  FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
   LMJHorizontalScrollText: ebc9b908db297f603c5b98c9b4e5f4582f5a14b8
-  MarqueeLabel: da4b9cf619fe70c75d7bab4580b0b4a0b868aa6b
+  MarqueeLabel: 0c57d4c6634e04a6d015af79f7c9a175b2309525
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJRefresh: ff9e531227924c84ce459338414550a05d2aea78
+  R.swift: f573269ca45b2ab066c082e363dd4c2b297b0d71
   RxCocoa: ac16414696ae706516be3e1ab00fcce5bdc9be8a
   RxRelay: 6b0c930e5cef57d5fe2032571e5e65b78e3cbdb1
   RxSwift: 31649ace6aceeb422e16ff71c60804f9c3281ed9
-  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
-  SwiftyAttributes: 6d7386e90ac611b6acac8b59e38f34bfa4621c80
+  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
+  SwiftyAttributes: 45fae22b22a246a0b7f0a8d2157a02bf89fb2e9a
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   WMZDialog: 724777637ca12b1d8078644b9f10aa264dec3a96
 
-PODFILE CHECKSUM: deaeb4a333ccd016eb9eef0a89b3a70e7b184074
+PODFILE CHECKSUM: 1f417d486db0d5ec8b5ba42f95c947b60bd353e4
 
 COCOAPODS: 1.16.2

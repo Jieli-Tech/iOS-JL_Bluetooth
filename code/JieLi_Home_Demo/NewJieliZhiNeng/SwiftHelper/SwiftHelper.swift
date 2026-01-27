@@ -23,6 +23,23 @@ class R {
         }
     }
     
+    static var localStr: _R.string.localizable {
+        return RResources.string.localizable(preferredLanguages: [LanguageCls.currentLanguage()])
+    }
+    
+    static var file: _R.file {
+        return RResources.file
+    }
+    
+    static var color: _R.color {
+        return RResources.color
+    }
+    
+    static var image: _R.image {
+        return RResources.image
+    }
+    
+    
     struct Language{
         static func lan(_ str:String,_ type: LanguageType = .auto)->String{
             if type == .auto {
@@ -63,6 +80,12 @@ class R {
         static let otas = path.document + "/otas"
         static let protectCustom = path.document + "/protectCustom"
         static let wallPaperCustom = path.document + "/wallPaperCustom"
+    }
+    
+    enum SoundBoxPath {
+        static let document = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        static let library = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first!
+        static let dbPath = document + "/devices.db"
     }
     
     

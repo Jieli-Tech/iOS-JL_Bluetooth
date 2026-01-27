@@ -1,9 +1,10 @@
 #source 'https://gitee.com/mirrors/CocoaPods-Specs.git'
 #source 'https://github.com/CocoaPods/Specs.git'
 
-platform:ios,'10.0'
+platform:ios,'12.0'
 
-target:'NewJieliZhiNeng' do
+target:'JLPiHome' do
+
 
 pod 'LMJHorizontalScrollText'
 
@@ -17,7 +18,7 @@ pod 'Colours'
 
 pod 'WMZDialog'
 
-pod 'Bugly'
+pod 'Bugly', :configurations => ['Release']
 
 pod 'SnapKit'
 
@@ -33,5 +34,22 @@ pod 'SwiftyAttributes'
 
 pod 'Starscream'
 
+pod 'SDWebImage'
+
+pod 'MJRefresh'
+
+pod 'DGCharts'
+
+pod 'R.swift'
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      # Force all pods to iOS 12.0 to avoid simulator SDK 26.0 warnings
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
 end
 

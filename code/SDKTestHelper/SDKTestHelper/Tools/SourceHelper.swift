@@ -42,6 +42,8 @@ extension _R {
         try? FileManager.default.createDirectory(atPath: _R.path.gif2Rgb, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.createDirectory(atPath: _R.path.pcmPath, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.createDirectory(atPath: _R.path.opusPath, withIntermediateDirectories: true, attributes: nil)
+        try? FileManager.default.createDirectory(atPath: _R.path.image2Bin, withIntermediateDirectories: true, attributes: nil)
+        try? FileManager.default.createDirectory(atPath: _R.path.jlaV2Path, withIntermediateDirectories: true, attributes: nil)
     }
     
     enum path {
@@ -55,8 +57,10 @@ extension _R {
         static let ota4gfile = path.document + "/ota4gfile"
         static let tipsVoice = path.document + "/tipsVoice"
         static let gif2Rgb = path.document + "/gif2rgb"
+        static let image2Bin = path.document + "/image2Bin"
         static let pcmPath = path.document + "/pcmPath"
         static let opusPath = path.document + "/opusPath"
+        static let jlaV2Path = path.document + "/jlaV2Path"
     }
     
     static func sizeForFilePath(_ filePath: String) -> UInt64 {
@@ -84,7 +88,33 @@ extension _R {
         return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
     }
     
-    static func testData() {}
+    static func saveToTmpFile(data: Data) {
+        let filePath = path.document + "/tmp.bin"
+        try? FileManager.default.removeItem(atPath: filePath)
+        try? data.write(to: URL(fileURLWithPath: filePath))
+    }
+    
+    static func appendToFile(filePath: String?, data: Data) {
+        guard let filePath = filePath else { return }
+        let fileURL = URL(fileURLWithPath: filePath)
+        
+        do {
+            if !FileManager.default.fileExists(atPath: filePath) {
+                FileManager.default.createFile(atPath: filePath, contents: data)
+                return
+            }
+            
+            let fileHandle = try FileHandle(forWritingTo: fileURL)
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(data)
+            try fileHandle.close()
+        } catch {
+            
+            JLLogManager.logLevel(.ERROR, content: "append data to filepath failed:\(error)")
+            
+        }
+
+    }
 }
 
 extension JL_FileHandleType {
@@ -112,38 +142,4 @@ extension JL_FileHandleType {
     }
 }
 
-extension String {
-    func listFile() -> [String]? {
-        if !FileManager.default.fileExists(atPath: self) {
-            return nil
-        }
-        if let arr = try? FileManager.default.contentsOfDirectory(atPath: self) {
-            var items = [String]()
-            for item in arr {
-                items.append(self + "/" + item)
-            }
-            items = items.sorted(by: <)
-            return items
-        }
-        return nil
-    }
-    
-    func jsonStrBeDict() -> [String: Any]? {
-        guard let data = self.data(using: .utf8) else {
-            print("无法将字符串转换为Data")
-            return nil
-        }
-        do {
-            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
-            if let dictionary = jsonObject as? [String: Any] {
-                return dictionary
-            } else {
-                print("JSON不是字典格式")
-                return nil
-            }
-        } catch {
-            print("JSON解析错误: \(error.localizedDescription)")
-            return nil
-        }
-    }
-}
+

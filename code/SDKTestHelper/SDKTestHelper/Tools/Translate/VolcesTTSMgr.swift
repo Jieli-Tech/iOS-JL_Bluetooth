@@ -6,6 +6,7 @@
 //  Copyright © 2025 www.zh-jieli.com. All rights reserved.
 //
 
+import JL_BLEKit
 import Starscream
 import UIKit
 
@@ -30,15 +31,22 @@ enum explicitLanguage: String {
 
 class VolcesTTSMgr: NSObject {
     var isConnected = false
-    private let appid = KeyAuth.ByteDance.appid
-    private let accessToken = KeyAuth.ByteDance.accessToken
-    private let secretKey = KeyAuth.ByteDance.secretKey
+    var translateText: [String] = []
+    private var appid:String {
+        KeyAuth.ByteDance.getAiAuth()?.appid ?? ""
+    }
+    private var accessToken: String {
+        KeyAuth.ByteDance.getAiAuth()?.accessToken ?? ""
+    }
+    private var secretKey: String {
+        KeyAuth.ByteDance.getAiAuth()?.secretKey ?? ""
+    }
     private let wssUrl = "wss://openspeech.bytedance.com/api/v1/tts/ws_binary"
-    private var socket: WebSocket?
+    private var socket: Starscream.WebSocket?
     private var resultBlock: ((Bool) -> Void)?
-    typealias ResultBlock = (Data, Bool) -> Void
+    typealias ResultBlock = (Data, UUID, Bool, Error?) -> Void
     private var responseBlock: ResultBlock?
-    
+    private var reqUUID: UUID!
 
     func start(_ completion: @escaping (Bool) -> Void, _ responseBlock: @escaping ResultBlock) {
         if isConnected {
@@ -61,23 +69,25 @@ class VolcesTTSMgr: NSObject {
         }
         socket?.disconnect()
     }
-    
-    func sendText(_ text: String) {
+
+    func sendText(_ texts: [String], _ uid: UUID = UUID()) {
         if !isConnected {
             return
         }
-        let data = msgFormat(text)
-        JLLogManager.logLevel(.DEBUG, content: "发送语音:\(text),data:\(data.eHex)")
+        let data = msgFormat(texts[0], uid.uuidString)
+        reqUUID = uid
+        translateText = texts
+        JLLogManager.logLevel(.DEBUG, content: "tts 发送语音:\(texts[0]),data:\(data)")
         socket?.write(data: data)
     }
 
-    private func msgFormat(_ text: String) -> Data {
+    private func msgFormat(_ text: String, _ uid: String) -> Data {
         var targetDict = [String: Any]()
         let appDict = ["appid": appid, "token": secretKey, "cluster": "volcano_tts"]
         targetDict.updateValue(appDict, forKey: "app")
-        let user = ["uid": "Jieli_iOS_req"]
+        let user = ["uid": uid]
         targetDict.updateValue(user, forKey: "user")
-        let audioDict: [String: Any] = ["voice_type": "zh_male_beijingxiaoye_emo_v2_mars_bigtts", "rate": 16000, "BitRate": 16, "encoding": "pcm"]
+        let audioDict: [String: Any] = ["voice_type": "zh_female_tianmeitaozi_mars_bigtts", "rate": 16000, "BitRate": 16, "encoding": "pcm"]
         targetDict.updateValue(audioDict, forKey: "audio")
         let requestDict = ["reqid": NSUUID().uuidString, "text": text, "operation": "submit"]
         targetDict.updateValue(requestDict, forKey: "request")
@@ -89,20 +99,25 @@ class VolcesTTSMgr: NSObject {
 }
 
 extension VolcesTTSMgr: WebSocketDelegate {
-    func didReceive(event: Starscream.WebSocketEvent, client _: any Starscream.WebSocketClient) {
+    
+    func didReceive(event: Starscream.WebSocketEvent, client: any Starscream.WebSocketClient) {
         switch event {
         case let .connected(headers):
             isConnected = true
-            JLLogManager.logLevel(.INFO, content: "websocket is connected: \(headers)")
+            JLLogManager.logLevel(.WARN, content: "tts websocket is connected: \(headers)")
             resultBlock?(isConnected)
         case let .disconnected(reason, code):
             isConnected = false
-            JLLogManager.logLevel(.INFO, content: "tts websocket is disconnected: \(reason) with code: \(code)")
+            JLLogManager.logLevel(.WARN, content: "tts websocket is disconnected: \(reason) with code: \(code)")
         case let .text(string):
-            JLLogManager.logLevel(.INFO, content: "Received text: \(string)")
+            JLLogManager.logLevel(.WARN, content: "tts Received text: \(string)")
         case let .binary(data):
             guard let resp = TTsDataSource.initData(data) else { return }
-            responseBlock?(resp.payload, resp.sequenceNumber < 0)
+            if resp.errorMessage.count > 0 {
+                responseBlock?(resp.payload, reqUUID, false, NSError(domain: resp.errorMessage, code: Int(resp.errorCode)))
+                return
+            }
+            responseBlock?(resp.payload, reqUUID, resp.sequenceNumber < 0, nil)
         case .ping:
             break
         case .pong:
@@ -117,11 +132,10 @@ extension VolcesTTSMgr: WebSocketDelegate {
             isConnected = false
             JLLogManager.logLevel(.ERROR, content: "error:\(String(describing: error))")
         case .peerClosed:
-            break
+            isConnected = false
         }
     }
 }
-
 
 class TTsDataSource: NSObject {
     // ptl version 0x01
@@ -142,14 +156,14 @@ class TTsDataSource: NSObject {
     // 0b0000 - 无压缩
     var msgCompressMethod: UInt8 = 0x00
     var reserved: UInt8 = 0
-    
+
     var sequenceNumber: Int32 = 0
-    var payload: Data = Data()
+    var payload: Data = .init()
     var errorCode: Int32 = 0
     var errorMessage: String = ""
-    
+
     var json: String = ""
-    
+
     var data: Data {
         let byte0 = ptlVersion << 4 | headerSize
         let byte1 = msgType << 4 | msgTypeSpecificFlag
@@ -157,97 +171,98 @@ class TTsDataSource: NSObject {
         let data = Data([byte0, byte1, byte2, reserved])
         return data
     }
-    
+
     func jsonToData(json: String) -> Data {
         let jsonData = json.data(using: .utf8)!
-        let length:UInt32 = UInt32(jsonData.count)
-        return data + length.byteSwapped.data + jsonData
+        let length = UInt32(jsonData.count)
+        var int = length.byteSwapped
+        let dt1 = Data(bytes: &int, count: MemoryLayout<UInt32>.size)
+        return data + dt1 + jsonData
     }
-    
+
     // 新增解析需要的属性
-    
-    
+
     static func initData(_ data: Data) -> TTsDataSource? {
         let instance = TTsDataSource()
-        
+
         // 确保至少有 4 字节的 header
         guard data.count >= 4 else {
-            JLLogManager.logLevel(.INFO, content: "数据长度不足，无法解析 header")
+            JLLogManager.logLevel(.WARN, content: "数据长度不足，无法解析 header")
             return nil
         }
-        
+
         // 解析前 4 字节的 header
         let byte0 = data[0]
         instance.ptlVersion = (byte0 & 0xF0) >> 4 // 高4位
-        instance.headerSize = byte0 & 0x0F        // 低4位
-        
+        instance.headerSize = byte0 & 0x0F // 低4位
+
         let byte1 = data[1]
-        instance.msgType = (byte1 & 0xF0) >> 4    // 高4位
+        instance.msgType = (byte1 & 0xF0) >> 4 // 高4位
         instance.msgTypeSpecificFlag = byte1 & 0x0F // 低4位
-        
+
         let byte2 = data[2]
         instance.msgSerializationMethod = (byte2 & 0xF0) >> 4
         instance.msgCompressMethod = byte2 & 0x0F
-        
+
         instance.reserved = data[3]
-        
+
         // 计算 payload 起始位置（headerSize * 4）
         let headerLength = Int(instance.headerSize) * 4
         guard data.count >= headerLength else {
-            JLLogManager.logLevel(.INFO, content: "数据长度不足，无法解析 payload")
+            JLLogManager.logLevel(.WARN, content: "数据长度不足，无法解析 payload")
             return nil
         }
-        
+
         var offset = 4 // 前4字节已解析
-        
+
         // 处理不同类型消息
         switch instance.msgType {
         case 11: // 音频响应
             if instance.msgTypeSpecificFlag != 0 {
                 // 读取 sequenceNumber (4 bytes)
                 guard offset + 4 <= data.count else { return nil }
-                instance.sequenceNumber = data.subdata(in: offset..<offset+4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
+                instance.sequenceNumber = data.subdata(in: offset ..< offset + 4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
                 offset += 4
-                
+
                 // 读取 payloadSize (4 bytes)
                 guard offset + 4 <= data.count else { return nil }
-                let payloadSize = data.subdata(in: offset..<offset+4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
+                let payloadSize = data.subdata(in: offset ..< offset + 4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
                 offset += 4
-                
+
                 // 读取 payload
                 guard offset + Int(payloadSize) <= data.count else { return nil }
-                instance.payload = data.subdata(in: offset..<offset+Int(payloadSize))
+                instance.payload = data.subdata(in: offset ..< offset + Int(payloadSize))
                 offset += Int(payloadSize)
-                
+
                 if instance.sequenceNumber < 0 {
-                    JLLogManager.logLevel(.INFO, content: "收到最后一个音频分段")
+                    JLLogManager.logLevel(.WARN, content: "tts 收到最后一个音频分段")
                 }
             }
-            
+
         case 15: // 错误消息
             // 读取错误码 (4 bytes)
             guard offset + 4 <= data.count else { return nil }
-            instance.errorCode = data.subdata(in: offset..<offset+4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
+            instance.errorCode = data.subdata(in: offset ..< offset + 4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
             offset += 4
-            
+
             // 读取错误消息长度 (4 bytes)
             guard offset + 4 <= data.count else { return nil }
-            let messageLength = data.subdata(in: offset..<offset+4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
+            let messageLength = data.subdata(in: offset ..< offset + 4).withUnsafeBytes { $0.load(as: Int32.self).bigEndian }
             offset += 4
-            
+
             // 读取错误消息内容
             guard offset + Int(messageLength) <= data.count else { return nil }
-            if let message = String(data: data.subdata(in: offset..<offset+Int(messageLength)), encoding: .utf8) {
+            if let message = String(data: data.subdata(in: offset ..< offset + Int(messageLength)), encoding: .utf8) {
                 instance.errorMessage = message
             }
             offset += Int(messageLength)
-            
+            JLLogManager.logLevel(.ERROR, content: "tts 错误消息内容：\(instance.errorMessage) errorCode:\(instance.errorCode)")
+
         default:
-            JLLogManager.logLevel(.INFO, content: "未知消息类型: \(instance.msgType)")
+            JLLogManager.logLevel(.WARN, content: "tts 未知消息类型: \(instance.msgType)")
             return nil
         }
-        
+
         return instance
     }
-
 }

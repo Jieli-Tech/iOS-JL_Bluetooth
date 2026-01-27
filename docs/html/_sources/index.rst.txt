@@ -28,6 +28,10 @@
    Development/import_desc
    Development/function
    Development/browse_desc
+   Development/translation_desc
+   Development/auracast_desc
+   Development/gatt_over_edr_desc
+
 
 .. toctree::
    :maxdepth: 1

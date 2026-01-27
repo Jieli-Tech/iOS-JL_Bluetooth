@@ -1,0 +1,2108 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. 翻译传输功能使用 &mdash; 杰理之家开发文档(IOS) 1.14.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5f634838"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/translations.js?v=540d3cec"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);</script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="5. Auracast 设备广播与发射设置交互" href="auracast_desc.html" />
+    <link rel="prev" title="3 目录浏览" href="browse_desc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import_desc.html">1.接入流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function.html">2.功能模块说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browse_desc.html">3 目录浏览</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. 翻译传输功能使用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">4.1. 概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.1.1. 初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.1.2. 设置翻译模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.1.3. 退出翻译模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.1.4. 接收翻译音频数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.1.5. 销毁对象</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">4.2. 高级使用场景</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">4.2.1. 录音模式翻译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.2.2. 现场听译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">4.2.3. 面对面翻译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">4.2.4. 通话翻译集成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">4.2.5. 音视频翻译</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">4.3. 编解码器详细使用指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#opus">4.3.1. OPUS编解码器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id15">4.3.1.1 OPUS编解码器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">4.3.1.2 OPUS编解码器核心类</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#jlopusformat">JLOpusFormat - 音频格式配置类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jlopusencoder-opus">JLOpusEncoder - OPUS编码器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jlopusdecoder-opus">JLOpusDecoder - OPUS解码器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">1.3 OPUS编解码器使用示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#objective-c-translateopushelper">Objective-C封装类 - TranslateOpusHelper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#translateopushelper-h">TranslateOpusHelper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#translateopushelper-m">TranslateOpusHelper.m</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#jlav2">4.3.2. JLAV2编解码器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id18">4.3.2.1 JLAV2编解码器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">4.3.2.2 JLAV2编解码器核心类</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#jlav2codeinfo">JLAV2CodeInfo - 编解码配置类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jlav2codecconfig">JLAV2CodecConfig - 高级配置类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jlav2codec">JLAV2Codec - 主编解码器类</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">2.3 JLAV2编解码器使用示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#objective-c-translateav2helper">Objective-C封装类 - TranslateAV2Helper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#translateav2helper-h">TranslateAV2Helper.h</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#translateav2helper-m">TranslateAV2Helper.m</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">4.4. 编解码器选择和配置建议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">4.4.1 格式选择指南</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">4.4.2 配置参数建议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id24">OPUS配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">JLAV2配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">4.5. 错误处理和调试</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id27">4.5.1 常见错误类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">4.5.2 错误处理示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">4.5.3 最佳实践</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">4.5.3.1 错误处理策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">4.5.3.2 性能优化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id32">4.5.3.3 资源管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id33">4.5.3.4 注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id34">4.5.3.4.1 生命周期管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id35">4.5.3.4.2 音频数据要求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">4.5.3.4.3 线程安全</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id37">4.5.3.4.4 设备兼容性</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ui">4.5.3.4.5 UI交互建议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">4.5.3.4.6 类说明 附录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslationmanager">JLTranslationManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id40">方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41">1. 初始化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id42">2. 功能检测接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43">3. 模式管理接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id44">4. 音频处理接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id45">5. 生命周期管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslateset">JLTranslateSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46">属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id47">核心方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id48">1. 模式管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id49">2. 缓存管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id50">3. 音频传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslatesetmode">JLTranslateSetMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id51">属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id52">方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslateaudio">JLTranslateAudio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id53">属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslationmanagerdelegate">JLTranslationManagerDelegate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id54">必需方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id55">可选方法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id56">错误处理和状态码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslatesetresulttype">JLTranslateSetResultType 翻译设置结果类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jltranslaterecordtype">JLTranslateRecordType 录音策略类型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auracast_desc.html">5. Auracast 设备广播与发射设置交互</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gatt_over_edr_desc.html">6. GATT Over Edr 连接</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">1. SDK开发包介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html#id1">2. 功能实现参考</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">发布记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/openSourceCommunity.html">开源社区</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">杰理之家开发文档(IOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">4. 翻译传输功能使用</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>4. 翻译传输功能使用<a class="headerlink" href="#id1" title="链接到此标题。"></a></h1>
+<section id="id2">
+<h2>4.1. 概述<a class="headerlink" href="#id2" title="链接到此标题。"></a></h2>
+<p>翻译传输功能是一个基于蓝牙通信的音频翻译解决方案，采用分层架构设计。核心组件包括：</p>
+<ul class="simple">
+<li><p>JLTranslationManager：翻译传输管理器，负责整体功能协调和对外接口</p></li>
+<li><p>JLTranslateSet：翻译设置协议层，处理与设备的通信协议</p></li>
+<li><p>内部队列管理：音频数据的缓存、分包和传输处理</p></li>
+<li><p>录音模式管理：设备端录音功能的内部控制</p></li>
+</ul>
+<p>主要功能特性：</p>
+<ul class="simple">
+<li><p>支持6种翻译模式（空闲、仅录音、录音翻译、通话翻译、音频翻译、面对面翻译）</p></li>
+<li><p>支持多种音频来源（文件、设备麦克风、手机麦克风、eSCO、A2DP）</p></li>
+<li><p>完整的状态监控和错误处理机制</p></li>
+<li><p>设备能力检测和配置管理</p></li>
+<li><p>音频数据的实时处理和传输</p></li>
+</ul>
+<section id="id3">
+<h3>4.1.1. 初始化<a class="headerlink" href="#id3" title="链接到此标题。"></a></h3>
+<p>在 <code class="docutils literal notranslate"><span class="pre">TranslateViewController</span></code> 中初始化 <code class="docutils literal notranslate"><span class="pre">JLTranslationManager</span></code>：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 这里的 BleManager.shared.currentCmdMgr 是当前连接的设备的命令管理器，确保在设备连接后初始化</span>
+<span class="n">JLBleManager</span><span class="w"> </span><span class="o">*</span><span class="n">manager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">BleManager</span><span class="w"> </span><span class="n">shared</span><span class="p">].</span><span class="n">currentCmdMgr</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">manager</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">translateHelper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslationManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithDelegate</span><span class="o">:</span><span class="nb">self</span><span class="w"> </span><span class="n">manager</span><span class="o">:</span><span class="n">manager</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>4.1.2. 设置翻译模式<a class="headerlink" href="#id4" title="链接到此标题。"></a></h3>
+<p>在 UI 按钮点击事件中配置翻译模式：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeRecordTranslate</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">translateHelper</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">mode</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>4.1.3. 退出翻译模式<a class="headerlink" href="#id5" title="链接到此标题。"></a></h3>
+<p>调用 <code class="docutils literal notranslate"><span class="pre">trExitMode</span></code> 退出当前模式：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">translateHelper</span><span class="w"> </span><span class="n">trExitMode</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>4.1.4. 接收翻译音频数据<a class="headerlink" href="#id6" title="链接到此标题。"></a></h3>
+<p>通过代理方法接收设备返回的音频数据：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">audioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="n">opusDecoderInputData</span><span class="o">:</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>4.1.5. 销毁对象<a class="headerlink" href="#id7" title="链接到此标题。"></a></h3>
+<p>在页面关闭时销毁对象并释放资源：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">translateHelper</span><span class="w"> </span><span class="n">trDestory</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="n">opusOnRelease</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>4.2. 高级使用场景<a class="headerlink" href="#id8" title="链接到此标题。"></a></h2>
+<section id="id9">
+<h3>4.2.1. 录音模式翻译<a class="headerlink" href="#id9" title="链接到此标题。"></a></h3>
+<p>类似录音笔，使用的是耳机的麦克风，录音模式适用于需要在设备端进行录音并翻译的场景。以下是一个简单的实现示例：</p>
+<object data="../_images/mermaid-1f1d9f35f0d1e64ae8002cbfe31dd64baa3ae3a0.svg" type="image/svg+xml">
+            <p class="warning">sequenceDiagram
+
+    participant App
+    participant Device
+
+    App-&gt;&gt;Device: 查询设备能力集（录音支持/采样率/编码）
+    Device--&gt;&gt;App: 返回能力集（支持项）
+
+    App-&gt;&gt;Device: 配置录音参数（OPUS/16kHz/1ch）
+    Device--&gt;&gt;App: 配置结果（成功/失败）
+
+    alt 配置成功
+        App-&gt;&gt;Device: 启动录音模式
+        Device--&gt;&gt;App: 启动成功
+
+        App--&gt;&gt;Device: 上行控制/心跳（维持会话）
+        Device--&gt;&gt;App: 下行音频数据（实时帧）
+    else 配置失败
+        Device--&gt;&gt;App: 错误码与错误信息
+    end
+
+    App-&gt;&gt;Device: 退出录音模式
+    Device--&gt;&gt;App: 释放资源完成</p></object>
+<p>实现代码参考：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置录音模式</span>
+<span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">recordMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeOnlyRecord</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+
+<span class="c1">/// 配置 Opus 解码器</span>
+<span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="n">defaultFormats</span><span class="p">];</span>
+<span class="n">ops</span><span class="p">.</span><span class="n">hasDataHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithDecoder</span><span class="o">:</span><span class="n">ops</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+
+<span class="c1">// 启动录音模式</span>
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">recordMode</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;录音模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+
+<span class="c1">//MARK: - JLTranslationManagerDelegate</span>
+
+<span class="c1">/// 初始化成功</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onInitSuccess:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;初始化成功&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">/// 模式改变</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param mode 翻译模式</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onModeChange:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Mode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeOnlyRecord</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;已切换到录音模式&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 音频数据</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param data 音频数据</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="c1">// 这里只针对 opus 做了解码，其他数据类型需要根据实际情况处理</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">audioType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="n">opusDecoderInputData</span><span class="o">:</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 错误</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param err 错误</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onError:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span> <span class="nv">err</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//MARK：- opus delegate</span>
+
+<span class="c1">/// Opus 数据解码</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - decoder: 解码器</span>
+<span class="c1">///   - data: pcm 数据</span>
+<span class="c1">///   - error: 错误信息</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecoder:</span><span class="p">(</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decoder</span><span class="w"> </span><span class="nf">Data:</span><span class="p">(</span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Opus 解码错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 处理解码后的 PCM 数据</span>
+<span class="w">    </span><span class="c1">// 这里可以将 PCM 数据播放出来，或者进行其他处理</span>
+<span class="w">    </span><span class="c1">// 例如：将 PCM 数据写入音频文件</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">writePCMDataToFile</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>4.2.2. 现场听译<a class="headerlink" href="#id10" title="链接到此标题。"></a></h3>
+<p>场景如现场讲座，将演讲人说的语言，实时翻译成佩戴者能听懂的语言，麦克风和听筒使用的都是耳机的。
+场景如现场聆听，将设备端播放的音频，实时翻译成佩戴者能听懂的语言，麦克风和听筒使用的都是耳机的。</p>
+<object data="../_images/mermaid-57214b12c2fb6e1a2c932cb764fb46478dcaa27a.svg" type="image/svg+xml">
+            <p class="warning">sequenceDiagram
+
+participant App
+participant Device
+
+App-&gt;&gt;Device: 查询设备能力集（监听/采样率/编码）
+Device--&gt;&gt;App: 返回能力集（支持项）
+
+App-&gt;&gt;Device: 配置现场听译参数（OPUS/16kHz/1ch）
+Device--&gt;&gt;App: 配置结果（成功/失败）
+
+alt 配置成功
+    App-&gt;&gt;Device: 启动现场听译模式
+    Device--&gt;&gt;App: 启动成功
+
+    App--&gt;&gt;Device: 上行控制（维持会话）
+    Device--&gt;&gt;App: 下行音频数据（实时帧，A2DP/eSCO/麦克风）
+    App-&gt;&gt;App: 解码→识别→翻译→合成（TTS/OPUS）
+    App-&gt;&gt;Device: 上行翻译音频（OPUS）
+    Device--&gt;&gt;Device: 播放翻译后的音频
+else 配置失败
+    Device--&gt;&gt;App: 错误码与错误信息
+end
+
+App-&gt;&gt;Device: 退出现场听译模式
+Device--&gt;&gt;App: 释放资源完成</p></object>
+<p>参考的实现代码：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置录音模式</span>
+<span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">recordMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeRecordTranslate</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+
+<span class="c1">/// 配置 Opus 解码器</span>
+<span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="n">defaultFormats</span><span class="p">];</span>
+<span class="n">ops</span><span class="p">.</span><span class="n">hasDataHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithDecoder</span><span class="o">:</span><span class="n">ops</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+
+<span class="c1">// 启动录音模式</span>
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">recordMode</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;录音模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+
+<span class="c1">//MARK: - JLTranslationManagerDelegate</span>
+
+<span class="c1">/// 初始化成功</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onInitSuccess:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;初始化成功&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">/// 模式改变</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param mode 翻译模式</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onModeChange:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Mode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeRecordTranslate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;已切换到录音翻译模式&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 音频数据</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param data 音频数据</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="c1">// 这里只针对 opus 做了解码，其他数据类型需要根据实际情况处理</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">audioType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="n">opusDecoderInputData</span><span class="o">:</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 错误</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param err 错误</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onError:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span> <span class="nv">err</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//MARK：- opus delegate</span>
+
+<span class="c1">/// Opus 数据解码</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - decoder: 解码器</span>
+<span class="c1">///   - data: pcm 数据</span>
+<span class="c1">///   - error: 错误信息</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecoder:</span><span class="p">(</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decoder</span><span class="w"> </span><span class="nf">Data:</span><span class="p">(</span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Opus 解码错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 处理解码后的 PCM 数据</span>
+<span class="w">    </span><span class="c1">// 这里可以将 PCM 数据进行语音识别</span>
+<span class="w">    </span><span class="c1">//实现语音识别需要另外实现，这里不做赘述</span>
+<span class="w">    </span><span class="p">[</span><span class="n">BaiduSpeechRecognitionManager</span><span class="w"> </span><span class="n">toString</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="c1">//翻译数据处理结果</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onTranslateResult:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;翻译结果：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// 为了能让耳机播放内容，这里需要将当前识别到的语音文字，转成 TTS 语音数据，发送给设备进行播放</span>
+<span class="w">    </span><span class="c1">//实现 TTS 语音合成需要另外实现，这里不做赘述</span>
+<span class="w">    </span><span class="p">[</span><span class="n">BaiduSpeechSynthesisManager</span><span class="w"> </span><span class="n">toSpeech</span><span class="o">:</span><span class="n">result</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">//语音TTS 生成结果</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onSynthesisResult:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 处理翻译后的音频数据，这里一般的数据都是 pcm 内容，所以我们还要在此处，将 pcm 的数据转回 opus 编码</span>
+<span class="w">    </span><span class="c1">//实现 opus 编码需要另外实现，可以参考本文后面的 Opus 编码部分内容</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusEncoder</span><span class="w"> </span><span class="n">opusEncoderInputData</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">//MARK：- opus delegate</span>
+
+<span class="c1">/// PCM 数据编码</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - encoder: 解码器</span>
+<span class="c1">///   - data: opus 数据</span>
+<span class="c1">///   - error: 错误信息</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusEncoder:</span><span class="p">(</span><span class="n">JLOpusEncoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">encoder</span><span class="w"> </span><span class="nf">Data:</span><span class="p">(</span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Opus 编码错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 处理编码后的 Opus 数据</span>
+<span class="w">    </span><span class="c1">// 这里可以将 Opus 数据发送给设备进行播放</span>
+<span class="w">    </span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="n">audioData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="n">new</span><span class="p">];</span>
+<span class="w">    </span><span class="n">audioData</span><span class="p">.</span><span class="n">sourceType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateAudioTypeDeviceMic</span><span class="p">;</span>
+<span class="w">    </span><span class="n">audioData</span><span class="p">.</span><span class="n">audioType</span><span class="w"> </span><span class="o">=</span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+<span class="w">    </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trWriteAudio</span><span class="o">:</span><span class="n">audioData</span><span class="w"> </span><span class="n">TranslateData</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>4.2.3. 面对面翻译<a class="headerlink" href="#id11" title="链接到此标题。"></a></h3>
+<p>面对面翻译模式支持单路切换翻译，适用于跨语言交流场景：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置面对面翻译模式</span>
+<span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">faceToFaceMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeFaceToFaceTranslate</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">faceToFaceMode</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;面对面翻译模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+<span class="c1">//开启手机端录音</span>
+<span class="c1">//</span>
+<span class="c1">//采取手机采麦的方式，获取到 PCM 数据后，将数据识别成文字显示在 UI 上，再通过 tts 语音合成，将文字合成语音，然后再转换成 Opus 下发给设备播放（需要参考 opus 编码部分内容）</span>
+<span class="c1">//此处仅展示下发 Opus 数据给设备部分内容</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">sendDataToDevice:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// 将翻译后的音频数据写回设备需要创建一个JLTranslateAudio 声明 sourceType 以及 audioType 的类型</span>
+<span class="w">    </span><span class="c1">// 方法一：标准写回方法（推荐）</span>
+<span class="w">  </span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="n">audioData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="n">new</span><span class="p">];</span>
+<span class="w">  </span><span class="n">audioData</span><span class="p">.</span><span class="n">sourceType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateAudioTypePhoneMic</span><span class="p">;</span>
+<span class="w">  </span><span class="n">audioData</span><span class="p">.</span><span class="n">audioType</span><span class="w"> </span><span class="o">=</span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+<span class="w">    </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trWriteAudio</span><span class="o">:</span><span class="n">audioData</span><span class="w"> </span><span class="n">TranslateData</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+<span class="p">}</span>
+
+
+<span class="c1">//监听 translationManager 的回调</span>
+<span class="c1">/// 音频数据</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param data 音频数据</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="c1">// 当面对面模式时，此数据一般是来自于设备端发送过来的 opus 数据，可以直接传给 opus 解析器进行解析。</span>
+
+<span class="w">    </span><span class="c1">// 1. 解码音频数据</span>
+<span class="w">    </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">decodedAudio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">decodeOPUSData</span><span class="o">:</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">];</span>
+
+<span class="w">    </span><span class="c1">// 2. 进行语音识别和翻译</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">performSpeechRecognitionAndTranslation</span><span class="o">:</span><span class="n">decodedAudio</span><span class="w"> </span><span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">translatedText</span><span class="p">,</span><span class="w"> </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">translatedAudioData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">translatedAudioData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">//这里可以选择让扬声器发声播放设备端采麦过来的数据</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="c1">// 语音识别和翻译处理</span>
+<span class="c1">// 开发者需要根据自行接入的识别和翻译厂商的 API 文档，实现语音转文字、文字翻译和文字转语音的功能。</span>
+<span class="c1">// 注意：文字转语音服务只能生成PCM格式音频，需要通过本地方法压缩为OPUS/JLA_V2格式。</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">performSpeechRecognitionAndTranslation:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">audioData</span><span class="w"> </span><span class="nf">completion:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">audioData</span><span class="p">))</span><span class="nv">completion</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">//参考 opus 解码的内容</span>
+<span class="w">   </span><span class="c1">//TODO: 自行实现</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>4.2.4. 通话翻译集成<a class="headerlink" href="#id12" title="链接到此标题。"></a></h3>
+<p>通话翻译模式可以在通话过程中提供实时翻译服务：</p>
+<p>场景说明：与外国人打电话，佩戴者说自己的母语，外国人听到的是他们的母语，外国人说他们的母语，佩戴者听
+到的是佩戴者的母语；
+佩戴者，左耳能收听到原声，右耳听到译文。</p>
+<p>交互逻辑参考以下：</p>
+<object data="../_images/mermaid-ba5bbdac79e918951d1a26d41fecdd316413900f.svg" type="image/svg+xml">
+            <p class="warning">sequenceDiagram
+    autonumber
+    participant App as iPhone App
+    participant TM as JLTranslationManager
+    participant Dev as 设备（耳机）
+    %% 通话翻译模式时序（己方/对方双向）
+    App-&gt;&gt;TM: trStartTranslateMode(CallTranslate, JLA_V2, ch=1, 16k)
+    TM--&gt;&gt;App: Block(status=Success)
+    App-&gt;&gt;Dev: 建立通话音频通道（ESCO）
+    par 己方语音（上行 ESCOUp）
+      Dev--&gt;&gt;TM: onReceiveAudioData(sourceType=ESCOUp, audio=OPUS/JLA_V2)
+      TM--&gt;&gt;App: 回调 onReceiveAudioData(data)
+      App-&gt;&gt;App: 解码→识别→翻译→合成
+      App-&gt;&gt;TM: trWriteAudio(data, TranslateData=translatedAudio)
+      TM-&gt;&gt;Dev: 下发译文音频（对方播放）
+    and 对方语音（下行 ESCODown）
+      Dev--&gt;&gt;TM: onReceiveAudioData(sourceType=ESCODown, audio=OPUS/JLA_V2)
+      TM--&gt;&gt;App: 回调 onReceiveAudioData(data)
+      App-&gt;&gt;App: 解码→识别→翻译→合成
+      App-&gt;&gt;TM: trWriteAudio(data, TranslateData=translatedAudio)
+      TM-&gt;&gt;Dev: 下发译文音频（己方播放）
+    end
+    App-&gt;&gt;TM: trExitTranslateMode()
+    TM--&gt;&gt;App: Block(status=Success)
+    TM-&gt;&gt;Dev: 释放资源，关闭音频通道</p></object>
+<p>参考实现代码：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">faceToFaceMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeCallTranslate</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeJLA_V2</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">faceToFaceMode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">faceToFaceMode</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;通话翻译模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+<span class="c1">//监听 translationManager 的回调</span>
+<span class="c1">/// 音频数据</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param data 音频数据</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="c1">// 当通话翻译模式时，此数据是通话过程中的音频数据，可以进行后续处理，如语音转文字。</span>
+<span class="w">    </span><span class="c1">//这里要区分上行和下行数据</span>
+
+<span class="w">    </span><span class="c1">// 通话时，己方的语音内容</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">sourceType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateAudioTypeESCOUp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 己方语音：解码 -&gt; 识别 -&gt; 翻译 -&gt; 合成 -&gt; 写回给对方</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">processCallAudio</span><span class="o">:</span><span class="n">data</span><span class="w"> </span><span class="n">isUplink</span><span class="o">:</span><span class="nb">YES</span><span class="w"> </span><span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">translatedAudio</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">translatedAudio</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// 标准写回方法，确保音频质量</span>
+<span class="w">                </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trWriteAudio</span><span class="o">:</span><span class="n">data</span><span class="w"> </span><span class="n">TranslateData</span><span class="o">:</span><span class="n">translatedAudio</span><span class="p">];</span>
+<span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;己方语音翻译完成，已发送给对方&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 通话时，对方的语音内容</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">sourceType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateAudioTypeESCODown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 对方语音：解码 -&gt; 识别 -&gt; 翻译 -&gt; 合成 -&gt; 写回给己方</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">processCallAudio</span><span class="o">:</span><span class="n">data</span><span class="w"> </span><span class="n">isUplink</span><span class="o">:</span><span class="nb">NO</span><span class="w"> </span><span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">translatedAudio</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">translatedAudio</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// 标准写回方法，确保音频质量</span>
+<span class="w">                </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trWriteAudio</span><span class="o">:</span><span class="n">data</span><span class="w"> </span><span class="n">TranslateData</span><span class="o">:</span><span class="n">translatedAudio</span><span class="p">];</span>
+<span class="w">                </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;对方语音翻译完成，已发送给己方&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 通话音频处理</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">processCallAudio:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">audioData</span><span class="w"> </span><span class="nf">isUplink:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">isUplink</span><span class="w"> </span><span class="nf">completion:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">translatedAudio</span><span class="p">))</span><span class="nv">completion</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. 解码JLA_V2格式音频</span>
+<span class="w">       </span><span class="c1">// 参考下述的 JLAV2编解码描述实现</span>
+<span class="w">    </span><span class="c1">// 2.注意翻译的语言种类</span>
+<span class="w">    </span><span class="c1">//TODO: 识别翻译合成完成之类的任务</span>
+<span class="p">}</span>
+
+
+<span class="c1">// 监听通话状态</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">isOnCalling:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">isCalling</span><span class="w"> </span><span class="nf">UUID:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 通话状态变化时，根据 isCalling 来判断是否启动通话翻译模式</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3>4.2.5. 音视频翻译<a class="headerlink" href="#id13" title="链接到此标题。"></a></h3>
+<p>场景说明：看手机上的视频，手机悬浮窗上显示字幕。</p>
+<p>交互逻辑参考以下：</p>
+<object data="../_images/mermaid-e9d740318b515a25dbdd83db87889eef0b12be5d.svg" type="image/svg+xml">
+            <p class="warning">sequenceDiagram
+    autonumber
+    participant App as iPhone App
+    participant TM as JLTranslationManager
+    participant Dev as 设备（耳机）
+    %% 音视频翻译模式时序
+    App-&gt;&gt;TM: trStartTranslateMode(RecordTranslate, OPUS, ch=1, 16k)
+    TM--&gt;&gt;App: Block(status=Success/Fail)
+    alt 启动成功
+      App-&gt;&gt;App: 播放视频（含语音数据的视频）
+      App-&gt;&gt;Dev: 走 A2DP 通道下发语音数据到设备
+      Dev--&gt;&gt;TM: onReceiveAudioData(sourceType=Record, audio=OPUS)
+      TM--&gt;&gt;App: 回调 onReceiveAudioData(data)
+      App-&gt;&gt;App: 解码→识别→翻译→合成
+      App-&gt;&gt;TM: trWriteAudio(data, TranslateData=translatedAudio)
+      TM-&gt;&gt;Dev: 下发译文音频（设备播放）
+      App-&gt;&gt;App: 显示字幕（悬浮窗）
+    else 启动失败
+      App-&gt;&gt;App: 错误提示/重试
+    end
+    App-&gt;&gt;TM: trExitTranslateMode()
+    TM--&gt;&gt;App: Block(status=Success)
+    TM-&gt;&gt;Dev: 释放资源</p></object>
+<p>参考实现代码如下：</p>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置录音翻译模式</span>
+<span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">recordMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeAudioTranslate</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">recordMode</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+
+<span class="c1">// 启动音频翻译模式</span>
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">recordMode</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;录音翻译模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// 开始录音</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">startRecording</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;录音翻译模式启动失败: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+<span class="c1">// 配置录音模式</span>
+<span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="n">recordMode2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="n">recordMode2</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeRecordTranslate</span><span class="p">;</span>
+<span class="n">recordMode2</span><span class="p">.</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">recordMode2</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span>
+<span class="n">recordMode2</span><span class="p">.</span><span class="n">dataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">;</span>
+
+<span class="c1">/// 配置 Opus 解码器</span>
+<span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="n">defaultFormats</span><span class="p">];</span>
+<span class="n">ops</span><span class="p">.</span><span class="n">hasDataHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithDecoder</span><span class="o">:</span><span class="n">ops</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+
+<span class="c1">// 启动录音模式</span>
+<span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trStartTranslateMode</span><span class="o">:</span><span class="n">recordMode2</span><span class="w"> </span><span class="n">Block</span><span class="o">:^</span><span class="p">(</span><span class="n">JLTranslateSetResultType</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetResultTypeSuccess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;录音模式启动成功&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}];</span>
+
+
+<span class="c1">//MARK: - JLTranslationManagerDelegate</span>
+
+<span class="c1">/// 初始化成功</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onInitSuccess:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;初始化成功&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">/// 模式改变</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param mode 翻译模式</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onModeChange:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Mode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="p">.</span><span class="n">modeType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JLTranslateSetModeTypeAudioTranslate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;已切换到音频翻译模式&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//TODO: 开发者或可以在此处启动视频播放，避免丢失部分音频数据内容</span>
+
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 音频数据</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param data 音频数据</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 数据处理逻辑</span>
+<span class="w">    </span><span class="c1">// 这里只针对 opus 做了解码，其他数据类型需要根据实际情况处理</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">audioType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">JL_SpeakDataTypeOPUS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusDecoder</span><span class="w"> </span><span class="n">opusDecoderInputData</span><span class="o">:</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// 错误</span>
+<span class="c1">/// @param uuid 设备UUID</span>
+<span class="c1">/// @param err 错误</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onError:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span> <span class="nv">err</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//MARK：- opus delegate</span>
+
+<span class="c1">/// Opus 数据解码</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - decoder: 解码器</span>
+<span class="c1">///   - data: pcm 数据</span>
+<span class="c1">///   - error: 错误信息</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecoder:</span><span class="p">(</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decoder</span><span class="w"> </span><span class="nf">Data:</span><span class="p">(</span><span class="bp">NSData</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Opus 解码错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 处理解码后的 PCM 数据</span>
+<span class="w">    </span><span class="c1">// 这里可以将 PCM 数据进行语音识别</span>
+<span class="w">    </span><span class="c1">//实现语音识别需要另外实现，这里不做赘述</span>
+<span class="w">    </span><span class="p">[</span><span class="n">BaiduSpeechRecognitionManager</span><span class="w"> </span><span class="n">toString</span><span class="o">:</span><span class="n">data</span><span class="p">];</span>
+
+<span class="p">}</span>
+
+<span class="c1">//翻译数据处理结果</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onTranslateResult:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;翻译结果：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">//此处可以显示的内容回调到上层显示</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h2>4.3. 编解码器详细使用指南<a class="headerlink" href="#id14" title="链接到此标题。"></a></h2>
+<section id="opus">
+<h3>4.3.1. OPUS编解码器<a class="headerlink" href="#opus" title="链接到此标题。"></a></h3>
+<section id="id15">
+<h4>4.3.1.1 OPUS编解码器概述<a class="headerlink" href="#id15" title="链接到此标题。"></a></h4>
+<p>OPUS编解码器基于 <code class="docutils literal notranslate"><span class="pre">JLAudioUnitKit</span></code> 框架，提供高质量的音频压缩和解压缩功能。主要特点：</p>
+<ul class="simple">
+<li><p>高音质：适用于面对面翻译和录音翻译场景</p></li>
+<li><p>标准格式：基于开源OPUS标准，兼容性好</p></li>
+<li><p>灵活配置：支持多种采样率和声道配置</p></li>
+</ul>
+</section>
+<section id="id16">
+<h4>4.3.1.2 OPUS编解码器核心类<a class="headerlink" href="#id16" title="链接到此标题。"></a></h4>
+</section>
+</section>
+<section id="jlopusformat">
+<h3>JLOpusFormat - 音频格式配置类<a class="headerlink" href="#jlopusformat" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLOpusFormat</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 采样率（默认16000Hz）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sampleRate</span><span class="p">;</span>
+
+<span class="c1">/// 单/双声道（默认1）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">channels</span><span class="p">;</span>
+
+<span class="c1">/// 帧长度（默认20ms）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">frameDuration</span><span class="p">;</span>
+
+<span class="c1">/// 比特率</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bitRate</span><span class="p">;</span>
+
+<span class="c1">/// 数据帧大小（只读）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">,</span><span class="w"> </span><span class="k">readonly</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">frameSize</span><span class="p">;</span>
+
+<span class="c1">/// 数据大小</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dataSize</span><span class="p">;</span>
+
+<span class="c1">/// 是否包含数据头部（默认YES）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">hasDataHeader</span><span class="p">;</span>
+
+<span class="c1">/// 获取默认配置</span>
+<span class="p">+</span> <span class="p">(</span><span class="n">JLOpusFormat</span><span class="o">*</span><span class="p">)</span><span class="nf">defaultFormats</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+<section id="jlopusencoder-opus">
+<h3>JLOpusEncoder - OPUS编码器<a class="headerlink" href="#jlopusencoder-opus" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLOpusEncoder</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 音频格式配置</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">opusFormat</span><span class="p">;</span>
+
+<span class="c1">/// 代理回调</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">weak</span><span class="p">)</span><span class="w"> </span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLOpusEncoderDelegate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delegate</span><span class="p">;</span>
+
+<span class="c1">/// 初始化编码器</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initFormat:</span><span class="p">(</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">format</span><span class="w"> </span><span class="nf">delegate:</span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLOpusEncoderDelegate</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">delegate</span><span class="p">;</span>
+
+<span class="c1">/// 编码PCM数据</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusEncodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">;</span>
+
+<span class="c1">/// 编码PCM文件</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusEncodeFile:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">pcmPath</span><span class="w"> </span><span class="nf">outPut:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">outPut</span><span class="w"> </span><span class="nf">Resoult:</span><span class="p">(</span><span class="n">JLOpusEncoderConvertBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">/// 释放资源</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusOnRelease</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+<section id="jlopusdecoder-opus">
+<h3>JLOpusDecoder - OPUS解码器<a class="headerlink" href="#jlopusdecoder-opus" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLOpusDecoder</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 音频格式配置</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">opusFormat</span><span class="p">;</span>
+
+<span class="c1">/// 代理回调</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">weak</span><span class="p">)</span><span class="w"> </span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLOpusDecoderDelegate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">delegate</span><span class="p">;</span>
+
+<span class="c1">/// 初始化解码器</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initDecoder:</span><span class="p">(</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">format</span><span class="w"> </span><span class="nf">delegate:</span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLOpusDecoderDelegate</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">delegate</span><span class="p">;</span>
+
+<span class="c1">/// 重置解码格式</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">resetOpusFramet:</span><span class="p">(</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">format</span><span class="p">;</span>
+
+<span class="c1">/// 解码OPUS数据</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecoderInputData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">;</span>
+
+<span class="c1">/// 解码OPUS文件</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecodeFile:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">input</span><span class="w"> </span><span class="nf">outPut:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">outPut</span><span class="w"> </span><span class="nf">Resoult:</span><span class="p">(</span><span class="n">JLOpusDecoderConvertBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">/// 释放资源</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusOnRelease</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+<section id="id17">
+<h4>1.3 OPUS编解码器使用示例<a class="headerlink" href="#id17" title="链接到此标题。"></a></h4>
+</section>
+</section>
+<section id="objective-c-translateopushelper">
+<h3>Objective-C封装类 - TranslateOpusHelper<a class="headerlink" href="#objective-c-translateopushelper" title="链接到此标题。"></a></h3>
+<section id="translateopushelper-h">
+<h4>TranslateOpusHelper.h<a class="headerlink" href="#translateopushelper-h" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &lt;JLAudioUnitKit/JLAudioUnitKit.h&gt;</span>
+
+<span class="n">NS_ASSUME_NONNULL_BEGIN</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief 编解码协议定义</span>
+<span class="cm"> * @description 定义了音频编解码器的基本接口，支持PCM和压缩格式之间的转换</span>
+<span class="cm"> */</span>
+<span class="k">@protocol</span> <span class="nc">TranslateDeEncodePtl</span> <span class="o">&lt;</span><span class="bp">NSObject</span><span class="o">&gt;</span>
+
+<span class="c1">/// 初始化方法</span>
+<span class="c1">/// @param pcmResultBlock PCM数据回调</span>
+<span class="c1">/// @param opusResultBlock 压缩数据回调</span>
+<span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="n">initWithPcmResultBlock</span><span class="o">:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="n">pcmResultBlock</span>
+<span class="w">                       </span><span class="nl">opusResultBlock</span><span class="p">:(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="n">opusResultBlock</span><span class="p">;</span>
+
+<span class="c1">/// PCM数据编码为压缩格式</span>
+<span class="c1">/// @param pcmData PCM音频数据</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">pcmToEnCodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">pcmData</span><span class="p">;</span>
+
+<span class="c1">/// 压缩数据解码为PCM格式</span>
+<span class="c1">/// @param decodeData 压缩音频数据</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodeDataToPcm:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decodeData</span><span class="p">;</span>
+
+<span class="c1">/// 销毁编解码器</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onDestory</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief OPUS编解码器封装类</span>
+<span class="cm"> * @description 提供OPUS格式音频的编码和解码功能，适用于面对面翻译和录音翻译场景</span>
+<span class="cm"> */</span>
+<span class="k">@interface</span> <span class="nc">TranslateOpusHelper</span> : <span class="bp">NSObject</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TranslateDeEncodePtl</span><span class="p">,</span><span class="w"> </span><span class="n">JLOpusDecoderDelegate</span><span class="p">,</span><span class="w"> </span><span class="n">JLOpusEncoderDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="o">*</span><span class="n">opusToPcm</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLOpusEncoder</span><span class="w"> </span><span class="o">*</span><span class="n">pcmToOpus</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">copy</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">pcmResultBlock</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">copy</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">opusResultBlock</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+<span class="k">@end</span>
+
+<span class="n">NS_ASSUME_NONNULL_END</span>
+</pre></div>
+</div>
+</section>
+<section id="translateopushelper-m">
+<h4>TranslateOpusHelper.m<a class="headerlink" href="#translateopushelper-m" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &quot;TranslateOpusHelper.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">TranslateOpusHelper</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithPcmResultBlock:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="nv">pcmResultBlock</span>
+<span class="w">                       </span><span class="nl">opusResultBlock</span><span class="p">:(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="nv">opusResultBlock</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">super</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pcmResultBlock</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">opusResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opusResultBlock</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// 配置OPUS格式</span>
+<span class="w">        </span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">opusFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="n">defaultFormats</span><span class="p">];</span>
+<span class="w">        </span><span class="n">opusFormat</span><span class="p">.</span><span class="n">hasDataHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w">  </span><span class="c1">// 根据需要设置</span>
+
+<span class="w">        </span><span class="c1">// 初始化编解码器</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">opusToPcm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initDecoder</span><span class="o">:</span><span class="n">opusFormat</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmToOpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLOpusEncoder</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initFormat</span><span class="o">:</span><span class="n">opusFormat</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">pcmToEnCodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">pcmData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">pcmToOpus</span><span class="w"> </span><span class="n">opusEncodeData</span><span class="o">:</span><span class="n">pcmData</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodeDataToPcm:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">opusData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusToPcm</span><span class="w"> </span><span class="n">opusDecoderInputData</span><span class="o">:</span><span class="n">opusData</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onDestory</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">opusToPcm</span><span class="w"> </span><span class="n">opusOnRelease</span><span class="p">];</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">pcmToOpus</span><span class="w"> </span><span class="n">opusOnRelease</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">opusToPcm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmToOpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">opusResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - JLOpusDecoderDelegate</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusDecoder:</span><span class="p">(</span><span class="n">JLOpusDecoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decoder</span><span class="w"> </span><span class="nf">data:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="n">JLLogManager</span><span class="w"> </span><span class="n">logLevel</span><span class="o">:</span><span class="n">JLLogLevelERROR</span><span class="w"> </span><span class="n">content</span><span class="o">:</span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;OPUS解码错误: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">]];</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - JLOpusEncoderDelegate</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">opusEncoder:</span><span class="p">(</span><span class="n">JLOpusEncoder</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">encoder</span><span class="w"> </span><span class="nf">data:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="n">JLLogManager</span><span class="w"> </span><span class="n">logLevel</span><span class="o">:</span><span class="n">JLLogLevelERROR</span><span class="w"> </span><span class="n">content</span><span class="o">:</span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;OPUS编码错误: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">]];</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">opusResultBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">opusResultBlock</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="jlav2">
+<h3>4.3.2. JLAV2编解码器<a class="headerlink" href="#jlav2" title="链接到此标题。"></a></h3>
+<section id="id18">
+<h4>4.3.2.1 JLAV2编解码器概述<a class="headerlink" href="#id18" title="链接到此标题。"></a></h4>
+<p>JLAV2是杰理专用的音频压缩格式，基于 <code class="docutils literal notranslate"><span class="pre">JLAV2Lib</span></code> 框架。主要特点：</p>
+<ul class="simple">
+<li><p>低延迟：专为实时通信优化，适用于通话翻译</p></li>
+<li><p>高压缩比：在保证音质的前提下实现更高的压缩比</p></li>
+<li><p>专用格式：针对杰理设备优化的音频格式</p></li>
+</ul>
+</section>
+<section id="id19">
+<h4>4.3.2.2 JLAV2编解码器核心类<a class="headerlink" href="#id19" title="链接到此标题。"></a></h4>
+</section>
+</section>
+<section id="jlav2codeinfo">
+<h3>JLAV2CodeInfo - 编解码配置类<a class="headerlink" href="#jlav2codeinfo" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLAV2CodeInfo</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 采样率</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">sampleRate</span><span class="p">;</span>
+
+<span class="c1">/// 码率</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">bitRate</span><span class="p">;</span>
+
+<span class="c1">/// 帧长索引</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">JLAV2CodeInfoFrameIdx</span><span class="w"> </span><span class="n">frameIdx</span><span class="p">;</span>
+
+<span class="c1">/// 声道数</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">channels</span><span class="p">;</span>
+
+<span class="c1">/// 是否支持24位</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">isSupportBit24</span><span class="p">;</span>
+
+<span class="c1">/// 获取默认配置</span>
+<span class="p">+</span> <span class="p">(</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nf">defaultInfo</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+<section id="jlav2codecconfig">
+<h3>JLAV2CodecConfig - 高级配置类<a class="headerlink" href="#jlav2codecconfig" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLAV2CodecConfig</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 淡入时长（毫秒）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="n">fadeInDuration</span><span class="p">;</span>
+
+<span class="c1">/// 淡出时长（毫秒）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="n">fadeOutDuration</span><span class="p">;</span>
+
+<span class="c1">/// 声道输出模式</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">JLAV2DecodeChannelMode</span><span class="w"> </span><span class="n">channelMode</span><span class="p">;</span>
+
+<span class="c1">/// 左声道混合系数（0.0~1.0）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">CGFloat</span><span class="w"> </span><span class="n">leftChannelCoefficient</span><span class="p">;</span>
+
+<span class="c1">/// 右声道混合系数（0.0~1.0）</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">CGFloat</span><span class="w"> </span><span class="n">rightChannelCoefficient</span><span class="p">;</span>
+
+<span class="c1">/// ED帧长度</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">assign</span><span class="p">)</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="n">edFrameLength</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+<section id="jlav2codec">
+<h3>JLAV2Codec - 主编解码器类<a class="headerlink" href="#jlav2codec" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">@interface</span> <span class="nc">JLAV2Codec</span> : <span class="bp">NSObject</span>
+
+<span class="c1">/// 初始化流式编解码器</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithDelegate:</span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLAV2CodecDelegate</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">delegate</span><span class="p">;</span>
+
+<span class="c1">/// 文件编码（异步）</span>
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">encodeFile:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">inFilePath</span>
+<span class="w">       </span><span class="nl">outFilePath</span><span class="p">:(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">outFilePath</span>
+<span class="w">            </span><span class="nl">Option</span><span class="p">:(</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">option</span>
+<span class="w">            </span><span class="nl">Result</span><span class="p">:(</span><span class="n">JLAV2CodecBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">/// 文件解码（异步）</span>
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodeFile:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">inFilePath</span>
+<span class="w">       </span><span class="nl">outFilePath</span><span class="p">:(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">outFilePath</span>
+<span class="w">            </span><span class="nl">Option</span><span class="p">:(</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">option</span>
+<span class="w">       </span><span class="nl">ApplyConfig</span><span class="p">:(</span><span class="n">JLAV2CodecConfig</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">config</span>
+<span class="w">            </span><span class="nl">Result</span><span class="p">:(</span><span class="n">JLAV2CodecBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">// 编码器方法</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">createEncode:</span><span class="p">(</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">info</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isEncoding</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">encodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">pcmData</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">destoryEncode</span><span class="p">;</span>
+
+<span class="c1">// 解码器方法</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">createDecode:</span><span class="p">(</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">info</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isDecoding</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">encodeData</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">applyDecoderConfig:</span><span class="p">(</span><span class="n">JLAV2CodecConfig</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">config</span><span class="p">;</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">destoryDecode</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+<section id="id20">
+<h4>2.3 JLAV2编解码器使用示例<a class="headerlink" href="#id20" title="链接到此标题。"></a></h4>
+</section>
+</section>
+<section id="objective-c-translateav2helper">
+<h3>Objective-C封装类 - TranslateAV2Helper<a class="headerlink" href="#objective-c-translateav2helper" title="链接到此标题。"></a></h3>
+<section id="translateav2helper-h">
+<h4>TranslateAV2Helper.h<a class="headerlink" href="#translateav2helper-h" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
+<span class="cp">#import &lt;JLAV2Lib/JLAV2Lib.h&gt;</span>
+<span class="cp">#import &quot;TranslateOpusHelper.h&quot;  </span><span class="c1">// 引入协议定义</span>
+
+<span class="n">NS_ASSUME_NONNULL_BEGIN</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief JLAV2编解码器封装类</span>
+<span class="cm"> * @description 提供JLAV2格式音频的编码和解码功能，专为实时通信优化，适用于通话翻译场景</span>
+<span class="cm"> */</span>
+<span class="k">@interface</span> <span class="nc">TranslateAV2Helper</span> : <span class="bp">NSObject</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TranslateDeEncodePtl</span><span class="p">,</span><span class="w"> </span><span class="n">JLAV2CodecDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLAV2Codec</span><span class="w"> </span><span class="o">*</span><span class="n">codecManager</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">copy</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">pcmResultBlock</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">copy</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="n">av2ResultBlock</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+<span class="k">@end</span>
+
+<span class="n">NS_ASSUME_NONNULL_END</span>
+</pre></div>
+</div>
+</section>
+<section id="translateav2helper-m">
+<h4>TranslateAV2Helper.m<a class="headerlink" href="#translateav2helper-m" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &quot;TranslateAV2Helper.h&quot;</span>
+
+<span class="k">@implementation</span> <span class="nc">TranslateAV2Helper</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithPcmResultBlock:</span><span class="p">(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="nv">pcmResultBlock</span>
+<span class="w">                       </span><span class="nl">opusResultBlock</span><span class="p">:(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">))</span><span class="nv">opusResultBlock</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">self</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">super</span><span class="w"> </span><span class="n">init</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pcmResultBlock</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">av2ResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">opusResultBlock</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// 初始化编解码器</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLAV2Codec</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithDelegate</span><span class="o">:</span><span class="nb">self</span><span class="p">];</span>
+<span class="w">        </span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="n">defaultInfo</span><span class="p">];</span>
+
+<span class="w">        </span><span class="c1">// 创建编解码器</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">createDecode</span><span class="o">:</span><span class="n">info</span><span class="p">];</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">createEncode</span><span class="o">:</span><span class="n">info</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">pcmToEnCodeData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">pcmData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">encodeData</span><span class="o">:</span><span class="n">pcmData</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodeDataToPcm:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">decodeData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">decodeData</span><span class="o">:</span><span class="n">decodeData</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onDestory</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">destoryDecode</span><span class="p">];</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="n">destoryEncode</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">codecManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">av2ResultBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - JLAV2CodecDelegate</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">decodecData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="n">JLLogManager</span><span class="w"> </span><span class="n">logLevel</span><span class="o">:</span><span class="n">JLLogLevelERROR</span><span class="w"> </span><span class="n">content</span><span class="o">:</span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;JLAV2解码错误: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">]];</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">pcmResultBlock</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">encodecData:</span><span class="p">(</span><span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="w"> </span><span class="nf">error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="n">JLLogManager</span><span class="w"> </span><span class="n">logLevel</span><span class="o">:</span><span class="n">JLLogLevelERROR</span><span class="w"> </span><span class="n">content</span><span class="o">:</span><span class="p">[</span><span class="bp">NSString</span><span class="w"> </span><span class="n">stringWithFormat</span><span class="o">:</span><span class="s">@&quot;JLAV2编码错误: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">]];</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">self</span><span class="p">.</span><span class="n">av2ResultBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">self</span><span class="p">.</span><span class="n">av2ResultBlock</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id21">
+<h2>4.4. 编解码器选择和配置建议<a class="headerlink" href="#id21" title="链接到此标题。"></a></h2>
+<section id="id22">
+<h3>4.4.1 格式选择指南<a class="headerlink" href="#id22" title="链接到此标题。"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>场景</p></th>
+<th class="head"><p>推荐格式</p></th>
+<th class="head"><p>原因</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>面对面翻译</p></td>
+<td><p>OPUS</p></td>
+<td><p>音质好，兼容性强</p></td>
+</tr>
+<tr class="row-odd"><td><p>录音翻译</p></td>
+<td><p>OPUS</p></td>
+<td><p>适合长时间录音，压缩比适中</p></td>
+</tr>
+<tr class="row-even"><td><p>通话翻译</p></td>
+<td><p>JLAV2</p></td>
+<td><p>低延迟，专为实时通信优化</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id23">
+<h3>4.4.2 配置参数建议<a class="headerlink" href="#id23" title="链接到此标题。"></a></h3>
+<section id="id24">
+<h4>OPUS配置<a class="headerlink" href="#id24" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="o">*</span><span class="n">opusFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLOpusFormat</span><span class="w"> </span><span class="n">defaultFormats</span><span class="p">];</span>
+<span class="n">opusFormat</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span><span class="w">      </span><span class="c1">// 16kHz采样率</span>
+<span class="n">opusFormat</span><span class="p">.</span><span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">            </span><span class="c1">// 单声道</span>
+<span class="n">opusFormat</span><span class="p">.</span><span class="n">frameDuration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">      </span><span class="c1">// 20ms帧长</span>
+<span class="n">opusFormat</span><span class="p">.</span><span class="n">hasDataHeader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w">      </span><span class="c1">// 根据协议需求设置</span>
+</pre></div>
+</div>
+</section>
+<section id="id25">
+<h4>JLAV2配置<a class="headerlink" href="#id25" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="o">*</span><span class="n">jlav2Info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLAV2CodeInfo</span><span class="w"> </span><span class="n">defaultInfo</span><span class="p">];</span>
+<span class="n">jlav2Info</span><span class="p">.</span><span class="n">sampleRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span><span class="w">       </span><span class="c1">// 16kHz采样率</span>
+<span class="n">jlav2Info</span><span class="p">.</span><span class="n">bitRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16000</span><span class="p">;</span><span class="w">          </span><span class="c1">// 16kbps码率</span>
+<span class="n">jlav2Info</span><span class="p">.</span><span class="n">frameIdx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLAV2CodeInfoFrameIdx320</span><span class="p">;</span><span class="w">  </span><span class="c1">// 320样本帧长</span>
+<span class="n">jlav2Info</span><span class="p">.</span><span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">             </span><span class="c1">// 单声道</span>
+<span class="n">jlav2Info</span><span class="p">.</span><span class="n">isSupportBit24</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w">      </span><span class="c1">// 16位深度</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id26">
+<h2>4.5. 错误处理和调试<a class="headerlink" href="#id26" title="链接到此标题。"></a></h2>
+<section id="id27">
+<h3>4.5.1 常见错误类型<a class="headerlink" href="#id27" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">NS_ENUM</span><span class="p">(</span><span class="n">NSUInteger</span><span class="p">,</span><span class="w"> </span><span class="n">JLAV2CodecError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">JLAV2CodecErrorMemoryAllocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1001</span><span class="p">,</span><span class="w">    </span><span class="c1">// 内存申请失败</span>
+<span class="w">    </span><span class="n">JLAV2CodecErrorInitializationFailed</span><span class="p">,</span><span class="w">       </span><span class="c1">// 初始化失败</span>
+<span class="w">    </span><span class="n">JLAV2CodecErrorInvalidParameter</span><span class="p">,</span><span class="w">           </span><span class="c1">// 参数错误</span>
+<span class="w">    </span><span class="n">JLAV2CodecErrorProcessingFailed</span><span class="p">,</span><span class="w">           </span><span class="c1">// 编解码失败</span>
+<span class="w">    </span><span class="n">JLAV2CodecErrorBufferFull</span><span class="w">                  </span><span class="c1">// 缓冲区满</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id28">
+<h3>4.5.2 错误处理示例<a class="headerlink" href="#id28" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handleCodecError:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLAV2CodecErrorMemoryAllocation</span><span class="p">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;编解码器内存不足，请检查系统资源&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLAV2CodecErrorInitializationFailed</span><span class="p">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;编解码器初始化失败，请检查配置参数&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLAV2CodecErrorInvalidParameter</span><span class="p">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;编解码器参数错误，请检查音频格式配置&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLAV2CodecErrorProcessingFailed</span><span class="p">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;编解码处理失败，请检查输入数据格式&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLAV2CodecErrorBufferFull</span><span class="p">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;编解码器缓冲区满，请降低数据输入速率&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;未知编解码错误: %@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id29">
+<h3>4.5.3 最佳实践<a class="headerlink" href="#id29" title="链接到此标题。"></a></h3>
+</section>
+<section id="id30">
+<h3>4.5.3.1 错误处理策略<a class="headerlink" href="#id30" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onError:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">err</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="p">.</span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLTranslateSetResultTypeParamErr</span><span class="p">:</span>
+<span class="w">            </span><span class="c1">// 参数错误，检查模式配置</span>
+<span class="w">            </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">reconfigureTranslationMode</span><span class="p">];</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLTranslateSetResultTypeBusy</span><span class="p">:</span>
+<span class="w">            </span><span class="c1">// 系统繁忙，延迟重试</span>
+<span class="w">            </span><span class="n">dispatch_after</span><span class="p">(</span><span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">NSEC_PER_SEC</span><span class="p">),</span><span class="w"> </span><span class="n">dispatch_get_main_queue</span><span class="p">(),</span><span class="w"> </span><span class="o">^</span><span class="p">{</span>
+<span class="w">                </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">retryTranslationOperation</span><span class="p">];</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">JLTranslateSetResultTypeCall</span><span class="p">:</span>
+<span class="w">            </span><span class="c1">// 通话中，等待通话结束</span>
+<span class="w">            </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">waitForCallEnd</span><span class="p">];</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;翻译错误：%@&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id31">
+<h3>4.5.3.2 性能优化<a class="headerlink" href="#id31" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置合适的MTU和超时时间</span>
+<span class="n">translationManager</span><span class="p">.</span><span class="n">cmdMaxTimeOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">15.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 根据网络情况调整</span>
+
+<span class="c1">// 选择合适的录音策略</span>
+<span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trIsSupportTranslate</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 优先使用设备端录音，减少数据传输</span>
+<span class="w">    </span><span class="n">translationManager</span><span class="p">.</span><span class="n">recordtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateRecordByDevice</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 回退到手机端录音</span>
+<span class="w">    </span><span class="n">translationManager</span><span class="p">.</span><span class="n">recordtype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLTranslateRecordByPhone</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id32">
+<h3>4.5.3.3 资源管理<a class="headerlink" href="#id32" title="链接到此标题。"></a></h3>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 页面销毁时正确清理资源</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">dealloc</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trExitMode</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="w">    </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trDestory</span><span class="p">];</span>
+<span class="w">    </span><span class="n">translationManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nil</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 应用进入后台时暂停翻译</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationDidEnterBackground</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trIsWorking</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="n">translationManager</span><span class="w"> </span><span class="n">trExitMode</span><span class="o">:</span><span class="nb">nil</span><span class="p">];</span>
+<span class="w">        </span><span class="n">shouldResumeTranslation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 应用回到前台时恢复翻译</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">applicationWillEnterForeground</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shouldResumeTranslation</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">resumeTranslationMode</span><span class="p">];</span>
+<span class="w">        </span><span class="n">shouldResumeTranslation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id33">
+<h3>4.5.3.4 注意事项<a class="headerlink" href="#id33" title="链接到此标题。"></a></h3>
+</section>
+<section id="id34">
+<h3>4.5.3.4.1 生命周期管理<a class="headerlink" href="#id34" title="链接到此标题。"></a></h3>
+<ul class="simple">
+<li><p>代理回调生效范围：如果销毁 <code class="docutils literal notranslate"><span class="pre">JLTranslationManager</span></code> 对象，回调将失效</p></li>
+<li><p>对象销毁：必须调用 <code class="docutils literal notranslate"><span class="pre">trDestory</span></code> 方法正确释放资源</p></li>
+<li><p>模式切换：切换模式前应先退出当前模式</p></li>
+</ul>
+</section>
+<section id="id35">
+<h3>4.5.3.4.2 音频数据要求<a class="headerlink" href="#id35" title="链接到此标题。"></a></h3>
+<ul class="simple">
+<li><p>音频格式：音频数据的格式需要与设备协议匹配，支持 <code class="docutils literal notranslate"><span class="pre">OPUS</span></code> 和 <code class="docutils literal notranslate"><span class="pre">JLA_V2</span></code> 编码
+- OPUS格式：适用于面对面翻译和录音翻译，音质较好
+- JLA_V2格式：适用于通话翻译，专为实时通信优化，延迟更低</p></li>
+<li><p>PCM压缩：文字转语音服务只能生成PCM数据，需要通过本地方法压缩为目标格式</p></li>
+<li><p>采样率：推荐使用16000Hz采样率，确保最佳翻译效果</p></li>
+<li><p>声道数：默认单声道，双声道需要特殊配置</p></li>
+<li><p>位深度：推荐使用16位深度，与压缩算法兼容性最佳</p></li>
+</ul>
+</section>
+<section id="id36">
+<h3>4.5.3.4.3 线程安全<a class="headerlink" href="#id36" title="链接到此标题。"></a></h3>
+<ul class="simple">
+<li><p>蓝牙通信：与蓝牙设备通信时，确保线程同步，避免竞争条件</p></li>
+<li><p>回调处理：代理回调可能在非主线程执行，UI更新需要切换到主线程</p></li>
+<li><p>队列操作：音频队列操作是线程安全的，但建议在同一线程中操作</p></li>
+</ul>
+</section>
+<section id="id37">
+<h3>4.5.3.4.4 设备兼容性<a class="headerlink" href="#id37" title="链接到此标题。"></a></h3>
+<ul class="simple">
+<li><p>功能检测：使用前必须检查设备是否支持翻译功能</p></li>
+<li><p>版本兼容：不同设备版本可能支持的功能有差异</p></li>
+<li><p>通话状态：通话中无法启动某些翻译模式</p></li>
+</ul>
+</section>
+<section id="ui">
+<h3>4.5.3.4.5 UI交互建议<a class="headerlink" href="#ui" title="链接到此标题。"></a></h3>
+<ul class="simple">
+<li><p>状态指示：根据模式和状态更新UI，例如启用或禁用按钮</p></li>
+<li><p>进度显示：长时间翻译操作应显示进度指示</p></li>
+<li><p>错误提示：为用户提供友好的错误提示信息</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id38">
+<h3>4.5.3.4.6 类说明 附录<a class="headerlink" href="#id38" title="链接到此标题。"></a></h3>
+<section id="jltranslationmanager">
+<h4>JLTranslationManager<a class="headerlink" href="#jltranslationmanager" title="链接到此标题。"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">JLTranslationManager</span></code> 是核心管理类，负责整个翻译功能的协调和管理。它采用代理模式与外部交互，内部集成了多个子组件来处理不同的功能模块。</p>
+</section>
+<section id="id39">
+<h4>属性<a class="headerlink" href="#id39" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delegate</span></code>：翻译回调代理，用于接收翻译和状态信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmdMaxTimeOut</span></code>：命令最大超时时间（默认10秒）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code>：设备的蓝牙UUID（只读）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">translateMode</span></code>：当前翻译模式（只读）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recordtype</span></code>：录音策略，默认是手机端录音</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isCalling</span></code>：是否在通话中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">manager</span></code>：设备管理对象（只读）</p></li>
+</ul>
+</section>
+<section id="id40">
+<h4>方法<a class="headerlink" href="#id40" title="链接到此标题。"></a></h4>
+</section>
+<section id="id41">
+<h4>1. 初始化<a class="headerlink" href="#id41" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithDelegate:</span><span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">JLTranslationManagerDelegate</span><span class="o">&gt;</span><span class="p">)</span><span class="nv">delegate</span>
+<span class="w">                         </span><span class="nl">Manager</span><span class="p">:(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span>
+<span class="w">                          </span><span class="nl">Result</span><span class="p">:(</span><span class="kt">void</span><span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="kt">BOOL</span><span class="w"> </span><span class="n">success</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">_Nullable</span><span class="w"> </span><span class="n">err</span><span class="p">))</span><span class="nv">result</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id42">
+<h4>2. 功能检测接口<a class="headerlink" href="#id42" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p>检查是否支持翻译功能：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(BOOL)trIsSupportTranslate;</span></code></p></li>
+<li><p>检查是否通过A2DP播放：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(BOOL)trIsPlayWithA2dp;</span></code></p></li>
+<li><p>检查是否正在工作：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(BOOL)trIsWorking;</span></code></p></li>
+</ul>
+</section>
+<section id="id43">
+<h4>3. 模式管理接口<a class="headerlink" href="#id43" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p>获取当前翻译模式：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trGetCurrentTranslationMode:(JLTranslationManagerGetBlock)block;</span></code></p></li>
+<li><p>启动翻译模式：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trStartTranslateMode:(JLTranslateSetMode</span> <span class="pre">*)mode</span> <span class="pre">Block:(JLTranslationManagerSetBlock)block;</span></code></p></li>
+<li><p>退出翻译模式：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trExitMode:(JLTranslationManagerSetBlock)block;</span></code></p></li>
+</ul>
+</section>
+<section id="id44">
+<h4>4. 音频处理接口<a class="headerlink" href="#id44" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p>写入翻译音频：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trWriteAudio:(JLTranslateAudio</span> <span class="pre">*)audio</span> <span class="pre">TranslateData:(NSData</span> <span class="pre">*)audioData;</span></code></p></li>
+<li><p>写入翻译音频V2：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trWriteAudioV2:(JLTranslateAudio</span> <span class="pre">*)audio</span> <span class="pre">TranslateData:(NSData</span> <span class="pre">*)audioData;</span></code></p></li>
+<li><p>发送中继信号：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trSendIsRelay;</span></code></p></li>
+</ul>
+</section>
+<section id="id45">
+<h4>5. 生命周期管理<a class="headerlink" href="#id45" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p>销毁对象：<code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(void)trDestory;</span></code></p></li>
+</ul>
+</section>
+<section id="jltranslateset">
+<h4>JLTranslateSet<a class="headerlink" href="#jltranslateset" title="链接到此标题。"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">JLTranslateSet</span></code> 是翻译设置协议层，继承自 <code class="docutils literal notranslate"><span class="pre">ECOneToMorePtl</span></code>，负责与设备端的通信协议处理。</p>
+</section>
+<section id="id46">
+<h4>属性<a class="headerlink" href="#id46" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cmdMaxTime</span></code>：命令最大执行时间</p></li>
+</ul>
+</section>
+<section id="id47">
+<h4>核心方法<a class="headerlink" href="#id47" title="链接到此标题。"></a></h4>
+</section>
+<section id="id48">
+<h4>1. 模式管理<a class="headerlink" href="#id48" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 获取翻译模式</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdGetModeInfo:</span><span class="p">(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JLTranslateGetModeInfoBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">// 设置翻译模式</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdSetMode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="nf">Manager:</span><span class="p">(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JLTranslateSetModeBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+
+<span class="c1">// 通知翻译模式</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdNoteMode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="nf">Manager:</span><span class="p">(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id49">
+<h4>2. 缓存管理<a class="headerlink" href="#id49" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 获取设备可用缓存</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdCheckCache:</span><span class="p">(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="w"> </span><span class="nf">SourceType:</span><span class="p">(</span><span class="n">JLTranslateAudioSourceType</span><span class="p">)</span><span class="nv">type</span><span class="w"> </span><span class="nf">Result:</span><span class="p">(</span><span class="n">JLTranslateGetCacheInfoBlock</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id50">
+<h4>3. 音频传输<a class="headerlink" href="#id50" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 推送翻译音频</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cmdPushAudioMode:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">audio</span><span class="w"> </span><span class="nf">Manager:</span><span class="p">(</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">manager</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="jltranslatesetmode">
+<h4>JLTranslateSetMode<a class="headerlink" href="#jltranslatesetmode" title="链接到此标题。"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetMode</span></code> 是翻译模式配置类，定义了翻译工作的各种参数。</p>
+</section>
+<section id="id51">
+<h4>属性<a class="headerlink" href="#id51" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">modeType</span></code>：翻译模式类型（默认为空闲模式）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataType</span></code>：音频数据类型（默认为OPUS）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">channel</span></code>：声道数（默认为1）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sampleRate</span></code>：采样率（默认为16000）</p></li>
+</ul>
+</section>
+<section id="id52">
+<h4>方法<a class="headerlink" href="#id52" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">(JLTranslateSetMode</span> <span class="pre">*)beObjc:(NSData</span> <span class="pre">*)data;</span></code>：从数据创建模式对象</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-</span> <span class="pre">(NSData</span> <span class="pre">*)toData;</span></code>：将模式对象转换为数据</p></li>
+</ul>
+</section>
+<section id="jltranslateaudio">
+<h4>JLTranslateAudio<a class="headerlink" href="#jltranslateaudio" title="链接到此标题。"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">JLTranslateAudio</span></code> 是音频数据封装类，实现了 <code class="docutils literal notranslate"><span class="pre">NSCopying</span></code> 协议。</p>
+</section>
+<section id="id53">
+<h4>属性<a class="headerlink" href="#id53" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sourceType</span></code>：音频来源类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audioType</span></code>：音频数据类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>：包计数，倒序，0为结束包</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crc</span></code>：音频数据的CRC校验</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">len</span></code>：数据长度</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>：音频数据</p></li>
+</ul>
+</section>
+<section id="jltranslationmanagerdelegate">
+<h4>JLTranslationManagerDelegate<a class="headerlink" href="#jltranslationmanagerdelegate" title="链接到此标题。"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">JLTranslationManagerDelegate</span></code> 是翻译管理器的回调协议，定义了翻译过程中的各种状态和数据回调。</p>
+</section>
+<section id="id54">
+<h4>必需方法<a class="headerlink" href="#id54" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 初始化成功回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onInitSuccess:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="p">;</span>
+
+<span class="c1">// 模式变化回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onModeChange:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Mode:</span><span class="p">(</span><span class="n">JLTranslateSetMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="p">;</span>
+
+<span class="c1">// 接收音频数据回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onReceiveAudioData:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">AudioData:</span><span class="p">(</span><span class="n">JLTranslateAudio</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">data</span><span class="p">;</span>
+
+<span class="c1">// 错误回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onError:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">err</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id55">
+<h4>可选方法<a class="headerlink" href="#id55" title="链接到此标题。"></a></h4>
+<div class="highlight-objc notranslate"><div class="highlight"><pre><span></span><span class="c1">// 通话状态回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">isOnCalling:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">isCalling</span><span class="w"> </span><span class="nf">UUID:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="p">;</span>
+
+<span class="c1">// 音频队列发送完成回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onSendAudioQueueOver:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">uuid</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id56">
+<h4>错误处理和状态码<a class="headerlink" href="#id56" title="链接到此标题。"></a></h4>
+</section>
+<section id="jltranslatesetresulttype">
+<h4>JLTranslateSetResultType 翻译设置结果类型<a class="headerlink" href="#jltranslatesetresulttype" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeSuccess</span> <span class="pre">=</span> <span class="pre">0x00</span></code>：操作成功</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeSameMode</span> <span class="pre">=</span> <span class="pre">0x01</span></code>：模式相同，无需切换</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeParamErr</span> <span class="pre">=</span> <span class="pre">0x02</span></code>：参数错误</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeCall</span> <span class="pre">=</span> <span class="pre">0x03</span></code>：设备正在通话中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeAudioPlaying</span> <span class="pre">=</span> <span class="pre">0x04</span></code>：音频正在播放中</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeBusy</span> <span class="pre">=</span> <span class="pre">0x05</span></code>：系统繁忙</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateSetResultTypeFail</span> <span class="pre">=</span> <span class="pre">0x06</span></code>：操作失败</p></li>
+</ul>
+</section>
+<section id="jltranslaterecordtype">
+<h4>JLTranslateRecordType 录音策略类型<a class="headerlink" href="#jltranslaterecordtype" title="链接到此标题。"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateRecordByPhone</span> <span class="pre">=</span> <span class="pre">0x00</span></code>：手机端录音</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JLTranslateRecordByDevice</span> <span class="pre">=</span> <span class="pre">0x01</span></code>：设备端录音</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="browse_desc.html" class="btn btn-neutral float-left" title="3 目录浏览" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="auracast_desc.html" class="btn btn-neutral float-right" title="5. Auracast 设备广播与发射设置交互" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, 珠海市杰理科技股份有限公司。
+      <span class="lastupdated">最后更新于 1月 27, 2026.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

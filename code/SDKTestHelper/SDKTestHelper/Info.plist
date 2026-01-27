@@ -2,19 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>为了连接 Wi-Fi 热点，需要使用您的定位权限</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>use for scan key auth </string>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
-	<key>NSCameraUsageDescription</key>
-	<string>create dial backgroud</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Record PCM Data</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+		<string>audio</string>
+	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Use for transport with jl devices</string>
 </dict>
 </plist>

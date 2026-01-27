@@ -32,8 +32,8 @@ class DevHistory: NSObject {
         super.init()
         let createSQL = """
         create table if not exists devHistory (
-            name text primary key, 
-            uuidStr text, 
+            name text, 
+            uuidStr text primary key, 
             advData blob, 
             isAttDev bool
         )

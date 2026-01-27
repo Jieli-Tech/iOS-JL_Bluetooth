@@ -14,7 +14,7 @@
     JLAV2CodeInfo *info = [[JLAV2CodeInfo alloc] init];
     info.sampleRate = 16000;
     info.bitRate = 16000;
-    info.frameIdx = JLAV2CodeInfoFrameIdx160;
+    info.frameIdx = JLAV2CodeInfoFrameIdx320;
     info.channels = 1;
     info.isSupportBit24 = NO;
     return info;

@@ -1,0 +1,6 @@
+module Pods_JLPiHome {
+  umbrella header "Pods-JLPiHome-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <DFUnits/DFUnits.h>
 #import <JL_BLEKit/JL_BLEKit.h>
 #import <JLLogHelper/JLLogHelper.h>
 #import <JLDialUnit/JLDialUnit.h>
 #import "AFNetworking.h"
 #import "JLUI_Effect.h"
+#import "FMDB/FMDB.h"
 
 #define MapApiKey @"0733d73d9ca8476dc29442f3d22fc4d9" //杰理之家
 #define PiLinkMapApiKey @"7dc05b2a0e2fe8b2bdec91acb04d3a6c" //PiLink
@@ -45,10 +47,34 @@
 #define kJL_IS_IPHONE_Xs_Max ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size) && !kJL_IS_IPAD : NO)
 #define kJL_IS_IPHONE_12P_Max ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1284, 2778), [[UIScreen mainScreen] currentMode].size) && !kJL_IS_IPAD : NO)
 
-//iPhoneX系列
-#define kJL_HeightStatusBar [UIApplication sharedApplication].delegate.window.safeAreaInsets.top
-#define kJL_HeightNavBar ([UIApplication sharedApplication].delegate.window.safeAreaInsets.top+44.0)
-#define kJL_HeightTabBar ([UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom+49.0)
+static inline UIEdgeInsets JLActiveSafeAreaInsets(void) {
+    UIWindow *activeWindow = nil;
+    if (@available(iOS 13.0, *)) {
+        NSSet<UIScene *> *scenes = [UIApplication sharedApplication].connectedScenes;
+        for (UIScene *scene in scenes) {
+            if (![scene isKindOfClass:[UIWindowScene class]]) { continue; }
+            UIWindowScene *windowScene = (UIWindowScene *)scene;
+            if (windowScene.activationState == UISceneActivationStateForegroundActive ||
+                windowScene.activationState == UISceneActivationStateForegroundInactive) {
+                for (UIWindow *w in windowScene.windows) {
+                    if (w.isKeyWindow) { activeWindow = w; break; }
+                }
+                if (!activeWindow) { activeWindow = windowScene.windows.firstObject; }
+                if (activeWindow) { break; }
+            }
+        }
+        if (!activeWindow) {
+            activeWindow = [UIApplication sharedApplication].windows.firstObject;
+        }
+    } else {
+        activeWindow = [UIApplication sharedApplication].keyWindow ?: [UIApplication sharedApplication].delegate.window;
+    }
+    return activeWindow ? activeWindow.safeAreaInsets : UIEdgeInsetsZero;
+}
+
+#define kJL_HeightStatusBar (JLActiveSafeAreaInsets().top)
+#define kJL_HeightNavBar (JLActiveSafeAreaInsets().top + 44.0)
+#define kJL_HeightTabBar (JLActiveSafeAreaInsets().bottom + 49.0)
 
 #define PTLVersion  3
 
@@ -108,6 +134,10 @@ extern NSString *kUI_JL_BLE_SCAN_CLOSE;
 /// 公共设置
 @property(strong,nonatomic)JLPublicSetting *publicSetMgr;
 
+/// tws 的配置
+@property(strong,nonatomic)JLDeviceConfigTws * _Nullable twsConfigMode;
+
+
 +(instancetype)sharedMe;
 
 /**
@@ -160,4 +190,3 @@ extern NSString *kUI_JL_BLE_SCAN_CLOSE;
 
 @end
 NS_ASSUME_NONNULL_END
-

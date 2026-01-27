@@ -55,7 +55,14 @@ typedef NS_ENUM(NSUInteger, JLBmpPixelformat) {
     JLBmpPixelformat_Auto,
 };
 
+/// LVGL 打包格式
+typedef NS_ENUM(NSUInteger, JLBmpPacketFormat) {
+    JLBmpPacketFormatNone = 0,
+    JLBmpPacketFormatJLUI = 1,
+    JLBmpPacketFormatLVGL = 2
+};
 
+/// 图像转换选项
 @interface JLBmpConvertOption : NSObject
 
 /// 图像转换类型
@@ -65,6 +72,11 @@ typedef NS_ENUM(NSUInteger, JLBmpPixelformat) {
 /// 默认为 auto
 /// 仅（707N 系列芯片支持）
 @property (nonatomic, assign) JLBmpPixelformat pixelformat;
+
+/// LVGL 打包格式
+/// 默认为 JLUI
+/// 仅（707N 系列芯片支持）
+@property (nonatomic, assign) JLBmpPacketFormat packetFormat;
 
 /// 是否转换成 BGRA
 /// 当使用的是 JL 的 UI 框架时需要使用

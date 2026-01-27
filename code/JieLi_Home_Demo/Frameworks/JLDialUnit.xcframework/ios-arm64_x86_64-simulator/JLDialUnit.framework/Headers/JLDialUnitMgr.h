@@ -104,9 +104,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// - Parameter resultCompletion: 回调
 -(void)dialResetCustomBackground:(void (^)(BOOL state, NSError * _Nullable error))resultCompletion;
 
-/// 获取当前表盘背景
-/// - Parameter resultCompletion: 回调
--(void)dialGetCurrentBackground:(void (^)(JLDialSourceModel * _Nullable model, NSError * _Nullable error))resultCompletion;
+/// 获取表盘背景
+/// - Parameters:
+///   - path: 路径 诸如“/WATCH”
+///   - resultCompletion: 回调
+-(void)dialGetDial:(NSString *)path BackgroundInfo:(void (^)(JLDialSourceModel * _Nullable model, NSError * _Nullable error))resultCompletion;
 
 @end
 

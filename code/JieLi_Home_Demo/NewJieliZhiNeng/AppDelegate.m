@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "JL_RunSDK.h"
-
+#import <DFUnits/DFUnits.h>
 #import "MultiMediaVC.h"
 #import "EQSettingVC.h"
 #import "SqliteManager.h"
@@ -33,9 +33,16 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 #import <AMapLocationKit/AMapLocationKit.h>
+// Bugly 在某些版本的 CocoaPods 提供的二进制仅包含真机架构，模拟器链接会失败。
+// 通过 __has_include 进行条件导入，避免在 Debug/模拟器下编译报错。
+#if __has_include(<Bugly/Bugly.h>)
 #import <Bugly/Bugly.h>
+#define HAS_BUGLY 1
+#else
+#define HAS_BUGLY 0
+#endif
 
-@interface AppDelegate ()<ConfirmViewDelegate>{
+@interface AppDelegate (){
     MainTabBarVC        *mainVC;
     Alert697xView       *alert697;
     
@@ -83,19 +90,27 @@
     }
     
     /*--- 初始化UI ---*/
-    [self setupUI];
+    if (@available(iOS 13.0, *)) {
+        // iOS 13+ 使用 SceneDelegate 管理窗口与根控制器
+    } else {
+        [self setupUI];
+    }
    
     
-    if(kJL_UI_SERIES == 0){ //杰理之家
-        /*--- 开启动画 ---*/
-        [OpenShowView startOpenAnimation];
-    }
-    if(kJL_UI_SERIES == 1){ //PiLink
-        /*--- 开启动画 ---*/
-        CGRect rect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-        PiLinkShowView  *piLinkShowView = [[PiLinkShowView alloc] initWithFrame:rect];
-        UIWindow *win = [DFUITools getWindow];
-        [win addSubview:piLinkShowView];
+    if (@available(iOS 13.0, *)) {
+        // 开屏动画由 SceneDelegate 在窗口创建后处理
+    } else {
+        if(kJL_UI_SERIES == 0){ //杰理之家
+            /*--- 开启动画 ---*/
+            [OpenShowView startOpenAnimation];
+        }
+        if(kJL_UI_SERIES == 1){ //PiLink
+            /*--- 开启动画 ---*/
+            CGRect rect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+            PiLinkShowView  *piLinkShowView = [[PiLinkShowView alloc] initWithFrame:rect];
+            UIWindow *win = [DFUITools getWindow];
+            [win addSubview:piLinkShowView];
+        }
     }
     
     /*--- 创建数据库 ---*/
@@ -109,7 +124,12 @@
     
     [NetworkPlayer sharedMe];
     
+#if HAS_BUGLY
     [Bugly startWithAppId:@"12d9f973f4"];
+#else
+    // 模拟器或未集成 Bugly 的构建不启动 Bugly，避免链接/编译问题
+    NSLog(@"Bugly is not available for this build (simulator or Debug). Skipping Bugly startup.");
+#endif
 
     [self addNote];
     
@@ -124,7 +144,6 @@
 -(void)setupUI{
     self.window =[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     cmView = [[ConfirmView alloc] init];
-    cmView.delegate = self;
     NSString *key = [JL_Tools getUserByKey:@"CONMIT_PROTOCOL"];
     if ([key isEqualToString:@"OK"]) {
         [self initData];
@@ -194,6 +213,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     [application endReceivingRemoteControlEvents];
+    [[TranslateVM shared] exitMode:^(JLTranslateSetResultType status, NSError * _Nullable err) { 
+    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -283,6 +304,10 @@
     [JL_Tools mainTask:^{
         JL_RunSDK *bleSDK = [JL_RunSDK sharedMe];
         JLModel_Device *model = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
+        if (bleSDK.twsConfigMode.isSupportTranslate) {
+            kJLLog(JLLOG_INFO, @"current device support translate mode");
+            return;
+        }
         if(model.mCallType == JL_CALLType_ON){
             [self showCallingUI];
         }
@@ -389,35 +414,6 @@
         [findView startVoice];
     }
     
-}
-
--(void)confirmCancelBtnAction{
-    exit(0);
-}
-
--(void)confirmConfirmBtnAction{
-    [self initData];
-}
-
--(void)confirmDidSelect:(int)index{
-    
-    // 在这里加一个这个样式的循环
-    while (tempVC.presentedViewController)
-    {
-        // 这里固定写法
-        tempVC = tempVC.presentedViewController;
-    }
-    
-    if(index == 0){
-        UserProfileVC *vc = [[UserProfileVC alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        [tempVC presentViewController:vc animated:YES completion:nil];
-    }
-    if(index == 1){
-        PrivacyPolicyVC *vc = [[PrivacyPolicyVC alloc] init];
-        vc.modalPresentationStyle = UIModalPresentationFullScreen;
-        [tempVC presentViewController:vc animated:YES completion:nil];
-    }
 }
 
 -(void)dealloc{

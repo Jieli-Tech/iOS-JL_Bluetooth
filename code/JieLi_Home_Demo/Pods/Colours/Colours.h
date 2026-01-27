@@ -101,14 +101,6 @@ typedef NS_ENUM(NSInteger, ColorComparison) {
  */
 + (instancetype)colorFromHexString:(NSString *)hexString;
 
-#pragma mark - Color from Hex/RGBA/HSBA/CIE_LAB/CMYK
-/**
- Creates a Color from a Hex representation string
- @param hexString   Hex string that looks like @"#FF0000" or @"FF0000"
- @param alpha   Alpha value
- @return    Color
- */
-+ (instancetype)colorFromHexString:(NSString *)hexString alph:(float)alpha;
 /**
  Creates a Color from an array of 4 NSNumbers (r,g,b,a)
  @param rgbaArray   4 NSNumbers for rgba between 0 - 1

@@ -44,6 +44,10 @@ extern NSString *kJL_MANAGER_CUSTOM_DATA_RSP;
 /// 数据回调委托
 @property(nonatomic,weak)id<JLCustomCmdPtl> delegate;
 
+/// timeout max
+/// default 3s
+@property(nonatomic,assign)NSInteger maxTime;
+
 #pragma mark ---> 用户自定义数据
 
 /// 用户自定义数据

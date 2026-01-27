@@ -27,6 +27,8 @@ typedef enum : NSUInteger {
     JLAV2CodeInfoFrameIdx480
 } JLAV2CodeInfoFrameIdx;
 
+
+/// 配置参数
 @interface JLAV2CodeInfo : NSObject
 
 /// 采样率
@@ -46,6 +48,7 @@ typedef enum : NSUInteger {
 @property (nonatomic,assign) BOOL isSupportBit24;
 
 
+/// 默认配置
 +(JLAV2CodeInfo *)defaultInfo;
 
 @end

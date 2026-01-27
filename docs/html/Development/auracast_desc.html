@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Auracast 设备广播与发射设置交互 &mdash; 杰理之家开发文档(IOS) 1.14.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="https://doc.zh-jieli.com/Apps/static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5f634838"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/translations.js?v=540d3cec"></script>
+      <script src="https://doc.zh-jieli.com/Apps/static/js/custom.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="6. GATT Over Edr 连接" href="gatt_over_edr_desc.html" />
+    <link rel="prev" title="4. 翻译传输功能使用" href="translation_desc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">开发框架</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Framework/framework.html">SDK架构</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">开发说明</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="import_desc.html">1.接入流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function.html">2.功能模块说明</a></li>
+<li class="toctree-l1"><a class="reference internal" href="browse_desc.html">3 目录浏览</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation_desc.html">4. 翻译传输功能使用</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Auracast 设备广播与发射设置交互</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">5.1 前置条件（设备能力）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">5.2 使用步骤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">5.3 完整示例代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">5.4 注意事项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">5.5 参数说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gatt_over_edr_desc.html">6. GATT Over Edr 连接</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">工程介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">1. SDK开发包介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html#id1">2. 功能实现参考</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">其他</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Other/debug.html">测试调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/version.html">发布记录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Other/openSourceCommunity.html">开源社区</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">杰理之家开发文档(IOS)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">5. Auracast 设备广播与发射设置交互</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="auracast">
+<h1>5. Auracast 设备广播与发射设置交互<a class="headerlink" href="#auracast" title="链接到此标题。"></a></h1>
+<p><strong>JLAuracastManager 与 JLAuracastLancerManager</strong> 是杰理科技蓝牙开发套件(JL_BLEKit)中用于管理 Auracast 功能的两个核心管理类，提供了广播扫描、当前音源管理、设备状态获取，以及发射端登录与设置的读取/下发等能力。</p>
+<p><strong>主要功能</strong></p>
+<ul class="simple">
+<li><p>接收端功能</p>
+<ul>
+<li><p>扫描与维护广播列表</p></li>
+<li><p>添加/移除/查询当前播放源</p></li>
+<li><p>获取设备端状态</p></li>
+</ul>
+</li>
+<li><p>发射端功能</p>
+<ul>
+<li><p>获取设备端状态</p></li>
+<li><p>发射端登录验证与修改密码</p></li>
+<li><p>读取/设置发射端配置（广播名、音频格式、加密信息、功率）</p></li>
+<li><p>设备控制（关机、重启、恢复出厂设置）</p></li>
+</ul>
+</li>
+</ul>
+<section id="id1">
+<h2>5.1 前置条件（设备能力）<a class="headerlink" href="#id1" title="链接到此标题。"></a></h2>
+<ul class="simple">
+<li><p>使用 Auracast 相关功能前，设备需具备对应能力，可通过 <code class="docutils literal notranslate"><span class="pre">JLDeviceConfig</span></code> 与 <code class="docutils literal notranslate"><span class="pre">JLDeviceConfigDongle</span></code> 获取：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">isSupportAuracast</span></code>：是否支持 Auracast</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isSupportReceiveAuracast</span></code>：是否支持接收端 Auracast</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isSupportLancerAuracast</span></code>：是否支持发射端 Auracast</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &quot;JLDeviceConfig.h&quot;</span>
+<span class="cp">#import &quot;JLDeviceConfigDongle.h&quot;</span>
+
+<span class="k">@interface</span> <span class="bp">MyClass</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JLConfigPtl</span><span class="o">&gt;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="n">bleManager</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">setupConfig</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">JLDeviceConfig</span><span class="w"> </span><span class="o">*</span><span class="n">cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLDeviceConfig</span><span class="w"> </span><span class="n">share</span><span class="p">];</span>
+<span class="w">    </span><span class="n">cfg</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="w">    </span><span class="p">[</span><span class="n">cfg</span><span class="w"> </span><span class="n">deviceGetConfig</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="w"> </span><span class="n">result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sn</span><span class="p">,</span><span class="w"> </span><span class="n">JLDeviceConfigModel</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">config</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 可选：使用通用配置；Auracast 能力通过回调或缓存读取</span>
+<span class="w">    </span><span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="c1">// Auracast 能力回调</span>
+<span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">deviceAuracastConfigWith</span><span class="o">:</span><span class="p">(</span><span class="n">JLDeviceConfigDongle</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">configModel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">recv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportReceiveAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">lancer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportLancerAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口</span>
+<span class="p">}</span>
+<span class="c1">/// 音箱配置回调</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - configModel: 音箱配置模型</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">deviceSoundBoxConfigWith</span><span class="o">:</span><span class="p">(</span><span class="n">JLDeviceConfigSoundBox</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">configModel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">recv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportReceiveAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">lancer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportLancerAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口</span>
+<span class="p">}</span>
+
+<span class="c1">/// TWS监听回调协议</span>
+<span class="c1">/// - Parameter configModel: 固件设置配置回调</span>
+<span class="o">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">deviceTwsConfigWith</span><span class="o">:</span><span class="p">(</span><span class="n">JLDeviceConfigTws</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">configModel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">recv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportReceiveAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">BOOL</span><span class="w"> </span><span class="n">lancer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">configModel</span><span class="p">.</span><span class="n">isSupportLancerAuracast</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// 根据能力开关 UI：仅在支持的情况下展示接收端或发射端入口</span>
+<span class="p">}</span>
+
+
+<span class="c1">// 通过 UUID 获取已缓存的 Auracast 配置</span>
+<span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">useCachedAuracastConfig</span><span class="o">:</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">uuidStr</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">JLDeviceConfigDongle</span><span class="w"> </span><span class="o">*</span><span class="n">auracast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLDeviceConfig</span><span class="w"> </span><span class="n">share</span><span class="p">]</span><span class="w"> </span><span class="n">deviceGetAuracastConfigWithUUID</span><span class="o">:</span><span class="n">uuidStr</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">auracast</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 使用 auracast.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">JLDeviceConfigSoundBox</span><span class="w"> </span><span class="o">*</span><span class="n">soundBox</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLDeviceConfig</span><span class="w"> </span><span class="n">share</span><span class="p">]</span><span class="w"> </span><span class="n">deviceGetSoundBoxConfigWithUUID</span><span class="o">:</span><span class="n">uuidStr</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">soundBox</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 使用 soundBox.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">JLDeviceConfigTws</span><span class="w"> </span><span class="o">*</span><span class="n">tws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLDeviceConfig</span><span class="w"> </span><span class="n">share</span><span class="p">]</span><span class="w"> </span><span class="n">deviceGetTwsConfigWithUUID</span><span class="o">:</span><span class="n">uuidStr</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tws</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 使用 tws.isSupportAuracast / isSupportReceiveAuracast / isSupportLancerAuracast</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>5.2 使用步骤<a class="headerlink" href="#id2" title="链接到此标题。"></a></h2>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>初始化并设置代理</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &lt;JL_BLEKit/JL_BLEKit.h&gt;</span>
+<span class="cp">#import &quot;JLAuracastManager.h&quot;</span>
+<span class="cp">#import &quot;JLAuracastLancerManager.h&quot;</span>
+
+<span class="k">@interface</span> <span class="bp">MyClass</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JLAuracastManagerDelegate</span><span class="p">,</span><span class="w"> </span><span class="n">JLAuracastLancerManagerDelegate</span><span class="o">&gt;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="n">bleManager</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="n">recvMgr</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="o">*</span><span class="n">sendMgr</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">setup</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithManager</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithManager</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="2">
+<li><p>浏览广播与选择音源(接收端)</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 开始扫描广播（使用枚举类型）</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">auracastScanBroadcast</span><span class="o">:</span><span class="n">JLAuracastScanTypeStart</span><span class="p">];</span>
+
+<span class="c1">// 扫描广播回调（新增 error 参数）</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateSearchState:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">state</span><span class="w"> </span><span class="nf">Error:</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 根据错误信息提示或重试（设备繁忙、收听过程中禁止扫描等）</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 正在扫描</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 已停止扫描</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+
+<span class="c1">// 广播列表回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateBroadcastList:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">&lt;</span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*&gt;</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">list</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 选择一个广播后停止扫描并添加音源</span>
+<span class="w">    </span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*</span><span class="n">chosen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="n">firstObject</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">chosen</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">auracastScanBroadcast</span><span class="o">:</span><span class="n">JLAuracastScanTypeStop</span><span class="p">];</span>
+<span class="w">    </span><span class="c1">// 添加当前播放源（命令收发回执，不代表添加成功）</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">addSourceToDev</span><span class="o">:</span><span class="n">chosen</span><span class="w"> </span><span class="n">result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 仅表示命令交互成功与否，成功并不代表设备已开始收听</span>
+<span class="w">        </span><span class="c1">// 请结合 didUpdateCurrentSource 回调判断真正的播放源状态</span>
+<span class="w">    </span><span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="c1">// 当前播放源更新</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateCurrentSource:</span><span class="p">(</span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">source</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 更新 UI 展示当前播放源</span>
+<span class="p">}</span>
+
+<span class="c1">// 主动查询当前播放源</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">getCurrentOperationSource</span><span class="o">:^</span><span class="p">(</span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*</span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 使用 model 同步 UI</span>
+<span class="p">}];</span>
+
+<span class="c1">// 移除当前播放源（命令收发回执）</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">removeDevCurrentSource</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 仅表示命令交互成功与否</span>
+<span class="p">}];</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="3">
+<li><p>获取设备状态(接收端/发射端)</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 拉取设备常用状态（接收端/发射端）</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">auracastGetDevState</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">auracastGetDevState</span><span class="p">];</span>
+
+<span class="c1">// 状态更新回调(接收端)</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateDeviceState:</span><span class="p">(</span><span class="n">JLAuracastDevStateModel</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 使用 state.loginState 刷新 UI</span>
+<span class="p">}</span>
+
+<span class="c1">/// 设备状态更新(发射端)</span>
+<span class="c1">/// - Parameters:</span>
+<span class="c1">///   - mgr: 管理器</span>
+<span class="c1">///   - state: 最新设备状态</span>
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">lancerManager:</span><span class="p">(</span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateDeviceState:</span><span class="p">(</span><span class="n">JLAuracastDevStateModel</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 使用 state.loginState 刷新 UI</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="4">
+<li><p>发射端登录与设置</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 登录验证</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">loginVerify</span><span class="o">:</span><span class="s">@&quot;123456&quot;</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JLAuracastLancerLoginVerifyType</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 根据 status 展示结果</span>
+<span class="p">}];</span>
+
+<span class="c1">// 修改密码</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">changePassword</span><span class="o">:</span><span class="s">@&quot;old&quot;</span><span class="w"> </span><span class="n">newPassword</span><span class="o">:</span><span class="s">@&quot;newpwd&quot;</span><span class="w"> </span><span class="n">Result</span><span class="o">:^</span><span class="p">(</span><span class="n">JLAuracastLancerChangePwdResult</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 展示修改结果</span>
+<span class="p">}];</span>
+
+<span class="c1">// 读取单项设置（示例：广播名称）</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">getBroadcastLancerSetting</span><span class="o">:</span><span class="mh">0x01</span><span class="p">];</span>
+
+<span class="c1">// 读取全部设置</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">getBroadcastLancerSetting</span><span class="p">];</span>
+
+<span class="c1">// 设置项更新回调</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">lancerManager:</span><span class="p">(</span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateSetting:</span><span class="p">(</span><span class="n">JLAuracastLancerSettingMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 使用 mode.broadcastName、mode.audioFormatIndex、mode.encryptEnabled、mode.powerLevel</span>
+<span class="p">}</span>
+
+<span class="c1">// 单独下发设置</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setBroadcastName</span><span class="o">:</span><span class="s">@&quot;DemoBroadcast&quot;</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setAudioFormatIndex</span><span class="o">:</span><span class="mi">11</span><span class="p">];</span>
+<span class="bp">NSData</span><span class="w"> </span><span class="o">*</span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span><span class="w"> </span><span class="c1">// 16 字节密钥</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setEncryptEnabled</span><span class="o">:</span><span class="nb">YES</span><span class="w"> </span><span class="n">code</span><span class="o">:</span><span class="n">code</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setPowerLevel</span><span class="o">:</span><span class="mi">5</span><span class="p">];</span>
+
+<span class="c1">// 合并下发全部设置</span>
+<span class="n">JLAuracastLancerSettingMode</span><span class="w"> </span><span class="o">*</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JLAuracastLancerSettingMode</span><span class="w"> </span><span class="n">new</span><span class="p">];</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">broadcastName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;DemoBroadcast&quot;</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">audioFormatIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">encryptEnabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">broadcastCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">code</span><span class="p">;</span><span class="w"> </span><span class="c1">// 16 字节</span>
+<span class="n">mode</span><span class="p">.</span><span class="n">powerLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setBroadcastLancerSetting</span><span class="o">:</span><span class="n">mode</span><span class="p">];</span>
+<span class="c1">// 或使用内部维护的 settingMode</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">setToBroadcastLancerSetting</span><span class="p">];</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="5">
+<li><p>设备控制(发射端)</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 根据场景进行设备控制</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">shoudown</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">restart</span><span class="p">];</span>
+<span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="n">reset</span><span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>5.3 完整示例代码<a class="headerlink" href="#id3" title="链接到此标题。"></a></h2>
+<div class="highlight-objective-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#import &lt;JL_BLEKit/JL_BLEKit.h&gt;</span>
+<span class="cp">#import &quot;JLAuracastManager.h&quot;</span>
+<span class="cp">#import &quot;JLAuracastLancerManager.h&quot;</span>
+
+<span class="k">@interface</span> <span class="nc">ViewController</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JLAuracastManagerDelegate</span><span class="p">,</span><span class="w"> </span><span class="n">JLAuracastLancerManagerDelegate</span><span class="o">&gt;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="o">*</span><span class="n">bleManager</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="n">recvMgr</span><span class="p">;</span>
+<span class="k">@property</span><span class="w"> </span><span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span><span class="w"> </span><span class="k">strong</span><span class="p">)</span><span class="w"> </span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="o">*</span><span class="n">sendMgr</span><span class="p">;</span>
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">ViewController</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">super</span><span class="w"> </span><span class="n">viewDidLoad</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">JL_ManagerM</span><span class="w"> </span><span class="n">sharedInstance</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithManager</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithManager</span><span class="o">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bleManager</span><span class="p">];</span>
+<span class="w">    </span><span class="nb">self</span><span class="p">.</span><span class="n">sendMgr</span><span class="p">.</span><span class="n">delegate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - JLAuracastManagerDelegate</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateBroadcastList:</span><span class="p">(</span><span class="bp">NSArray</span><span class="o">&lt;</span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*&gt;</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">list</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*</span><span class="n">chosen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="n">firstObject</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">chosen</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">auracastScanBroadcast</span><span class="o">:</span><span class="n">JLAuracastScanTypeStop</span><span class="p">];</span>
+<span class="w">    </span><span class="c1">// 添加当前播放源（命令收发回执，不代表添加成功）</span>
+<span class="w">    </span><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recvMgr</span><span class="w"> </span><span class="n">addSourceToDev</span><span class="o">:</span><span class="n">chosen</span><span class="w"> </span><span class="n">result</span><span class="o">:^</span><span class="p">(</span><span class="n">JL_CMDStatus</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="w"> </span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 仅表示命令交互成功与否，成功并不代表设备已开始收听</span>
+<span class="w">        </span><span class="c1">// 请结合 didUpdateCurrentSource 回调判断真正的播放源状态</span>
+<span class="w">    </span><span class="p">}];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateDeviceState:</span><span class="p">(</span><span class="n">JLAuracastDevStateModel</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">state</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新 UI</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">auracastManager:</span><span class="p">(</span><span class="n">JLAuracastManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateCurrentSource:</span><span class="p">(</span><span class="n">JLBroadcastDataModel</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">source</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">source</span><span class="p">;</span><span class="w"> </span><span class="c1">// 展示当前播放源</span>
+<span class="p">}</span>
+
+<span class="cp">#pragma mark - JLAuracastLancerManagerDelegate</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">lancerManager:</span><span class="p">(</span><span class="n">JLAuracastLancerManager</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mgr</span><span class="w"> </span><span class="nf">didUpdateSetting:</span><span class="p">(</span><span class="n">JLAuracastLancerSettingMode</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nv">mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">mode</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新设置界面</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>5.4 注意事项<a class="headerlink" href="#id4" title="链接到此标题。"></a></h2>
+<ul class="simple">
+<li><p>使用前确保已正确初始化 <code class="docutils literal notranslate"><span class="pre">JL_ManagerM</span></code> 并建立蓝牙连接</p></li>
+<li><p>加密广播添加音源需提供正确的密钥（长度 16 字节）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addSourceToDev:result:</span></code> 的回调仅表示命令交互是否成功，设备是否真正开始收听以 <code class="docutils literal notranslate"><span class="pre">didUpdateCurrentSource</span></code> 回调为准</p></li>
+<li><p>使用枚举 <code class="docutils literal notranslate"><span class="pre">JLAuracastScanTypeStart</span></code> / <code class="docutils literal notranslate"><span class="pre">Stop</span></code> / <code class="docutils literal notranslate"><span class="pre">Query</span></code> 控制扫描流程；结合 <code class="docutils literal notranslate"><span class="pre">didUpdateSearchState:Error:</span></code> 处理设备忙与禁止扫描等场景</p></li>
+<li><p>某些设置项可能需要设备重启后生效，可在设置成功后提示是否重启</p></li>
+<li><p>广播列表可能频繁更新，注意 UI 刷新性能与去重策略</p></li>
+<li><p>建议在主线程派发 UI 更新回调</p></li>
+<li><p>在页面销毁或不再使用管理器时调用 <code class="docutils literal notranslate"><span class="pre">onDestory</span></code> 以释放资源并移除内部监听</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>5.5 参数说明<a class="headerlink" href="#id5" title="链接到此标题。"></a></h2>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>广播数据模型 (JLBroadcastDataModel)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>broadcastName</p></td>
+<td><p>NSString</p></td>
+<td><p>广播名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>broadcastID</p></td>
+<td><p>NSData</p></td>
+<td><p>广播 ID</p></td>
+</tr>
+<tr class="row-even"><td><p>features</p></td>
+<td><p>uint8_t</p></td>
+<td><p>广播特性位</p></td>
+</tr>
+<tr class="row-odd"><td><p>encrypted</p></td>
+<td><p>BOOL</p></td>
+<td><p>是否加密</p></td>
+</tr>
+<tr class="row-even"><td><p>advertiserAddress</p></td>
+<td><p>NSData</p></td>
+<td><p>广播地址原始数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>advertiserAddressString</p></td>
+<td><p>NSString</p></td>
+<td><p>广播地址字符串</p></td>
+</tr>
+<tr class="row-even"><td><p>broadcastKey</p></td>
+<td><p>NSData</p></td>
+<td><p>广播密钥（16 字节）</p></td>
+</tr>
+<tr class="row-odd"><td><p>syncState</p></td>
+<td><p>枚举</p></td>
+<td><p>同步状态</p></td>
+</tr>
+<tr class="row-even"><td><p>errorCode</p></td>
+<td><p>枚举</p></td>
+<td><p>错误码</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><ol class="arabic simple" start="2">
+<li><p>设备状态模型 (JLAuracastDevStateModel)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>loginState</p></td>
+<td><p>枚举(JLAuracastLoginState)</p></td>
+<td><p>登录状态</p></td>
+</tr>
+</tbody>
+</table>
+<p>说明：当前设备状态模型仅包含登录状态；其他状态字段请以设备端实际支持的模型为准。</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="3">
+<li><p>发射端设置模型 (JLAuracastLancerSettingMode)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>属性</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>broadcastName</p></td>
+<td><p>NSString</p></td>
+<td><p>广播名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>audioFormatIndex</p></td>
+<td><p>uint8_t</p></td>
+<td><p>音频格式序号</p></td>
+</tr>
+<tr class="row-even"><td><p>encryptEnabled</p></td>
+<td><p>BOOL</p></td>
+<td><p>是否开启加密</p></td>
+</tr>
+<tr class="row-odd"><td><p>broadcastCode</p></td>
+<td><p>NSData</p></td>
+<td><p>广播密钥（16 字节）</p></td>
+</tr>
+<tr class="row-even"><td><p>powerLevel</p></td>
+<td><p>uint8_t</p></td>
+<td><p>发射功率（1~10 档）</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><ol class="arabic simple" start="4">
+<li><p>管理器关键方法 (JLAuracastManager)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>方法</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>auracastScanBroadcast:</p></td>
+<td><p>开始/停止扫描</p></td>
+</tr>
+<tr class="row-odd"><td><p>addSourceToDev:result:</p></td>
+<td><p>添加当前播放源（回调为命令收发回执，成功不代表添加成功；以 didUpdateCurrentSource 为准）</p></td>
+</tr>
+<tr class="row-even"><td><p>removeDevCurrentSource:</p></td>
+<td><p>移除当前播放源（回调为命令收发回执）</p></td>
+</tr>
+<tr class="row-odd"><td><p>getCurrentOperationSource:</p></td>
+<td><p>查询当前播放源</p></td>
+</tr>
+<tr class="row-even"><td><p>auracastGetDevState</p></td>
+<td><p>拉取常用设备状态</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><ol class="arabic simple" start="5">
+<li><p>发射端设置方法 (JLAuracastLancerManager)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>方法</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>auracastGetDevState</p></td>
+<td><p>拉取常用设备状态(发射端)</p></td>
+</tr>
+<tr class="row-odd"><td><p>loginVerify:Result:</p></td>
+<td><p>登录验证</p></td>
+</tr>
+<tr class="row-even"><td><p>changePassword:newPassword:Result:</p></td>
+<td><p>修改密码</p></td>
+</tr>
+<tr class="row-odd"><td><p>getBroadcastLancerSetting:</p></td>
+<td><p>读取单项设置</p></td>
+</tr>
+<tr class="row-even"><td><p>getBroadcastLancerSetting</p></td>
+<td><p>读取全部设置</p></td>
+</tr>
+<tr class="row-odd"><td><p>setBroadcastName:</p></td>
+<td><p>单独下发广播名称</p></td>
+</tr>
+<tr class="row-even"><td><p>setAudioFormatIndex:</p></td>
+<td><p>单独下发音频格式序号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setEncryptEnabled:code:</p></td>
+<td><p>单独下发加密设置与密钥</p></td>
+</tr>
+<tr class="row-even"><td><p>setPowerLevel:</p></td>
+<td><p>单独下发发射功率</p></td>
+</tr>
+<tr class="row-odd"><td><p>setBroadcastLancerSetting:</p></td>
+<td><p>合并下发全部设置</p></td>
+</tr>
+<tr class="row-even"><td><p>setToBroadcastLancerSetting</p></td>
+<td><p>使用内部模式合并下发</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><ol class="arabic simple" start="6">
+<li><p>设备能力配置 (JLDeviceConfigDongle / JLDeviceConfig/ JLDeviceConfigSoundBox)</p></li>
+</ol>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>接口/属性</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>JLDeviceConfigDongle.isSupportAuracast</p></td>
+<td><p>是否支持 Auracast</p></td>
+</tr>
+<tr class="row-odd"><td><p>.isSupportReceiveAuracast</p></td>
+<td><p>是否支持接收端 Auracast</p></td>
+</tr>
+<tr class="row-even"><td><p>.isSupportLancerAuracast</p></td>
+<td><p>是否支持发射端 Auracast</p></td>
+</tr>
+<tr class="row-odd"><td><p>JLDeviceConfig.deviceAuracastConfigWith:</p></td>
+<td><p>设备能力配置回调（Auracast 专属）</p></td>
+</tr>
+<tr class="row-even"><td><p>JLDeviceConfig.deviceGetAuracastConfigWithUUID:</p></td>
+<td><p>通过 UUID 获取缓存配置</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意：以上接口和字段均来自公开的头文件，示例代码仅用于展示调用流程，实际项目需根据设备能力与业务逻辑进行适配。</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="translation_desc.html" class="btn btn-neutral float-left" title="4. 翻译传输功能使用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="gatt_over_edr_desc.html" class="btn btn-neutral float-right" title="6. GATT Over Edr 连接" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2024, 珠海市杰理科技股份有限公司。
+      <span class="lastupdated">最后更新于 1月 27, 2026.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

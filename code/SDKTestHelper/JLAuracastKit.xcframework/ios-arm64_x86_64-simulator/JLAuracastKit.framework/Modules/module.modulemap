@@ -1,6 +1,0 @@
-framework module JLAuracastKit {
-  umbrella header "JLAuracastKit.h"
-  export *
-
-  module * { export * }
-}

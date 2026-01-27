@@ -117,6 +117,14 @@ NSString *kUI_TURN_TO_DEVICEVC          = @"UI_TURN_TO_DEVICEVC";
     }
 }
 
+- (JLDeviceConfigTws *_Nullable)twsConfigMode {
+    NSString *uuid = _mBleEntityM.mUUID;
+    if (uuid) {
+        return [[JLDeviceConfig share] deviceGetTwsConfigWithUUID:uuid];
+    }
+    return nil;
+}
+
 +(BOOL)isConnectedEdr:(JL_EntityM *)entity{
     
     if (entity.mType != JL_DeviceTypeTWS){
@@ -454,13 +462,13 @@ NSString *kUI_TURN_TO_DEVICEVC          = @"UI_TURN_TO_DEVICEVC";
         CBPeripheral *cbp = newArr[0];
         [_mBleMultiple getEntityWithSearchUUID:cbp.identifier.UUIDString SearchStatus:false Result:^(JL_EntityM * _Nullable entity) {
             if (entity != nil) {
-                kJLLog(JLLOG_INFO, @"ATT连接成功:%@", entity);
+                kJLLog(JLLOG_INFO, @"ATT连接成功:%@ check in History", entity);
                 [self connectEntity:entity Result:^(JL_EntityM_Status status) {
                     
                 }];
             }else{
                 JL_EntityM *newEntity = [self.mBleMultiple makeEntityWithUUID:cbp.identifier.UUIDString];
-                kJLLog(JLLOG_INFO, @"ATT连接成功:%@", newEntity);
+                kJLLog(JLLOG_INFO, @"ATT连接成功:%@ create", newEntity);
                 [self connectEntity:newEntity Result:^(JL_EntityM_Status status) {
                     
                 }];

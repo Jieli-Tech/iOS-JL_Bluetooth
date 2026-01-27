@@ -6,15 +6,15 @@
 	<dict>
 		<key>Headers/JLBmpConvert.h</key>
 		<data>
-		lLc6Ut4vBEYxnRbp4W7JDtz6crI=
+		5urDCSjpqHBbBhVbnkpZDUAqfUQ=
 		</data>
 		<key>Headers/JLBmpConvertKit.h</key>
 		<data>
-		U9YgHIH4FcJY406iHUmLVEwOPzQ=
+		rJo680NKOdjmobcOdHzU3oQ05lQ=
 		</data>
 		<key>Headers/JLBmpConvertOption.h</key>
 		<data>
-		aNa1Jswm+iorvb49Hq30v1r+Ijg=
+		bPMnU/cb1ZNEvx+6wLH+tNggsWM=
 		</data>
 		<key>Headers/JLGifBin.h</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		YIj+79+pcvXWhzuYK0uCp09Bt4U=
+		yF0Q5ofGeBGl7TtNvUrICUVzXe8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -39,33 +39,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lLc6Ut4vBEYxnRbp4W7JDtz6crI=
+			5urDCSjpqHBbBhVbnkpZDUAqfUQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			+lo/SmEORXaoFWjnF/PbrGo2UJP+D/FnPnm+PAO8Rco=
+			Ps103art4k9gGQecTWk7WrWV5o2nY38Acp7pydnv0oc=
 			</data>
 		</dict>
 		<key>Headers/JLBmpConvertKit.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			U9YgHIH4FcJY406iHUmLVEwOPzQ=
+			rJo680NKOdjmobcOdHzU3oQ05lQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			96APcX15hux26dePCtDnNOppcfB5ikBw99Djz0OAZ/k=
+			9kChXiw3D4JFaLjgBlaq+/2FazTsVCbA3kfmrYQ+9/A=
 			</data>
 		</dict>
 		<key>Headers/JLBmpConvertOption.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			aNa1Jswm+iorvb49Hq30v1r+Ijg=
+			bPMnU/cb1ZNEvx+6wLH+tNggsWM=
 			</data>
 			<key>hash2</key>
 			<data>
-			Z2PoH0AvRMgqYkMsqIEDK7g9H49EGbTXzCO8c5MbLEY=
+			4rgpTV2uvjOrNb0Bx7HOxoqBCtJjHaA7CcNBjIImXzY=
 			</data>
 		</dict>
 		<key>Headers/JLGifBin.h</key>

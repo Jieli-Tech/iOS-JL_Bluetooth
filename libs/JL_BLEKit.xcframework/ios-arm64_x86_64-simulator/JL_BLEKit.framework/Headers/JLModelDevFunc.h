@@ -46,9 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设备是否支持 PC Server
 @property (nonatomic, assign, readonly) BOOL isSupportPCServer;
 
-/// 设备是否支持翻译
-@property (nonatomic, assign, readonly) BOOL isSupportTranslate;
-
 /// 是否显示不在线的usb 、sd、linein功能
 @property (nonatomic, assign) BOOL isShowOfflineFunc;
 

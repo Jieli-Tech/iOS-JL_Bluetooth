@@ -15,6 +15,7 @@ struct _R {
   var string: string { .init(bundle: bundle, preferredLanguages: nil, locale: nil) }
   var color: color { .init(bundle: bundle) }
   var image: image { .init(bundle: bundle) }
+  var entitlements: entitlements { .init() }
   var file: file { .init(bundle: bundle) }
   var nib: nib { .init(bundle: bundle) }
   var storyboard: storyboard { .init(bundle: bundle) }
@@ -64,7 +65,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 251 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 351 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -88,6 +89,34 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var ancSettings: RswiftResources.StringResource { .init(key: "ANC settings", tableName: "Localizable", source: source, developmentValue: "ANC settings", comment: nil) }
+
+      /// en translation: APP recording
+      ///
+      /// Key: APP recording
+      ///
+      /// Locales: en, zh-Hans
+      var appRecording: RswiftResources.StringResource { .init(key: "APP recording", tableName: "Localizable", source: source, developmentValue: "APP recording", comment: nil) }
+
+      /// en translation: APP recording download
+      ///
+      /// Key: APP recording download
+      ///
+      /// Locales: en, zh-Hans
+      var appRecordingDownload: RswiftResources.StringResource { .init(key: "APP recording download", tableName: "Localizable", source: source, developmentValue: "APP recording download", comment: nil) }
+
+      /// en translation: APP stop recording
+      ///
+      /// Key: APP stop recording
+      ///
+      /// Locales: en, zh-Hans
+      var appStopRecording: RswiftResources.StringResource { .init(key: "APP stop recording", tableName: "Localizable", source: source, developmentValue: "APP stop recording", comment: nil) }
+
+      /// en translation: Accept
+      ///
+      /// Key: Accept
+      ///
+      /// Locales: en, zh-Hans
+      var accept: RswiftResources.StringResource { .init(key: "Accept", tableName: "Localizable", source: source, developmentValue: "Accept", comment: nil) }
 
       /// en translation: Add
       ///
@@ -152,12 +181,47 @@ struct _R {
       /// Locales: en, zh-Hans
       var album: RswiftResources.StringResource { .init(key: "Album", tableName: "Localizable", source: source, developmentValue: "Album", comment: nil) }
 
+      /// en translation: All
+      ///
+      /// Key: All
+      ///
+      /// Locales: en, zh-Hans
+      var all: RswiftResources.StringResource { .init(key: "All", tableName: "Localizable", source: source, developmentValue: "All", comment: nil) }
+
+      /// en translation: Already Playing
+      ///
+      /// Key: Already Playing
+      ///
+      /// Locales: en, zh-Hans
+      var alreadyPlaying: RswiftResources.StringResource { .init(key: "Already Playing", tableName: "Localizable", source: source, developmentValue: "Already Playing", comment: nil) }
+
       /// en translation: At least one contact must be added
       ///
       /// Key: At least one contact must be added
       ///
       /// Locales: en, zh-Hans
       var atLeastOneContactMustBeAdded: RswiftResources.StringResource { .init(key: "At least one contact must be added", tableName: "Localizable", source: source, developmentValue: "At least one contact must be added", comment: nil) }
+
+      /// en translation: Audio Format
+      ///
+      /// Key: Audio Format
+      ///
+      /// Locales: en, zh-Hans
+      var audioFormat: RswiftResources.StringResource { .init(key: "Audio Format", tableName: "Localizable", source: source, developmentValue: "Audio Format", comment: nil) }
+
+      /// en translation: Audio translation
+      ///
+      /// Key: Audio translation
+      ///
+      /// Locales: en, zh-Hans
+      var audioTranslation: RswiftResources.StringResource { .init(key: "Audio translation", tableName: "Localizable", source: source, developmentValue: "Audio translation", comment: nil) }
+
+      /// en translation: Audio type
+      ///
+      /// Key: Audio type
+      ///
+      /// Locales: en, zh-Hans
+      var audioType: RswiftResources.StringResource { .init(key: "Audio type", tableName: "Localizable", source: source, developmentValue: "Audio type", comment: nil) }
 
       /// en translation: Auracast Assistant
       ///
@@ -194,6 +258,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var back: RswiftResources.StringResource { .init(key: "Back", tableName: "Localizable", source: source, developmentValue: "Back", comment: nil) }
 
+      /// en translation: Broadcast Code
+      ///
+      /// Key: Broadcast Code
+      ///
+      /// Locales: en, zh-Hans
+      var broadcastCode: RswiftResources.StringResource { .init(key: "Broadcast Code", tableName: "Localizable", source: source, developmentValue: "Broadcast Code", comment: nil) }
+
+      /// en translation: Broadcast Name
+      ///
+      /// Key: Broadcast Name
+      ///
+      /// Locales: en, zh-Hans
+      var broadcastName: RswiftResources.StringResource { .init(key: "Broadcast Name", tableName: "Localizable", source: source, developmentValue: "Broadcast Name", comment: nil) }
+
       /// en translation: Browse downloaded
       ///
       /// Key: Browse downloaded
@@ -222,6 +300,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var callLog: RswiftResources.StringResource { .init(key: "Call Log", tableName: "Localizable", source: source, developmentValue: "Call Log", comment: nil) }
 
+      /// en translation: Call translation
+      ///
+      /// Key: Call translation
+      ///
+      /// Locales: en, zh-Hans
+      var callTranslation: RswiftResources.StringResource { .init(key: "Call translation", tableName: "Localizable", source: source, developmentValue: "Call translation", comment: nil) }
+
       /// en translation: Camera
       ///
       /// Key: Camera
@@ -235,6 +320,83 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var cancel: RswiftResources.StringResource { .init(key: "Cancel", tableName: "Localizable", source: source, developmentValue: "Cancel", comment: nil) }
+
+      /// en translation: Cancel BloodOxygen
+      ///
+      /// Key: Cancel BloodOxygen
+      ///
+      /// Locales: en, zh-Hans
+      var cancelBloodOxygen: RswiftResources.StringResource { .init(key: "Cancel BloodOxygen", tableName: "Localizable", source: source, developmentValue: "Cancel BloodOxygen", comment: nil) }
+
+      /// en translation: Cancel HeartRate
+      ///
+      /// Key: Cancel HeartRate
+      ///
+      /// Locales: en, zh-Hans
+      var cancelHeartRate: RswiftResources.StringResource { .init(key: "Cancel HeartRate", tableName: "Localizable", source: source, developmentValue: "Cancel HeartRate", comment: nil) }
+
+      /// en translation: Cancel StepCount
+      ///
+      /// Key: Cancel StepCount
+      ///
+      /// Locales: en, zh-Hans
+      var cancelStepCount: RswiftResources.StringResource { .init(key: "Cancel StepCount", tableName: "Localizable", source: source, developmentValue: "Cancel StepCount", comment: nil) }
+
+      /// en translation: Cancel StepPolling
+      ///
+      /// Key: Cancel StepPolling
+      ///
+      /// Locales: en, zh-Hans
+      var cancelStepPolling: RswiftResources.StringResource { .init(key: "Cancel StepPolling", tableName: "Localizable", source: source, developmentValue: "Cancel StepPolling", comment: nil) }
+
+      /// en translation: Capability
+      ///
+      /// Key: Capability
+      ///
+      /// Locales: en, zh-Hans
+      var capability: RswiftResources.StringResource { .init(key: "Capability", tableName: "Localizable", source: source, developmentValue: "Capability", comment: nil) }
+
+      /// en translation: Change Failed
+      ///
+      /// Key: Change Failed
+      ///
+      /// Locales: en, zh-Hans
+      var changeFailed: RswiftResources.StringResource { .init(key: "Change Failed", tableName: "Localizable", source: source, developmentValue: "Change Failed", comment: nil) }
+
+      /// en translation: Change Password
+      ///
+      /// Key: Change Password
+      ///
+      /// Locales: en, zh-Hans
+      var changePassword: RswiftResources.StringResource { .init(key: "Change Password", tableName: "Localizable", source: source, developmentValue: "Change Password", comment: nil) }
+
+      /// en translation: Change Success
+      ///
+      /// Key: Change Success
+      ///
+      /// Locales: en, zh-Hans
+      var changeSuccess: RswiftResources.StringResource { .init(key: "Change Success", tableName: "Localizable", source: source, developmentValue: "Change Success", comment: nil) }
+
+      /// en translation: Channels
+      ///
+      /// Key: Channels
+      ///
+      /// Locales: en, zh-Hans
+      var channels: RswiftResources.StringResource { .init(key: "Channels", tableName: "Localizable", source: source, developmentValue: "Channels", comment: nil) }
+
+      /// en translation: Charging
+      ///
+      /// Key: Charging
+      ///
+      /// Locales: en, zh-Hans
+      var charging: RswiftResources.StringResource { .init(key: "Charging", tableName: "Localizable", source: source, developmentValue: "Charging", comment: nil) }
+
+      /// en translation: Check Sensor Status
+      ///
+      /// Key: Check Sensor Status
+      ///
+      /// Locales: en, zh-Hans
+      var checkSensorStatus: RswiftResources.StringResource { .init(key: "Check Sensor Status", tableName: "Localizable", source: source, developmentValue: "Check Sensor Status", comment: nil) }
 
       /// en translation: Classic
       ///
@@ -263,6 +425,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var commandExecutionFailed: RswiftResources.StringResource { .init(key: "Command execution failed", tableName: "Localizable", source: source, developmentValue: "Command execution failed", comment: nil) }
+
+      /// en translation: Configuration
+      ///
+      /// Key: Configuration
+      ///
+      /// Locales: en, zh-Hans
+      var configuration: RswiftResources.StringResource { .init(key: "Configuration", tableName: "Localizable", source: source, developmentValue: "Configuration", comment: nil) }
 
       /// en translation: Configure the function of clicking the headset
       ///
@@ -306,6 +475,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var contacts: RswiftResources.StringResource { .init(key: "Contacts", tableName: "Localizable", source: source, developmentValue: "Contacts", comment: nil) }
 
+      /// en translation: Convert image to the device
+      ///
+      /// Key: Convert image to the device
+      ///
+      /// Locales: en, zh-Hans
+      var convertImageToTheDevice: RswiftResources.StringResource { .init(key: "Convert image to the device", tableName: "Localizable", source: source, developmentValue: "Convert image to the device", comment: nil) }
+
       /// en translation: Convert to PCM and play
       ///
       /// Key: Convert to PCM and play
@@ -341,6 +517,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var creating: RswiftResources.StringResource { .init(key: "Creating...", tableName: "Localizable", source: source, developmentValue: "Creating...", comment: nil) }
 
+      /// en translation: Currently Not Connected
+      ///
+      /// Key: Currently Not Connected
+      ///
+      /// Locales: en, zh-Hans
+      var currentlyNotConnected: RswiftResources.StringResource { .init(key: "Currently Not Connected", tableName: "Localizable", source: source, developmentValue: "Currently Not Connected", comment: nil) }
+
       /// en translation: Custom
       ///
       /// Key: Custom
@@ -368,6 +551,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var customizeTransportPath: RswiftResources.StringResource { .init(key: "Customize Transport path", tableName: "Localizable", source: source, developmentValue: "Customize Transport path", comment: nil) }
+
+      /// en translation: Daily HeartRate
+      ///
+      /// Key: Daily HeartRate
+      ///
+      /// Locales: en, zh-Hans
+      var dailyHeartRate: RswiftResources.StringResource { .init(key: "Daily HeartRate", tableName: "Localizable", source: source, developmentValue: "Daily HeartRate", comment: nil) }
 
       /// en translation: Dance
       ///
@@ -425,6 +615,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var deviceEDRAddr: RswiftResources.StringResource { .init(key: "Device EDR addr:", tableName: "Localizable", source: source, developmentValue: "Device EDR addr:", comment: nil) }
 
+      /// en translation: Device Find Command Sent
+      ///
+      /// Key: Device Find Command Sent
+      ///
+      /// Locales: en, zh-Hans
+      var deviceFindCommandSent: RswiftResources.StringResource { .init(key: "Device Find Command Sent", tableName: "Localizable", source: source, developmentValue: "Device Find Command Sent", comment: nil) }
+
+      /// en translation: Device Health Capability
+      ///
+      /// Key: Device Health Capability
+      ///
+      /// Locales: en, zh-Hans
+      var deviceHealthCapability: RswiftResources.StringResource { .init(key: "Device Health Capability", tableName: "Localizable", source: source, developmentValue: "Device Health Capability", comment: nil) }
+
       /// en translation: Device History
       ///
       /// Key: Device History
@@ -445,6 +649,34 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var deviceName: RswiftResources.StringResource { .init(key: "Device Name:", tableName: "Localizable", source: source, developmentValue: "Device Name:", comment: nil) }
+
+      /// en translation: Device Not Support
+      ///
+      /// Key: Device Not Support
+      ///
+      /// Locales: en, zh-Hans
+      var deviceNotSupport: RswiftResources.StringResource { .init(key: "Device Not Support", tableName: "Localizable", source: source, developmentValue: "Device Not Support", comment: nil) }
+
+      /// en translation: Device is searching for phone and is ringing/vibrating.
+      ///
+      /// Key: Device is searching for phone and is ringing/vibrating.
+      ///
+      /// Locales: en, zh-Hans
+      var deviceIsSearchingForPhoneAndIsRingingVibrating: RswiftResources.StringResource { .init(key: "Device is searching for phone and is ringing/vibrating.", tableName: "Localizable", source: source, developmentValue: "Device is searching for phone and is ringing/vibrating.", comment: nil) }
+
+      /// en translation: Device recording upload
+      ///
+      /// Key: Device recording upload
+      ///
+      /// Locales: en, zh-Hans
+      var deviceRecordingUpload: RswiftResources.StringResource { .init(key: "Device recording upload", tableName: "Localizable", source: source, developmentValue: "Device recording upload", comment: nil) }
+
+      /// en translation: Device requests to turn off ringing.
+      ///
+      /// Key: Device requests to turn off ringing.
+      ///
+      /// Locales: en, zh-Hans
+      var deviceRequestsToTurnOffRinging: RswiftResources.StringResource { .init(key: "Device requests to turn off ringing.", tableName: "Localizable", source: source, developmentValue: "Device requests to turn off ringing.", comment: nil) }
 
       /// en translation: Device rings
       ///
@@ -523,6 +755,27 @@ struct _R {
       /// Locales: en, zh-Hans
       var edit: RswiftResources.StringResource { .init(key: "Edit", tableName: "Localizable", source: source, developmentValue: "Edit", comment: nil) }
 
+      /// en translation: Enabled
+      ///
+      /// Key: Enabled
+      ///
+      /// Locales: en, zh-Hans
+      var enabled: RswiftResources.StringResource { .init(key: "Enabled", tableName: "Localizable", source: source, developmentValue: "Enabled", comment: nil) }
+
+      /// en translation: Encrypt
+      ///
+      /// Key: Encrypt
+      ///
+      /// Locales: en, zh-Hans
+      var encrypt: RswiftResources.StringResource { .init(key: "Encrypt", tableName: "Localizable", source: source, developmentValue: "Encrypt", comment: nil) }
+
+      /// en translation: End DailyHeartSync
+      ///
+      /// Key: End DailyHeartSync
+      ///
+      /// Locales: en, zh-Hans
+      var endDailyHeartSync: RswiftResources.StringResource { .init(key: "End DailyHeartSync", tableName: "Localizable", source: source, developmentValue: "End DailyHeartSync", comment: nil) }
+
       /// en translation: End of browsing
       ///
       /// Key: End of browsing
@@ -564,6 +817,20 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var exitTranslateMode: RswiftResources.StringResource { .init(key: "Exit Translate Mode", tableName: "Localizable", source: source, developmentValue: "Exit Translate Mode", comment: nil) }
+
+      /// en translation: Exit mode
+      ///
+      /// Key: Exit mode
+      ///
+      /// Locales: en, zh-Hans
+      var exitMode: RswiftResources.StringResource { .init(key: "Exit mode", tableName: "Localizable", source: source, developmentValue: "Exit mode", comment: nil) }
+
+      /// en translation: Face-to-face translation
+      ///
+      /// Key: Face-to-face translation
+      ///
+      /// Locales: en, zh-Hans
+      var faceToFaceTranslation: RswiftResources.StringResource { .init(key: "Face-to-face translation", tableName: "Localizable", source: source, developmentValue: "Face-to-face translation", comment: nil) }
 
       /// en translation: File
       ///
@@ -649,6 +916,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var filterPrefix: RswiftResources.StringResource { .init(key: "Filter prefix", tableName: "Localizable", source: source, developmentValue: "Filter prefix", comment: nil) }
 
+      /// en translation: Find Device
+      ///
+      /// Key: Find Device
+      ///
+      /// Locales: en, zh-Hans
+      var findDevice: RswiftResources.StringResource { .init(key: "Find Device", tableName: "Localizable", source: source, developmentValue: "Find Device", comment: nil) }
+
+      /// en translation: Find Phone
+      ///
+      /// Key: Find Phone
+      ///
+      /// Locales: en, zh-Hans
+      var findPhone: RswiftResources.StringResource { .init(key: "Find Phone", tableName: "Localizable", source: source, developmentValue: "Find Phone", comment: nil) }
+
       /// en translation: Fir
       ///
       /// Key: Fir
@@ -733,6 +1014,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var headphoneButtonFunctions: RswiftResources.StringResource { .init(key: "Headphone button functions", tableName: "Localizable", source: source, developmentValue: "Headphone button functions", comment: nil) }
 
+      /// en translation: Headphone recording
+      ///
+      /// Key: Headphone recording
+      ///
+      /// Locales: en, zh-Hans
+      var headphoneRecording: RswiftResources.StringResource { .init(key: "Headphone recording", tableName: "Localizable", source: source, developmentValue: "Headphone recording", comment: nil) }
+
+      /// en translation: Headphone stop recording
+      ///
+      /// Key: Headphone stop recording
+      ///
+      /// Locales: en, zh-Hans
+      var headphoneStopRecording: RswiftResources.StringResource { .init(key: "Headphone stop recording", tableName: "Localizable", source: source, developmentValue: "Headphone stop recording", comment: nil) }
+
       /// en translation: Headphone/TWS information
       ///
       /// Key: Headphone/TWS information
@@ -754,6 +1049,27 @@ struct _R {
       /// Locales: en, zh-Hans
       var historyRecord: RswiftResources.StringResource { .init(key: "History Record", tableName: "Localizable", source: source, developmentValue: "History Record", comment: nil) }
 
+      /// en translation: I Got It
+      ///
+      /// Key: I Got It
+      ///
+      /// Locales: en, zh-Hans
+      var iGotIt: RswiftResources.StringResource { .init(key: "I Got It", tableName: "Localizable", source: source, developmentValue: "I Got It", comment: nil) }
+
+      /// en translation: Idle
+      ///
+      /// Key: Idle
+      ///
+      /// Locales: en, zh-Hans
+      var idle: RswiftResources.StringResource { .init(key: "Idle", tableName: "Localizable", source: source, developmentValue: "Idle", comment: nil) }
+
+      /// en translation: Image to Device
+      ///
+      /// Key: Image to Device
+      ///
+      /// Locales: en, zh-Hans
+      var imageToDevice: RswiftResources.StringResource { .init(key: "Image to Device", tableName: "Localizable", source: source, developmentValue: "Image to Device", comment: nil) }
+
       /// en translation: Import configuration
       ///
       /// Key: Import configuration
@@ -768,12 +1084,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var initializing: RswiftResources.StringResource { .init(key: "Initializing...", tableName: "Localizable", source: source, developmentValue: "Initializing...", comment: nil) }
 
+      /// en translation: Input Password
+      ///
+      /// Key: Input Password
+      ///
+      /// Locales: en, zh-Hans
+      var inputPassword: RswiftResources.StringResource { .init(key: "Input Password", tableName: "Localizable", source: source, developmentValue: "Input Password", comment: nil) }
+
       /// en translation: Input text cannot be empty
       ///
       /// Key: Input text cannot be empty
       ///
       /// Locales: en, zh-Hans
       var inputTextCannotBeEmpty: RswiftResources.StringResource { .init(key: "Input text cannot be empty", tableName: "Localizable", source: source, developmentValue: "Input text cannot be empty", comment: nil) }
+
+      /// en translation: Inside the ear
+      ///
+      /// Key: Inside the ear
+      ///
+      /// Locales: en, zh-Hans
+      var insideTheEar: RswiftResources.StringResource { .init(key: "Inside the ear", tableName: "Localizable", source: source, developmentValue: "Inside the ear", comment: nil) }
 
       /// en translation: JL SDK Test Helper
       ///
@@ -789,12 +1119,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var jazz: RswiftResources.StringResource { .init(key: "Jazz", tableName: "Localizable", source: source, developmentValue: "Jazz", comment: nil) }
 
+      /// en translation: Laboratory
+      ///
+      /// Key: Laboratory
+      ///
+      /// Locales: en, zh-Hans
+      var laboratory: RswiftResources.StringResource { .init(key: "Laboratory", tableName: "Localizable", source: source, developmentValue: "Laboratory", comment: nil) }
+
       /// en translation: Latin
       ///
       /// Key: Latin
       ///
       /// Locales: en, zh-Hans
       var latin: RswiftResources.StringResource { .init(key: "Latin", tableName: "Localizable", source: source, developmentValue: "Latin", comment: nil) }
+
+      /// en translation: Left
+      ///
+      /// Key: Left
+      ///
+      /// Locales: en, zh-Hans
+      var left: RswiftResources.StringResource { .init(key: "Left", tableName: "Localizable", source: source, developmentValue: "Left", comment: nil) }
 
       /// en translation: Lighting settings
       ///
@@ -803,12 +1147,47 @@ struct _R {
       /// Locales: en, zh-Hans
       var lightingSettings: RswiftResources.StringResource { .init(key: "Lighting settings", tableName: "Localizable", source: source, developmentValue: "Lighting settings", comment: nil) }
 
+      /// en translation: Local file browsing
+      ///
+      /// Key: Local file browsing
+      ///
+      /// Locales: en, zh-Hans
+      var localFileBrowsing: RswiftResources.StringResource { .init(key: "Local file browsing", tableName: "Localizable", source: source, developmentValue: "Local file browsing", comment: nil) }
+
       /// en translation: Log
       ///
       /// Key: Log
       ///
       /// Locales: en, zh-Hans
       var log: RswiftResources.StringResource { .init(key: "Log", tableName: "Localizable", source: source, developmentValue: "Log", comment: nil) }
+
+      /// en translation: Login
+      ///
+      /// Key: Login
+      ///
+      /// Locales: en, zh-Hans
+      var login: RswiftResources.StringResource { .init(key: "Login", tableName: "Localizable", source: source, developmentValue: "Login", comment: nil) }
+
+      /// en translation: Login Failed
+      ///
+      /// Key: Login Failed
+      ///
+      /// Locales: en, zh-Hans
+      var loginFailed: RswiftResources.StringResource { .init(key: "Login Failed", tableName: "Localizable", source: source, developmentValue: "Login Failed", comment: nil) }
+
+      /// en translation: Login Success
+      ///
+      /// Key: Login Success
+      ///
+      /// Locales: en, zh-Hans
+      var loginSuccess: RswiftResources.StringResource { .init(key: "Login Success", tableName: "Localizable", source: source, developmentValue: "Login Success", comment: nil) }
+
+      /// en translation: Logined
+      ///
+      /// Key: Logined
+      ///
+      /// Locales: en, zh-Hans
+      var logined: RswiftResources.StringResource { .init(key: "Logined", tableName: "Localizable", source: source, developmentValue: "Logined", comment: nil) }
 
       /// en translation: Make sure you are connected to the EDR of the corresponding device
       ///
@@ -837,6 +1216,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var microphoneSwitchingSettings: RswiftResources.StringResource { .init(key: "Microphone switching settings", tableName: "Localizable", source: source, developmentValue: "Microphone switching settings", comment: nil) }
+
+      /// en translation: Mobile Find Device
+      ///
+      /// Key: Mobile Find Device
+      ///
+      /// Locales: en, zh-Hans
+      var mobileFindDevice: RswiftResources.StringResource { .init(key: "Mobile Find Device", tableName: "Localizable", source: source, developmentValue: "Mobile Find Device", comment: nil) }
 
       /// en translation: Mode settings
       ///
@@ -887,6 +1273,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var needToImportTheFileIntoDocumentGif2rgbFolder: RswiftResources.StringResource { .init(key: "Need to import the file into: [Document/gif2rgb] folder", tableName: "Localizable", source: source, developmentValue: "Need to import the file into: [Document/gif2rgb] folder", comment: nil) }
 
+      /// en translation: New Password
+      ///
+      /// Key: New Password
+      ///
+      /// Locales: en, zh-Hans
+      var newPassword: RswiftResources.StringResource { .init(key: "New Password", tableName: "Localizable", source: source, developmentValue: "New Password", comment: nil) }
+
       /// en translation: NickName
       ///
       /// Key: NickName
@@ -907,6 +1300,27 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var noNeedToTransmit: RswiftResources.StringResource { .init(key: "No need to transmit", tableName: "Localizable", source: source, developmentValue: "No need to transmit", comment: nil) }
+
+      /// en translation: Not Charging
+      ///
+      /// Key: Not Charging
+      ///
+      /// Locales: en, zh-Hans
+      var notCharging: RswiftResources.StringResource { .init(key: "Not Charging", tableName: "Localizable", source: source, developmentValue: "Not Charging", comment: nil) }
+
+      /// en translation: Not Login
+      ///
+      /// Key: Not Login
+      ///
+      /// Locales: en, zh-Hans
+      var notLogin: RswiftResources.StringResource { .init(key: "Not Login", tableName: "Localizable", source: source, developmentValue: "Not Login", comment: nil) }
+
+      /// en translation: Not enabled
+      ///
+      /// Key: Not enabled
+      ///
+      /// Locales: en, zh-Hans
+      var notEnabled: RswiftResources.StringResource { .init(key: "Not enabled", tableName: "Localizable", source: source, developmentValue: "Not enabled", comment: nil) }
 
       /// en translation: Not enough space
       ///
@@ -971,6 +1385,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var otaNotStartedYet: RswiftResources.StringResource { .init(key: "OTA not started yet", tableName: "Localizable", source: source, developmentValue: "OTA not started yet", comment: nil) }
 
+      /// en translation: Old Password
+      ///
+      /// Key: Old Password
+      ///
+      /// Locales: en, zh-Hans
+      var oldPassword: RswiftResources.StringResource { .init(key: "Old Password", tableName: "Localizable", source: source, developmentValue: "Old Password", comment: nil) }
+
       /// en translation: Once
       ///
       /// Key: Once
@@ -999,6 +1420,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var otherProtocol: RswiftResources.StringResource { .init(key: "Other Protocol", tableName: "Localizable", source: source, developmentValue: "Other Protocol", comment: nil) }
 
+      /// en translation: Outside the ear
+      ///
+      /// Key: Outside the ear
+      ///
+      /// Locales: en, zh-Hans
+      var outsideTheEar: RswiftResources.StringResource { .init(key: "Outside the ear", tableName: "Localizable", source: source, developmentValue: "Outside the ear", comment: nil) }
+
       /// en translation: PCM 2 WTS Record Finish
       ///
       /// Key: PCM 2 WTS Record Finish
@@ -1012,6 +1440,20 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var pcmToWTS: RswiftResources.StringResource { .init(key: "PCM to WTS", tableName: "Localizable", source: source, developmentValue: "PCM to WTS", comment: nil) }
+
+      /// en translation: Pause All
+      ///
+      /// Key: Pause All
+      ///
+      /// Locales: en, zh-Hans
+      var pauseAll: RswiftResources.StringResource { .init(key: "Pause All", tableName: "Localizable", source: source, developmentValue: "Pause All", comment: nil) }
+
+      /// en translation: Play Mode
+      ///
+      /// Key: Play Mode
+      ///
+      /// Locales: en, zh-Hans
+      var playMode: RswiftResources.StringResource { .init(key: "Play Mode", tableName: "Localizable", source: source, developmentValue: "Play Mode", comment: nil) }
 
       /// en translation: Please allow microphone access
       ///
@@ -1083,12 +1525,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var promptToneReplacement: RswiftResources.StringResource { .init(key: "Prompt tone replacement", tableName: "Localizable", source: source, developmentValue: "Prompt tone replacement", comment: nil) }
 
+      /// en translation: Query RealTimeStep
+      ///
+      /// Key: Query RealTimeStep
+      ///
+      /// Locales: en, zh-Hans
+      var queryRealTimeStep: RswiftResources.StringResource { .init(key: "Query RealTimeStep", tableName: "Localizable", source: source, developmentValue: "Query RealTimeStep", comment: nil) }
+
       /// en translation: Read AI platform information
       ///
       /// Key: Read AI platform information
       ///
       /// Locales: en, zh-Hans
       var readAIPlatformInformation: RswiftResources.StringResource { .init(key: "Read AI platform information", tableName: "Localizable", source: source, developmentValue: "Read AI platform information", comment: nil) }
+
+      /// en translation: Read Health Capability
+      ///
+      /// Key: Read Health Capability
+      ///
+      /// Locales: en, zh-Hans
+      var readHealthCapability: RswiftResources.StringResource { .init(key: "Read Health Capability", tableName: "Localizable", source: source, developmentValue: "Read Health Capability", comment: nil) }
 
       /// en translation: Read back completed
       ///
@@ -1118,6 +1574,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var readyToComplete: RswiftResources.StringResource { .init(key: "Ready to complete", tableName: "Localizable", source: source, developmentValue: "Ready to complete", comment: nil) }
 
+      /// en translation: RealTime Step
+      ///
+      /// Key: RealTime Step
+      ///
+      /// Locales: en, zh-Hans
+      var realTimeStep: RswiftResources.StringResource { .init(key: "RealTime Step", tableName: "Localizable", source: source, developmentValue: "RealTime Step", comment: nil) }
+
       /// en translation: Receive data: %@ bytes.
       ///
       /// Key: Receive data: %@ bytes.
@@ -1132,6 +1595,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var receiveDataBytesNeedResponse: RswiftResources.StringResource1<String> { .init(key: "Receive data: %@ bytes. Need Response", tableName: "Localizable", source: source, developmentValue: "Receive data: %@ bytes. Need Response", comment: nil) }
 
+      /// en translation: Recommended Within 300 Seconds
+      ///
+      /// Key: Recommended Within 300 Seconds
+      ///
+      /// Locales: en, zh-Hans
+      var recommendedWithin300Seconds: RswiftResources.StringResource { .init(key: "Recommended Within 300 Seconds", tableName: "Localizable", source: source, developmentValue: "Recommended Within 300 Seconds", comment: nil) }
+
       /// en translation: Reconnect
       ///
       /// Key: Reconnect
@@ -1145,6 +1615,27 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var recordPCM: RswiftResources.StringResource { .init(key: "Record PCM", tableName: "Localizable", source: source, developmentValue: "Record PCM", comment: nil) }
+
+      /// en translation: Recording only
+      ///
+      /// Key: Recording only
+      ///
+      /// Locales: en, zh-Hans
+      var recordingOnly: RswiftResources.StringResource { .init(key: "Recording only", tableName: "Localizable", source: source, developmentValue: "Recording only", comment: nil) }
+
+      /// en translation: Recording strategy
+      ///
+      /// Key: Recording strategy
+      ///
+      /// Locales: en, zh-Hans
+      var recordingStrategy: RswiftResources.StringResource { .init(key: "Recording strategy", tableName: "Localizable", source: source, developmentValue: "Recording strategy", comment: nil) }
+
+      /// en translation: Recording translation
+      ///
+      /// Key: Recording translation
+      ///
+      /// Locales: en, zh-Hans
+      var recordingTranslation: RswiftResources.StringResource { .init(key: "Recording translation", tableName: "Localizable", source: source, developmentValue: "Recording translation", comment: nil) }
 
       /// en translation: Refresh
       ///
@@ -1209,6 +1700,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var restarting: RswiftResources.StringResource { .init(key: "Restarting", tableName: "Localizable", source: source, developmentValue: "Restarting", comment: nil) }
 
+      /// en translation: Right
+      ///
+      /// Key: Right
+      ///
+      /// Locales: en, zh-Hans
+      var right: RswiftResources.StringResource { .init(key: "Right", tableName: "Localizable", source: source, developmentValue: "Right", comment: nil) }
+
       /// en translation: Ring name:
       ///
       /// Key: Ring name:
@@ -1229,6 +1727,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var spo2: RswiftResources.StringResource { .init(key: "SPO2", tableName: "Localizable", source: source, developmentValue: "SPO2", comment: nil) }
+
+      /// en translation: Sampling rate
+      ///
+      /// Key: Sampling rate
+      ///
+      /// Locales: en, zh-Hans
+      var samplingRate: RswiftResources.StringResource { .init(key: "Sampling rate", tableName: "Localizable", source: source, developmentValue: "Sampling rate", comment: nil) }
 
       /// en translation: Sat
       ///
@@ -1384,6 +1889,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var sendToneCfg: RswiftResources.StringResource { .init(key: "Send tone.cfg", tableName: "Localizable", source: source, developmentValue: "Send tone.cfg", comment: nil) }
 
+      /// en translation: Sensor Status
+      ///
+      /// Key: Sensor Status
+      ///
+      /// Locales: en, zh-Hans
+      var sensorStatus: RswiftResources.StringResource { .init(key: "Sensor Status", tableName: "Localizable", source: source, developmentValue: "Sensor Status", comment: nil) }
+
+      /// en translation: Set Polling Interval
+      ///
+      /// Key: Set Polling Interval
+      ///
+      /// Locales: en, zh-Hans
+      var setPollingInterval: RswiftResources.StringResource { .init(key: "Set Polling Interval", tableName: "Localizable", source: source, developmentValue: "Set Polling Interval", comment: nil) }
+
       /// en translation: Set flashlight
       ///
       /// Key: Set flashlight
@@ -1398,12 +1917,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var setScreenBrightness: RswiftResources.StringResource { .init(key: "Set screen brightness", tableName: "Localizable", source: source, developmentValue: "Set screen brightness", comment: nil) }
 
+      /// en translation: SetStep PollingInterval
+      ///
+      /// Key: SetStep PollingInterval
+      ///
+      /// Locales: en, zh-Hans
+      var setStepPollingInterval: RswiftResources.StringResource { .init(key: "SetStep PollingInterval", tableName: "Localizable", source: source, developmentValue: "SetStep PollingInterval", comment: nil) }
+
       /// en translation: Setting
       ///
       /// Key: Setting
       ///
       /// Locales: en, zh-Hans
       var setting: RswiftResources.StringResource { .init(key: "Setting", tableName: "Localizable", source: source, developmentValue: "Setting", comment: nil) }
+
+      /// en translation: Setup mode
+      ///
+      /// Key: Setup mode
+      ///
+      /// Locales: en, zh-Hans
+      var setupMode: RswiftResources.StringResource { .init(key: "Setup mode", tableName: "Localizable", source: source, developmentValue: "Setup mode", comment: nil) }
 
       /// en translation: Sleep Data
       ///
@@ -1425,6 +1958,27 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var start: RswiftResources.StringResource { .init(key: "Start", tableName: "Localizable", source: source, developmentValue: "Start", comment: nil) }
+
+      /// en translation: Start BloodOxygen
+      ///
+      /// Key: Start BloodOxygen
+      ///
+      /// Locales: en, zh-Hans
+      var startBloodOxygen: RswiftResources.StringResource { .init(key: "Start BloodOxygen", tableName: "Localizable", source: source, developmentValue: "Start BloodOxygen", comment: nil) }
+
+      /// en translation: Start DailyHeartSync
+      ///
+      /// Key: Start DailyHeartSync
+      ///
+      /// Locales: en, zh-Hans
+      var startDailyHeartSync: RswiftResources.StringResource { .init(key: "Start DailyHeartSync", tableName: "Localizable", source: source, developmentValue: "Start DailyHeartSync", comment: nil) }
+
+      /// en translation: Start Heart Rate
+      ///
+      /// Key: Start Heart Rate
+      ///
+      /// Locales: en, zh-Hans
+      var startHeartRate: RswiftResources.StringResource { .init(key: "Start Heart Rate", tableName: "Localizable", source: source, developmentValue: "Start Heart Rate", comment: nil) }
 
       /// en translation: Start OTA
       ///
@@ -1454,6 +2008,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var startRecorder: RswiftResources.StringResource { .init(key: "Start Recorder", tableName: "Localizable", source: source, developmentValue: "Start Recorder", comment: nil) }
 
+      /// en translation: Start StepCount
+      ///
+      /// Key: Start StepCount
+      ///
+      /// Locales: en, zh-Hans
+      var startStepCount: RswiftResources.StringResource { .init(key: "Start StepCount", tableName: "Localizable", source: source, developmentValue: "Start StepCount", comment: nil) }
+
       /// en translation: Start create rgb
       ///
       /// Key: Start create rgb
@@ -1475,6 +2036,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var stopOTA: RswiftResources.StringResource { .init(key: "Stop OTA", tableName: "Localizable", source: source, developmentValue: "Stop OTA", comment: nil) }
 
+      /// en translation: Stop Ringing
+      ///
+      /// Key: Stop Ringing
+      ///
+      /// Locales: en, zh-Hans
+      var stopRinging: RswiftResources.StringResource { .init(key: "Stop Ringing", tableName: "Localizable", source: source, developmentValue: "Stop Ringing", comment: nil) }
+
+      /// en translation: Stop Search
+      ///
+      /// Key: Stop Search
+      ///
+      /// Locales: en, zh-Hans
+      var stopSearch: RswiftResources.StringResource { .init(key: "Stop Search", tableName: "Localizable", source: source, developmentValue: "Stop Search", comment: nil) }
+
       /// en translation: Stop recorder
       ///
       /// Key: Stop recorder
@@ -1495,6 +2070,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var sun: RswiftResources.StringResource { .init(key: "Sun", tableName: "Localizable", source: source, developmentValue: "Sun", comment: nil) }
+
+      /// en translation: Switch Source
+      ///
+      /// Key: Switch Source
+      ///
+      /// Locales: en, zh-Hans
+      var switchSource: RswiftResources.StringResource { .init(key: "Switch Source", tableName: "Localizable", source: source, developmentValue: "Switch Source", comment: nil) }
 
       /// en translation: Sync Contacts
       ///
@@ -1538,6 +2120,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var theDownloadedFilesAreStoredInTheTransportFilesFolderOfDocumentDirectory: RswiftResources.StringResource { .init(key: "The downloaded files are stored in the [/transportFiles] folder of [documentDirectory]", tableName: "Localizable", source: source, developmentValue: "The downloaded files are stored in the [/transportFiles] folder of [documentDirectory]", comment: nil) }
 
+      /// en translation: The file needs to be imported into: [Document/image2bin] folder
+      ///
+      /// Key: The file needs to be imported into: [Document/image2bin] folder
+      ///
+      /// Locales: en, zh-Hans
+      var theFileNeedsToBeImportedIntoDocumentImage2binFolder: RswiftResources.StringResource { .init(key: "The file needs to be imported into: [Document/image2bin] folder", tableName: "Localizable", source: source, developmentValue: "The file needs to be imported into: [Document/image2bin] folder", comment: nil) }
+
       /// en translation: The transmission is in progress. Repeated initiation is not allowed
       ///
       /// Key: The transmission is in progress. Repeated initiation is not allowed
@@ -1559,6 +2148,20 @@ struct _R {
       /// Locales: en, zh-Hans
       var thu: RswiftResources.StringResource { .init(key: "Thu", tableName: "Localizable", source: source, developmentValue: "Thu", comment: nil) }
 
+      /// en translation: Timeout (seconds)
+      ///
+      /// Key: Timeout (seconds)
+      ///
+      /// Locales: en, zh-Hans
+      var timeoutSeconds: RswiftResources.StringResource { .init(key: "Timeout (seconds)", tableName: "Localizable", source: source, developmentValue: "Timeout (seconds)", comment: nil) }
+
+      /// en translation: Timeout (seconds): Default: 60
+      ///
+      /// Key: Timeout (seconds): Default: 60
+      ///
+      /// Locales: en, zh-Hans
+      var timeoutSecondsDefault60: RswiftResources.StringResource { .init(key: "Timeout (seconds): Default: 60", tableName: "Localizable", source: source, developmentValue: "Timeout (seconds): Default: 60", comment: nil) }
+
       /// en translation: Tips
       ///
       /// Key: Tips
@@ -1579,6 +2182,20 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var translateTransfer: RswiftResources.StringResource { .init(key: "Translate transfer", tableName: "Localizable", source: source, developmentValue: "Translate transfer", comment: nil) }
+
+      /// en translation: Translation configuration
+      ///
+      /// Key: Translation configuration
+      ///
+      /// Locales: en, zh-Hans
+      var translationConfiguration: RswiftResources.StringResource { .init(key: "Translation configuration", tableName: "Localizable", source: source, developmentValue: "Translation configuration", comment: nil) }
+
+      /// en translation: Translation mode
+      ///
+      /// Key: Translation mode
+      ///
+      /// Locales: en, zh-Hans
+      var translationMode: RswiftResources.StringResource { .init(key: "Translation mode", tableName: "Localizable", source: source, developmentValue: "Translation mode", comment: nil) }
 
       /// en translation: Transmitting...
       ///
@@ -1622,12 +2239,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var turnOnOffStatusNotifications: RswiftResources.StringResource { .init(key: "Turn on/off status notifications", tableName: "Localizable", source: source, developmentValue: "Turn on/off status notifications", comment: nil) }
 
+      /// en translation: Tws Health
+      ///
+      /// Key: Tws Health
+      ///
+      /// Locales: en, zh-Hans
+      var twsHealth: RswiftResources.StringResource { .init(key: "Tws Health", tableName: "Localizable", source: source, developmentValue: "Tws Health", comment: nil) }
+
       /// en translation: Unconnected
       ///
       /// Key: Unconnected
       ///
       /// Locales: en, zh-Hans
       var unconnected: RswiftResources.StringResource { .init(key: "Unconnected", tableName: "Localizable", source: source, developmentValue: "Unconnected", comment: nil) }
+
+      /// en translation: Unencrypted
+      ///
+      /// Key: Unencrypted
+      ///
+      /// Locales: en, zh-Hans
+      var unencrypted: RswiftResources.StringResource { .init(key: "Unencrypted", tableName: "Localizable", source: source, developmentValue: "Unencrypted", comment: nil) }
 
       /// en translation: Unopened
       ///
@@ -1664,6 +2295,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var upgradingPhase2: RswiftResources.StringResource { .init(key: "Upgrading (Phase 2)", tableName: "Localizable", source: source, developmentValue: "Upgrading (Phase 2)", comment: nil) }
 
+      /// en translation: Use local resources only
+      ///
+      /// Key: Use local resources only
+      ///
+      /// Locales: en, zh-Hans
+      var useLocalResourcesOnly: RswiftResources.StringResource { .init(key: "Use local resources only", tableName: "Localizable", source: source, developmentValue: "Use local resources only", comment: nil) }
+
       /// en translation: Using ATT communication
       ///
       /// Key: Using ATT communication
@@ -1684,6 +2322,13 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var watchDial: RswiftResources.StringResource { .init(key: "Watch Dial", tableName: "Localizable", source: source, developmentValue: "Watch Dial", comment: nil) }
+
+      /// en translation: Weak Password
+      ///
+      /// Key: Weak Password
+      ///
+      /// Locales: en, zh-Hans
+      var weakPassword: RswiftResources.StringResource { .init(key: "Weak Password", tableName: "Localizable", source: source, developmentValue: "Weak Password", comment: nil) }
 
       /// en translation: Weather
       ///
@@ -1713,6 +2358,13 @@ struct _R {
       /// Locales: en, zh-Hans
       var weight: RswiftResources.StringResource { .init(key: "Weight", tableName: "Localizable", source: source, developmentValue: "Weight", comment: nil) }
 
+      /// en translation: Whether to Ring
+      ///
+      /// Key: Whether to Ring
+      ///
+      /// Locales: en, zh-Hans
+      var whetherToRing: RswiftResources.StringResource { .init(key: "Whether to Ring", tableName: "Localizable", source: source, developmentValue: "Whether to Ring", comment: nil) }
+
       /// en translation: configuration successful
       ///
       /// Key: configuration successful
@@ -1740,6 +2392,20 @@ struct _R {
       ///
       /// Locales: en, zh-Hans
       var duration: RswiftResources.StringResource { .init(key: "duration", tableName: "Localizable", source: source, developmentValue: "duration", comment: nil) }
+
+      /// en translation: example 240
+      ///
+      /// Key: example 240
+      ///
+      /// Locales: en, zh-Hans
+      var example240: RswiftResources.StringResource { .init(key: "example 240", tableName: "Localizable", source: source, developmentValue: "example 240", comment: nil) }
+
+      /// en translation: inEar
+      ///
+      /// Key: inEar
+      ///
+      /// Locales: en, zh-Hans
+      var inEar: RswiftResources.StringResource { .init(key: "inEar", tableName: "Localizable", source: source, developmentValue: "inEar", comment: nil) }
 
       /// en translation: index
       ///
@@ -1769,6 +2435,27 @@ struct _R {
       /// Locales: en, zh-Hans
       var jsonFormatError: RswiftResources.StringResource { .init(key: "json format error", tableName: "Localizable", source: source, developmentValue: "json format error", comment: nil) }
 
+      /// en translation: notPlaying
+      ///
+      /// Key: notPlaying
+      ///
+      /// Locales: en, zh-Hans
+      var notPlaying: RswiftResources.StringResource { .init(key: "notPlaying", tableName: "Localizable", source: source, developmentValue: "notPlaying", comment: nil) }
+
+      /// en translation: off
+      ///
+      /// Key: off
+      ///
+      /// Locales: en, zh-Hans
+      var off: RswiftResources.StringResource { .init(key: "off", tableName: "Localizable", source: source, developmentValue: "off", comment: nil) }
+
+      /// en translation: on
+      ///
+      /// Key: on
+      ///
+      /// Locales: en, zh-Hans
+      var on: RswiftResources.StringResource { .init(key: "on", tableName: "Localizable", source: source, developmentValue: "on", comment: nil) }
+
       /// en translation: operation type
       ///
       /// Key: operation type
@@ -1790,12 +2477,26 @@ struct _R {
       /// Locales: en, zh-Hans
       var peak: RswiftResources.StringResource { .init(key: "peak", tableName: "Localizable", source: source, developmentValue: "peak", comment: nil) }
 
+      /// en translation: playing
+      ///
+      /// Key: playing
+      ///
+      /// Locales: en, zh-Hans
+      var playing: RswiftResources.StringResource { .init(key: "playing", tableName: "Localizable", source: source, developmentValue: "playing", comment: nil) }
+
       /// en translation: reboot
       ///
       /// Key: reboot
       ///
       /// Locales: en, zh-Hans
       var reboot: RswiftResources.StringResource { .init(key: "reboot", tableName: "Localizable", source: source, developmentValue: "reboot", comment: nil) }
+
+      /// en translation: remove
+      ///
+      /// Key: remove
+      ///
+      /// Locales: en, zh-Hans
+      var remove: RswiftResources.StringResource { .init(key: "remove", tableName: "Localizable", source: source, developmentValue: "remove", comment: nil) }
 
       /// en translation: responde data: %@ bytes.
       ///
@@ -1889,7 +2590,7 @@ struct _R {
     var themeColor: RswiftResources.ColorResource { .init(name: "themeColor", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 80 images.
+  /// This `_R.image` struct is generated, and contains static references to 81 images.
   struct image {
     let bundle: Foundation.Bundle
 
@@ -1928,6 +2629,9 @@ struct _R {
 
     /// Image `cell_charge`.
     var cell_charge: RswiftResources.ImageResource { .init(name: "cell_charge", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `convert_1.jpg`.
+    var convert_1Jpg: RswiftResources.ImageResource { .init(name: "convert_1.jpg", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
 
     /// Image `csbg_001`.
     var csbg_001: RswiftResources.ImageResource { .init(name: "csbg_001", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
@@ -2134,7 +2838,13 @@ struct _R {
     var tab_icon_settle_sel: RswiftResources.ImageResource { .init(name: "tab_icon_settle_sel", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 10 resource files.
+  /// This `_R.entitlements` struct is generated, and contains static references to 0 properties.
+  struct entitlements {
+    let comAppleDeveloperNetworkingHotspotConfiguration: Bool = true
+    let comAppleDeveloperNetworkingWifiInfo: Bool = true
+  }
+
+  /// This `_R.file` struct is generated, and contains static references to 13 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -2150,11 +2860,17 @@ struct _R {
     /// Resource file `CodeExample.plist`.
     var codeExamplePlist: RswiftResources.FileResource { .init(name: "CodeExample", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
 
+    /// Resource file `README.md`.
+    var readmeMd: RswiftResources.FileResource { .init(name: "README", pathExtension: "md", bundle: bundle, locale: LocaleReference.none) }
+
     /// Resource file `VIE1.png`.
     var vie1Png: RswiftResources.FileResource { .init(name: "VIE1", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `VIE2.png`.
     var vie2Png: RswiftResources.FileResource { .init(name: "VIE2", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `convert_1.jpg`.
+    var convert_1Jpg: RswiftResources.FileResource { .init(name: "convert_1", pathExtension: "jpg", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `converted.pcm`.
     var convertedPcm: RswiftResources.FileResource { .init(name: "converted", pathExtension: "pcm", bundle: bundle, locale: LocaleReference.none) }
@@ -2164,6 +2880,9 @@ struct _R {
 
     /// Resource file `csbg_002.png`.
     var csbg_002Png: RswiftResources.FileResource { .init(name: "csbg_002", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `d.jla`.
+    var dJla: RswiftResources.FileResource { .init(name: "d", pathExtension: "jla", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `test_translation.opus`.
     var test_translationOpus: RswiftResources.FileResource { .init(name: "test_translation", pathExtension: "opus", bundle: bundle, locale: LocaleReference.none) }

@@ -54,15 +54,6 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     return [[self class] colorWithR:((rgbValue & 0xFF0000) >> 16) G:((rgbValue & 0xFF00) >> 8) B:(rgbValue & 0xFF) A:1.0];
 }
 
-+ (instancetype)colorFromHexString:(NSString *)hexString alph:(float)alpha{
-    unsigned rgbValue = 0;
-    hexString = [hexString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    NSScanner *scanner = [NSScanner scannerWithString:hexString];
-    [scanner scanHexInt:&rgbValue];
-    
-    return [[self class] colorWithR:((rgbValue & 0xFF0000) >> 16) G:((rgbValue & 0xFF00) >> 8) B:(rgbValue & 0xFF) A:alpha];
-}
-
 
 #pragma mark - Hex from Color
 - (NSString *)hexString

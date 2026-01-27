@@ -143,19 +143,6 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
                         [wSelf checkDeviceInfo:wSelf.mBleEntityM];
                     }
                     //if (wSelf.mBleEntityM.mType == 1) {//耳机需要
-                    if (wSelf.mBleEntityM.mType == JL_DeviceTypeTWS) {//耳机需要
-                        /*--- 用游戏模式的发包方式 ---*/
-                        [wSelf.mBleEntityM.mCmdManager.mChargingBinManager cmdGetLowDelay:^(uint16_t mtu, uint32_t delay) {
-                            kJLLog(JLLOG_DEBUG,@"----> In GAME MODE...【MTU：%d】【DELAY：%d】",mtu,delay);
-                            int delay_time = 50;
-                            if (delay > 0) delay_time = delay;
-                            
-                            int mtu_defult = 45;
-                            if (mtu > 0) mtu_defult = mtu;
-
-                            [wSelf.mBleEntityM setGameMode:YES MTU:mtu_defult Delay:delay_time];
-                        }];
-                    }
                     
                     BOOL isId3_play = [[JLCacheBox cacheUuid:wSelf.mBleUUID] isID3_PLAY];
                     if (isId3_play) {
@@ -217,6 +204,9 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
             
             //充电仓特殊处理
             [self handleWithChargeBin];
+            
+            //查询 tws 的配置信息
+            [self handleWithTwsConfig];
         }
     }];
 }
@@ -345,6 +335,12 @@ NSString *kUI_JL_UUID_PREPARATE_OK = @"UI_JL_UUID_PREPARATE_OK";
         }];
 
     }
+}
+
+//MARK: - 获取 tws 耳机配置相关
+-(void)handleWithTwsConfig {
+    kJLLog(JLLOG_INFO, @"--->Get device extended config.");
+    [[JLDeviceConfig share] deviceConfigGet:self.mBleEntityM.mCmdManager];
 }
 
 //MARK: - 扩展信息检查更新

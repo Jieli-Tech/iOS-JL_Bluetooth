@@ -150,6 +150,7 @@ iOS-JL_Bluetooth/
 
 | Version | Release Date | Editor | Major Updates |
 |---------|--------------|--------|---------------|
+| **v1.14.0** | 2026/01/27 | EzioChan | 1. New Features<br/>(1) Added coexistence of LE Audio and RCSP<br/>(2) Added AI translation feature<br/>(3) Added Auracast Broadcast feature<br/>(4) Added support for the GATT over BR/EDR connection method<br/>2. Fixes<br/>(1) Modified local resources of the color-screen repository |
 | **v1.13.0** | 2025/07/18 | EzioChen | • Added color screen case feature support<br/>• Added screen brightness control<br/>• Added screen saver program control<br/>• Added weather information synchronization |
 | **v1.12.0** | 2024/11/22 | EzioChen | • Added AC707N compatible custom watch face image conversion<br/>• Separated image conversion tool as independent module library |
 | **v1.11.0** | 2024/03/15 | EzioChen | • Added watch face extension parameters and supplemented AI watch face process<br/>• Added 4G module OTA functionality<br/>• Fixed known issues |

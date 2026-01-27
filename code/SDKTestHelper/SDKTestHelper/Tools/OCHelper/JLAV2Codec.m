@@ -92,13 +92,13 @@
 + (void)encodeFile:(NSString *)inFilePath outFilePath:(NSString *)outFilePath Option:(JLAV2CodeInfo *)option  Result:(JLAV2CodecBlock) result {
     if ([[self share] isEncoding]) {
         result(nil, outFilePath, [NSError errorWithDomain:@"Encoder is already running" code:0 userInfo:nil]);
-        NSLog(@"Encoder is already running<<");
+        //NSLog(@"Encoder is already running<<");
         return;
     }
     NSData *encodeData = [NSData dataWithContentsOfFile:inFilePath];
     if (encodeData.length == 0) {
         result(nil, outFilePath, [NSError errorWithDomain:@"Encode data is empty" code:0 userInfo:nil]);
-        NSLog(@"Encode data is empty<<");
+        //NSLog(@"Encode data is empty<<");
         return;
     }
     [self share].encodeData = [NSMutableData new];
@@ -112,13 +112,13 @@
 + (void)decodeFile:(NSString *)inFilePath outFilePath:(NSString *)outFilePath Option:(JLAV2CodeInfo *)option ApplyConfig:(JLAV2CodecConfig * _Nullable)config Result:(JLAV2CodecBlock) result {
     if ([[self share] isDecoding]) {
         result(nil, outFilePath, [NSError errorWithDomain:@"Decoder is already running" code:0 userInfo:nil]);
-        NSLog(@"Decoder is already running<<");
+        //NSLog(@"Decoder is already running<<");
         return;
     }
     NSData *decodeData = [NSData dataWithContentsOfFile:inFilePath];
     if (decodeData.length == 0) {
         result(nil, outFilePath, [NSError errorWithDomain:@"Decode data is empty" code:0 userInfo:nil]);
-        NSLog(@"Decode data is empty<<");
+        //NSLog(@"Decode data is empty<<");
         return;
     }
     [self share].decodeData = [NSMutableData new];
@@ -154,7 +154,7 @@
 - (BOOL)createEncode:(JLAV2CodeInfo *)info{
 
     if (_encodeThread) {
-        NSLog(@"%@, Encoder is already running", _encodeThread);
+        //NSLog(@"%@, Encoder is already running", _encodeThread);
         return NO;
     }
     
@@ -163,14 +163,14 @@
     // Get encoder ops
     _encOps = get_jla_v2_enc_ops();
     if (!_encOps) {
-        NSLog(@"Failed to get encoder ops");
+        //NSLog(@"Failed to get encoder ops");
         return NO;
     }
     // Allocate memory
     size_t workSize = _encOps->need_dcbuf_size(&c_info);
     int respx = posix_memalign(&_encWorkBuf, 8, workSize);
     if (respx != 0) {
-        NSLog(@"Failed to allocate encoder memory:%d", respx);
+        //NSLog(@"Failed to allocate encoder memory:%d", respx);
         return NO;
     }
     size_t scratchSize = _encOps->need_stbuf_size(&c_info);
@@ -202,16 +202,10 @@
         [self encodeData:nil error:[self errorWithCode:JLAV2CodecErrorInitializationFailed userInfo:@{@"errMsg": @"Encoder is not running"}]];
         return;
     }
-    BOOL shouldRun = false;
     os_unfair_lock_lock(&_encodeLock);
-    if (_encInputBuffer.length == 0) {
-        shouldRun = true;
-    }
     [_encInputBuffer appendData:pcmData];
     os_unfair_lock_unlock(&_encodeLock);
-    if (shouldRun) {
-        dispatch_semaphore_signal(_encodeSemaphore);
-    }
+    dispatch_semaphore_signal(_encodeSemaphore);
 }
 
 #pragma mark - 编码器配置
@@ -250,18 +244,15 @@
     while (1) {
         if (_encodeSemaphore == nil) break;
         dispatch_semaphore_wait(_encodeSemaphore, DISPATCH_TIME_FOREVER);
-        static int Lcnt = 0;
-        Lcnt++;
-        if (Lcnt >= 577) {
-            Lcnt = Lcnt;
-        }
         if (_encWorkBuf && _encScratch) {
             int ret = _encOps->run(_encWorkBuf, _encScratch);
             if (ret != 0) {
                 [self encodeData:nil error:[self errorWithCode:JLAV2CodecErrorProcessingFailed userInfo:@{@"errMsg": @"Encoder failed"}]];
-                break;
+                //NSLog(@"JLAV2Codec: encodeThread error: %d", ret);
             }
+            //NSLog(@"JLAV2Codec: encodeThread encode done");
         }
+        //NSLog(@"JLAV2Codec: encodeThread end one less data:%lu", (unsigned long)_encInputBuffer.length);
     }
 }
 
@@ -323,16 +314,10 @@
         [self decodeData:nil error:[self errorWithCode:JLAV2CodecErrorInitializationFailed userInfo:@{@"errMsg": @"Decoder is not running"}]];
         return;
     }
-    BOOL shouldRun = false;
     os_unfair_lock_lock(&_decodeLock);
-    if (_decInputBuffer.length == 0) {
-        shouldRun = true;
-    }
     [_decInputBuffer appendData:encodeData];
     os_unfair_lock_unlock(&_decodeLock);
-    if (shouldRun) {
-        dispatch_semaphore_signal(_decodeSemaphore);
-    }
+    dispatch_semaphore_signal(_decodeSemaphore);
 }
 
 
@@ -390,12 +375,16 @@
     while (1) {
         if (_decodeSemaphore == nil) break;
         dispatch_semaphore_wait(_decodeSemaphore, DISPATCH_TIME_FOREVER);
+          //NSLog(@"JLAV2Codec: decodeThread start data:%lu", (unsigned long)_decInputBuffer.length);
         if (_decWorkBuf && _decScratch) {
             uint32_t ret = _decOps->run(_decWorkBuf, _decScratch);
             if (ret != 0) {
                 [self decodeData:nil error:[self errorWithCode:JLAV2CodecErrorProcessingFailed userInfo:@{@"errMsg": @"Decoder failed"}]];
+                //NSLog(@"JLAV2Codec: decodeThread error: %d", ret);
             }
+            //NSLog(@"JLAV2Codec: decodeThread decode done");
         }
+          //NSLog(@"JLAV2Codec: decodeThread end one less data:%lu", (unsigned long)_decInputBuffer.length);
     }
 }
 
@@ -451,7 +440,7 @@
         return;
     }
     if (![_delegate respondsToSelector:@selector(encodecData:error:)]) {
-        NSLog(@"JLAV2Codec: encodecData:error: is not implemented");
+        //NSLog(@"JLAV2Codec: encodecData:error: is not implemented");
         return;
     }
     if ([NSThread isMainThread]) {
@@ -474,7 +463,7 @@
         return;
     }
     if (![_delegate respondsToSelector:@selector(decodecData:error:)]) {
-        NSLog(@"JLAV2Codec: decodecData:error: is not implemented");
+          //NSLog(@"JLAV2Codec: decodecData:error: is not implemented");
     }
     if ([NSThread isMainThread]) {
         [_delegate decodecData:data error:error];
@@ -492,12 +481,23 @@ static u16 encoder_input_callback(void* priv, u8* buf, u16 len) {
     os_unfair_lock_lock(&self->_encodeLock);
     if (self->_encInputBuffer.length < len) {
         os_unfair_lock_unlock(&self->_encodeLock);
+        ////NSLog(@"JLAV2Codec: encoder_input_callback less data: %d, len: %d", (int)self->_encInputBuffer.length, len);
         return 0;
     }
     NSData *data = [self->_encInputBuffer subdataWithRange:NSMakeRange(0, len)];
     [self->_encInputBuffer replaceBytesInRange:NSMakeRange(0, len) withBytes:NULL length:0];
     u16 copySize = (u16)data.length;
     memcpy(buf, data.bytes, copySize);
+    if(len == 2) {
+        uint16_t *size = (uint16_t *)[data bytes];
+        uint16_t value = size[0];
+        if (self->_encInputBuffer.length < value) {
+            os_unfair_lock_unlock(&self->_encodeLock);
+            //NSLog(@"JLAV2Codec: encoder_input_callback not enough data: %d, len: %d", (int)self->_encInputBuffer.length, len);
+            return 0;
+        }
+    }
+    //NSLog(@"JLAV2Codec: encoder_input_callback start data:%@", data);
     //从S32文件中输入S24位宽数据处理.
     if (self->_currentEncodeConfig.isSupportBit24) {
         int i;
@@ -523,12 +523,13 @@ static u16 encoder_output_callback(void* priv, u8* buf, u16 len) {
     }
     if (self->_encInputBuffer.length > 0) {
         dispatch_semaphore_signal(self->_encodeSemaphore);
+        //NSLog(@"JLAV2Codec: encoder_output_callback continue");
     } else {
         if (self->_encodeData.length > 0 && self->_encodeBlock) {
             [[NSFileManager defaultManager] removeItemAtPath:self->_encodeFilePath error:nil];
             [[NSFileManager defaultManager] createFileAtPath:self->_encodeFilePath contents:self->_encodeData attributes:nil];
             self->_encodeBlock(self->_encodeData, self->_encodeFilePath,nil);
-            NSLog(@"JLAV2Codec: encodeFile Finished, outFilePath:%@", self->_encodeFilePath);
+            //NSLog(@"JLAV2Codec: encodeFile Finished, outFilePath:%@", self->_encodeFilePath);
             [self destoryEncode];
         }
     }
@@ -540,12 +541,23 @@ static u16 decoder_input_callback(void* priv, u8* buf, u16 len) {
     os_unfair_lock_lock(&self->_decodeLock);
     if (self->_decInputBuffer.length < len) {
         os_unfair_lock_unlock(&self->_decodeLock);
+          //NSLog(@"JLAV2Codec: decoder_input_callback not enough data: %d", (int)self->_decInputBuffer.length);
         return 0;
     }
     NSData *data = [self->_decInputBuffer subdataWithRange:NSMakeRange(0, len)];
     [self->_decInputBuffer replaceBytesInRange:NSMakeRange(0, len) withBytes:NULL length:0];
     u16 copySize = (u16)data.length;
     memcpy(buf, data.bytes, copySize);
+    if (len == 2) {
+        uint16_t *size = (uint16_t *)[data bytes];
+        uint16_t value = size[0];
+        if (self->_decInputBuffer.length < value) {
+            os_unfair_lock_unlock(&self->_decodeLock);
+            //NSLog(@"JLAV2Codec: decoder_input_callback not enough data: %d", (int)self->_decInputBuffer.length);
+            return 0;
+        }
+    }
+    //NSLog(@"JLAV2Codec: decoder_input_callback start data:%@", data);
     if (self->_currentDecodeConfig.isSupportBit24) {
         int i;
         int lenint = len / 4;
@@ -563,6 +575,7 @@ static u16 decoder_output_callback(void* priv, u8* buf, u16 len) {
     JLAV2Codec *self = (__bridge JLAV2Codec *)priv;
     NSData *data = [NSData dataWithBytes:buf length:len];
     [self decodeData:data error:nil];
+    //NSLog(@"JLAV2Codec: decoder_output_callback start");
     if (self->_decodeBlock && self->_decodeData) {
         os_unfair_lock_lock(&self->_decodeLock);
         [self->_decodeData appendData:data];
@@ -570,16 +583,20 @@ static u16 decoder_output_callback(void* priv, u8* buf, u16 len) {
     }
     if (self->_decInputBuffer.length > 0) {
         dispatch_semaphore_signal(self->_decodeSemaphore);
+          //NSLog(@"JLAV2Codec: decoder_output_callback continue");
     } else {
         if (self->_decodeData.length > 0 && self->_decodeBlock) {
             [[NSFileManager defaultManager] removeItemAtPath:self->_decodeFilePath error:nil];
             [[NSFileManager defaultManager] createFileAtPath:self->_decodeFilePath contents:self->_decodeData attributes:nil];
             self->_decodeBlock(self->_decodeData, self->_decodeFilePath, nil);
-            NSLog(@"JLAV2Codec: decodeFile Finished, outFilePath:%@", self->_decodeFilePath);
+            //NSLog(@"JLAV2Codec: decodeFile Finished, outFilePath:%@", self->_decodeFilePath);
             [self destoryDecode];
         }
+          //NSLog(@"JLAV2Codec: decoder_output_callback end");
     }
     return len;
 }
+
+
 
 @end

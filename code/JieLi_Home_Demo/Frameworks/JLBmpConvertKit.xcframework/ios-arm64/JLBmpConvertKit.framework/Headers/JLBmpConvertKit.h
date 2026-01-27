@@ -17,8 +17,8 @@ FOUNDATION_EXPORT const unsigned char JLBmpConvertKitVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <JLBmpConvertKit/PublicHeader.h>
 
 
+#import <JLBmpConvertKit/JLBmpConvertOption.h>
 #import <JLBmpConvertKit/JLBmpConvert.h>
 #import <JLBmpConvertKit/JLGifBin.h>
 #import <JLBmpConvertKit/JLImageConvertResult.h>
-#import <JLBmpConvertKit/JLBmpConvertOption.h>
 
