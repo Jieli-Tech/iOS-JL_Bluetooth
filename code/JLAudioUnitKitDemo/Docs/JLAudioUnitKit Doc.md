@@ -73,6 +73,19 @@ JLAudioUnitPlayer *pcmPlayer = [[JLAudioUnitPlayer alloc] initWithPCMFormat:pcmF
 - 文件解码：输入 Opus，输出 PCM 文件。
 - 大文件解码（Ex）：双缓冲 IO+聚合写，适合超大文件。
 - 动态切换：运行时更新采样率/声道/帧长。
+- 配置灵活：支持自定义回调队列（`callBackQueue`）。
+
+##### **解码配置 `JLOpusFormat`**
+
+##### **接口说明**
+
+```objective-c
+// 初始化（默认：16kHz, 1ch, 20ms）
+- (instancetype)init;
+
+// 回调队列（默认为主队列，Strong 引用）
+@property (nonatomic, strong) dispatch_queue_t callBackQueue;
+```
 
 ##### **接口说明**  
 
@@ -274,6 +287,21 @@ python3 tools/opus_inspector.py /path/to/file.opus --json
 - - checked_packets / incomplete_packets / unknown_packets：完整性统计。
 - - last_packet_complete：最后一个音频包是否完整（或未知）。
 
+
+##### **编码配置 `JLOpusEncodeConfig`**
+
+##### **接口说明**
+
+```objective-c
+// 创建默认配置（标准 Opus，带头信息）
++ (instancetype)defaultConfig;
+
+// 创建杰理默认配置（无头模式，16kHz, 1ch, 20ms，适用于杰理芯片方案）
++ (instancetype)defaultJL;
+
+// 回调队列（默认为主队列，Strong 引用）
+@property (nonatomic, strong) dispatch_queue_t callBackQueue;
+```
 
 ##### **编码器 `JLOpusEncoder`**  
 

@@ -231,6 +231,8 @@ class OpusDecodeVC: BaseViewController {
         super.initData()
         self.opusDecoder = JLOpusDecoder(decoder: format, delegate: self)
         fileListView.loadFoldFile(Tools.opusPath)
+        //修改回调队列为其他队列
+        self.format.callBackQueue = dispatch_queue_t(label: "test.queue");
         
         JLAudioPlayer.shared.start()
         JLAudioPlayer.shared.callBack = { [weak self] data in

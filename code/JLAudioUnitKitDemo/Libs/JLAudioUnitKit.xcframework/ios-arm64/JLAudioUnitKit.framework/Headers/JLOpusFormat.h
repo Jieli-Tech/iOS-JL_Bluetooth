@@ -40,6 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 是否开启slik语音优化
 @property (nonatomic, assign) BOOL usVoipSlik;
 
+/// 回调线程
+/// 默认是从主线程回调
+/// 如果有特殊需求需要阻塞主线程进行解码的，可以在此修改
+@property (nonatomic, strong)dispatch_queue_t callBackQueue;
 
 -(instancetype)init NS_UNAVAILABLE;
 

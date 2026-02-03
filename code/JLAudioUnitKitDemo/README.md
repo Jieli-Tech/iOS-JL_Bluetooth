@@ -5,6 +5,7 @@
 ## 版本历史（摘要）
 | 版本 | 日期 | 类型 | 主要变更 |
 | --- | --- | --- | --- |
+|1.5.1_Beta2 | 2026-02-03 | release | 增加 opus 编解码时，可选指定队列回调|
 | 1.5.1_Beta1 | 2026-01-06 | release | 实现动态内存预算与文件流处理优化, 增加解码时对不足一帧数据的处理 |
 | 1.5.0_Beta1 | 2025-12-26 | release | 增加 opus 的大文件编解码接口，支持大文件编解码以增加速率 |
 | 1.4.0_Beta2 | 2025-12-04 | release | 添加立体声（双声道 opus）分离回调支持并更新Demo |
@@ -61,7 +62,7 @@
 - 在无立体声或单声道时，该回调不触发，使用主回调处理。
 
 ## 其他能力与示例
-- Opus 编码：`JLOpusEncoder` 支持文件/流式编码，含帧大小一致性日志提示（`JLAudioUnitKit/JLAudioUnitKit/Opus/JLOpusEncoder.m:69-100,206-275`）。
+- Opus 编码：`JLOpusEncoder` 支持文件/流式编码，提供 `defaultJL` 快速创建杰理无头配置（`JLAudioUnitKit/JLAudioUnitKit/Opus/JLOpusEncoder.m:69-100,206-275`）。
 - 流式 Opus→Ogg：`JLOpusToOgg` 支持逐帧转换与时长统计（Demo 参见 `JLAudioUnitKitDemo/.../OpusToOggVC.swift`）。
 - MP3→UMP3 转换：提供 `JLAudioConverter` 与底层 UMP3 能力（接口头见 `JLAudioUnitKit/JLAudioUnitKit/JLAudioUnitKit.h:1-27`）。
 - PCM→WAV/WTG 转换：`JLPcmToWav`、`JLPcmToWtg`。

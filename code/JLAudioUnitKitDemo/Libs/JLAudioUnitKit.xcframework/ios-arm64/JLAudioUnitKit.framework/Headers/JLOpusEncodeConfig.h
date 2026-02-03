@@ -67,6 +67,9 @@ typedef NS_ENUM(NSInteger, JLOpusEncoderBandwidth) {
 /// 专家模式下帧时长（ms），默认与 frameDuration 一致
 @property (nonatomic, assign) int expertFrameDuration;
 
+/// 回调队列
+@property (nonatomic, strong) dispatch_queue_t callBackQueue;
+
 /// 是否启用数据头
 /// 默认是启用的
 @property (nonatomic, assign) BOOL hasDataHeader;
