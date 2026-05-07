@@ -34,6 +34,9 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
     private let aggSizeData = BehaviorRelay<[String]>(value: ["128KB", "256KB", "512KB"])
     private var selectedChunkBytes: Int = 1024 * 1024
     private var selectedAggBytes: Int = 256 * 1024
+    private var outputFileHandle: FileHandle?
+    private var currentOutputFilePath: String?
+    private var isEncodingToFile: Bool = false
 
     override func initUI() {
         super.initUI()
@@ -238,9 +241,18 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
                     let input = Tools.opusEncodePath + "/" + self.fileListView.fileDidSelect
                     if let pcmData = NSData(contentsOfFile: input) as? Data {
                         JLLogManager.logLevel(.DEBUG, content: "Start small encode (memory), size=\(pcmData.count) bytes")
+                        self.isEncodingToFile = true
                         self.encoder.opusEncode(pcmData)
-                        self.view.makeToast("Convert Success (memory)", position: .center)
-                        self.fileListView.loadFoldFile(Tools.opusEncodePath)
+                        // Note: 对于 opusEncode 方法，编码是异步的，
+                        // 文件会在 opusEncoder(_:data:error:) 回调中保存
+                        // 但由于没有完成回调，文件不会自动关闭
+                        // 这里简单延迟后关闭文件
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+                            self?.closeOutputFile()
+                            self?.isEncodingToFile = false
+                            self?.view.makeToast("Convert Success (memory)", position: .center)
+                            self?.fileListView.loadFoldFile(Tools.opusEncodePath)
+                        }
                     } else {
                         self.view.makeToast("File read failed", position: .center)
                     }
@@ -328,6 +340,60 @@ class OpusEncodeVC: BaseViewController, JLOpusDecoderDelegate, JLOpusEncoderDele
     func opusEncoder(_ encoder: JLOpusEncoder, data: Data?, error: (any Error)?) {
         let str = data?.map { String(format: "%02x", $0) }.joined() ?? ""
         JLLogManager.logLevel(.DEBUG, content: "opus data:\(str)")
+        
+        // 只有在手动编码到文件时才写入
+        if isEncodingToFile {
+            if let data = data, !data.isEmpty {
+                if outputFileHandle == nil {
+                    // 首次写入，创建文件
+                    createOutputFile()
+                }
+                outputFileHandle?.write(data)
+            } else if error != nil {
+                // 编码完成或出错，关闭文件
+                closeOutputFile()
+                isEncodingToFile = false
+            }
+        }
+    }
+    
+    private func createOutputFile() {
+        let fileName = "\(Date().timeIntervalSince1970).opus"
+        let filePath = Tools.opusEncodePath + "/" + fileName
+        
+        // 确保目录存在
+        let fileManager = FileManager.default
+        let directory = (filePath as NSString).deletingLastPathComponent
+        if !fileManager.fileExists(atPath: directory) {
+            try? fileManager.createDirectory(atPath: directory, withIntermediateDirectories: true)
+        }
+        
+        // 创建文件
+        fileManager.createFile(atPath: filePath, contents: nil, attributes: nil)
+        
+        // 打开文件句柄
+        if let handle = FileHandle(forWritingAtPath: filePath) {
+            outputFileHandle = handle
+            currentOutputFilePath = filePath
+            JLLogManager.logLevel(.DEBUG, content: "Created output file: \(filePath)")
+        } else {
+            JLLogManager.logLevel(.ERROR, content: "Failed to create output file: \(filePath)")
+        }
+    }
+    
+    private func closeOutputFile() {
+        outputFileHandle?.closeFile()
+        outputFileHandle = nil
+        
+        if let filePath = currentOutputFilePath {
+            JLLogManager.logLevel(.DEBUG, content: "Closed output file: \(filePath)")
+            currentOutputFilePath = nil
+            
+            // 刷新文件列表
+            DispatchQueue.main.async {
+                self.fileListView.loadFoldFile(Tools.opusEncodePath)
+            }
+        }
     }
     
     // MARK: - JLOpusDecoder

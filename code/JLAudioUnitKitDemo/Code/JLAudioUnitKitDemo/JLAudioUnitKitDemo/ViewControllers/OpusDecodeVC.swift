@@ -492,12 +492,13 @@ private extension OpusDecodeVC {
             guard let self = self else { return }
             guard let data = try? Data(contentsOf: URL(fileURLWithPath: filePath)) else { return }
             var len = 0
-            var subLen = format.dataSize
+            var subLen = 480//format.dataSize
             if format.hasDataHeader {
                 subLen += 8
             }
             while len < data.count {
-                let packet = data.subdata(in: len ..< len + Int(subLen))
+                let end = min(len + Int(subLen), data.count)
+                let packet = data.subdata(in: len ..< end)
                 self.opusDecoder.opusDecoderInputData(packet)
                 len += Int(subLen)
                 usleep(200)
