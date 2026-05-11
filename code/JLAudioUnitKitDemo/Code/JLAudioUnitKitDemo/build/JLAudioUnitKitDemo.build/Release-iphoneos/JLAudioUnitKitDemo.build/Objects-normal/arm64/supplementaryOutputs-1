@@ -1,0 +1,12 @@
+{
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusToOggVC.swift" : {
+    "abi-baseline-json" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo.abi.json",
+    "const-values" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.swiftconstvalues",
+    "dependencies" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.d",
+    "diagnostics" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.dia",
+    "objc-header" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-Swift.h",
+    "swiftdoc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo.swiftdoc",
+    "swiftmodule" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo.swiftmodule",
+    "swiftsourceinfo" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo.swiftsourceinfo"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "" : {
+    "const-values" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.swiftconstvalues",
+    "dependencies" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.d",
+    "diagnostics" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.dia",
+    "emit-module-dependencies" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary-emit-module.dia",
+    "pch" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioUnitKitDemo-primary.swiftdeps"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/AppDelegate.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/AppDelegate.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Tools/Colors.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Colors.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Colors.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Colors.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Tools/JLAudioPlayer.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioPlayer.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioPlayer.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioPlayer.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Tools/JLAudioRecoder.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioRecoder.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioRecoder.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/JLAudioRecoder.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Tools/Tools.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Tools.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Tools.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Tools.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/BaseView.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseView.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseView.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseView.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/BaseViewController.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseViewController.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseViewController.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/BaseViewController.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/MainVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/MainVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/MainVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/MainVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/Mp3ToUmp3VC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Mp3ToUmp3VC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Mp3ToUmp3VC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/Mp3ToUmp3VC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/NavViewController.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/NavViewController.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/NavViewController.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/NavViewController.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusDecodeVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusDecodeVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusDecodeVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusDecodeVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusEncodeVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusEncodeVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusEncodeVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusEncodeVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/OpusToOggVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusToOggVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusToOggVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/OpusToOggVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/PcmToWavVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWavVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWavVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWavVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/PcmToWtgVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWtgVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWtgVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/PcmToWtgVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/SettingViewController.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SettingViewController.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SettingViewController.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SettingViewController.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/ViewControllers/SpeexDecodeVC.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpeexDecodeVC.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpeexDecodeVC.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpeexDecodeVC.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Views/FileListView.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/FileListView.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/FileListView.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/FileListView.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Views/SpectrogramView.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpectrogramView.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpectrogramView.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/SpectrogramView.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/R.generated.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/R.generated.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/R.generated.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/R.generated.o"
+  },
+  "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/build/JLAudioUnitKitDemo.build/Release-iphoneos/JLAudioUnitKitDemo.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}

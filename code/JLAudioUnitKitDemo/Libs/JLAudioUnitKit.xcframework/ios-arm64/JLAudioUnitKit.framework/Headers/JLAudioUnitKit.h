@@ -23,5 +23,6 @@ FOUNDATION_EXPORT const unsigned char JLAudioUnitKitVersionString[];
 #import <JLAudioUnitKit/JLPcmToWtg.h>
 #import <JLAudioUnitKit/JLPcmToWav.h>
 #import <JLAudioUnitKit/JLAudioUnitPlayer.h>
+#import <JLAudioUnitKit/JLOpusToOggConfig.h>
 #import <JLAudioUnitKit/JLOpusToOgg.h>
 #import <JLAudioUnitKit/JLAudioConverter.h>

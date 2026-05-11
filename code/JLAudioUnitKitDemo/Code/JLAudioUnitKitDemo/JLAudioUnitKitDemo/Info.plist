@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.45</string>
+	<string>1.0.46</string>
 	<key>CFBundleVersion</key>
-	<string>202605071721</string>
+	<string>202605111638</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs access to your microphone to record audio</string>
 	<key>UIFileSharingEnabled</key>

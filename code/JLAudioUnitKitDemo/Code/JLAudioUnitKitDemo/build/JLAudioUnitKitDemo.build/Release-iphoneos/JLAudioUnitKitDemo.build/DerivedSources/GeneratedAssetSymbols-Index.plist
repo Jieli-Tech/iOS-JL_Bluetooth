@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>colors</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameBgColor</string>
+			<key>relativePath</key>
+			<string>./bgColor.colorset</string>
+			<key>swiftSymbol</key>
+			<string>bg</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameFontBackText90</string>
+			<key>relativePath</key>
+			<string>./fontBackText_90.colorset</string>
+			<key>swiftSymbol</key>
+			<string>fontBackText90</string>
+		</dict>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACColorNameThemeColor</string>
+			<key>relativePath</key>
+			<string>./themeColor.colorset</string>
+			<key>swiftSymbol</key>
+			<string>theme</string>
+		</dict>
+	</array>
+	<key>images</key>
+	<array>
+		<dict>
+			<key>catalogPath</key>
+			<string>/Volumes/O/AGit/iOS/JL_SpeexOpus/JLAudioUnitKitDemo/JLAudioUnitKitDemo/Assets.xcassets</string>
+			<key>objcSymbol</key>
+			<string>ACImageNameIconReturn</string>
+			<key>relativePath</key>
+			<string>./icon_return.imageset</string>
+			<key>swiftSymbol</key>
+			<string>iconReturn</string>
+		</dict>
+	</array>
+	<key>symbols</key>
+	<array/>
+</dict>
+</plist>

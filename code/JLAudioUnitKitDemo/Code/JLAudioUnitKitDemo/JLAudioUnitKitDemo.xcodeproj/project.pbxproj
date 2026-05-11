@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09F2530840870C4D57C4B230 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF6D3680F98F78FC8D9D2E64 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		0B6B446FA2E826E9DC193BFD /* JLAudioUnitKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6C16A1538DC3256EF7E9B59 /* JLAudioUnitKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1D33DB372DD7377B00310141 /* OpusToOggVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D33DB362DD7377B00310141 /* OpusToOggVC.swift */; };
 		1D75AD692CF4811C002DB241 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D75AD672CF4811C002DB241 /* BaseViewController.swift */; };
 		1D75AD6A2CF4811C002DB241 /* NavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D75AD682CF4811C002DB241 /* NavViewController.swift */; };
@@ -33,9 +31,11 @@
 		1DF102A52CEF5F0C003CFE84 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1DF102A42CEF5F0C003CFE84 /* Base */; };
 		1DF102AE2CEF5F3C003CFE84 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF102AD2CEF5F3C003CFE84 /* AVFoundation.framework */; };
 		1DF102C22CF019D5003CFE84 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF102C12CF019D5003CFE84 /* R.generated.swift */; };
-		1E29E9DFE807E305DD3F29FF /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EF6D3680F98F78FC8D9D2E64 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		22133C0BDDCE39AA5C4EE64B /* Pods_JLAudioUnitKitDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE95FEA9C6BD5F9D062CD21 /* Pods_JLAudioUnitKitDemo.framework */; };
-		403BF4291918CFFE7BA3F2E5 /* JLAudioUnitKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C16A1538DC3256EF7E9B59 /* JLAudioUnitKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		6EAEE765B025B7737C6CC782 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DE9576028B13C249B3C2535 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		BA0E5B88D51F8E0EB7697F03 /* JLAudioUnitKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F397B004DFD60EAD9BDFD2 /* JLAudioUnitKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DE8648AD203F1178556C0DCE /* JLAudioUnitKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47F397B004DFD60EAD9BDFD2 /* JLAudioUnitKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DF5930985381FBE50A183106 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DE9576028B13C249B3C2535 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,8 +45,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0B6B446FA2E826E9DC193BFD /* JLAudioUnitKit.xcframework in Embed Frameworks */,
-				1E29E9DFE807E305DD3F29FF /* JLLogHelper.xcframework in Embed Frameworks */,
+				DE8648AD203F1178556C0DCE /* JLAudioUnitKit.xcframework in Embed Frameworks */,
+				DF5930985381FBE50A183106 /* JLLogHelper.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +75,7 @@
 		1DB9C23E2D3F3EEB00BCCEB2 /* PcmToWtgVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PcmToWtgVC.swift; sourceTree = "<group>"; };
 		1DCAE9C02ED99B3F0026B036 /* Mp3ToUmp3VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3ToUmp3VC.swift; sourceTree = "<group>"; };
 		1DE8FEE62DAE94B0000B5FD6 /* PcmToWavVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PcmToWavVC.swift; sourceTree = "<group>"; };
+		1DE9576028B13C249B3C2535 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = XCFrameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
 		1DF102952CEF5F09003CFE84 /* JLAudioUnitKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLAudioUnitKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF102982CEF5F09003CFE84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DF102A12CEF5F0C003CFE84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -82,11 +83,10 @@
 		1DF102A62CEF5F0C003CFE84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DF102AD2CEF5F3C003CFE84 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1DF102C12CF019D5003CFE84 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
+		47F397B004DFD60EAD9BDFD2 /* JLAudioUnitKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLAudioUnitKit.xcframework; path = XCFrameworks/JLAudioUnitKit.xcframework; sourceTree = "<group>"; };
 		5BE95FEA9C6BD5F9D062CD21 /* Pods_JLAudioUnitKitDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLAudioUnitKitDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6C16A1538DC3256EF7E9B59 /* JLAudioUnitKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLAudioUnitKit.xcframework; path = XCFrameworks/JLAudioUnitKit.xcframework; sourceTree = "<group>"; };
 		BC3706B0018E0E86ED1267A4 /* Pods-JLAudioUnitKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLAudioUnitKitDemo.debug.xcconfig"; path = "Target Support Files/Pods-JLAudioUnitKitDemo/Pods-JLAudioUnitKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		ED8266B5C56A51D3EED16575 /* Pods-JLAudioUnitKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLAudioUnitKitDemo.release.xcconfig"; path = "Target Support Files/Pods-JLAudioUnitKitDemo/Pods-JLAudioUnitKitDemo.release.xcconfig"; sourceTree = "<group>"; };
-		EF6D3680F98F78FC8D9D2E64 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = XCFrameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +96,8 @@
 			files = (
 				1DF102AE2CEF5F3C003CFE84 /* AVFoundation.framework in Frameworks */,
 				22133C0BDDCE39AA5C4EE64B /* Pods_JLAudioUnitKitDemo.framework in Frameworks */,
-				403BF4291918CFFE7BA3F2E5 /* JLAudioUnitKit.xcframework in Frameworks */,
-				09F2530840870C4D57C4B230 /* JLLogHelper.xcframework in Frameworks */,
+				BA0E5B88D51F8E0EB7697F03 /* JLAudioUnitKit.xcframework in Frameworks */,
+				6EAEE765B025B7737C6CC782 /* JLLogHelper.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +134,7 @@
 				1DF102962CEF5F09003CFE84 /* Products */,
 				1DF102AC2CEF5F3B003CFE84 /* Frameworks */,
 				98002AAB9FB888F8826A9661 /* Pods */,
-				391652C6AC46E65E5ADBF7DB /* XCFrameworks */,
+				4DF354142E06788FA3F3343F /* XCFrameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -197,11 +197,11 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
-		391652C6AC46E65E5ADBF7DB /* XCFrameworks */ = {
+		4DF354142E06788FA3F3343F /* XCFrameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A6C16A1538DC3256EF7E9B59 /* JLAudioUnitKit.xcframework */,
-				EF6D3680F98F78FC8D9D2E64 /* JLLogHelper.xcframework */,
+				47F397B004DFD60EAD9BDFD2 /* JLAudioUnitKit.xcframework */,
+				1DE9576028B13C249B3C2535 /* JLLogHelper.xcframework */,
 			);
 			name = XCFrameworks;
 			sourceTree = "<group>";

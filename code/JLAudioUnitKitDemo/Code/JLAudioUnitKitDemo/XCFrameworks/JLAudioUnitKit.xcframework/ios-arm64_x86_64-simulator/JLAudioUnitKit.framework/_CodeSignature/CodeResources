@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/JLAudioUnitKit.h</key>
 		<data>
-		EQdQEYcoGUsMvjpu2Y46mJDyj0k=
+		XrEEiOiMN9xCdLRIxxh11Lt8sGs=
 		</data>
 		<key>Headers/JLAudioUnitPlayer.h</key>
 		<data>
@@ -34,7 +34,11 @@
 		</data>
 		<key>Headers/JLOpusToOgg.h</key>
 		<data>
-		fSJT6LcyylJHTHX1wsN3JHG2FxU=
+		ImpmGI1NvtdGstq/yvsI6EY6cu8=
+		</data>
+		<key>Headers/JLOpusToOggConfig.h</key>
+		<data>
+		1eZo3fLvWXhRsyr/VKsGiN7l35A=
 		</data>
 		<key>Headers/JLPcmToWav.h</key>
 		<data>
@@ -74,7 +78,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			HxXAWzBe9mUvXi+WeC1NQYcadlPA86cNfwmiVWUUOyw=
+			zSupL/TEFFwoFJe8J0l9cwuFbDeqIMGjUv8bYMTLnH4=
 			</data>
 		</dict>
 		<key>Headers/JLAudioUnitPlayer.h</key>
@@ -116,7 +120,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dNSvJJnED/6E1p7TYZ4zBzUnLDVsZ8NovuNYjge6T/w=
+			yTDoEk1Pr5Pt+DcPqRHmlitODnPGO8gPgnB8dsuI2/0=
+			</data>
+		</dict>
+		<key>Headers/JLOpusToOggConfig.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			p86UInH5AkJDWRNnUHpdGyDMOQxI5Z30K3uzaPivL7g=
 			</data>
 		</dict>
 		<key>Headers/JLPcmToWav.h</key>

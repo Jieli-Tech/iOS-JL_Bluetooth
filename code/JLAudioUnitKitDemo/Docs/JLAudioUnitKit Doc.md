@@ -524,131 +524,264 @@ JLSpeexDecoder *decoder = [[JLSpeexDecoder alloc] initWithDelegate:self];
 
 ---
 
-#### **6. Opus 转 OGG `JLOpusToOgg.h`**  
+#### **6. Opus 转 OGG `JLOpusToOgg`**  
 
-##### **接口说明**
+##### **功能概述**
 
-`JLOpusToOgg.h` 是一个用于将 Opus 编码的音频数据转换为 Ogg 格式的类。它提供了两个主要方法：
+`JLOpusToOgg` 是一个用于将杰理无头裸 Opus 数据转换为标准 Ogg 格式的类。支持一次性转换和流式转换两种模式，并提供灵活的配置选项和多线程处理能力。
 
-**类方法（一次性转换）**
+##### **配置类 `JLOpusToOggConfig`**
 
-1. **convertOpusDataToOgg:error:**
-   - 将内存中的 Opus 数据（NSData）转换为 Ogg 格式的 NSData。
-   - 支持的条件：帧长必须是 40ms，采样率为 16kHz，且必须是单声道。
-2. **convertOpusFileToOgg:oggFilePath:**
-   - 将存储在文件系统中的 Opus 文件转换为 Ogg 文件。
-   - 同样需要满足帧长、采样率和声道的要求。
+用于配置转换参数，支持多种预设配置和自定义配置。
 
-这两个方法都专门针对“杰理”的无头裸 Opus 数据/文件进行处理，这意味着输入的数据或文件没有包含标准 Opus 头信息。
+###### **属性说明**
 
-##### **示例**
+| 属性 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `sampleRate` | `uint32_t` | 16000 | 采样率，支持：8000, 12000, 16000, 24000, 48000 |
+| `channelCount` | `uint8_t` | 1 | 声道数，支持：1（单声道）, 2（立体声） |
+| `frameDurationMs` | `uint8_t` | 20 | 帧时长（ms），支持：2.5, 5, 10, 20, 40, 60 |
+| `frameLength` | `uint32_t` | 40 | 每帧字节数（压缩后的 Opus 帧大小） |
+| `preSkip` | `uint16_t` | 自动计算 | 预跳过样本数（用于解码器同步） |
 
-** 示例一：使用 `convertOpusDataToOgg:error:` 方法**
-
-假设你有一段符合要求的 Opus 数据，并希望通过 `JLOpusToOgg` 类将其转换为 Ogg 数据。
+###### **计算属性**
 
 ```objective-c
-// 假设 opusData 是你的 Opus 格式的 NSData
-NSData *opusData = [self prepareOpusData]; // 这里你需要自己准备 Opus 数据
+// 每帧采样数（根据采样率和帧时长自动计算）
+- (uint32_t)samplesPerFrame;
 
-NSError *error;
-NSData *oggData = [JLOpusToOgg convertOpusDataToOgg:opusData error:&error];
-
-if (oggData) {
-    NSLog(@"成功转换为 Ogg 数据");
-} else {
-    NSLog(@"转换失败，错误信息：%@", error.localizedDescription);
-}
+// 输出采样率（Opus 内部使用 48kHz）
+- (uint32_t)outputSampleRate;
 ```
 
-在这个例子中，我们首先准备了一段 Opus 数据（这一步需要根据实际情况实现），然后调用 `convertOpusDataToOgg:error:` 方法尝试将其转换为 Ogg 数据。如果转换成功，`oggData` 将包含转换后的 Ogg 数据；如果失败，则会返回一个 NSError 对象描述错误原因。
-
-** 示例二：使用 `convertOpusFileToOgg:oggFilePath:` 方法**
-
-如果你有一个 Opus 文件并希望将其转换为 Ogg 文件，可以使用如下代码：
+###### **验证方法**
 
 ```objective-c
-NSString *opusFilePath = [[NSBundle mainBundle] pathForResource:@"example_opus" ofType:@"opus"]; // 替换为实际的 Opus 文件路径
-NSString *oggFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"output.ogg"];
+// 验证配置是否有效
+- (BOOL)validateWithError:(NSError **)error;
 
-[JLOpusToOgg convertOpusFileToOgg:opusFilePath oggFilePath:oggFilePath];
-
-NSLog(@"转换完成，Ogg 文件位于：%@", oggFilePath);
-
-// 验证输出文件是否存在
-if ([[NSFileManager defaultManager] fileExistsAtPath:oggFilePath]) {
-    NSLog(@"Ogg 文件创建成功");
-} else {
-    NSLog(@"Ogg 文件创建失败");
-}
+// 检查配置是否与标准值有显著差异，返回警告信息数组
+- (NSArray<NSString *> *)configurationWarnings;
 ```
 
-这里，首先指定了 Opus 文件的路径和期望生成的 Ogg 文件路径，然后调用了 `convertOpusFileToOgg:oggFilePath:` 方法来执行转换。最后，通过检查 Ogg 文件是否存在来验证转换是否成功。
-
-**注意事项**  
-
-1. **代理协议**：所有接口均需绑定对应的代理以接收事件或错误信息。  
-2. **参数校验**：初始化时需确保参数（如采样率、文件路径）正确，避免运行时崩溃。  
-3. **资源释放**：调用 `opusOnRelease` 或 `speexOnRelease` 释放编解码器资源。  
-4. **线程安全**：涉及文件操作的方法（如 `convertPCMData:toWAVFile:`）需在主线程外执行以避免阻塞 UI。  
-5. **格式兼容性**：WTG 转换要求输入 PCM 文件为 8kHz 16bit 小端格式。 
-
-**对象方法（流式转换）**
+###### **预设配置工厂方法**
 
 ```objective-c
-// 初始化对象并设置帧长（默认 40）
-- (instancetype)initWithFrameLength:(uint32_t)frameLen;
+// 标准配置（20ms, 40bytes）- 公版默认，最常用
++ (instancetype)standardConfiguration;
 
-// 开始流式转换
-- (void)startStream;
+// 短帧配置（10ms, 20bytes）- 低延迟场景
++ (instancetype)shortFrameConfiguration;
 
-// 添加 Opus 数据进行转换
-- (void)appendOpusData:(NSData *)opusData;
+// 长帧配置（40ms, 80bytes）- 高压缩率场景
++ (instancetype)longFrameConfiguration;
 
-// 关闭流式转换，完成输出
-- (void)closeStream;
+// 超长帧配置（60ms, 120bytes）- 极致压缩场景
++ (instancetype)extraLongFrameConfiguration;
 
-// 设置回调（在 append 时不断收到 ogg 数据块）
+// 超短帧配置（5ms, 10bytes）- 极低延迟场景
++ (instancetype)ultraShortFrameConfiguration;
+
+// 根据帧时长创建配置
++ (nullable instancetype)configurationWithFrameDurationMs:(uint8_t)frameDurationMs;
+
+// 完整自定义配置
++ (instancetype)configurationWithSampleRate:(uint32_t)sampleRate
+                               channelCount:(uint8_t)channelCount
+                            frameDurationMs:(uint8_t)frameDurationMs
+                                frameLength:(uint32_t)frameLength;
+```
+
+##### **转换器类 `JLOpusToOgg`**
+
+###### **属性说明**
+
+```objective-c
+// 转码内容的回调
 @property(nonatomic,strong) JLOpusToOggConvertBlock _Nullable convertBlock;
 
+// 当前配置（只读）
+@property(nonatomic, strong, readonly) JLOpusToOggConfig *configuration;
+
+// 数据处理队列（可选）
+// 默认使用主队列，建议在高频数据传输场景下设置为串行队列
+@property (nonatomic, strong, nullable) dispatch_queue_t processingQueue;
 ```
 
-**注意事项：**
-
-- 输入数据需为 16kHz 单声道裸 Opus（无 Ogg/Opus 头）。
-
-- frameLen 必须匹配编码帧长（常用为 40ms）。
-
-- 若使用流式转换，请在调用 startStream 后添加数据，并在完成所有输入后调用 closeStream，触发最终 Ogg 封包。
-
-- 使用场景包括实时语音数据流转封装成 Ogg、逐段处理等。
-
-**示例三：流式转换**
+###### **初始化方法**
 
 ```objective-c
-JLOpusToOgg *converter = [[JLOpusToOgg alloc] initWithFrameLength:40];
+// 使用配置初始化（推荐）
+- (instancetype)initWithConfiguration:(JLOpusToOggConfig *)configuration;
+
+// 初始化帧长（旧接口，已废弃）
+- (instancetype)initWithFrameLength:(uint32_t)frameLen __attribute__((deprecated("Use -initWithConfiguration: instead.")));
+```
+
+###### **流式转换方法**
+
+```objective-c
+// 开始流
+- (void)startStream;
+
+// 添加 Opus 数据（符合杰理的无头裸 opus 数据）
+- (void)appendOpusData:(NSData *)opusData;
+
+// 关闭流
+- (void)closeStream;
+```
+
+###### **类方法（一次性转换）**
+
+```objective-c
+// 将 Opus 数据转换为 Ogg 数据（使用配置）
++ (NSData *_Nullable)convertOpusDataToOgg:(NSData *)opusData
+                            configuration:(JLOpusToOggConfig *)configuration
+                                 duration:(double *_Nullable)duration
+                                    error:(NSError *__autoreleasing _Nullable *)error;
+
+// 将 Opus 文件转换为 Ogg 文件（使用配置）
++ (void)convertOpusFileToOgg:(NSString *)opusFilePath
+                 oggFilePath:(NSString *)oggFilePath
+               configuration:(JLOpusToOggConfig *)configuration
+                    duration:(double *_Nullable)duration;
+
+// 旧接口（已废弃）
++ (NSData *_Nullable)convertOpusDataToOgg:(NSData *)opusData
+                                 frameLen:(uint32_t)frameLen
+                                 duration:(double *)duration
+                                    error:(NSError *__autoreleasing _Nullable *)error __attribute__((deprecated("Use -convertOpusDataToOgg:configuration:duration:error: instead.")));
+
++ (void)convertOpusFileToOgg:(NSString *)opusFilePath
+                 oggFilePath:(NSString *)oggFilePath
+                    frameLen:(uint32_t)frameLen
+                    duration:(double *)duration __attribute__((deprecated("Use -convertOpusFileToOgg:oggFilePath:configuration:duration: instead.")));
+```
+
+##### **示例代码**
+
+###### **示例一：使用预设配置进行一次性转换**
+
+```objective-c
+// 使用标准配置（20ms, 40bytes）
+JLOpusToOggConfig *config = [JLOpusToOggConfig standardConfiguration];
+
+NSData *opusData = [self prepareOpusData]; // 准备无头裸 Opus 数据
+NSError *error;
+double duration;
+
+NSData *oggData = [JLOpusToOgg convertOpusDataToOgg:opusData
+                                        configuration:config
+                                             duration:&duration
+                                                error:&error];
+
+if (oggData) {
+    NSLog(@"转换成功，时长：%.2fs", duration);
+} else {
+    NSLog(@"转换失败：%@", error.localizedDescription);
+}
+```
+
+###### **示例二：使用长帧配置进行文件转换**
+
+```objective-c
+// 使用长帧配置（40ms, 80bytes）- 高压缩率场景
+JLOpusToOggConfig *config = [JLOpusToOggConfig longFrameConfiguration];
+
+NSString *opusFilePath = [[NSBundle mainBundle] pathForResource:@"input" ofType:@"opus"];
+NSString *oggFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"output.ogg"];
+
+[JLOpusToOgg convertOpusFileToOgg:opusFilePath
+                       oggFilePath:oggFilePath
+                     configuration:config
+                          duration:nil];
+
+if ([[NSFileManager defaultManager] fileExistsAtPath:oggFilePath]) {
+    NSLog(@"Ogg 文件创建成功：%@", oggFilePath);
+}
+```
+
+###### **示例三：流式转换（带后台队列处理）**
+
+```objective-c
+// 创建配置
+JLOpusToOggConfig *config = [JLOpusToOggConfig standardConfiguration];
+
+// 初始化转换器
+JLOpusToOgg *converter = [[JLOpusToOgg alloc] initWithConfiguration:config];
+
+// 设置后台处理队列，解决高频数据传输导致的主线程卡顿问题
+dispatch_queue_t queue = dispatch_queue_create("com.jl.opustogg", DISPATCH_QUEUE_SERIAL);
+converter.processingQueue = queue;
+
+// 设置回调
 converter.convertBlock = ^(NSData * _Nullable oggData, BOOL isLast, NSError * _Nullable error) {
     if (oggData) {
         NSLog(@"收到 Ogg 数据块，大小：%lu", (unsigned long)oggData.length);
-        // 可写入文件或缓存
+        // 写入文件或传输
     } else if (error) {
-        NSLog(@"流式转换错误：%@", error.localizedDescription);
+        NSLog(@"转换错误：%@", error.localizedDescription);
     }
-
+    
     if (isLast) {
         NSLog(@"流式转换结束");
     }
 };
 
+// 开始流式转换
 [converter startStream];
 
-// 模拟逐段添加 opus 数据
+// 逐段添加 Opus 数据
 [converter appendOpusData:opusChunk1];
 [converter appendOpusData:opusChunk2];
 // ...
-[converter closeStream];
 
+// 完成转换
+[converter closeStream];
 ```
+
+###### **示例四：自定义配置与验证**
+
+```objective-c
+// 创建自定义配置
+JLOpusToOggConfig *config = [JLOpusToOggConfig configurationWithSampleRate:16000
+                                                              channelCount:1
+                                                           frameDurationMs:20
+                                                               frameLength:40];
+
+// 验证配置
+NSError *error;
+if (![config validateWithError:&error]) {
+    NSLog(@"配置无效：%@", error.localizedDescription);
+    return;
+}
+
+// 检查警告
+NSArray *warnings = [config configurationWarnings];
+if (warnings.count > 0) {
+    NSLog(@"配置警告：%@", warnings);
+}
+
+// 使用配置进行转换
+NSData *oggData = [JLOpusToOgg convertOpusDataToOgg:opusData
+                                        configuration:config
+                                             duration:nil
+                                                error:&error];
+```
+
+##### **注意事项**
+
+1. **输入数据要求**：输入必须为符合杰理的无头裸 Opus 数据，不包含标准 Opus 头信息。
+
+2. **处理队列**：在高频数据传输场景下，建议设置 `processingQueue` 为后台串行队列，避免主线程阻塞或数据丢失。
+
+3. **配置验证**：使用自定义配置时，建议先调用 `validateWithError:` 验证配置有效性。
+
+4. **流式转换流程**：必须按顺序调用 `startStream` → `appendOpusData:`（多次）→ `closeStream`。
+
+5. **向后兼容性**：旧接口 `initWithFrameLength:` 和 `convertOpusDataToOgg:frameLen:duration:error:` 已标记为废弃，但仍可正常使用，内部会自动使用默认配置。
+
+---
 
 #### **7. MP3 转 UMP3 `JLAudioConverter`**
 
@@ -777,7 +910,7 @@ DispatchQueue.global(qos: .default).async {
 
 ##### 常量
 
-* `OPUS_JL_MAX_FRAME_SIZE`：最大帧大小，单位是字节，等于 48000 \* 2。
+* `OPUS_JL_MAX_FRAME_SIZE`：最大帧大小，单位是字节，等于 48000 * 2。
 * `OPUS_JL_MAX_PACKET_SIZE`：最大数据包大小，单位是字节，值为 1500。
 
 ##### 属性
@@ -812,11 +945,11 @@ NSLog(@"BitRate: %dkbps", format.bitRate);   // 自动计算
 | `sampleRate`          | `int`  | 16000                            | 音频采样率（Hz）。常用值：8000、16000、24000、48000。                      |
 | `channels`            | `int`  | 1                                | 声道数：1=单声道，2=双声道。                                           |
 | `frameDuration`       | `int`  | 20                               | 帧时长（ms）。Opus 默认 20ms，可选 2.5/5/10/20/40/60ms。               |
-| `frameSize`           | `int`  | 采样率 \* frameDuration / 1000      | 每帧采样点数，由 `frameDuration` 和 `sampleRate` 计算得出。              |
+| `frameSize`           | `int`  | 采样率 * frameDuration / 1000      | 每帧采样点数，由 `frameDuration` 和 `sampleRate` 计算得出。              |
 | `bitRate`             | `int`  | 16000                            | 编码比特率（bps）。CBR 或 VBR 下都可设置。                                |
 | `useVBR`              | `BOOL` | NO                               | 是否使用可变比特率（VBR）。NO 表示使用恒定比特率（CBR）。                          |
 | `constrainedVBR`      | `BOOL` | NO                               | VBR 限制模式，启用后 VBR 不会超过设定比特率。                                |
-| `complexity`          | `int`  | 5                                | 编码复杂度，0\~10。数值越高编码质量越好，但 CPU 消耗也越高。                        |
+| `complexity`          | `int`  | 5                                | 编码复杂度，0~10。数值越高编码质量越好，但 CPU 消耗也越高。                        |
 | `forceChannels`       | `int`  | -1                               | 强制输出声道数。-1=自适应，1=单声道，2=双声道。                                |
 | `useDTX`              | `BOOL` | NO                               | 启用 DTX（静音段不发送数据）可降低带宽消耗。                                   |
 | `packetLossPercent`   | `int`  | 0                                | 网络丢包率百分比，用于优化编码器抗丢包能力。                                     |
@@ -862,7 +995,7 @@ hasDataHeader: YES
 JLOpusEncodeConfig *jlConfig = [JLOpusEncodeConfig defaultJL];
 ```
 
-* 杰理定制的“无头”配置。
+* 杰理定制的"无头"配置。
 * 适用于无需数据头、固定 16kHz、单声道、SILK 模式的场景。
 * 默认参数示例：
 
@@ -938,7 +1071,7 @@ JLOpusEncoder *encoder = [[JLOpusEncoder alloc] initFormat:jlConfig delegate:sel
 4. **hasDataHeader 的影响**
 
    * 若 `hasDataHeader = YES`，编码器会在输出中写入每帧的长度/偏移等头部索引信息，便于解析与随机访问；
-   * 若 `hasDataHeader = NO`，输出为“无头”裸帧，更轻量，但上层读取时需按配置的 `frameDuration`、`sampleRate` 等参数进行解析与拼帧。
+   * 若 `hasDataHeader = NO`，输出为"无头"裸帧，更轻量，但上层读取时需按配置的 `frameDuration`、`sampleRate` 等参数进行解析与拼帧。
    * `useVBR = NO` 表示恒定比特率（CBR），适合实时通信。
 
 3. **hasDataHeader**
