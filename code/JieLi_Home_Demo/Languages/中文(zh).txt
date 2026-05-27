@@ -227,3 +227,4 @@
 "Swahili" = "斯瓦希里语";
 "Hebrew" = "希伯来语";
 "Urdu" = "乌尔都语";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "无限制升级，但需要先将升级命名为：update.ufw 并通过沙盒，存放到：Document/ 目录下";

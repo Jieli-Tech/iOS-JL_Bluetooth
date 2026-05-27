@@ -394,5 +394,107 @@ class CallTranslateVM {
         print("CallTranslateVM deinit")
         ttsMgrMySide?.stop()
         ttsMgrOtherSide?.stop()
+//        testTimer?.invalidate()
+//        testTimer = nil
     }
+    
+    
+    // private var testTimer: Timer?
+    // private var costomMgr: JL_CustomManager?
+    
+    // func startHeartBeat() {
+    //     costomMgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager.mCustomManager
+    //     costomMgr?.delegate = self
+    //     testTimer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(testAction), userInfo: nil, repeats: true)
+    //     testTimer?.fire()
+    // }
+    
+    // func stopHeartBeat() {
+    //     testTimer?.invalidate()
+    //     testTimer = nil
+    // }
+    
+    // @objc func testAction() {
+    //     let dtStr = "00aa"
+    //     let data = JL_Tools.hex(toData: dtStr) as Data
+    //     costomMgr?.cmdCustomData(data, isNeedResponse: true)
+    // }
+    
+}
+
+extension CallTranslateVM : JLCustomCmdPtl {
+    func isEqual(_ object: Any?) -> Bool {
+        true
+    }
+    
+    var hash: Int {
+        0
+    }
+    
+    var superclass: AnyClass? {
+        nil
+    }
+    
+    func `self`() -> Self {
+        self
+    }
+    
+    func perform(_ aSelector: Selector!) -> Unmanaged<AnyObject>! {
+        // Check if the selector is implemented
+        guard responds(to: aSelector) else {
+            return nil
+        }
+        
+        // Perform the selector and return the result
+        return perform(aSelector)
+    }
+
+    func perform(_ aSelector: Selector!, with object: Any!) -> Unmanaged<AnyObject>! {
+        guard responds(to: aSelector) else {
+            return nil
+        }
+        
+        return perform(aSelector, with: object)
+    }
+
+    func perform(_ aSelector: Selector!, with object1: Any!, with object2: Any!) -> Unmanaged<AnyObject>! {
+        guard responds(to: aSelector) else {
+            return nil
+        }
+        
+        return perform(aSelector, with: object1, with: object2)
+    }
+    
+    func isProxy() -> Bool {
+        true
+    }
+    
+    func isKind(of aClass: AnyClass) -> Bool {
+        true
+    }
+    
+    func isMember(of aClass: AnyClass) -> Bool {
+        true
+    }
+    
+    func conforms(to aProtocol: Protocol) -> Bool {
+        true
+    }
+    
+    func responds(to aSelector: Selector!) -> Bool {
+        true
+    }
+    
+    var description: String {
+        ""
+    }
+    
+    func customCmdResponse(_ manager: JL_ManagerM, status: UInt8, with data: Data) {
+        
+    }
+    
+    func customCmdRequire(_ manager: JL_ManagerM, with data: Data, isNeedResponse: Bool, sn: UInt8) {
+        
+    }
+    
 }

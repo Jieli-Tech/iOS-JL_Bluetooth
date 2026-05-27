@@ -84,10 +84,6 @@ import UIKit
     override func initData() {
         super.initData()
         updateData()
-        publicSetting?.currentWallpaper.subscribe(onNext: { [weak self] model in
-            guard let `self` = self, let model = model else { return }
-            self.updateData(model)
-        }).disposed(by: disposeBag)
     }
 
     private func makeBindHandle() {
@@ -98,6 +94,31 @@ import UIKit
                 vc.publicSetting = self.publicSetting
                 vc.sourceType = PublicSettingViewModel.backgroundPaper
                 self.viewController?.navigationController?.pushViewController(vc, animated: true)
+                return
+            }
+            if model.tag == 100, let resourceUrl = model.downloadUrl {
+                DFUITools.showHUD(withLabel: R.Language.lan("Downloading..."), on: viewController.view)
+                CSNetworkManager.shared.downloadFile(url: resourceUrl) { [weak viewController, weak publicSetting] result in
+                    guard let viewController = viewController else { return }
+                    DFUITools.removeHUD()
+                    switch result {
+                    case .success(let localUrl):
+                        let vc1 = ProtectPreviewVC()
+                        vc1.fileName = (resourceUrl as NSString).lastPathComponent.components(separatedBy: ".").first ?? "online_bg"
+                        if let image = UIImage(contentsOfFile: localUrl.path) {
+                            vc1.showImage = image
+                        } else {
+                            viewController.view.makeToast(R.Language.lan("Image format error"), position: .center)
+                            return
+                        }
+                        vc1.publicSettingVM = publicSetting
+                        vc1.sourceType = PublicSettingViewModel.backgroundPaper
+                        viewController.navigationController?.pushViewController(vc1, animated: true)
+                    case .failure(let error):
+                        JLLogManager.logLevel(.ERROR, content: "Download failed: \(error)")
+                        viewController.view.makeToast(R.Language.lan("Download failed"), position: .center)
+                    }
+                }
                 return
             }
             let currentFilePath = self.publicSetting?.currentWallpaper.value?.filePath ?? ""
@@ -128,6 +149,8 @@ import UIKit
         }).disposed(by: disposeBag)
     }
 
+    private var dataDisposeBag = DisposeBag() // 用于数据的监听，避免重复添加
+    
     private func updateData(_ model: JLPublicSourceInfoModel? = nil) {
         let uuid = JL_RunSDK.sharedMe().mBleEntityM?.mItem ?? "unKnow"
         var tmpList = [PtColModel]()
@@ -168,6 +191,43 @@ import UIKit
                 }
             }
         }
+        
+        // 合并云端资源
+        if let publicSetting = publicSetting {
+            let wallpapers = publicSetting.resourceViewModel.onlineWallpapers.value
+            let needCount = 4 - tmpList.count
+            for i in 0 ..< min(needCount, wallpapers.count) {
+                tmpList.append(PtColModel(resource: wallpapers[i]))
+            }
+        }
+        
+        while tmpList.count < 4 {
+             tmpList.append(PtColModel(img: UIImage(), isSel: false, tag: tmpList.count))
+        }
+        
         itemsList.accept(tmpList)
+    }
+    
+    func setupDataBinding() {
+        // 重置 disposeBag，避免多次绑定导致循环调用
+        dataDisposeBag = DisposeBag()
+        
+        // 监听当前壁纸变化
+        publicSetting?.currentWallpaper.subscribe(onNext: { [weak self] model in
+            guard let `self` = self, let model = model else { return }
+            self.updateData(model)
+        }).disposed(by: dataDisposeBag)
+        
+        // 监听云端资源变化
+        if let publicSetting = publicSetting {
+            publicSetting.resourceViewModel.onlineWallpapers
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    // 重新从本地+云端组合数据
+                    self.updateData(publicSetting.currentWallpaper.value)
+                })
+                .disposed(by: dataDisposeBag)
+        }
     }
 }

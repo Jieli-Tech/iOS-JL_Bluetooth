@@ -43,6 +43,9 @@ enum TranslateLanType {
     /// 当前模式通知
     var subjectCurrentMode = PublishRelay<JLTranslateSetMode>()
     
+    /// 设备进入空闲状态通知 (用于设备主动推送退出翻译模式)
+    var deviceDidEnterIdle = PublishRelay<Void>()
+    
     /// 录音 PCM 数据
     var recordPcmData = BehaviorRelay<Data>(value: Data())
     
@@ -230,6 +233,8 @@ enum TranslateLanType {
             configFaceToFaceTranslate()
         case .idle:
             cleanupForIdle()
+            // 通知各页面设备已进入空闲状态，需要退出翻译页面
+            deviceDidEnterIdle.accept(())
         default:
             break
         }
@@ -651,7 +656,11 @@ enum TranslateLanType {
     
     private func handleCallData(_ data: Data) {
         guard let audioData = audioData else { return }
-        if translateHelper?.translateMode.modeType != .callTranslate { return } // 非通话翻译模式
+        if translateHelper?.translateMode.modeType != .callTranslate,
+         translateHelper?.translateMode.modeType != .callTranslateStereo {
+            JLLogManager.logLevel(.DEBUG, content: "handleCallData: 非通话翻译模式:\(translateHelper?.translateMode.modeType.rawValue ?? 0xff)")
+            return
+        } // 非通话翻译模式
         audioData.sourceType = .typeESCODown
         sendQueueStatus.accept(false)
         if writeWithoutResponse {

@@ -70,6 +70,7 @@ class DevicesViewModel: NSObject {
                     }
                     let alert = UIAlertController(title: R.localStr.tips(), message: R.localStr.thisDeviceIsAGATTOverEDRConnectionDeviceYouNeedToConnectTheDeviceViaClassicBluetoothInTheBackgroundFirst(), preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: R.localStr.confirm(), style: .default, handler: { _ in
+                        R.openBluetoothSettings()
                     }))
                     viewController.present(alert, animated: true, completion: nil)
                     return

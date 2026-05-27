@@ -651,3 +651,4 @@
 "The Doubao model key has not yet been added. Please scan the QR code to enter the key!" = "Doubaoのモデルキーはまだ追加されていません。QRコードをスキャンしてキーを入力してください。";
 "Broadcast search failed" = "ブロードキャスト検索に失敗しました";
 "Busy processing, please try again later" = "処理中です。しばらくしてから再度お試しください。";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "アップグレードは無制限に可能ですが、まずアップグレードファイルをupdate.ufwと命名し、サンドボックスを通過させた上で **Document/** ディレクトリに保存してください。";

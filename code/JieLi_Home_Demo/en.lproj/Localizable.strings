@@ -874,3 +874,4 @@
 "The Doubao model key has not yet been added. Please scan the QR code to enter the key!" = "The Doubao model key has not yet been added. Please scan the QR code to enter the key!";
 "Broadcast search failed" = "Broadcast search failed";
 "Busy processing, please try again later" = "Busy processing, please try again later";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.";

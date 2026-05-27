@@ -53,6 +53,19 @@ extern NSString *kJL_BLE_M_ANCS_UPDATE;         //设备ANCS权限变更
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_W;    //命令【写】通道
 @property (strong, nonatomic) NSString             *JL_BLE_RCSP_R;    //命令【读】通道
 
+#pragma mark - Entity Pool & Search Configuration
+
+/// 对象池最大保留设备数，默认50
+@property(nonatomic, assign) NSInteger maxEntityPoolSize;
+/// 设备缓存时间（秒），默认300秒
+@property(nonatomic, assign) NSTimeInterval maxEntityCacheTime;
+/// 最大发现设备数（扫描列表上限），默认30
+@property(nonatomic, assign) NSInteger maxDiscoverDevices;
+/// 最小信号强度阈值（dBm），默认-90
+@property(nonatomic, assign) NSInteger minRSSIThreshold;
+/// 最小扫描间隔（秒），默认1.0
+@property(nonatomic, assign) NSTimeInterval minScanInterval;
+
 +(NSString*)versionOfSDK;
 
 /**

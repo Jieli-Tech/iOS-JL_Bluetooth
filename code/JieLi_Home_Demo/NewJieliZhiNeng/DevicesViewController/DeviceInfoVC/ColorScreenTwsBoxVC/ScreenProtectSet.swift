@@ -8,6 +8,8 @@
 
 import RxCocoa
 import UIKit
+import RxSwift
+
 import WebKit
 
 // MARK: - 屏保程序
@@ -123,7 +125,7 @@ import WebKit
         if publicSetting?.sdkInfo?.isSupportGif == true ||
             publicSetting?.chipType == .AC701N {
             let urls = PtColModel.loadAllGifImgUrl()
-            for i in 0 ..< 3 {
+            for i in 0 ..< min(3, urls.count) {
                 let pm = PtColModel(img: UIImage(), isSel: false, tag: i + 1)
                 pm.gifUrl = urls[i]
                 items.append(pm)
@@ -133,7 +135,7 @@ import WebKit
             if publicSetting?.chipType == .AC707N {
                 paths = PtColModel.loadAllScreenSaverUrl(".jpg")
             }
-            for i in 0 ..< 3 {
+            for i in 0 ..< min(3, paths.count) {
                 let pm = PtColModel(img: UIImage(), isSel: false, tag: i + 1)
                 pm.imgPath = paths[i]
                 pm.img = paths[i].beImage()
@@ -145,6 +147,18 @@ import WebKit
                 items.append(pm)
             }
         }
+        
+        if let onlineRes = publicSetting?.resourceViewModel.onlineScreenSavers.value {
+            let needCount = 4 - items.count
+            for i in 0 ..< min(needCount, onlineRes.count) {
+                items.append(PtColModel(resource: onlineRes[i]))
+            }
+        }
+
+        while items.count < 4 {
+             items.append(PtColModel(img: UIImage(), isSel: false, tag: items.count))
+        }
+
         itemsArray = items
         cusImgv.makeItemModel(items[0])
         wbImgv1.makeItemModel(items[1])
@@ -176,7 +190,10 @@ import WebKit
                 if str == "unKnow" {
                     str = item.imgPath?.lastPathComponent.components(separatedBy: ".").first ?? "unKnow"
                 }
-                if fmType == str {
+                if str == "unKnow" {
+                    str = item.name.withoutExt()
+                }
+                if fmType.uppercased() == str.uppercased() {
                     item.isSel = true
                 } else {
                     item.isSel = false
@@ -221,15 +238,21 @@ import WebKit
     }
 
     @objc private func handleWbg1() {
-        handleSelect(itemsArray[1])
+        if itemsArray.count > 1 {
+            handleSelect(itemsArray[1])
+        }
     }
 
     @objc private func handleWbg2() {
-        handleSelect(itemsArray[2])
+        if itemsArray.count > 2 {
+            handleSelect(itemsArray[2])
+        }
     }
 
     @objc private func handleWbg3() {
-        handleSelect(itemsArray[3])
+        if itemsArray.count > 3 {
+            handleSelect(itemsArray[3])
+        }
     }
     private func handleSelect(_ model: PtColModel) {
         if publicSetting?.chipType == .AC707N {
@@ -241,9 +264,40 @@ import WebKit
                 }
             }
         }
+        
+        guard let vc1 = contextView as? ColorScreenSetVC else { return }
+        
+        if model.tag == 100, let resourceUrl = model.downloadUrl {
+            DFUITools.showHUD(withLabel: R.Language.lan("Downloading..."), on: vc1.view)
+            CSNetworkManager.shared.downloadFile(url: resourceUrl) { [weak vc1] result in
+                guard let vc1 = vc1 else { return }
+                DFUITools.removeHUD()
+                switch result {
+                case .success(let localUrl):
+                    let vc = ProtectPreviewVC()
+                    vc.publicSettingVM = self.publicSetting
+                    if resourceUrl.lowercased().hasSuffix(".gif") {
+                        vc.gifUrl = localUrl
+                    } else {
+                        if let image = UIImage(contentsOfFile: localUrl.path) {
+                            vc.showImage = image
+                        } else {
+                            vc1.view.makeToast(R.Language.lan("Image format error"), position: .center)
+                            return
+                        }
+                    }
+                    vc.fileName = (resourceUrl as NSString).lastPathComponent.components(separatedBy: ".").first ?? "online_res"
+                    vc1.navigationController?.pushViewController(vc, animated: true)
+                case .failure(let error):
+                    JLLogManager.logLevel(.ERROR, content: "Download failed: \(error)")
+                    vc1.view.makeToast(R.Language.lan("Download failed"), position: .center)
+                }
+            }
+            return
+        }
+        
         if let _ = model.imgPath {
-            guard let path = model.imgPath?.absoluteString,
-                  let vc1 = contextView as? ColorScreenSetVC else { return }
+            guard let path = model.imgPath?.absoluteString else { return }
             let vc = ProtectPreviewVC()
             vc.fileName = (path as NSString).lastPathComponent
             vc.showImage = model.imgPath!.beImage()
@@ -251,8 +305,7 @@ import WebKit
             vc1.navigationController?.pushViewController(vc, animated: true)
             return
         }
-        guard let path = model.gifUrl?.absoluteString,
-              let vc1 = contextView as? ColorScreenSetVC else { return }
+        guard let path = model.gifUrl?.absoluteString else { return }
         if path.hasSuffix(".gif") {
             let vc = ProtectPreviewVC()
             vc.fileName = (path as NSString).lastPathComponent.replacingOccurrences(of: ".gif", with: "")
@@ -270,7 +323,7 @@ class PtColView: BasicView {
     let selImgv = UIImageView()
     let centerImgv = UIImageView()
     var model: PtColModel?
-    let cloudImgv = UIImageView()
+    let notExitInDevImgv = UIImageView()
 
     override func initUI() {
         super.initUI()
@@ -278,12 +331,12 @@ class PtColView: BasicView {
         addSubview(imgView)
         addSubview(centerImgv)
         addSubview(selImgv)
-        addSubview(cloudImgv)
+        addSubview(notExitInDevImgv)
         backgroundColor = UIColor.eHex("#EAEAEA")
         selImgv.image = R.Image.img("Theme.bundle/bay_icon_choose")
         centerImgv.image = R.Image.img("Theme.bundle/bay_icon_add")
-        cloudImgv.image = R.Image.img("Theme.bundle/icon_cloud")
-        cloudImgv.isHidden = true
+        notExitInDevImgv.image = R.Image.img("Theme.bundle/icon_cloud")
+        notExitInDevImgv.isHidden = true
         centerImgv.isHidden = true
         imgGif.isHidden = true
         imgGif.isUserInteractionEnabled = false
@@ -306,7 +359,7 @@ class PtColView: BasicView {
             make.right.top.equalToSuperview()
             make.width.height.equalTo(18)
         }
-        cloudImgv.snp.makeConstraints { make in
+        notExitInDevImgv.snp.makeConstraints { make in
             make.right.top.equalToSuperview()
             make.width.height.equalTo(22)
         }
@@ -330,11 +383,11 @@ class PtColView: BasicView {
         }
         if model.isSel {
             layer.borderColor = UIColor.purple.cgColor
-            cloudImgv.isHidden = true
+            notExitInDevImgv.isHidden = true
         } else {
             layer.borderColor = UIColor.clear.cgColor
             if model.tag != 0 {
-                cloudImgv.isHidden = model.isExit
+                notExitInDevImgv.isHidden = model.isExit
             }
         }
     }
@@ -346,6 +399,8 @@ class ScreenAnimationView: BasicView {
     private let titleLab = UILabel()
     let itemsArray = BehaviorRelay<[PtColModel]>(value: [])
     private var collectView: UICollectionView!
+    weak var publicSetting: PublicSettingViewModel?
+    private var dataDisposeBag = DisposeBag()
 
     override func initUI() {
         super.initUI()
@@ -360,8 +415,10 @@ class ScreenAnimationView: BasicView {
         fw.itemSize = CGSizeMake(w, 86)
         fw.minimumLineSpacing = 11
         fw.minimumInteritemSpacing = 11
+        fw.scrollDirection = .horizontal
         collectView = UICollectionView(frame: .zero, collectionViewLayout: fw)
         collectView.backgroundColor = UIColor.clear
+        collectView.showsHorizontalScrollIndicator = false
         collectView.register(PtColCell.self, forCellWithReuseIdentifier: "PtColCell")
         addSubview(collectView)
         
@@ -377,6 +434,50 @@ class ScreenAnimationView: BasicView {
         itemsArray.bind(to: collectView.rx.items(cellIdentifier: "PtColCell", cellType: PtColCell.self)) { _, item, cell in
             cell.makeCell(item)
         }.disposed(by: disposeBag)
+        
+        collectView.rx.modelSelected(PtColModel.self).subscribe(onNext: { [weak self] model in
+            guard let self = self, let vc1 = self.contextView as? ColorScreenSetVC else { return }
+            if model.tag == 100, let resourceUrl = model.downloadUrl {
+                DFUITools.showHUD(withLabel: R.Language.lan("Downloading..."), on: vc1.view)
+                CSNetworkManager.shared.downloadFile(url: resourceUrl) { [weak vc1, weak self] result in
+                    guard let vc1 = vc1, let self = self else { return }
+                    DFUITools.removeHUD()
+                    switch result {
+                    case .success(let localUrl):
+                        let vc = ProtectPreviewVC()
+                        vc.publicSettingVM = self.publicSetting
+                        if resourceUrl.lowercased().hasSuffix(".gif") {
+                            vc.gifUrl = localUrl
+                        } else {
+                            if let image = UIImage(contentsOfFile: localUrl.path) {
+                                vc.showImage = image
+                            } else {
+                                vc1.view.makeToast(R.Language.lan("Image format error"), position: .center)
+                                return
+                            }
+                        }
+                        vc.fileName = (resourceUrl as NSString).lastPathComponent.components(separatedBy: ".").first ?? "online_ani"
+                        vc.sourceType = 0x02 // 0x02 indicates animation, assuming this is correct or handled by ProtectUpdateVC
+                        vc1.navigationController?.pushViewController(vc, animated: true)
+                    case .failure(let error):
+                        JLLogManager.logLevel(.ERROR, content: "Download failed: \(error)")
+                        vc1.view.makeToast(R.Language.lan("Download failed"), position: .center)
+                    }
+                }
+                return
+            }
+            
+            if let path = model.gifUrl?.absoluteString {
+                if path.hasSuffix(".gif") {
+                    let vc = ProtectPreviewVC()
+                    vc.fileName = (path as NSString).lastPathComponent.replacingOccurrences(of: ".gif", with: "")
+                    vc.gifUrl = model.gifUrl!
+                    vc.publicSettingVM = self.publicSetting
+                    vc.sourceType = 0x02
+                    vc1.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+        }).disposed(by: disposeBag)
 
         collectView.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(14)
@@ -389,11 +490,49 @@ class ScreenAnimationView: BasicView {
 
     override func initData() {
         super.initData()
+        updateData()
+        setupDataBinding()
+    }
+    
+    func updateData() {
         var items = [PtColModel]()
         let md = PtColModel(img: UIImage(), isSel: true, tag: 1)
         md.gifUrl = Bundle.main.url(forResource: "ANI1", withExtension: "gif")
         items.append(md)
+        
+        // 合并云端开机动画
+        if let publicSetting = publicSetting {
+            let bootAnimations = publicSetting.resourceViewModel.onlineBootAnimations.value
+            for res in bootAnimations {
+                let pm = PtColModel(resource: res)
+                items.append(pm)
+            }
+        }
+        
         itemsArray.accept(items)
+    }
+    
+    func setupDataBinding() {
+        dataDisposeBag = DisposeBag()
+        
+        // 监听云端资源变化
+        if let publicSetting = publicSetting {
+            publicSetting.resourceViewModel.onlineBootAnimations
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.updateData()
+                })
+                .disposed(by: dataDisposeBag)
+                
+            publicSetting.fileModelList
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.updateData()
+                })
+                .disposed(by: dataDisposeBag)
+        }
     }
 
     private func handleTouchUp() {}
@@ -408,6 +547,10 @@ class ScreenAnimationView: BasicView {
     var tag: Int
     var isExit: Bool = false
     var imgPath: URL?
+    var onlineUrl: String? // 用于显示缩略图
+    var downloadUrl: String? // 用于下载原资源文件
+    var resourceModel: CSResourceItemModel?
+    
     var name: String {
         if gifUrl != nil {
             let path = gifUrl?.lastPathComponent.components(separatedBy: ".").first ?? ""
@@ -426,6 +569,30 @@ class ScreenAnimationView: BasicView {
         self.isSel = isSel
         self.tag = tag
         _name = name
+    }
+    
+    /// 从在线资源初始化
+    convenience init(resource: CSResourceItemModel) {
+        self.init(img: UIImage(), isSel: false, tag: 100) // 使用 100 表示在线资源
+        self.onlineUrl = resource.icon ?? resource.url
+        self.downloadUrl = resource.url
+        self.resourceModel = resource
+        if let urlStr = resource.url, let url = URL(string: urlStr) {
+            SDWebImageManager.shared.loadImage(with: url, options: [], progress: nil) { [weak self] (image, data, error, cacheType, finished, imageURL) in
+                if let img = image {
+                    self?.img = img
+                }
+            }
+        }
+        
+        let resourceFileName = (self.downloadUrl as NSString?)?.lastPathComponent.components(separatedBy: ".").first ?? ""
+        self.isExit = false
+        for item in PublicSettingViewModel.shared.fileModelList.value {
+            if item.fileName.uppercased() == resourceFileName.uppercased() {
+                self.isExit = true
+                break
+            }
+        }
     }
 
     func getImgData() -> Data {
@@ -547,10 +714,17 @@ class PtColCell: UICollectionViewCell {
 
     func makeCell(_ model: PtColModel) {
         cellModel = model
-        imgView.image = model.img
         selImgv.isHidden = !model.isSel
         wallPaperInDevice(true)
         centerImgv.isHidden = model.tag != 0
+        
+        // 加载图片 (支持在线URL或本地图片)
+        if let onlineUrlStr = model.onlineUrl, let url = URL(string: onlineUrlStr) {
+            imgView.sd_setImage(with: url, placeholderImage: UIImage(named: "Theme.bundle/icon_default_pic"))
+        } else {
+            imgView.image = model.img
+        }
+        
         if model.gifUrl != nil {
             imgGif.isHidden = false
             let request = URLRequest(url: model.gifUrl!)

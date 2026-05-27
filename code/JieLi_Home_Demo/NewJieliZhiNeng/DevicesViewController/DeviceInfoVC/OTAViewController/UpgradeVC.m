@@ -7,33 +7,22 @@
 //
 
 #import "UpgradeVC.h"
+#import "AppStatusManager.h"
+#import "DeviceInfoTools.h"
+#import "FinishTipsView.h"
+#import "JLUI_Cache.h"
 #import "JL_RunSDK.h"
+#import "NetworkPlayer.h"
+#import "SqliteManager.h"
+#import "TransportView.h"
+#import "UTipsView.h"
 #import "UpgradeCell.h"
 #import "UpgradeTipsView.h"
-#import "TransportView.h"
-#import "FinishTipsView.h"
-#import "DeviceInfoTools.h"
-#import "UTipsView.h"
-#import "SqliteManager.h"
-#import "AppStatusManager.h"
-#import "JLUI_Cache.h"
-#import "NetworkPlayer.h"
-
-#ifdef DEBUG
-
-#define LT 1
-
-#else
-
-#define LT 1
-
-#endif
-
-
+#import "杰理之家-Swift.h"
 
 @interface UpgradeVC ()<UpgradeCellDelegate,UITableViewDelegate,UITableViewDataSource,DFHttpDelegate,UTipViewDelegate>{
     NSArray *itemArray;
-
+    
     UpgradeTipsView *upgradeView;
     TransportView *transportView;
     FinishTipsView *finishView;
@@ -110,91 +99,88 @@
 }
 
 -(void)checkVersion{
-
-#if (LT==0)
-
-//    //有新版本
-//    self->shouldUp = YES;
-//    self->downloadUrl = [JL_Tools find:@"update_yx_hp_123.ufw"];
-//    savePath = [JL_Tools find:@"update_yx_hp_123.ufw"];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self->upgradeView initWithNews:@"1.0.0.0" tips:@"升级测试"];
-//        [self.view addSubview:self->upgradeView];
-//    });
-//    [self.upgradeTable reloadData];
-//    return;
     
-    JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
-    if (model.md5Type == YES) {
-        /*---- OTA升级使用MD5校验 ----*/
+    if (![DebugSettingVC isOTALocalTest]) {
+        //    //有新版本
+        //    self->shouldUp = YES;
+        //    self->downloadUrl = [JL_Tools find:@"update_yx_hp_123.ufw"];
+        //    savePath = [JL_Tools find:@"update_yx_hp_123.ufw"];
+        //    dispatch_async(dispatch_get_main_queue(), ^{
+        //        [self->upgradeView initWithNews:@"1.0.0.0" tips:@"升级测试"];
+        //        [self.view addSubview:self->upgradeView];
+        //    });
+        //    [self.upgradeTable reloadData];
+        //    return;
         
-        [self.otaEntity.mCmdManager cmdGetMD5_Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
-            if (status == JL_CMDStatusSuccess) {
-                NSData *data_md5 = data;
-                NSString *str_md5 = [[NSString alloc] initWithData:data_md5 encoding:NSUTF8StringEncoding];
-                kJLLog(JLLOG_DEBUG,@"MD5 ----> %@",str_md5);
-                //NSString* test = @"eb5eaa7e89664adc2c840230fc494656";
-                [self.otaEntity.mCmdManager.mOTAManager cmdGetOtaFileKey:model.authKey Code:model.proCode hash:str_md5
-                                      Result:^(JL_OTAUrlResult result,
-                                               NSString * _Nullable version,
-                                               NSString * _Nullable url,
-                                               NSString * _Nullable explain) {
-                    [self updateWithOTAResult:result Version:version Url:url Explain:explain];
-                }];
-            }else{
-                [DFUITools showText_1:kJL_TXT("md5_verify_error") onView:self.view delay:1.0];
-                self->isChecking = NO;
-                [self.upgradeTable reloadData];
-            }
-        }];
-        
+        JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+        if (model.md5Type == YES) {
+            /*---- OTA升级使用MD5校验 ----*/
             
-    }else{
-        /*--- 传统OTA升级 ---*/
+            [self.otaEntity.mCmdManager cmdGetMD5_Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
+                if (status == JL_CMDStatusSuccess) {
+                    NSData *data_md5 = data;
+                    NSString *str_md5 = [[NSString alloc] initWithData:data_md5 encoding:NSUTF8StringEncoding];
+                    kJLLog(JLLOG_DEBUG,@"MD5 ----> %@",str_md5);
+                    //NSString* test = @"eb5eaa7e89664adc2c840230fc494656";
+                    [[[JLOTAFile alloc] init] cmdGetOtaFileKey:model.authKey Code:model.proCode hash:str_md5
+                                                        Result:^(JL_OTAUrlResult result,
+                                                                 NSString * _Nullable version,
+                                                                 NSString * _Nullable url,
+                                                                 NSString * _Nullable explain) {
+                        [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+                    }];
+                }else{
+                    [DFUITools showText_1:kJL_TXT("md5_verify_error") onView:self.view delay:1.0];
+                    self->isChecking = NO;
+                    [self.upgradeTable reloadData];
+                }
+            }];
+            
+            
+        }else{
+            /*--- 传统OTA升级 ---*/
+            NSString *authKey = @"";
+            NSString *proCode = @"";
+            if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
+                if(self.otaEntity.mUUID.length>0){
+                    DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+                    authKey = m1.authKey;
+                    proCode = m1.proCode;
+                }
+            }else{
+                authKey = model.authKey;
+                proCode = model.proCode;
+            }
+            [[[JLOTAFile alloc] init] cmdGetOtaFileKey:authKey Code:proCode
+                                                Result:^(JL_OTAUrlResult result,
+                                                         NSString * _Nullable version,
+                                                         NSString * _Nullable url,
+                                                         NSString * _Nullable explain) {
+                [self updateWithOTAResult:result Version:version Url:url Explain:explain];
+            }];
+        }
+    } else {
+        JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
         NSString *authKey = @"";
         NSString *proCode = @"";
         if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
-            if(self.otaEntity.mUUID.length>0){
-                DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
-                authKey = m1.authKey;
-                proCode = m1.proCode;
-            }
+            
+            DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
+            authKey = m1.authKey;
+            proCode = m1.proCode;
         }else{
             authKey = model.authKey;
             proCode = model.proCode;
         }
-        [self.otaEntity.mCmdManager.mOTAManager cmdGetOtaFileKey:authKey Code:proCode
-                              Result:^(JL_OTAUrlResult result,
-                                       NSString * _Nullable version,
-                                       NSString * _Nullable url,
-                                       NSString * _Nullable explain) {
-            [self updateWithOTAResult:result Version:version Url:url Explain:explain];
-        }];
+        //有新版本
+        shouldUp = YES;
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        path = [path stringByAppendingPathComponent:@"update.ufw"];
+        savePath = path;
+        
+        [upgradeView initWithNews:@"Max" tips:kJL_TXT("Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.")];
+        [self.view addSubview:upgradeView];
     }
-#else
-    JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
-    NSString *authKey = @"";
-    NSString *proCode = @"";
-    if ([model.authKey isEqualToString:@""] || [model.proCode isEqualToString:@""] ) {
-
-        DeviceModel *m1 = [[SqliteManager sharedInstance] checkoutDeviceModelBy:self.otaEntity.mUUID];
-        authKey = m1.authKey;
-        proCode = m1.proCode;
-    }else{
-        authKey = model.authKey;
-        proCode = model.proCode;
-    }
-    //有新版本
-    shouldUp = YES;
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    path = [path stringByAppendingPathComponent:@"update.ufw"];
-    savePath = path;
-   
-    [upgradeView initWithNews:@"Max" tips:@"无限制升级"];
-    [self.view addSubview:upgradeView];
-   
-    
-#endif
     
 }
 
@@ -228,11 +214,9 @@
     
     /**版本校对*/
     if([DeviceInfoTools shouldUpdate:version local:currentFireCode]){
-#if (LT==0)
-        [fmgr removeItemAtPath:self->savePath error:nil];
-#else
-        
-#endif
+        if (![DebugSettingVC isOTALocalTest]) {
+            [fmgr removeItemAtPath:self->savePath error:nil];
+        }
         //有新版本
         self->shouldUp = YES;
         self->downloadUrl = url;
@@ -260,7 +244,7 @@
     _upgradeTable.tableFooterView = [UIView new];
     _upgradeTable.allowsSelection = YES;
     _upgradeTable.scrollEnabled = NO;
-
+    
     upgradeView = [[UpgradeTipsView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     
     transportView = [[TransportView alloc] init];
@@ -268,7 +252,7 @@
     
     finishView = [[FinishTipsView alloc] init];
     finishView.alpha = 0.0;
-
+    
     tipsView = [[UTipsView alloc] init];
     tipsView.delegate = self;
     tipsView.alpha = 0.0;
@@ -278,16 +262,15 @@
         [self.view addSubview:self->finishView];
         [self.view addSubview:self->tipsView];
     }];
-
+    
     [finishView okBlock:^{
         self->shouldUp = NO;
         [self->_upgradeTable reloadData];
         self->exitToRoot = YES;
         
-        #if (LT==0)
+        if (![DebugSettingVC isOTALocalTest]) {
             [self->fmgr removeItemAtPath:self->savePath error:nil];
-        #else
-        #endif
+        }
         
         if (self.rootNumber == 1) {
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -302,12 +285,10 @@
 - (IBAction)backBtnAction:(id)sender {
     [httpMgr cancelTask];
     [self dismissViewControllerAnimated:YES completion:nil];
-
-#if (LT==0)
-    [fmgr removeItemAtPath:self->savePath error:nil];
-#else
     
-#endif
+    if (![DebugSettingVC isOTALocalTest]) {
+        [fmgr removeItemAtPath:self->savePath error:nil];
+    }
 }
 
 #pragma mark <- tableview Delegat ->
@@ -355,7 +336,7 @@
                 cell.checkBtn.hidden = NO;
             }
         }
-
+        
         if (isChecking) {
             [cell.checkingView startAnimating];
             cell.checkingView.hidden = NO;
@@ -363,7 +344,7 @@
             cell.checkingView.hidden = YES;
             [cell.checkingView stopAnimating];
         }
-      
+        
     }else if(indexPath.row == 0){
         cell.checkingView.hidden = YES;
         cell.progress.hidden = YES;
@@ -388,8 +369,6 @@
 
 #pragma mark <- cell delegate ->
 -(void)upgradeCellDidTouch:(NSInteger)index{
-//    [self upgradeAction];
-//    return;
     
     /*--- 关闭网络电台 ---*/
     [[NetworkPlayer sharedMe] didStop];
@@ -416,32 +395,30 @@
 #pragma mark <- HTTP文件下载 ->
 -(void)startDownload{
     isDownload = YES;
-#if (LT==0)
-    NSDictionary *dict = @{@"URL":downloadUrl?:@"",@"PATH":savePath?:@""};
-    [fmgr removeItemAtPath:savePath error:nil];
-    [self.upgradeTable reloadData];
-    httpMgr = nil;
-    httpMgr = [[DFHttp alloc] init];
-    httpMgr.delegate = self;
-    [httpMgr down:dict];
-#else
-    pRate = 1.0;
-    isDownload = NO;
-    [self.upgradeTable reloadData];
-    //已经存在，就开始固件升级
-    [self upgradeAction];
-    pRate = 0;
-#endif
+    if (![DebugSettingVC isOTALocalTest]) {
+        NSDictionary *dict = @{@"URL":downloadUrl?:@"",@"PATH":savePath?:@""};
+        [fmgr removeItemAtPath:savePath error:nil];
+        [self.upgradeTable reloadData];
+        httpMgr = nil;
+        httpMgr = [[DFHttp alloc] init];
+        httpMgr.delegate = self;
+        [httpMgr down:dict];
+    } else {
+        pRate = 1.0;
+        isDownload = NO;
+        [self.upgradeTable reloadData];
+        //已经存在，就开始固件升级
+        [self upgradeAction];
+        pRate = 0;
+    }
     
 }
 
 -(void)http:(DFHttp *)http didFail:(NSError *)error{
     isDownload = NO;
-#if (LT==0)
-    [fmgr removeItemAtPath:self->savePath error:nil];
-#else
-    
-#endif
+    if (![DebugSettingVC isOTALocalTest]) {
+        [fmgr removeItemAtPath:self->savePath error:nil];
+    }
     [self.upgradeTable reloadData];
     [DFUITools showText:kJL_TXT("network_exception") onView:self.view delay:2.0];
     pRate = 0;
@@ -464,103 +441,106 @@
 -(void)upgradeAction{
     
     [self.otaEntity setGameMode:NO MTU:0 Delay:0];
-
+    
     NSData *data = [NSData dataWithContentsOfFile:savePath];
-    if(data.length >0){
-        [transportView update:0.0 Text:kJL_TXT("upgrade_progress_update")];
-        transportView.alpha = 1.0;
-        tipsView.alpha = 0.0;
-        tipsView.index = -1;
-        [self otaTimeCheck];//增加超时检测
-                
-        isUpdateing = YES;
-        kJLLog(JLLOG_DEBUG,@"----> OTA Upgrade Action..");
-        
-        __weak typeof(self) weakSelf = self;
-        [self.otaEntity.mCmdManager.mOTAManager cmdOTAData:data Result:^(JL_OTAResult result, float progress) {
-            if (result == JL_OTAResultSuccess) {
-                [self->transportView update:1.0 Text:nil];
-                self->transportView.alpha = 0.0;
-                
-                [[JLUI_Cache sharedInstance] setOtaUUID:nil];
-                
-                [weakSelf upgradeFinish];
-            }
-            if (result == JL_OTAResultFail) {
-                [weakSelf failedWithAction:kJL_TXT("upgrade_failed")];
-            }
-            if (result == JL_OTAResultDataIsNull) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_data_nil")];
-            }
-            if (result == JL_OTAResultCommandFail) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_cmd_failed")];
-            }
-            if (result == JL_OTAResultSeekFail) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_offset_failed")];
-            }
-            if (result == JL_OTAResultInfoFail) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_info_failed")];
-            }
-            if (result == JL_OTAResultLowPower) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_battery_failed")];
-            }
-            if (result == JL_OTAResultEnterFail) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_cannot_failed")];
-            }
-            if (result == JL_OTAResultUnknown) {
-                [weakSelf failedWithAction:kJL_TXT("ota_upgrade_unknow_failed")];
-            }
-            if (result == JL_OTAResultFailSameVersion) {
-                [weakSelf failedWithAction:kJL_TXT("is_same_version")];
-            }
-            if (result == JL_OTAResultFailTWSDisconnect) {
-                [weakSelf failedWithAction:kJL_TXT("tws_isnot_connected")];
-            }
-            if (result == JL_OTAResultFailNotInBin) {
-                [weakSelf failedWithAction:kJL_TXT("tws_isnot_online")];
-            }
-            
-            if (result == JL_OTAResultPreparing ||
-                result == JL_OTAResultUpgrading)
-            {
-                if (result == JL_OTAResultUpgrading) [self->transportView update:progress Text:kJL_TXT("upgrade_progress_update")];
-                if (result == JL_OTAResultPreparing) [self->transportView update:progress Text:@"检验文件"];
-                [self otaTimeCheck];//增加超时检测
-            }
-            
-            if (result == JL_OTAResultPrepared) {
-                [self otaTimeCheck];//增加超时检测
-            }
-            if (result == JL_OTAResultReconnect ) {
-                [self otaTimeCheck];//增加超时检测
-                
-                kJLLog(JLLOG_DEBUG,@"---> OTA正在回连设备... %@",self.otaEntity.mItem);
-                [self->bleSDK connectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
-                    if (status != JL_EntityM_StatusPaired) {
-                        [weakSelf failedWithAction:kJL_TXT("ota_timeout")];
-                    }
-                }];
-            }
-            if (result == JL_OTAResultReconnectWithMacAddr) {
-                [self otaTimeCheck];//增加超时检测
-                JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
-                kJLLog(JLLOG_DEBUG,@"---> OTA正在回连设备2... %@",model.bleAddr);
-                self.otaBleAddr = model.bleAddr;
-                [self->bleSDK.mBleMultiple connectEntityForMac:model.bleAddr Result:^(JL_EntityM_Status status) {
-                    if (status != JL_EntityM_StatusPaired) {
-                        [weakSelf failedWithAction:kJL_TXT("ota_timeout")];
-                    }
-                }];
-            }
-            if (result == JL_OTAResultReboot) {
-                [self.otaEntity.mCmdManager.mOTAManager cmdRebootForceDevice];
-//                [[[JL_RunSDK sharedMe] mBleMultiple] disconnectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
-//                    
-//                }];
-            }
-            
-        }];
+    if(data.length <= 0){
+        [self failedWithAction:kJL_TXT("ota_upgrade_data_nil")];
+        return;
     }
+    [transportView update:0.0 Text:kJL_TXT("upgrade_progress_update")];
+    transportView.alpha = 1.0;
+    tipsView.alpha = 0.0;
+    tipsView.index = -1;
+    [self otaTimeCheck];//增加超时检测
+    
+    isUpdateing = YES;
+    kJLLog(JLLOG_DEBUG,@"----> OTA Upgrade Action..");
+    
+    __weak typeof(self) weakSelf = self;
+    [self.otaEntity.mCmdManager.mOTAManager cmdOTAData:data Result:^(JL_OTAResult result, float progress) {
+        if (result == JL_OTAResultSuccess) {
+            [self->transportView update:1.0 Text:nil];
+            self->transportView.alpha = 0.0;
+            
+            [[JLUI_Cache sharedInstance] setOtaUUID:nil];
+            
+            [weakSelf upgradeFinish];
+        }
+        if (result == JL_OTAResultFail) {
+            [weakSelf failedWithAction:kJL_TXT("upgrade_failed")];
+        }
+        if (result == JL_OTAResultDataIsNull) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_data_nil")];
+        }
+        if (result == JL_OTAResultCommandFail) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_cmd_failed")];
+        }
+        if (result == JL_OTAResultSeekFail) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_offset_failed")];
+        }
+        if (result == JL_OTAResultInfoFail) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_info_failed")];
+        }
+        if (result == JL_OTAResultLowPower) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_battery_failed")];
+        }
+        if (result == JL_OTAResultEnterFail) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_cannot_failed")];
+        }
+        if (result == JL_OTAResultUnknown) {
+            [weakSelf failedWithAction:kJL_TXT("ota_upgrade_unknow_failed")];
+        }
+        if (result == JL_OTAResultFailSameVersion) {
+            [weakSelf failedWithAction:kJL_TXT("is_same_version")];
+        }
+        if (result == JL_OTAResultFailTWSDisconnect) {
+            [weakSelf failedWithAction:kJL_TXT("tws_isnot_connected")];
+        }
+        if (result == JL_OTAResultFailNotInBin) {
+            [weakSelf failedWithAction:kJL_TXT("tws_isnot_online")];
+        }
+        
+        if (result == JL_OTAResultPreparing ||
+            result == JL_OTAResultUpgrading)
+        {
+            if (result == JL_OTAResultUpgrading) [self->transportView update:progress Text:kJL_TXT("upgrade_progress_update")];
+            if (result == JL_OTAResultPreparing) [self->transportView update:progress Text:@"检验文件"];
+            [self otaTimeCheck];//增加超时检测
+        }
+        
+        if (result == JL_OTAResultPrepared) {
+            [self otaTimeCheck];//增加超时检测
+        }
+        if (result == JL_OTAResultReconnect ) {
+            [self otaTimeCheck];//增加超时检测
+            
+            kJLLog(JLLOG_DEBUG,@"---> OTA正在回连设备... %@",self.otaEntity.mItem);
+            [self->bleSDK connectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
+                if (status != JL_EntityM_StatusPaired) {
+                    [weakSelf failedWithAction:kJL_TXT("ota_timeout")];
+                }
+            }];
+        }
+        if (result == JL_OTAResultReconnectWithMacAddr) {
+            [self otaTimeCheck];//增加超时检测
+            JLModel_Device *model = [self.otaEntity.mCmdManager outputDeviceModel];
+            kJLLog(JLLOG_DEBUG,@"---> OTA正在回连设备2... %@",model.bleAddr);
+            self.otaBleAddr = model.bleAddr;
+            [self->bleSDK.mBleMultiple connectEntityForMac:model.bleAddr Result:^(JL_EntityM_Status status) {
+                if (status != JL_EntityM_StatusPaired) {
+                    [weakSelf failedWithAction:kJL_TXT("ota_timeout")];
+                }
+            }];
+        }
+        if (result == JL_OTAResultReboot) {
+            [self.otaEntity.mCmdManager.mOTAManager cmdRebootForceDevice];
+            //                [[[JL_RunSDK sharedMe] mBleMultiple] disconnectEntity:self.otaEntity Result:^(JL_EntityM_Status status) {
+            //
+            //                }];
+        }
+        
+    }];
+    
 }
 
 -(void)notiEntityOta:(NSNotification *)note{
@@ -648,11 +628,9 @@
 
 
 -(void)failedWithAction:(NSString*)txt{
-#if (LT==0)
-    [fmgr removeItemAtPath:self->savePath error:nil];
-#else
-    
-#endif
+    if (![DebugSettingVC isOTALocalTest]) {
+        [fmgr removeItemAtPath:self->savePath error:nil];
+    }
     [transportView update:0.0 Text:nil];
     transportView.alpha = 0.0;
     
@@ -665,11 +643,9 @@
 }
 
 -(void)upgradeFinish{
-#if (LT==0)
-    [fmgr removeItemAtPath:self->savePath error:nil];
-#else
-    
-#endif
+    if (![DebugSettingVC isOTALocalTest]) {
+        [fmgr removeItemAtPath:self->savePath error:nil];
+    }
     isUpdateing = NO;
     transportView.alpha = 0.0;
     tipsView.alpha = 0.0;
@@ -702,10 +678,9 @@ static int      otaTimeout= 0;
         [self failedWithAction:kJL_TXT("ota_timeout")];
         kJLLog(JLLOG_DEBUG,@"OTA ---> 超时了！！！");
         
-#if (LT==0)
-        [fmgr removeItemAtPath:self->savePath error:nil];
-#else
-#endif
+        if (![DebugSettingVC isOTALocalTest]) {
+            [fmgr removeItemAtPath:self->savePath error:nil];
+        }
     }
 }
 

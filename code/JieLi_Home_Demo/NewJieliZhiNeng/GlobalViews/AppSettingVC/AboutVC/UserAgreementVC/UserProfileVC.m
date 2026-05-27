@@ -7,6 +7,7 @@
 //
 
 #import "UserProfileVC.h"
+#import <WebKit/WebKit.h>
 
 
 //用户服务协议的URL

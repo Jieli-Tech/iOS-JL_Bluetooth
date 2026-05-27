@@ -7,11 +7,10 @@
 //
 
 #import "AppSettingVC.h"
-#import "AppAboutVC.h"
+#import "杰理之家-Swift.h"
 #import "ProductInstructionsVC.h"
 #import "JL_RunSDK.h"
 #import "LanguageViewController.h"
-#import "ColorScreenSetVC.h"
 
 #define SHACK_SONG  @"SHACK_SONG"
 #define SHACK_LIGHT @"SHACK_LIGHT"

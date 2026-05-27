@@ -199,6 +199,10 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     
     /*--- 未连接的设备 ---*/
     if (type == JLUuidTypeDisconnected) {
+        if (entity.mConnectWay == JLEntityConnectTypeATT) {
+            [self showATTConnectionAlertAndDismiss:YES];
+            return;
+        }
         /*--- 去连接设备 ---*/
         kJLLog(JLLOG_DEBUG,@"---> 【详情】连接设备：%@",entity.mItem);
         [self startLoadingView:kJL_TXT("device_connecting") Delay:15];
@@ -270,6 +274,10 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
             return;
         }
         
+        if (entity.mConnectWay == JLEntityConnectTypeATT) {
+            [self showATTConnectionAlertAndDismiss:YES];
+            return;
+        }
         __weak typeof(self) wSelf = self;
         
         [bleSDK connectEntity:entity Result:^(JL_EntityM_Status status) {
@@ -361,7 +369,7 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
 -(void)reloadNetImage:(JL_EntityM *)entity Result:(JL_IMAGE_LOAD_BK)result{
     __weak typeof(self) wself = self;
     
-    NSString *uid = entity.mVID;
+    NSString *uid = entity.mUID;
     NSString *pid = entity.mPID;
     if (uid.length == 0) uid = @"0000";
     if (pid.length == 0) pid = @"0000";
@@ -617,7 +625,7 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     [self closeTimer];
     
     [JL_Tools remove:kJL_MANAGER_HEADSET_ADV Own:self];
-    if (nowEntity.mBLE_IS_PAIRED == YES) {
+    if (nowEntity.mIsAuth == YES) {
         //[nowEntity.mCmdManager cmdHeatsetAdvEnable:NO];
         //kJLLog(JLLOG_DEBUG,@"---> Close Heatset Adv Enable【NO】");
     }
@@ -1211,5 +1219,46 @@ static BOOL isRelinkBoardcast = NO;
     [finishBtnC setTitle:kJL_TXT("device_paired_finish") forState:UIControlStateNormal];
 }
 
+- (void)showATTConnectionAlertAndDismiss:(BOOL)shouldDismiss {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[LanguageCls localizableTxt:@"tips_1"] message:[LanguageCls localizableTxt:@"This device is a GATT over EDR connection device; you need to connect the device via classic Bluetooth in the background first."] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:[LanguageCls localizableTxt:@"confirm"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [R openBluetoothSettings];
+    }];
+    [alert addAction:action];
+    UIViewController *topVC = [self findTopViewController];
+    if (topVC) {
+        [topVC presentViewController:alert animated:true completion:nil];
+    }
+    if (shouldDismiss) {
+        [self dismissView];
+    }
+}
+
+- (UIViewController *)findTopViewController {
+    UIViewController *rootVC = nil;
+    if (@available(iOS 13.0, *)) {
+        UIWindowScene *scene = nil;
+        for (UIWindowScene *s in [UIApplication sharedApplication].connectedScenes) {
+            if (s.activationState == UISceneActivationStateForegroundActive) {
+                scene = s;
+                break;
+            }
+        }
+        if (scene) {
+            for (UIWindow *window in scene.windows) {
+                if (window.rootViewController) {
+                    rootVC = window.rootViewController;
+                    break;
+                }
+            }
+        }
+    } else {
+        rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
+    while (rootVC.presentedViewController) {
+        rootVC = rootVC.presentedViewController;
+    }
+    return rootVC;
+}
 
 @end

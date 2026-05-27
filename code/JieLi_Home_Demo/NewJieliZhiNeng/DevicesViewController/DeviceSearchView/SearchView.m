@@ -201,7 +201,7 @@
     JL_EntityM *entity = self.foundArray[indexPath.row];
     cell.deviceNameLab.text = entity.mItem;
     
-    if (entity.mBLE_IS_PAIRED) {
+    if (entity.mIsAuth) {
         cell.statusImgv.image = [UIImage imageNamed:@"Theme.bundle/icon_sel"];
     }else{
         cell.statusImgv.image = [UIImage imageNamed:@"Theme.bundle/icon_nor"];
@@ -260,7 +260,7 @@
         }
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:[LanguageCls localizableTxt:@"tips_1"] message:[LanguageCls localizableTxt:@"This device is a GATT over EDR connection device; you need to connect the device via classic Bluetooth in the background first."] preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *action = [UIAlertAction actionWithTitle:[LanguageCls localizableTxt:@"confirm"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
+            [R openBluetoothSettings];
         }];
         [alert addAction:action];
         [self.parentVC presentViewController:alert animated:true completion:nil];
@@ -316,6 +316,24 @@
 
 -(void)connectWithEntity:(JL_EntityM*)bleEntity {
     if (isConnecting) {
+        return;
+    }
+    if (bleEntity.mConnectWay == JLEntityConnectTypeATT) {
+        NSString *edrAddr = bleEntity.mEdr;
+        NSArray *edrList = [JL_BLEMultiple outputEdrList];
+        for (NSString *edr in edrList) {
+            if ([edr.uppercaseString isEqualToString:edrAddr.uppercaseString]) {
+                [self connectWithEntity:bleEntity];
+                return;
+                break;
+            }
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:[LanguageCls localizableTxt:@"tips_1"] message:[LanguageCls localizableTxt:@"This device is a GATT over EDR connection device; you need to connect the device via classic Bluetooth in the background first."] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:[LanguageCls localizableTxt:@"confirm"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [R openBluetoothSettings];
+        }];
+        [alert addAction:action];
+        [self.parentVC presentViewController:alert animated:true completion:nil];
         return;
     }
     isConnecting = true;

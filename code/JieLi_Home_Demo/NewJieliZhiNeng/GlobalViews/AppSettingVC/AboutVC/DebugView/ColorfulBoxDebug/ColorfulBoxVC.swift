@@ -15,7 +15,7 @@ class ColorfulBoxVC: DebugBasicViewController, JLPublicSettingProtocol {
     private let setCtrl = JLPublicSetting()
     override func viewDidLoad() {
         super.viewDidLoad()
-        naviView.titleLab.text = "ColorfulBox"
+        navigationView.titleLab.text = "ColorfulBox"
         setCtrl.delegate = self
         
     }
@@ -23,7 +23,7 @@ class ColorfulBoxVC: DebugBasicViewController, JLPublicSettingProtocol {
     override func initData() {
         super.initData()
         let _ = R.shared
-        itemArray = NSMutableArray(array: ["时间同步","电量获取","暂停/播放","上一曲","下一曲","随机音量","anc/通透/关闭","EQ设置","闹钟设置","游戏/播放模式","随机亮度","手电筒开关","找耳机","大文件"])
+        itemArray = ["时间同步","电量获取","暂停/播放","上一曲","下一曲","随机音量","anc/通透/关闭","EQ设置","闹钟设置","游戏/播放模式","随机亮度","手电筒开关","找耳机","大文件"]
         
     }
 

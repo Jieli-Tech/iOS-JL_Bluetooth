@@ -227,3 +227,4 @@
 "Swahili" = "スワヒリ語";
 "Hebrew" = "ヘブライ語";
 "Urdu" = "ウルドゥー語";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "アップグレードは無制限に可能ですが、まずアップグレードファイルをupdate.ufwと命名し、サンドボックスを通過させた上で **Document/** ディレクトリに保存してください。";

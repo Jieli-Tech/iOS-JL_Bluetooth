@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - filePath: 文件存储路径
 ///   - resultCompletion: 回调
 ///   state: 0:成功 1:传输中 -1:失败
-///   progress: 传输进度
+///   progress: 传输进度 0 ~ 100
 ///   error: 错误
 -(void)updateFileToDevice:(JL_FileHandleType)fileHandleType Data:(NSData *)fileData FilePath:(NSString *)filePath completion:(void (^)(int,double,NSError * _Nullable))resultCompletion;
 

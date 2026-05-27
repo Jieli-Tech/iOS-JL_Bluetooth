@@ -149,6 +149,32 @@ class CallTranslationVC: BasicViewController {
             speakView.speakBtn.sendActions(for: .touchUpInside)
             speakView.inputTxfd.text = ""
         }).disposed(by: disposeBag)
+        
+        // 监听设备进入空闲状态，自动退出页面
+        TranslateVM.shared.deviceDidEnterIdle
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                guard let navigationController = self.navigationController else { return }
+                let viewControllers = navigationController.viewControllers
+                var count = 3
+                if CallTranslationTipsVC.shouldShowTips() { count += 1 }
+                if viewControllers.count >= count {
+                    let targetViewController = viewControllers[viewControllers.count - count]
+                    navigationController.popToViewController(targetViewController, animated: true)
+                }
+                self.callVM?.dispose()
+            }).disposed(by: disposeBag)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        callVM?.startHeartBeat()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+//        callVM?.stopHeartBeat()
     }
 
     func addTapGesture() {

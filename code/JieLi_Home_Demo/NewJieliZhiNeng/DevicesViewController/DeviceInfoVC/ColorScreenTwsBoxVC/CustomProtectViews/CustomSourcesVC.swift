@@ -16,7 +16,6 @@ class CustomSourcesVC: BasicViewController, UIImagePickerControllerDelegate, UIN
     
     // MARK: - Properties
     private var customView: CustomProtectView!
-    private var albumView: ShowSelectAlbumView!
     private var imagePickerController: UIImagePickerController!
     private var deleteBtn: UIButton = UIButton()
     private var selectBtn: UIButton!
@@ -133,27 +132,6 @@ class CustomSourcesVC: BasicViewController, UIImagePickerControllerDelegate, UIN
             make.width.height.equalTo(78)
         }
         
-        // Album selection overlay (initially hidden)
-        albumView = ShowSelectAlbumView()
-        if let window = UIApplication.shared.windows.first {
-            window.addSubview(albumView)
-            albumView.snp.makeConstraints { make in
-                make.edges.equalTo(window)
-            }
-            albumView.isHidden = true
-            
-            albumView.selectBlock = { [weak self] index in
-                guard let self = self else { return }
-                self.albumView.isHidden = true
-                self.addBtn.isHidden = false
-                if index == 0 {
-                    self.makePickerImage(type: .camera)
-                } else if index == 1 {
-                    self.makePickerImage(type: .savedPhotosAlbum)
-                }
-            }
-        }
-        
         // Handle choose callback from customView
         customView.handleChoose = { [weak self] list in
             guard let self = self else { return }
@@ -250,8 +228,32 @@ class CustomSourcesVC: BasicViewController, UIImagePickerControllerDelegate, UIN
     }
     
     private func addBtnAction() {
-        albumView.isHidden = false
         addBtn.isHidden = true
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let takePhotoAction = UIAlertAction(title: R.Language.lan("Take Photo"), style: .default) { [weak self] _ in
+            self?.addBtn.isHidden = false
+            self?.makePickerImage(type: .camera)
+        }
+        let chooseFromAlbumAction = UIAlertAction(title: R.Language.lan("Choose From Album"), style: .default) { [weak self] _ in
+            self?.addBtn.isHidden = false
+            self?.makePickerImage(type: .savedPhotosAlbum)
+        }
+        let cancelAction = UIAlertAction(title: R.Language.lan("Cancel"), style: .cancel) { [weak self] _ in
+            self?.addBtn.isHidden = false
+        }
+        
+        alertController.addAction(takePhotoAction)
+        alertController.addAction(chooseFromAlbumAction)
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - UIImagePickerController

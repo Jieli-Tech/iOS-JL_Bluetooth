@@ -15,7 +15,6 @@ import UIKit
     private let centerView = UIView()
     private var collectView:UICollectionView!
     private let itemsArray = BehaviorRelay<[PtColModel]>(value: [])
-    private let selectAlbum = ShowSelectAlbumView()
     private var selectStatus = false
     private var selectItems : [PtColModel] = []
     private lazy var rightBtn : UIButton = {
@@ -34,9 +33,26 @@ import UIKit
         super.initData()
         LanguageCls.share().add(self)
         guard let vm = publicSettingMode else {return}
-        vm.fileModelList.subscribe(onNext: { [weak self] _ in
+        
+        Observable.merge(
+            vm.fileModelList.map { _ in () },
+            vm.resourceViewModel.onlineScreenSavers.map { _ in () },
+            vm.resourceViewModel.onlineWallpapers.map { _ in () }
+        ).observe(on: MainScheduler.instance).subscribe(onNext: { [weak self] _ in
             guard let self = self else {return}
             self.initItemsList()
+            
+            self.collectView?.mj_footer?.endRefreshing()
+            
+            if self.sourceType == PublicSettingViewModel.screenSaver {
+                if !vm.resourceViewModel.hasMoreScreenSavers {
+                    self.collectView?.mj_footer?.endRefreshingWithNoMoreData()
+                }
+            } else {
+                if !vm.resourceViewModel.hasMoreWallpapers {
+                    self.collectView?.mj_footer?.endRefreshingWithNoMoreData()
+                }
+            }
         }).disposed(by: disposeBag)
         
         rightBtn.rx.tap.subscribe { [weak self] _ in
@@ -91,11 +107,12 @@ import UIKit
         itemsArray.bind(to: collectView.rx.items(cellIdentifier: "PtColCell", cellType: PtColCell.self)) { [weak self] (index,item,cell) in
             guard let self = self else {return}
             let isUsing = self.publicSettingMode?.currentScreenSaver.value?.fileName.uppercased() == item.name.uppercased()
+            let disableSelect = isUsing || !item.isExit || item.tag == 100
             cell.makeCell(item)
             cell.isSelect(
                 selectStatus,
                 selectItems.contains(where: { $0 == item }),
-                isUsing
+                disableSelect
             )
             cell.editCustomImageHandle = { [weak self] model in
                 guard let self = self else {return}
@@ -107,7 +124,7 @@ import UIKit
                     vc.sourceType = PublicSettingViewModel.screenSaver
                     self.navigationController?.pushViewController(vc, animated: true)
                 }else{
-                    self.selectAlbum.isHidden = false
+                    self.showSelectAlbumActionSheet()
                 }
             }
             if sourceType == PublicSettingViewModel.backgroundPaper {
@@ -119,26 +136,36 @@ import UIKit
             }
         }.disposed(by: disposeBag)
         
+        collectView.mj_footer = MJRefreshAutoNormalFooter(refreshingBlock: { [weak self] in
+            guard let self = self, let vm = self.publicSettingMode else { return }
+            if self.sourceType == PublicSettingViewModel.screenSaver {
+                vm.resourceViewModel.loadMoreScreenSavers()
+            } else {
+                vm.resourceViewModel.loadMoreWallpapers()
+            }
+        })
+        if let footer = collectView.mj_footer as? MJRefreshAutoNormalFooter {
+            footer.setTitle(R.Language.lan("loosen_load_more"), for: .pulling)
+            footer.setTitle(R.Language.lan("loading_more_data"), for: .refreshing)
+            footer.setTitle(R.Language.lan("No more data"), for: .noMoreData)
+        }
+        
+        if let vm = publicSettingMode {
+            if sourceType == PublicSettingViewModel.screenSaver {
+                if !vm.resourceViewModel.hasMoreScreenSavers {
+                    collectView.mj_footer?.endRefreshingWithNoMoreData()
+                }
+            } else {
+                if !vm.resourceViewModel.hasMoreWallpapers {
+                    collectView.mj_footer?.endRefreshingWithNoMoreData()
+                }
+            }
+        }
+        
         collectView.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(16)
             make.top.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(20)
-        }
-        
-        let windows = UIApplication.shared.windows.first
-        windows?.addSubview(selectAlbum)
-        selectAlbum.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        selectAlbum.isHidden = true
-        
-        selectAlbum.selectBlock = { [weak self] index in
-            self?.selectAlbum.isHidden = true
-            if (index == 0) {
-                self?.makePickerImage(.camera)
-            } else if (index == 1) {
-                self?.makePickerImage(.savedPhotosAlbum)
-            }
         }
         
         deleteBtn.backgroundColor = .eHex("#F4F4F4")
@@ -229,6 +256,29 @@ import UIKit
             }
             items.append(model)
         }
+        
+        if let publicSetting = publicSettingMode {
+            let onlineRes = publicSetting.resourceViewModel.onlineScreenSavers.value
+            for res in onlineRes {
+                let pm = PtColModel(resource: res)
+                let index = items.firstIndex(where: { $0.imgPath?.lastPathComponent.contains(res.name ?? "") ?? false })
+                for item in publicSettingMode?.fileModelList.value ?? [] {
+                    if item.fileName == res.name {
+                        pm.isExit = true
+                    }
+                    if fmType == res.name {
+                        pm.isSel = true
+                    }
+                }
+                pm.imgPath = URL(string: "/\(res.name ?? "VIE1")")
+                if index != nil {
+                    items[index!] = pm
+                }else{
+                    items.append(pm)
+                }
+            }
+        }
+        
         itemsArray.accept(items)
     }
     
@@ -249,6 +299,15 @@ import UIKit
             }
             items.append(pm)
         }
+        
+        if let publicSetting = publicSettingMode {
+            let onlineRes = publicSetting.resourceViewModel.onlineWallpapers.value
+            for res in onlineRes {
+                let pm = PtColModel(resource: res)
+                items.append(pm)
+            }
+        }
+        
         itemsArray.accept(items)
     }
     
@@ -256,7 +315,7 @@ import UIKit
         if selectStatus {
             var allCount = 0
             for item in itemsArray.value  {
-                if item.isExit {
+                if item.isExit && item.tag != 100 {
                     allCount += 1
                 }
             }
@@ -267,7 +326,7 @@ import UIKit
                 rightBtn.setTitle(R.Language.lan("Deselect All"), for: .normal)
                 selectItems.removeAll()
                 for item in itemsArray.value {
-                    if item.tag == 0 {
+                    if item.tag == 0 || item.tag == 100 {
                         continue
                     }
                     if !item.isExit {
@@ -369,11 +428,11 @@ import UIKit
                     vc.sourceType = PublicSettingViewModel.screenSaver
                     self.navigationController?.pushViewController(vc, animated: true)
                 }else{
-                    self.selectAlbum.isHidden = false
+                    self.showSelectAlbumActionSheet()
                 }
             }else{
                 if (selectStatus) {
-                    if !model.isExit { return }
+                    if !model.isExit || model.tag == 100 { return }
                     if let index = selectItems.firstIndex(where: {$0.tag == model.tag}) {
                         selectItems.remove(at: index)
                     }else{
@@ -391,7 +450,7 @@ import UIKit
                     collectView.reloadData()
                     var allCount = 0
                     for item in itemsArray.value {
-                        if item.isExit {
+                        if item.isExit && item.tag != 100 {
                             allCount += 1
                         }
                     }
@@ -402,6 +461,38 @@ import UIKit
                     }
                     return
                 }
+                
+                if model.tag == 100, let resourceUrl = model.downloadUrl, !model.isExit {
+                    // 处理在线资源
+                    DFUITools.showHUD(withLabel: R.Language.lan("Downloading..."), on: self.view)
+                    CSNetworkManager.shared.downloadFile(url: resourceUrl) { [weak self] result in
+                        guard let self = self else { return }
+                        DFUITools.removeHUD()
+                        switch result {
+                        case .success(let localUrl):
+                            let vc = ProtectPreviewVC()
+                            vc.publicSettingVM = self.publicSettingMode
+                            if resourceUrl.lowercased().hasSuffix(".gif") {
+                                vc.gifUrl = localUrl
+                            } else {
+                                if let image = UIImage(contentsOfFile: localUrl.path) {
+                                    vc.showImage = image
+                                } else {
+                                    self.view.makeToast(R.Language.lan("Image format error"), position: .center)
+                                    return
+                                }
+                            }
+                            vc.fileName = (resourceUrl as NSString).lastPathComponent.components(separatedBy: ".").first ?? "online_res"
+                            vc.sourceType = self.sourceType
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        case .failure(let error):
+                            JLLogManager.logLevel(.ERROR, content: "Download failed: \(error)")
+                            self.view.makeToast(R.Language.lan("Download failed"), position: .center)
+                        }
+                    }
+                    return
+                }
+                
                 if sourceType == PublicSettingViewModel.screenSaver {
                     if publicSettingMode?.chipType == .AC707N {
                         let fileName = model.imgPath?.lastPathComponent ?? ""
@@ -444,6 +535,29 @@ import UIKit
         }).disposed(by: disposeBag)
     }
     
+    private func showSelectAlbumActionSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let takePhotoAction = UIAlertAction(title: R.Language.lan("Take Photo"), style: .default) { [weak self] _ in
+            self?.makePickerImage(.camera)
+        }
+        let chooseFromAlbumAction = UIAlertAction(title: R.Language.lan("Choose From Album"), style: .default) { [weak self] _ in
+            self?.makePickerImage(.savedPhotosAlbum)
+        }
+        let cancelAction = UIAlertAction(title: R.Language.lan("Cancel"), style: .cancel, handler: nil)
+        
+        alertController.addAction(takePhotoAction)
+        alertController.addAction(chooseFromAlbumAction)
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     private func makePickerImage(_ type:UIImagePickerController.SourceType){
         
         imagePickerController = UIImagePickerController()

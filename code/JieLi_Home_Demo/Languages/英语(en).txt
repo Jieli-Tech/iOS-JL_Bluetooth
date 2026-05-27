@@ -227,3 +227,4 @@
 "Swahili" = "Swahili";
 "Hebrew" = "Hebrew";
 "Urdu" = "Urdu";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.";

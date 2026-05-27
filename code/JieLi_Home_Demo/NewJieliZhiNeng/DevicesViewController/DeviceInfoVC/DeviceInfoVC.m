@@ -29,7 +29,7 @@
 #import "DhaFittingVC.h"
 #import "HeadSetANC.h"
 #import "MultiLinksViewController.h"
-#import "ColorScreenSetVC.h"
+#import "杰理之家-Swift.h"
 #import "SqliteManager.h"
 
 
@@ -438,7 +438,7 @@
 
     [upgradeArray removeAllObjects];
     if (deviceDic) {
-        if ([deviceDic[@"has_ota"] intValue] == 1) {
+        if ([deviceDic[@"has_ota"] intValue] == 1 || [DebugSettingVC isOTALocalTest]) {
             NormalSettingObject *obj = [NormalSettingObject new];
             obj.img = [UIImage imageNamed:@"Theme.bundle/icon_upgrade"];
             obj.funcStr = kJL_TXT("firmware_update");
@@ -676,6 +676,9 @@
     }
     //MARK: - 智能保护盒设置
     if(deviceType == JL_SDKTypeChargingCase){
+        [PublicSettingViewModel shared].isColorScreenBox = YES;
+        [[PublicSettingViewModel shared] setup];
+        
         NSMutableArray *colorArray = [NSMutableArray new];
         NormalSettingObject *obj = [NormalSettingObject new];
         obj.img = [UIImage imageNamed:@"Theme.bundle/function_icon_bay"];
@@ -1044,9 +1047,23 @@
     if([view isEqual:colorScreenBoxView]){
         __weak typeof(self) weakSelf = self;
         ColorScreenSetVC *vc = [[ColorScreenSetVC alloc] init];
+        
+        BOOL needLoading = ![PublicSettingViewModel shared].isReady;
+        if (needLoading) {
+            [DFUITools showHUDWithLabel:@"" onView:self.view];
+        }
+        
         [vc initDataAction:^(BOOL status) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            [strongSelf.navigationController pushViewController:vc animated:true];
+            if (needLoading) {
+                [DFUITools removeHUD];
+            }
+            if (status) {
+                [strongSelf.navigationController pushViewController:vc animated:true];
+            } else {
+                NSString *text = kJL_TXT("Load Failed");
+                [DFUITools showText:text onView:strongSelf.view delay:1.5];
+            }
         }];
     }
     

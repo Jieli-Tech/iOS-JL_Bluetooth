@@ -17,7 +17,7 @@ class TransportFileVC: DebugBasicViewController {
     let startBtn = UIButton()
     let transpView = FileLoadView()
     let deviceFileListView = FileListView()
-    private let disposeBag = DisposeBag()
+    public var customDisposeBag = DisposeBag()
     
     var filePath:String = ""
     
@@ -30,7 +30,7 @@ class TransportFileVC: DebugBasicViewController {
     
     override func initUI() {
         super.initUI()
-        naviView.titleLab.text = "传输文件"
+        navigationView.titleLab.text = "FileTP"
         
         seleteFileBtn.setTitle("选择文件", for: .normal)
         seleteFileBtn.backgroundColor = UIColor.eHex("#F5F5F5")
@@ -71,7 +71,7 @@ class TransportFileVC: DebugBasicViewController {
         
         
         seleteFileBtn.snp.makeConstraints { make in
-            make.top.equalTo(self.naviView.snp.bottom).offset(10)
+            make.top.equalTo(self.navigationView.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(50)
@@ -140,7 +140,7 @@ class TransportFileVC: DebugBasicViewController {
             self?.transpView.isHidden = false
             self?.transpView.showFiles(R.path.transportFilePath)
             
-        }.disposed(by: disposeBag)
+        }.disposed(by: customDisposeBag)
         
         
         
@@ -174,13 +174,13 @@ class TransportFileVC: DebugBasicViewController {
                     }
                 }
             }
-        }.disposed(by: disposeBag)
+        }.disposed(by: customDisposeBag)
         
-        cancelBtn.rx.tap.subscribe { [weak self]_ in
+        cancelBtn.rx.tap.subscribe { [weak self] _ in
             JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager.mFileManager.cmdStopBigFileData()
             self?.startBtn.setTitleColor(UIColor.black, for: .normal)
             self?.startBtn.isUserInteractionEnabled = true
-        }.disposed(by: disposeBag)
+        }.disposed(by: customDisposeBag)
         
         deviceFileListView.handleDownloadFile = { [weak self] model in
             

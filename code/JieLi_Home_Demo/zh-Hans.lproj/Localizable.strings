@@ -651,3 +651,4 @@
 "The Doubao model key has not yet been added. Please scan the QR code to enter the key!" = "当前尚未添加豆包模型密钥,请扫码输入密钥!!";
 "Broadcast search failed" = "广播搜索失败";
 "Busy processing, please try again later" = "处理中，请稍后重试";
+"Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory." = "无限制升级，但需要先将升级命名为：update.ufw 并通过沙盒，存放到：Document/ 目录下";

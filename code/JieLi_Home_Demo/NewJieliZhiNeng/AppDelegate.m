@@ -366,6 +366,8 @@
         [self->toolbar removeFromSuperview];
         self->toolbar = nil;
     }
+
+    
 }
 
 

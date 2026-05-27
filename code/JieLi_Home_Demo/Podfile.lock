@@ -37,9 +37,9 @@ PODS:
   - RxRelay (6.9.0):
     - RxSwift (= 6.9.0)
   - RxSwift (6.9.0)
-  - SDWebImage (5.21.5):
-    - SDWebImage/Core (= 5.21.5)
-  - SDWebImage/Core (5.21.5)
+  - SDWebImage (5.21.7):
+    - SDWebImage/Core (= 5.21.7)
+  - SDWebImage/Core (5.21.7)
   - SnapKit (5.7.1)
   - Starscream (4.0.8)
   - SwiftyAttributes (5.4.0)
@@ -102,7 +102,7 @@ SPEC CHECKSUMS:
   RxCocoa: ac16414696ae706516be3e1ab00fcce5bdc9be8a
   RxRelay: 6b0c930e5cef57d5fe2032571e5e65b78e3cbdb1
   RxSwift: 31649ace6aceeb422e16ff71c60804f9c3281ed9
-  SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
+  SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   SwiftyAttributes: 45fae22b22a246a0b7f0a8d2157a02bf89fb2e9a

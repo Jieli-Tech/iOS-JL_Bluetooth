@@ -95,6 +95,20 @@ class FaceToFaceTranslateVC: BasicViewController {
         }).disposed(by: disposeBag)
 
         bottomView.contextView = self
+        
+        // 监听设备进入空闲状态，自动退出页面
+        TranslateVM.shared.deviceDidEnterIdle
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.dataVM?.cancelSend()
+                self.dataVM?.exitTimer()
+                guard let viewControllers = self.navigationController?.viewControllers else { return }
+                if viewControllers.count >= 3 {
+                    self.navigationController?.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
+                    self.dataVM = nil
+                }
+            }).disposed(by: disposeBag)
     }
 
     override func backBtnAction() {

@@ -28,6 +28,13 @@ enum ColorScreenChipType {
     /// 屏保
     static let screenSaver: UInt8 = 0x01
 
+    public static let shared = PublicSettingViewModel()
+    
+    public var isColorScreenBox: Bool = false
+    public var isReady: Bool = false
+    public var isRunning: Bool = false
+    private var deviceType: String? // UUID or MAC address of the current device
+    
     let currentLight: BehaviorRelay<UInt8> = BehaviorRelay(value: 0)
     let currentScreenSaver: BehaviorRelay<ScreenSaverModel?> = BehaviorRelay(value: nil)
     let currentWallpaper: BehaviorRelay<JLPublicSourceInfoModel?> = BehaviorRelay(value: nil)
@@ -45,6 +52,7 @@ enum ColorScreenChipType {
     }
 
     public var sdkInfo: JLPublicSDKInfoModel? = JL_RunSDK.sharedMe().publicSDKInfoModel
+    public var resourceViewModel: CSResourceViewModel = CSResourceViewModel()
     public var isFinish: ((_ isFinish: Bool) -> Void)?
     public var chipType: ColorScreenChipType {
         // 当前只有 0x01 类型，仅支持：充电仓项目、彩屏舱
@@ -73,8 +81,29 @@ enum ColorScreenChipType {
         }
     }
 
-    override init() {
+    private override init() {
         super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(bleEntityStatusChanged), name: NSNotification.Name(kJL_BLE_M_ENTITY_CONNECTED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(bleEntityStatusChanged), name: NSNotification.Name(kJL_BLE_M_ENTITY_DISCONNECTED), object: nil)
+    }
+
+    public func setup() {
+        guard isColorScreenBox else { return }
+        let currentIdentifier = JL_RunSDK.sharedMe().mBleEntityM?.mUUID ?? ""
+        if deviceType == currentIdentifier && (isReady || isRunning) {
+            // Already initialized or initializing for this device
+            if isReady {
+                isFinish?(true)
+                isFinish = nil
+            }
+            return
+        }
+        deviceType = currentIdentifier
+        isRunning = true
+        isReady = false
+        
+        resourceViewModel.fetchAllResources()
         if let _ = manager {
             publicSetting = JLPublicSetting()
             publicSetting?.delegate = self
@@ -84,6 +113,8 @@ enum ColorScreenChipType {
             parepareScreenSaver(chain)
             chain.run(withInitialInput: nil) { [weak self] _, err in
                 guard let `self` = self else { return }
+                self.isRunning = false
+                self.isReady = true
                 if let err = err {
                     JLLogManager.logLevel(.ERROR, content: err.localizedDescription)
                 }
@@ -91,9 +122,66 @@ enum ColorScreenChipType {
                 self.isFinish = nil
             }
         } else {
+            isRunning = false
             isFinish?(false)
             isFinish = nil
             JLLogManager.logLevel(.ERROR, content: "PublicSettingViewModel manager is nil")
+        }
+    }
+    
+    @objc private func appDidBecomeActive() {
+        checkAndReloadDevice()
+    }
+    
+    @objc private func bleEntityStatusChanged(_ notification: Notification) {
+        // Only check on successful connection or specific changes if needed.
+        // Or just re-evaluate deviceType.
+        checkAndReloadDevice()
+    }
+    
+    private func checkAndReloadDevice() {
+        guard let currentIdentifier = JL_RunSDK.sharedMe().mBleEntityM?.mUUID, !currentIdentifier.isEmpty else {
+            // No device connected
+            if deviceType != nil {
+                reload(for: nil, isSupported: false)
+            }
+            return
+        }
+        
+        if currentIdentifier != deviceType {
+            // Device changed, need to check if it supports Color Screen
+            let sdkType = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager.getDeviceModel().sdkType
+            let isSupported = (sdkType == .typeChargingCase)
+            reload(for: currentIdentifier, isSupported: isSupported)
+        }
+    }
+
+    public func reload(for newDevice: String?, isSupported: Bool) {
+        // Clear old caches and subscriptions
+        observerCurrentBg?.invalidate()
+        observerCurrentBg = nil
+        currentLight.accept(0)
+        currentScreenSaver.accept(nil)
+        currentWallpaper.accept(nil)
+        fileModelList.accept([])
+        publicSetting = nil
+        isReady = false
+        isRunning = false
+        
+        deviceType = newDevice
+        isColorScreenBox = isSupported
+        
+        if isSupported {
+            // Reinitialize data layer and view model
+            dialInfo = JL_RunSDK.sharedMe().dialInfoExtentedModel
+            dialUnitMgr = JL_RunSDK.sharedMe().dialUnitMgr
+            sdkInfo = JL_RunSDK.sharedMe().publicSDKInfoModel
+            setup()
+        } else {
+            // Release resources
+            dialInfo = nil
+            dialUnitMgr = nil
+            sdkInfo = nil
         }
     }
 
@@ -294,26 +382,31 @@ enum ColorScreenChipType {
         }
         //再读表盘背景（当前的屏保）
         chain.addTask { [weak self] _, completion in
-            self?.dialUnitMgr?.dialGetDial("/" + model.fileName) { currentScreenSaverMode, err in
-                if let mode = currentScreenSaverMode {
-                    let screenSaverModel = ScreenSaverModel()
-                    screenSaverModel.crc = mode.crc
-                    screenSaverModel.cluster = mode.fileClus
-                    screenSaverModel.fileName = mode.fileName
-                    self?.currentScreenSaver.accept(screenSaverModel)
-                    if name == "VIE_CST" {
-                        if let vieImage = vieImage {
-                            let newName = name + String(format: "-%.0f-%04X", Date().timeIntervalSince1970, mode.crc)
-                            SwiftHelper.saveProtectCustomToCache(
-                                vieImage,
-                                newName
-                            )
-                        }
+            guard let list = self?.dialUnitMgr?.fileArray as? [JLDialSourceModel] else {
+                completion(nil, nil)
+                return
+            }
+            if let mode = list.first(where: { $0.fileName == name }) {
+                let screenSaverModel = ScreenSaverModel()
+                screenSaverModel.crc = mode.crc
+                screenSaverModel.cluster = mode.fileClus
+                screenSaverModel.fileName = mode.fileName
+                if name == "VIE_CST" {
+                    if let vieImage = vieImage {
+                        let newName = name + String(format: "-%.0f-%04X", Date().timeIntervalSince1970, mode.crc)
+                        SwiftHelper.saveProtectCustomToCache(
+                            vieImage,
+                            newName
+                        )
                     }
                 }
-                completion(nil, nil)
+                DispatchQueue.main.async {
+                    self?.currentScreenSaver.accept(screenSaverModel)
+                }
             }
+            completion(nil, nil)
         }
+        
         //执行
         chain.run(withInitialInput: nil) { [weak self] _, _ in
             guard let self = self else { return }

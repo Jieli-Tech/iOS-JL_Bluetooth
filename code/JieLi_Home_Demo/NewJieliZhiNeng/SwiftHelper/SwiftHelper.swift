@@ -13,7 +13,7 @@ import Foundation
 @_exported import MarqueeLabel
 @_exported import Toast_Swift
 
-class R {
+@objcMembers class R: NSObject {
     struct Font{
         static func medium(_ size: CGFloat)->UIFont{
             UIFont(name: "PingFangSC-Medium", size: size)!
@@ -63,7 +63,7 @@ class R {
         }
     }
     static let shared = R()
-    init() {
+    override init() {
         try?FileManager.default.createDirectory(atPath: R.path.transportFilePath, withIntermediateDirectories: true, attributes: nil)
         try?FileManager.default.createDirectory(atPath: R.path.watchFilePath, withIntermediateDirectories: true, attributes: nil)
         try?FileManager.default.createDirectory(atPath: R.path.smallFiles, withIntermediateDirectories: true, attributes: nil)
@@ -113,6 +113,16 @@ class R {
             multiplyFactor += 1
         }
         return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
+    }
+    
+    @objc static func openBluetoothSettings() {
+        let hexString = "4170702D50726566733A726F6F743D47656E6572616C"
+        let data = JL_Tools.hex(toData: hexString) as Data
+        guard let urlStr = String.init(data: data, encoding: .utf8),
+              let url = URL.init(string: urlStr) else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 

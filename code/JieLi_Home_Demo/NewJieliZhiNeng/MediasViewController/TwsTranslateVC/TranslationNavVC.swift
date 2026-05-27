@@ -38,9 +38,9 @@ class TranslationNavVC: BasicViewController {
     override func initData() {
         super.initData()
         itemsArray.accept([
-            // TranslationTypeMode(image: R.Image.img("icon_call_translation"),
-            //                     title: LanguageCls.localizableTxt("Call translation"),
-            //                     detail: LanguageCls.localizableTxt("During a call, both parties will hear the translated voice content")),
+            TranslationTypeMode(image: R.Image.img("icon_call_translation"),
+                                 title: LanguageCls.localizableTxt("Call translation"),
+                                 detail: LanguageCls.localizableTxt("During a call, both parties will hear the translated voice content")),
             TranslationTypeMode(image: R.Image.img("icon_facetoface"),
                                 title: LanguageCls.localizableTxt("Face-to-face translation"),
                                 detail: LanguageCls.localizableTxt("One person holds the phone and the other wears headphones, and two-way translation is possible")),
@@ -53,7 +53,7 @@ class TranslationNavVC: BasicViewController {
             onNext: { [weak self] index in
                 guard let self = self,
                       let mgr = JL_RunSDK.sharedMe().mBleEntityM?.mCmdManager else { return }
-                if index.row == 3 {
+                if index.row == 0 {
                     if mgr.getDeviceModel().mCallType == .OFF {
                         self.view.makeToast(
                             LanguageCls.localizableTxt("No call currently"),
@@ -61,10 +61,10 @@ class TranslationNavVC: BasicViewController {
                         )
                         return
                     }
-//                    if mgr.mTwsManager.electricity.powerLeft <= 0 || mgr.mTwsManager.electricity.powerRight <= 0 {
-//                        showTwsNotWear()
-//                        return
-//                    }
+                    if mgr.mTwsManager.electricity.powerLeft <= 0 || mgr.mTwsManager.electricity.powerRight <= 0 {
+                        showTwsNotWear()
+                        return
+                    }
                     let vc = LanguageSelectVC()
                     vc.type = .call
                     self.navigationController?.pushViewController(vc, animated: true)
@@ -76,7 +76,7 @@ class TranslationNavVC: BasicViewController {
                     )
                     return
                 }
-                if index.row == 0 {
+                if index.row == 1 {
                     if !self.promission {
                         requestRecordPermission()
                         return
@@ -85,7 +85,7 @@ class TranslationNavVC: BasicViewController {
                     vc.type = .face
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
-                if index.row == 1 {
+                if index.row == 2 {
                     if !self.promission {
                         requestRecordPermission()
                         return

@@ -142,7 +142,7 @@
     _volSlider.minimumValue = 0;
         
     
-    if (bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+    if ([self isTws]) { //耳机
         _volSlider.maximumValue = 16;
     }else{
         JLModel_Device *devel = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
@@ -280,7 +280,7 @@
     clickFlag = 1;
     _volLabel.text = [NSString stringWithFormat:@"%.00f", slider.value];
 
-    if (bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+    if ([self isTws]) { //耳机
         // 获取系统音量
         MPVolumeView *volumeView = [[MPVolumeView alloc] init];
         
@@ -359,7 +359,7 @@
             [self->bleSDK.mBleEntityM.mCmdManager.mChargingBinManager cmdSetLowPitch:[self->_bassLabel.text intValue]
                                                        HighPitch:[self->_trebleLabel.text intValue]];
         }
-        if (self->bleSDK.mBleEntityM.mType != JL_DeviceTypeTWS && self->clickFlag == 1) { //音箱主音量
+        if (![self isTws] && self->clickFlag == 1) { //音箱主音量
             [self->bleSDK.mBleEntityM.mCmdManager.mSystemVolume cmdSetSystemVolume:self->cVol
                                                                             Result:^(JL_CMDStatus status, uint8_t sn, NSData * _Nullable data) {
                 
@@ -377,7 +377,7 @@
 #pragma mark 更新音量
 -(void)updateFirstVol{
     
-    if (self->bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+    if ([self isTws]) { //耳机
         self->_volSlider.value = (16*[[AVAudioSession sharedInstance] outputVolume]);
         self->_volLabel.text = [NSString stringWithFormat:@"%.00f", self->_volSlider.value];
     }else{  //音箱
@@ -390,7 +390,7 @@
 
 -(void)getMaxVol:(NSNotification *)note{
 
-    if (self->bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+    if ([self isTws]) { //耳机
         _volSlider.maximumValue = 16;
     }else{
         JLModel_Device *devel = [bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
@@ -430,7 +430,7 @@
     BOOL isOK = [JL_RunSDK isCurrentDeviceCmd:note];
     if (isOK == NO) return;
     
-    if (bleSDK.mBleEntityM.mType != JL_DeviceTypeTWS) { //音箱
+    if (![self isTws]) { //音箱
         
         JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
         if(model){
@@ -448,7 +448,7 @@
 -(void)deviceChangeNote:(NSNotification *)note{
     JLModel_Device *model = [self->bleSDK.mBleEntityM.mCmdManager outputDeviceModel];
     if(model){
-        if (bleSDK.mBleEntityM.mType != JL_DeviceTypeTWS) { //音箱
+        if (![self isTws]) { //音箱
             
             //设备音量
             [[JLCacheBox cacheUuid:self->bleUUID] setP_Cvol:model.currentVol];
@@ -496,12 +496,29 @@
 }
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     
-    if (bleSDK.mBleEntityM.mType == JL_DeviceTypeTWS) { //耳机
+    if ([self isTws]) { //耳机
         float val = [change[@"new"] floatValue];
         _volSlider.value = val*16;
         _volLabel.text = [NSString stringWithFormat:@"%.00f", val*16];
     }
     
+}
+
+
+//MARK: - 处理 GATT Over EDR 的类型判断失败问题
+-(BOOL)isTws {
+    JL_ManagerM *manager = [[JL_RunSDK sharedMe] mBleEntityM].mCmdManager;
+    JLModel_Device *model = [manager outputDeviceModel];
+    
+    if (model.sdkType == JL_SDKTypeManifestEarphone ||
+        model.sdkType == JL_SDKType693xTWS ||
+        model.sdkType == JL_SDKType696xTWS ||
+        model.sdkType == JL_SDKType697xTWS ||
+        model.sdkType == JL_SDKType695xSDK ||
+        [[JL_RunSDK sharedMe] mBleEntityM].mType == JL_DeviceTypeTWS) {
+        return true;
+    }
+    return false;
 }
 
 

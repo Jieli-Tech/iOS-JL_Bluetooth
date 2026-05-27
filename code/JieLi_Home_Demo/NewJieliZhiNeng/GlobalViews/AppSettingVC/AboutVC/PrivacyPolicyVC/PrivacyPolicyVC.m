@@ -7,6 +7,7 @@
 //
 
 #import "PrivacyPolicyVC.h"
+#import <WebKit/WebKit.h>
 
 //杰理之家隐私政策的URL
 #define JIELI_HOME_PRIVACY_POLICY_URL  @"http://cam.jieliapp.com:28111/app/btsmart_app_privacy_policy.html"

@@ -6,11 +6,10 @@
 #import "Colours.h"
 #import "JL_RunSDK.h"
 #import "LanguageCls.h"
-#import "DebugBasicViewController.h"
 #import "BasicViewController.h"
 #import "HQImageEditViewController.h"
-#import "ColorScreenSetVC.h"
 #import "JLHomeImageTools.h"
+#import "JLWeatherSync.h"
 #import "DeviceImgSql.h"
 #import "SqliteManager.h"
 #import "JLAV2Codec.h"
@@ -23,6 +22,7 @@
 #import "DeviceInfoVC.h"
 #import "UpgradeVC.h"
 #import "JLUI_Cache.h"
+#import "MJRefresh/MJRefresh.h"
 #import "MapViewController.h"
 #import "SDWebImage/SDWebImage.h"
 #import "AppStatusManager.h"
@@ -46,3 +46,5 @@
 #import "JLUI_Cache.h"
 
 
+#import "UserProfileVC.h"
+#import "PrivacyPolicyVC.h"

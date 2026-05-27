@@ -79,7 +79,7 @@ struct _R {
       var cfBundleDisplayName: RswiftResources.StringResource { .init(key: "CFBundleDisplayName", tableName: "InfoPlist", source: source, developmentValue: "PiHome", comment: nil) }
     }
 
-    /// This `_R.string.localizable` struct is generated, and contains static references to 864 localization keys.
+    /// This `_R.string.localizable` struct is generated, and contains static references to 865 localization keys.
     struct localizable {
       let source: RswiftResources.StringResource.Source
 
@@ -951,7 +951,7 @@ struct _R {
       /// Locales: en, ja, zh-Hans
       var modify: RswiftResources.StringResource { .init(key: "Modify", tableName: "Localizable", source: source, developmentValue: "Modify", comment: nil) }
 
-      /// ja translation: もっと
+      /// zh-Hans translation: 更多
       ///
       /// Key: More
       ///
@@ -1839,6 +1839,13 @@ struct _R {
       ///
       /// Locales: en, ja, zh-Hans
       var unencrypted: RswiftResources.StringResource { .init(key: "Unencrypted", tableName: "Localizable", source: source, developmentValue: "Unencrypted", comment: nil) }
+
+      /// en translation: Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.
+      ///
+      /// Key: Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.
+      ///
+      /// Locales: en, ja, zh-Hans
+      var unlimitedUpgradesAreAvailableButYouMustFirstNameTheUpgradeFileUpdateUfwPassItThroughTheSandboxAndSaveItToTheDocumentDirectory: RswiftResources.StringResource { .init(key: "Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.", tableName: "Localizable", source: source, developmentValue: "Unlimited upgrades are available, but you must first name the upgrade file update.ufw, pass it through the sandbox, and save it to the Document/ directory.", comment: nil) }
 
       /// en translation: Update Successfully
       ///

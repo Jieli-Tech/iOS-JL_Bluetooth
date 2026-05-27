@@ -196,15 +196,34 @@ class DeviceInfoViewController: BaseViewController {
     //MARK: - 充电仓
     private func supportCharger() {
         if deviceModel?.sdkType != .typeChargingCase {
+            PublicSettingViewModel.shared.isColorScreenBox = false
             return
         }
+        
+        // 当识别到是彩屏舱时，立即初始化并加载资源
+        PublicSettingViewModel.shared.isColorScreenBox = true
+        PublicSettingViewModel.shared.setup()
+        
         let charger = DevInfoFunctionView()
         charger.config(title: R.localStr.chargingCaseSetting(), imgv: "function_icon_charger", detail: "")
         charger.tapBlock = { [weak self] in
+            guard let self = self else { return }
             let chargerVC = ColorScreenSetVC()
+            
+            let needLoading = !PublicSettingViewModel.shared.isReady
+            if needLoading {
+                DFUITools.showHUD(withLabel: "", on: self.view)
+            }
+            
             chargerVC.initDataAction { status in
+                if needLoading {
+                    DFUITools.removeHUD()
+                }
                 if status {
-                    self?.navigationController?.pushViewController(chargerVC, animated: true)
+                    self.navigationController?.pushViewController(chargerVC, animated: true)
+                } else {
+                    let text = R.Language.lan("Load Failed")
+                    DFUITools.showText(text, on: self.view, delay: 1.5)
                 }
             }
         }

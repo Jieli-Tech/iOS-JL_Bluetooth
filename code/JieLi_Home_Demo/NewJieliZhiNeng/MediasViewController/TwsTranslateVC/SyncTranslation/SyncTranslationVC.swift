@@ -215,6 +215,15 @@ class SyncTranslationVC: BasicViewController {
                 self.spectrogramView.appendPCMData(from: pcmData)
             }))
         }).disposed(by: disposeBag)
+        
+        // 监听设备进入空闲状态，自动退出页面
+        TranslateVM.shared.deviceDidEnterIdle
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.syncVM.exitMode()
+                self.exitSyncTranslationVC()
+            }).disposed(by: disposeBag)
     }
 
 

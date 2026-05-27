@@ -14,7 +14,7 @@
 #import "DeviceChangeModel.h"
 #import "JL_RunSDK.h"
 #import "SqliteManager.h"
-#import "ColorScreenSetVC.h"
+#import "杰理之家-Swift.h"
 
 #import "ToolViewNull.h"
 #import "ToolViewMusic.h"
