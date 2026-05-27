@@ -3,11 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09D9749989117BD643411B5A /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC1081B974A876FD9C820A6 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		002BD7BEC07BA4B3937EE59E /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		075524518346D8E94995C5D1 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		1CAACC97AE03078DBC3177CB /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		1CB0B4B87A054DBFB878D7F1 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A7110D91291B9C623480A /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		1D03107B2B81DD8A00056215 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0310782B81DD8900056215 /* BaseView.swift */; };
 		1D03107C2B81DD8A00056215 /* NavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0310792B81DD8A00056215 /* NavViewController.swift */; };
 		1D03107D2B81DD8A00056215 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D03107A2B81DD8A00056215 /* BaseViewController.swift */; };
@@ -67,6 +70,7 @@
 		1D25746B2DD32A7400C2C18A /* RecordDecoderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25746A2DD32A7400C2C18A /* RecordDecoderVC.swift */; };
 		1D25746D2DD33F9D00C2C18A /* PCMWavefromView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25746C2DD33F9D00C2C18A /* PCMWavefromView.swift */; };
 		1D25746F2DD343BB00C2C18A /* 16k_16bit_1.opus in Resources */ = {isa = PBXBuildFile; fileRef = 1D25746E2DD343BB00C2C18A /* 16k_16bit_1.opus */; };
+		1D2A681A2FAD736F00995D07 /* a_testPng.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D2A68192FAD736F00995D07 /* a_testPng.png */; };
 		1D2E4B6A2F6A445400C5E703 /* ResPackageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4B692F6A445400C5E703 /* ResPackageVC.swift */; };
 		1D2E4B6C2F6A4AA100C5E703 /* ResPackageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4B6B2F6A4AA100C5E703 /* ResPackageViewModel.swift */; };
 		1D33DAE22DD4827C00310141 /* DocumentBrowseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D33DAE12DD4827C00310141 /* DocumentBrowseView.swift */; };
@@ -150,6 +154,7 @@
 		1DEC36292D9E147A0060E710 /* VolcesTTSMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEC36282D9E147A0060E710 /* VolcesTTSMgr.swift */; };
 		1DEC38A52DA3C5030060E710 /* VolcesBusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEC38A42DA3C5030060E710 /* VolcesBusManager.swift */; };
 		1DEC38A72DA3D0A20060E710 /* TranslateOpusHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEC38A62DA3D0A20060E710 /* TranslateOpusHelper.swift */; };
+		1DF9778529BA4750DC563BB5 /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1DFA10EA2B6C93DC00F4C061 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA10E92B6C93DC00F4C061 /* AppDelegate.swift */; };
 		1DFA10F32B6C93DE00F4C061 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DFA10F22B6C93DE00F4C061 /* Assets.xcassets */; };
 		1DFA10F62B6C93DE00F4C061 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1DFA10F42B6C93DE00F4C061 /* LaunchScreen.storyboard */; };
@@ -160,24 +165,46 @@
 		1DFAA71B2B9085170087B9B4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1DFAA71D2B9085170087B9B4 /* Localizable.strings */; };
 		1DFAA7202B9085730087B9B4 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFAA71F2B9085730087B9B4 /* R.generated.swift */; };
 		1DFAA7492B91CE080087B9B4 /* SettingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFAA7482B91CE080087B9B4 /* SettingInfo.swift */; };
-		22C656C2B3680C74ECA3A44E /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FDDF423FFFD3CC8A5CD0C142 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		24D319958C92F162FFA8AEE5 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA74BD1765C92164203D481 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		2E07E59C8BB773EC676CD778 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D89F602B55D6382397949B3 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		4D9215D57F8D6E4AA6D8CC08 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D89F602B55D6382397949B3 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2485AA9819F1D02052CE4DE1 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2543C19047E0094B6DE37FF6 /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		35D8138F700746A8B258DB24 /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		3971C37EE00C35FAF3D5BEDB /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		434A1E3F2AD4D427201BD9A8 /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		45FC5068ABA45FB5BB62117B /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A7110D91291B9C623480A /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		571689BA40001CE1BBC158F7 /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		5BA05061365E29C803F9929B /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		61B0EB3A1C019C4B9A357156 /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		64FDF351B9FAD3D90A5FE4A7 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		6C4187B0C7CA043CC0853ACB /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		74CABD6329314669C0B5CB7A /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		7A8E079A298CC24D0401EDAB /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7EE426BA4CEB055021D17736 /* libPods-SDKTestHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CBF50F90C7B273D9FE234A /* libPods-SDKTestHelper.a */; };
-		837AFA0A9EFC84C21C034592 /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB4A5D42FA7988194C10B94 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		8813B4E7ABA68AE238877B4C /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB4A5D42FA7988194C10B94 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		889C84942A784C0CCD448085 /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CC773ABF9FCED8DD2641E1AF /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		8918F4DA847126344275B2A4 /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0EC1081B974A876FD9C820A6 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		94F240061C099D8775AF5DD5 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A65304400B70AB0F02F1C76 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		A5B1C164D184847AF6BE0CF1 /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB06BC82FF36AED06DDB3742 /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		AD1E4798D57B9FEFB7FD6CF5 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB06BC82FF36AED06DDB3742 /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		BA5A1ABB093EDE8C307D1263 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC773ABF9FCED8DD2641E1AF /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		BEF5621152D6F451A7C4A33A /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDDF423FFFD3CC8A5CD0C142 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		C23A1248119F6D375F121E80 /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A65304400B70AB0F02F1C76 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A569723998072DA4618E49B5 /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A78156508D81ABEA720F4050 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		B1B3C67FCB9AB7B2C01457D4 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		B5177D137666754C1636A588 /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		C5118B12CF05FB45D1AAAC56 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CEC1A15A0416A78E6B1C4781 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D12C66462AAF3A5D7134E65F /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D20C02F71B97FDEDEE06F30B /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DD8D02CB91593BB980236162 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DED0370BF982294DB2C668E8 /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 789A7110D91291B9C623480A /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E210C4A02D0E000100000002 /* NrfWriteInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E210C4A02D0E000100000001 /* NrfWriteInputViewController.swift */; };
-		EED8A09517300945BE09F877 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA74BD1765C92164203D481 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		EA37C22E0A570519DB08AE32 /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 789A7110D91291B9C623480A /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		ED5DBC56118728CE9C4CE9A9 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		EF497365B9CBF547DD933346 /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F7F4C0033CDFB68DFCB40A4C /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1DEE31342FB1B5D300616774 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DFA10DE2B6C93DC00F4C061 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1DFA10E52B6C93DC00F4C061;
+			remoteInfo = SDKTestHelper;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		1D0310982B81EFC800056215 /* Embed Frameworks */ = {
@@ -189,14 +216,32 @@
 				1D75C7B72DA7656A00ACAA21 /* JLAV2Lib.framework in Embed Frameworks */,
 				1DD8D05A2E84DB0C001D866C /* JPEGTurbo.framework in Embed Frameworks */,
 				1D5722622ED060AA00E80750 /* JLAudioUnitKit.xcframework in Embed Frameworks */,
-				8918F4DA847126344275B2A4 /* JLDialUnit.xcframework in Embed Frameworks */,
-				8813B4E7ABA68AE238877B4C /* JLBmpConvertKit.xcframework in Embed Frameworks */,
-				C23A1248119F6D375F121E80 /* JL_BLEKit.xcframework in Embed Frameworks */,
-				EED8A09517300945BE09F877 /* JL_OTALib.xcframework in Embed Frameworks */,
-				2E07E59C8BB773EC676CD778 /* JLLogHelper.xcframework in Embed Frameworks */,
-				22C656C2B3680C74ECA3A44E /* JLPackageResKit.xcframework in Embed Frameworks */,
-				A5B1C164D184847AF6BE0CF1 /* JL_HashPair.xcframework in Embed Frameworks */,
-				889C84942A784C0CCD448085 /* JL_AdvParse.xcframework in Embed Frameworks */,
+				A569723998072DA4618E49B5 /* JLDialUnit.xcframework in Embed Frameworks */,
+				D12C66462AAF3A5D7134E65F /* JLBmpConvertKit.xcframework in Embed Frameworks */,
+				1CAACC97AE03078DBC3177CB /* JL_BLEKit.xcframework in Embed Frameworks */,
+				C5118B12CF05FB45D1AAAC56 /* JL_OTALib.xcframework in Embed Frameworks */,
+				A78156508D81ABEA720F4050 /* JLLogHelper.xcframework in Embed Frameworks */,
+				434A1E3F2AD4D427201BD9A8 /* JLPackageResKit.xcframework in Embed Frameworks */,
+				DED0370BF982294DB2C668E8 /* JL_HashPair.xcframework in Embed Frameworks */,
+				EF497365B9CBF547DD933346 /* JL_AdvParse.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1DEE31512FB1B5F600616774 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D20C02F71B97FDEDEE06F30B /* JLDialUnit.xcframework in Embed Frameworks */,
+				2543C19047E0094B6DE37FF6 /* JLBmpConvertKit.xcframework in Embed Frameworks */,
+				5BA05061365E29C803F9929B /* JL_BLEKit.xcframework in Embed Frameworks */,
+				CEC1A15A0416A78E6B1C4781 /* JL_OTALib.xcframework in Embed Frameworks */,
+				7A8E079A298CC24D0401EDAB /* JLLogHelper.xcframework in Embed Frameworks */,
+				1DF9778529BA4750DC563BB5 /* JLPackageResKit.xcframework in Embed Frameworks */,
+				EA37C22E0A570519DB08AE32 /* JL_HashPair.xcframework in Embed Frameworks */,
+				F7F4C0033CDFB68DFCB40A4C /* JL_AdvParse.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,7 +249,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0EC1081B974A876FD9C820A6 /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
 		1D0310782B81DD8900056215 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		1D0310792B81DD8A00056215 /* NavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavViewController.swift; sourceTree = "<group>"; };
 		1D03107A2B81DD8A00056215 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +314,7 @@
 		1D25746A2DD32A7400C2C18A /* RecordDecoderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDecoderVC.swift; sourceTree = "<group>"; };
 		1D25746C2DD33F9D00C2C18A /* PCMWavefromView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PCMWavefromView.swift; sourceTree = "<group>"; };
 		1D25746E2DD343BB00C2C18A /* 16k_16bit_1.opus */ = {isa = PBXFileReference; lastKnownFileType = file; path = 16k_16bit_1.opus; sourceTree = "<group>"; };
+		1D2A68192FAD736F00995D07 /* a_testPng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = a_testPng.png; sourceTree = "<group>"; };
 		1D2E4B692F6A445400C5E703 /* ResPackageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResPackageVC.swift; sourceTree = "<group>"; };
 		1D2E4B6B2F6A4AA100C5E703 /* ResPackageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResPackageViewModel.swift; sourceTree = "<group>"; };
 		1D33DAE12DD4827C00310141 /* DocumentBrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowseView.swift; sourceTree = "<group>"; };
@@ -317,7 +362,6 @@
 		1D86EE382D2CB7A100DA797B /* JLAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JLAudioPlayer.swift; sourceTree = "<group>"; };
 		1D86EE392D2CB7A100DA797B /* JLAudioRecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JLAudioRecoder.swift; sourceTree = "<group>"; };
 		1D86EE3C2D2CB7C200DA797B /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
-		1D89F602B55D6382397949B3 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
 		1D8EE1AA2E01580300D2824C /* EmptyStateTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTableView.swift; sourceTree = "<group>"; };
 		1D8EE1E22E02E13B00D2824C /* Image2BinVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image2BinVC.swift; sourceTree = "<group>"; };
 		1D8EE1EF2E03AB0E00D2824C /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +399,7 @@
 		1DEC36282D9E147A0060E710 /* VolcesTTSMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolcesTTSMgr.swift; sourceTree = "<group>"; };
 		1DEC38A42DA3C5030060E710 /* VolcesBusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolcesBusManager.swift; sourceTree = "<group>"; };
 		1DEC38A62DA3D0A20060E710 /* TranslateOpusHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateOpusHelper.swift; sourceTree = "<group>"; };
+		1DEE312E2FB1B5D300616774 /* SDKTestCase.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SDKTestCase.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DFA10E62B6C93DC00F4C061 /* SDKTestHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDKTestHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DFA10E92B6C93DC00F4C061 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DFA10F22B6C93DE00F4C061 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -369,19 +414,50 @@
 		1DFAA71E2B90851A0087B9B4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1DFAA71F2B9085730087B9B4 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 		1DFAA7482B91CE080087B9B4 /* SettingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingInfo.swift; sourceTree = "<group>"; };
+		2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
+		3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
 		42CBF50F90C7B273D9FE234A /* libPods-SDKTestHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SDKTestHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AA74BD1765C92164203D481 /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
-		6A65304400B70AB0F02F1C76 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
-		6BB4A5D42FA7988194C10B94 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
+		789A7110D91291B9C623480A /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
 		7CDF4862CDF9D2B97BEF5E24 /* Pods-SDKTestHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDKTestHelper.debug.xcconfig"; path = "Target Support Files/Pods-SDKTestHelper/Pods-SDKTestHelper.debug.xcconfig"; sourceTree = "<group>"; };
-		CC773ABF9FCED8DD2641E1AF /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
-		DB06BC82FF36AED06DDB3742 /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
+		8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
+		9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
+		992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
+		AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
 		E210C4A02D0E000100000001 /* NrfWriteInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NrfWriteInputViewController.swift; sourceTree = "<group>"; };
 		EA722C1456A6CB236D9F58EF /* Pods-SDKTestHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SDKTestHelper.release.xcconfig"; path = "Target Support Files/Pods-SDKTestHelper/Pods-SDKTestHelper.release.xcconfig"; sourceTree = "<group>"; };
-		FDDF423FFFD3CC8A5CD0C142 /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
+		F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1DEE312F2FB1B5D300616774 /* SDKTestCase */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = SDKTestCase;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		1DEE312B2FB1B5D300616774 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35D8138F700746A8B258DB24 /* JLDialUnit.xcframework in Frameworks */,
+				B5177D137666754C1636A588 /* JLBmpConvertKit.xcframework in Frameworks */,
+				64FDF351B9FAD3D90A5FE4A7 /* JL_BLEKit.xcframework in Frameworks */,
+				075524518346D8E94995C5D1 /* JL_OTALib.xcframework in Frameworks */,
+				3971C37EE00C35FAF3D5BEDB /* JLLogHelper.xcframework in Frameworks */,
+				571689BA40001CE1BBC158F7 /* JLPackageResKit.xcframework in Frameworks */,
+				45FC5068ABA45FB5BB62117B /* JL_HashPair.xcframework in Frameworks */,
+				2485AA9819F1D02052CE4DE1 /* JL_AdvParse.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DFA10E32B6C93DC00F4C061 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -392,14 +468,14 @@
 				1D0310AC2B81F26600056215 /* SpeexKit.framework in Frameworks */,
 				7EE426BA4CEB055021D17736 /* libPods-SDKTestHelper.a in Frameworks */,
 				1D75C7B62DA7656A00ACAA21 /* JLAV2Lib.framework in Frameworks */,
-				09D9749989117BD643411B5A /* JLDialUnit.xcframework in Frameworks */,
-				837AFA0A9EFC84C21C034592 /* JLBmpConvertKit.xcframework in Frameworks */,
-				94F240061C099D8775AF5DD5 /* JL_BLEKit.xcframework in Frameworks */,
-				24D319958C92F162FFA8AEE5 /* JL_OTALib.xcframework in Frameworks */,
-				4D9215D57F8D6E4AA6D8CC08 /* JLLogHelper.xcframework in Frameworks */,
-				BEF5621152D6F451A7C4A33A /* JLPackageResKit.xcframework in Frameworks */,
-				AD1E4798D57B9FEFB7FD6CF5 /* JL_HashPair.xcframework in Frameworks */,
-				BA5A1ABB093EDE8C307D1263 /* JL_AdvParse.xcframework in Frameworks */,
+				61B0EB3A1C019C4B9A357156 /* JLDialUnit.xcframework in Frameworks */,
+				74CABD6329314669C0B5CB7A /* JLBmpConvertKit.xcframework in Frameworks */,
+				DD8D02CB91593BB980236162 /* JL_BLEKit.xcframework in Frameworks */,
+				ED5DBC56118728CE9C4CE9A9 /* JL_OTALib.xcframework in Frameworks */,
+				B1B3C67FCB9AB7B2C01457D4 /* JLLogHelper.xcframework in Frameworks */,
+				6C4187B0C7CA043CC0853ACB /* JLPackageResKit.xcframework in Frameworks */,
+				1CB0B4B87A054DBFB878D7F1 /* JL_HashPair.xcframework in Frameworks */,
+				002BD7BEC07BA4B3937EE59E /* JL_AdvParse.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1021,6 +1097,7 @@
 			isa = PBXGroup;
 			children = (
 				1DFA10E82B6C93DC00F4C061 /* SDKTestHelper */,
+				1DEE312F2FB1B5D300616774 /* SDKTestCase */,
 				1DFA10E72B6C93DC00F4C061 /* Products */,
 				EECD29BAB18D96CC3766A2C2 /* Pods */,
 				FE71437159CDACC135BDBD9A /* Frameworks */,
@@ -1031,6 +1108,7 @@
 			isa = PBXGroup;
 			children = (
 				1DFA10E62B6C93DC00F4C061 /* SDKTestHelper.app */,
+				1DEE312E2FB1B5D300616774 /* SDKTestCase.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1057,6 +1135,7 @@
 		1DFAA7182B90850C0087B9B4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				1D2A68192FAD736F00995D07 /* a_testPng.png */,
 				1D036C6A2DE988BB009C1369 /* JPG */,
 				1D75C7A42DA676DB00ACAA21 /* ColorScreen */,
 				1D60569E2D5C7AE6002890B6 /* AudioSource */,
@@ -1085,14 +1164,14 @@
 				1D0310AA2B81F26600056215 /* SpeexKit.framework */,
 				1DD8D0552E84D74C001D866C /* JPEGTurbo.framework */,
 				42CBF50F90C7B273D9FE234A /* libPods-SDKTestHelper.a */,
-				0EC1081B974A876FD9C820A6 /* JLDialUnit.xcframework */,
-				6BB4A5D42FA7988194C10B94 /* JLBmpConvertKit.xcframework */,
-				6A65304400B70AB0F02F1C76 /* JL_BLEKit.xcframework */,
-				5AA74BD1765C92164203D481 /* JL_OTALib.xcframework */,
-				1D89F602B55D6382397949B3 /* JLLogHelper.xcframework */,
-				FDDF423FFFD3CC8A5CD0C142 /* JLPackageResKit.xcframework */,
-				DB06BC82FF36AED06DDB3742 /* JL_HashPair.xcframework */,
-				CC773ABF9FCED8DD2641E1AF /* JL_AdvParse.xcframework */,
+				9523854947FF4F24ECD6160C /* JLDialUnit.xcframework */,
+				8BF7AEB4F6E04A8790DFA457 /* JLBmpConvertKit.xcframework */,
+				3802705E4F41C19F57930242 /* JL_BLEKit.xcframework */,
+				992654B5A1F71EC81FF30FB4 /* JL_OTALib.xcframework */,
+				F295C9A5747BC42B1E67EB80 /* JLLogHelper.xcframework */,
+				AD8CDB5CEDD329116A78F11C /* JLPackageResKit.xcframework */,
+				789A7110D91291B9C623480A /* JL_HashPair.xcframework */,
+				2EB6D5CA9C209D4EE118ADBA /* JL_AdvParse.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1100,6 +1179,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1DEE312D2FB1B5D300616774 /* SDKTestCase */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEE31402FB1B5D300616774 /* Build configuration list for PBXNativeTarget "SDKTestCase" */;
+			buildPhases = (
+				1DEE312A2FB1B5D300616774 /* Sources */,
+				1DEE312B2FB1B5D300616774 /* Frameworks */,
+				1DEE312C2FB1B5D300616774 /* Resources */,
+				1DEE31512FB1B5F600616774 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1DEE31352FB1B5D300616774 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1DEE312F2FB1B5D300616774 /* SDKTestCase */,
+			);
+			name = SDKTestCase;
+			productName = SDKTestCase;
+			productReference = 1DEE312E2FB1B5D300616774 /* SDKTestCase.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		1DFA10E52B6C93DC00F4C061 /* SDKTestHelper */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DFA10FA2B6C93DE00F4C061 /* Build configuration list for PBXNativeTarget "SDKTestHelper" */;
@@ -1128,10 +1229,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "www.zh-jieli.com";
 				TargetAttributes = {
+					1DEE312D2FB1B5D300616774 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 1DFA10E52B6C93DC00F4C061;
+					};
 					1DFA10E52B6C93DC00F4C061 = {
 						CreatedOnToolsVersion = 15.0;
 						LastSwiftMigration = 1500;
@@ -1153,11 +1258,19 @@
 			projectRoot = "";
 			targets = (
 				1DFA10E52B6C93DC00F4C061 /* SDKTestHelper */,
+				1DEE312D2FB1B5D300616774 /* SDKTestCase */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1DEE312C2FB1B5D300616774 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DFA10E42B6C93DC00F4C061 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1172,6 +1285,7 @@
 				1D75C7AF2DA6774300ACAA21 /* ANI3.gif in Resources */,
 				1D75C7B02DA6774300ACAA21 /* ANI4.gif in Resources */,
 				1DFAA71B2B9085170087B9B4 /* Localizable.strings in Resources */,
+				1D2A681A2FAD736F00995D07 /* a_testPng.png in Resources */,
 				1D75C7A72DA676EA00ACAA21 /* csbg_001.png in Resources */,
 				1D75C7A82DA676EA00ACAA21 /* csbg_002.png in Resources */,
 				1D25746F2DD343BB00C2C18A /* 16k_16bit_1.opus in Resources */,
@@ -1250,6 +1364,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1DEE312A2FB1B5D300616774 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DFA10E22B6C93DC00F4C061 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1388,6 +1509,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		1DEE31352FB1B5D300616774 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1DFA10E52B6C93DC00F4C061 /* SDKTestHelper */;
+			targetProxy = 1DEE31342FB1B5D300616774 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		1DFA10F42B6C93DE00F4C061 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1410,6 +1539,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1DEE31362FB1B5D300616774 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J8GU9SL7NG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.SDKTestCase";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SDKTestHelper;
+			};
+			name = Debug;
+		};
+		1DEE31372FB1B5D300616774 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J8GU9SL7NG;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.SDKTestCase";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SDKTestHelper;
+			};
+			name = Release;
+		};
 		1DFA10F82B6C93DE00F4C061 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1540,6 +1711,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SDKTestHelper/SDKTestHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1568,6 +1740,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.SDKTestHelper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1587,6 +1760,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SDKTestHelper/SDKTestHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1615,6 +1789,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.SDKTestHelper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1627,6 +1802,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1DEE31402FB1B5D300616774 /* Build configuration list for PBXNativeTarget "SDKTestCase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEE31362FB1B5D300616774 /* Debug */,
+				1DEE31372FB1B5D300616774 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1DFA10E12B6C93DC00F4C061 /* Build configuration list for PBXProject "SDKTestHelper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

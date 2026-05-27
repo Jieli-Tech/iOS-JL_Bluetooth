@@ -2597,7 +2597,7 @@ struct _R {
     var themeColor: RswiftResources.ColorResource { .init(name: "themeColor", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 81 images.
+  /// This `_R.image` struct is generated, and contains static references to 82 images.
   struct image {
     let bundle: Foundation.Bundle
 
@@ -2612,6 +2612,9 @@ struct _R {
 
     /// Image `VIE2`.
     var vie2: RswiftResources.ImageResource { .init(name: "VIE2", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
+
+    /// Image `a_testPng`.
+    var a_testPng: RswiftResources.ImageResource { .init(name: "a_testPng", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
 
     /// Image `about_logo`.
     var about_logo: RswiftResources.ImageResource { .init(name: "about_logo", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
@@ -2851,7 +2854,7 @@ struct _R {
     let comAppleDeveloperNetworkingWifiInfo: Bool = true
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 13 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 14 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -2875,6 +2878,9 @@ struct _R {
 
     /// Resource file `VIE2.png`.
     var vie2Png: RswiftResources.FileResource { .init(name: "VIE2", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `a_testPng.png`.
+    var a_testPngPng: RswiftResources.FileResource { .init(name: "a_testPng", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `convert_1.jpg`.
     var convert_1Jpg: RswiftResources.FileResource { .init(name: "convert_1", pathExtension: "jpg", bundle: bundle, locale: LocaleReference.none) }

@@ -98,7 +98,7 @@
 		</data>
 		<key>Headers/JLDeviceConfigTws.h</key>
 		<data>
-		ypa+GNoYcjD3xYh/A/vsL8vEoVc=
+		k13m7HDSz0Qg173V6I1JLG+1zJA=
 		</data>
 		<key>Headers/JLDhaFitting.h</key>
 		<data>
@@ -278,7 +278,7 @@
 		</data>
 		<key>Headers/JLTranslateSetMode.h</key>
 		<data>
-		dhgkOfIUzBcL0zNT3ELUTjMqteg=
+		ApjOV9FhBKbUzEA6w0bN1kggS3w=
 		</data>
 		<key>Headers/JLTranslationManager.h</key>
 		<data>
@@ -350,7 +350,7 @@
 		</data>
 		<key>Headers/JL_BLEMultiple.h</key>
 		<data>
-		SECbwMRJWb0nnvQ+sLNT6+7dUzo=
+		rOmpfziip4XrXchh8cOc4u0j9bc=
 		</data>
 		<key>Headers/JL_BatchManger.h</key>
 		<data>
@@ -828,11 +828,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ypa+GNoYcjD3xYh/A/vsL8vEoVc=
+			k13m7HDSz0Qg173V6I1JLG+1zJA=
 			</data>
 			<key>hash2</key>
 			<data>
-			1NDH+W7o21M7cjWMbIC6zkqbjBjuJZB44qzigNi4sRM=
+			chcU0Pr/BLo5xCLoLb9LzM1ndzqjtskEAfkiuQ8Ep8o=
 			</data>
 		</dict>
 		<key>Headers/JLDhaFitting.h</key>
@@ -1323,11 +1323,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			dhgkOfIUzBcL0zNT3ELUTjMqteg=
+			ApjOV9FhBKbUzEA6w0bN1kggS3w=
 			</data>
 			<key>hash2</key>
 			<data>
-			PxWaOt3VO+zofrCgKKp/x4Fqh2drlUPu03g+bU9/pbI=
+			wzZUs/+lZXu2Su+R/6NLt2wENPVT5wVIbScBew1nxFU=
 			</data>
 		</dict>
 		<key>Headers/JLTranslationManager.h</key>
@@ -1521,11 +1521,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SECbwMRJWb0nnvQ+sLNT6+7dUzo=
+			rOmpfziip4XrXchh8cOc4u0j9bc=
 			</data>
 			<key>hash2</key>
 			<data>
-			qw1uN1+/BG5iuUalCb88gHxkeZBwhx0hw/0KvQAV8mM=
+			53xDzC91d3PVCqfNyyPcp0oQ1y9UNkPW5e1nHqQIJRs=
 			</data>
 		</dict>
 		<key>Headers/JL_BatchManger.h</key>

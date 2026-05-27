@@ -74,6 +74,29 @@ typedef void(^JLBmpCovertCallBack2)(NSData *__nullable outFileData,NSError *__nu
 /// - Parameter image: 图片
 +(NSData*)convertImageToRGBABytes:(UIImage *)image;
 
+#pragma mark - PNG Processing (All Platforms)
+
+/// 检查是否为 PNG 格式（通过 Magic Number）
+/// @param data 图像数据
+/// @return YES 表示 PNG 格式
+/// @note 使用 PNG Magic Number (0x89 0x50 0x4E 0x47 0x0D 0x0A 0x1A 0x0A) 进行检测
++ (BOOL)isPNGData:(NSData *)data;
+
+/// 使用 libpng 获取 PNG 图像尺寸
+/// @param data PNG 数据
+/// @param width 输出宽度
+/// @param height 输出高度
+/// @return YES 表示成功，NO 表示失败或包含 Apple CgBI chunk
+/// @note 内部使用 libpng 1.6.54 解析，遇到 Apple CgBI chunk 会返回 NO
++ (BOOL)getPNGDimensions:(NSData *)data width:(int *)width height:(int *)height;
+
+/// 使用 libpng 将 PNG 数据解码为 BGRA
+/// @param pngData PNG 格式数据
+/// @return BGRA 格式数据，失败返回 nil
+/// @note 内部使用 libpng 1.6.54 解码，支持标准 PNG 格式。
+///       遇到 Apple CgBI chunk 会返回 nil，调用方应 fallback 到系统方法处理
++ (NSData *)convertPNGDataToBGRABytes:(NSData *)pngData;
+
 
 /// 图片缩放
 /// - Parameters:

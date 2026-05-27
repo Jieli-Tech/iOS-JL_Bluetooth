@@ -205,6 +205,8 @@ enum TranslateLanType {
             inputToTranslationManager(data)
         case .callTranslate, .callTranslateStereo, .faceToFaceTranslate, .audioTranslate:
             inputToTranslationManager(data)
+        case .callRecord:
+            handleCallRecordAudioData(data)
         default:
             break
         }
@@ -228,6 +230,8 @@ enum TranslateLanType {
             pareparRecordOnly(currentMode.dataType)
         case .faceToFaceTranslate:
             configFaceToFaceTranslate()
+        case .callRecord:
+            configCallRecordTranslate()
         case .idle:
             cleanupForIdle()
         default:
@@ -404,6 +408,57 @@ enum TranslateLanType {
         callTranslateMgr?.onDestory()
         JLAudioPlayer.shared.stop()
         JLAudioRecoder.shared.stop()
+    }
+    
+    // MARK: - 通话录音模式 (Call Record Mode)
+    
+    /// 配置通话录音模式
+    private func configCallRecordTranslate() {
+        // 通话录音模式不需要初始化翻译服务，只需要准备解码器
+        prepareCallRecordDecoder()
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log 进入通话录音模式")
+    }
+    
+    /// 准备通话录音解码器
+    private func prepareCallRecordDecoder() {
+        // 根据数据类型准备相应的解码器
+        if currentMode.dataType == .OPUS {
+            if coderOpus == nil {
+                coderOpus = TranslateOpusHelper({ [weak self] pcm in
+                    // 可以将PCM数据保存到文件或进行实时处理
+                    JLLogManager.logLevel(.DEBUG, content: "Translate Log 通话录音 Opus 解码完成，PCM长度: \(pcm.count)")
+                }, { [weak self] encodeData in
+                    // 编码数据回调（录音模式通常不需要回传）
+                })
+            }
+        } else if currentMode.dataType == .JLA_V2 {
+            if coderJav2 == nil {
+                coderJav2 = TranslateAV2Helper({ [weak self] pcm in
+                    // 可以将PCM数据保存到文件或进行实时处理
+                    JLLogManager.logLevel(.DEBUG, content: "Translate Log 通话录音 JLA_V2 解码完成，PCM长度: \(pcm.count)")
+                }, { [weak self] encodeData in
+                    // 编码数据回调（录音模式通常不需要回传）
+                })
+            }
+        }
+    }
+    
+    /// 处理通话录音音频数据
+    private func handleCallRecordAudioData(_ data: JLTranslateAudio) {
+        // 根据数据源类型区分上行/下行
+        let sourceType = data.sourceType
+        let sourceName = sourceType == .typeESCOUp ? "己方(上行)" : (sourceType == .typeESCODown ? "对方(下行)" : "未知")
+        
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log 通话录音数据 - 来源: \(sourceName), 类型: \(data.audioType), 长度: \(data.data.count)")
+        
+        // 解码音频数据
+        decodeAudioData(data)
+        
+        // TODO: 这里可以添加保存到文件或实时语音识别的逻辑
+        // 例如：
+        // 1. 将解码后的PCM数据写入文件
+        // 2. 进行实时语音识别
+        // 3. 显示录音波形等
     }
     
     // MARK: - 翻译服务配置 (Service Config)

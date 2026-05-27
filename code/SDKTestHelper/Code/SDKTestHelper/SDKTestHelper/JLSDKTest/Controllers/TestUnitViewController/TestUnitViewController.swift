@@ -8,6 +8,7 @@
 
 import UIKit
 import JPEGTurbo
+import JLBmpConvertKit
 
 class TestUnitViewController: BaseViewController {
 
@@ -47,7 +48,7 @@ class TestUnitViewController: BaseViewController {
     }
     override func initData() {
         super.initData()
-        subItemArray.accept(["AudioSession Test Unit","DialInfoExtent","Network Extension Test","Jpeg convert to jpg"])
+        subItemArray.accept(["AudioSession Test Unit","DialInfoExtent","Network Extension Test","Jpeg convert to jpg","PNG Convert Test"])
         subTable.rx.modelSelected(String.self).subscribe(onNext: { [weak self] model in
             guard let self = self else { return }
             if model == "AudioSession Test Unit" {
@@ -74,6 +75,13 @@ class TestUnitViewController: BaseViewController {
                 let savePath = NSHomeDirectory() + "/Documents/test.jpg"
                 try?FileManager.default.removeItem(atPath: savePath)
                 FileManager.default.createFile(atPath: savePath, contents: newImg, attributes: nil)
+            }
+            if model == "PNG Convert Test" {
+                guard let path = R.file.a_testPngPng.url(), let imgData = try?Data(contentsOf: path) else { return }
+                let rgba = JLBmpConvert.convertPNGData(toBGRABytes: imgData)
+                let savePath = NSHomeDirectory() + "/Documents/test.bgra"
+                try?FileManager.default.removeItem(atPath: savePath)
+                FileManager.default.createFile(atPath: savePath, contents: rgba, attributes: nil)
             }
             subTable.reloadData()
         }).disposed(by: disposeBag)

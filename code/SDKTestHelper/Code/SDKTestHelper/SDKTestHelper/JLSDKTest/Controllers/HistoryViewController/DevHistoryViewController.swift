@@ -20,6 +20,8 @@ class DevHistoryViewController: BaseViewController {
     private let devHistoryArray = BehaviorRelay<[DevHistoryModel]>(value: [])
     private let connectedArray = BehaviorRelay<[CBPeripheral]>(value: [])
     private let systemHistoryArray = BehaviorRelay<[CBPeripheral]>(value: [])
+    
+    private var watchConnectTimer: Timer?
 
     override func initUI() {
         super.initUI()
@@ -32,11 +34,13 @@ class DevHistoryViewController: BaseViewController {
     override func viewWillAppear(_ animate : Bool) {
         super.viewWillAppear(animate)
         BleManager.shared.startSearchBle()
+        watchConnectTimer?.fire()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         BleManager.shared.stopSearchBle()
+        watchConnectTimer?.invalidate()
     }
 
     override func initData() {
@@ -53,10 +57,8 @@ class DevHistoryViewController: BaseViewController {
             let sysHistory = BleManager.shared.centerManager.retrievePeripherals(withIdentifiers: historyUUIDs)
             systemHistoryArray.accept(sysHistory)
         }
-        if BleManager.shared.bleStatus.value == .poweredOn {
-            let connected = BleManager.shared.centerManager.retrieveConnectedPeripherals(withServices: [CBUUID(string: "AE00")])
-            connectedArray.accept(connected)
-        }
+        watchConnectTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(watchConnectAction), userInfo: nil, repeats: true)
+        watchConnectTimer?.fire()
     }
 
     func setupUI() {
@@ -192,6 +194,13 @@ class DevHistoryViewController: BaseViewController {
             self?.connect(uuid: item.identifier.uuidString, item)
         }).disposed(by: disposeBag)
     }
+    
+    @objc func watchConnectAction() {
+        if BleManager.shared.bleStatus.value == .poweredOn {
+            let connected = BleManager.shared.centerManager.retrieveConnectedPeripherals(withServices: [CBUUID(string: "AE00")])
+            connectedArray.accept(connected)
+        }
+    }
 
     private func connect(uuid: String, _ peripheral: CBPeripheral? = nil) {
         if BleManager.shared.currentEntity?.mUUID == uuid {
@@ -230,6 +239,10 @@ class DevHistoryViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: DispatchWorkItem(block: {
             self.navigationController?.popViewController(animated: true)
         }))
+    }
+    
+    deinit {
+        watchConnectTimer?.invalidate()
     }
 }
 

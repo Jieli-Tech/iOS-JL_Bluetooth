@@ -301,7 +301,10 @@ class TranslateViewController: BaseViewController {
         if mode.modeType == .recordTranslate {
             stopBtn.isHidden = false
         }
-        if mode.modeType == .callTranslate {
+        if mode.modeType == .callTranslateStereo {
+            stopBtn.isHidden = false
+        }
+        if mode.modeType == .callRecord {
             stopBtn.isHidden = false
         }
         if mode.modeType == .audioTranslate {
@@ -447,7 +450,8 @@ class TranslateViewController: BaseViewController {
             R.localStr.callTranslation(),
             R.localStr.audioTranslation(),
             R.localStr.faceToFaceTranslation(),
-            "通话立体声翻译"
+            "通话立体声翻译",
+            "通话录音模式"
         ]
         modeSelectView.updateItems(items)
         modeSelectView.onSelect = { item in
@@ -472,6 +476,10 @@ class TranslateViewController: BaseViewController {
                 TranslateVM.shared.currentMode.modeType = .faceToFaceTranslate
             case "通话立体声翻译":
                 TranslateVM.shared.currentMode.modeType = .callTranslateStereo
+            case "通话录音模式":
+                TranslateVM.shared.currentMode.modeType = .callRecord
+                self.audioTypeView.scrollToItem("OPUS")
+                TranslateVM.shared.currentMode.dataType = .OPUS
             default:
                 break
             }
@@ -494,6 +502,8 @@ class TranslateViewController: BaseViewController {
             return "面对面翻译"
         case .callTranslateStereo:
             return "通话立体声翻译"
+        case .callRecord:
+            return "通话录音模式"
         @unknown default:
             return "未知"
         }
