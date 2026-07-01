@@ -5,7 +5,7 @@
 
 <div align="center">
 
-**杰理之家 SDK （iOS）-专为杰理音箱耳机类产品提供蓝牙控制开发平台 **
+**杰理之家 SDK （iOS）-专为杰理音箱耳机类产品提供蓝牙控制开发平台**
 
 ![iOS](https://img.shields.io/badge/iOS-12.0+-blue.svg)
 ![Xcode](https://img.shields.io/badge/Xcode-Latest-orange.svg)
