@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import JPEGTurbo
 import JLBmpConvertKit
 
 class TestUnitViewController: BaseViewController {
@@ -71,10 +70,12 @@ class TestUnitViewController: BaseViewController {
             if model == "Jpeg convert to jpg" {
                 guard let path = R.file.convert_1Jpg.url(), let img = UIImage(contentsOfFile: path.path) else { return }
                 let size = img.size
-                let newImg = JpegProcessor.compressImage(img, targetSize: size, quality: 1, maxFileSize: 0)
+                let newImg = JPEGTurboCompressor.compressImage(img, targetSize: size, quality: 1, maxFileSize: 0)
                 let savePath = NSHomeDirectory() + "/Documents/test.jpg"
                 try?FileManager.default.removeItem(atPath: savePath)
-                FileManager.default.createFile(atPath: savePath, contents: newImg, attributes: nil)
+                if let jpegData = newImg {
+                    FileManager.default.createFile(atPath: savePath, contents: jpegData, attributes: nil)
+                }
             }
             if model == "PNG Convert Test" {
                 guard let path = R.file.a_testPngPng.url(), let imgData = try?Data(contentsOf: path) else { return }

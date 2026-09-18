@@ -25,7 +25,11 @@ class ColorScreenViewController: BaseViewController {
     lazy var fotaHUD: UIAlertController = {
         let alert = UIAlertController(title: "Updating File to Device\n", message: nil, preferredStyle: .alert)
         let indicator = UIActivityIndicatorView(frame: alert.view.bounds)
-        indicator.style = .large
+        if #available(iOS 13.0, *) {
+            indicator.style = .large
+        } else {
+            indicator.style = .whiteLarge
+        }
         indicator.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         alert.view.addSubview(indicator)
         indicator.isUserInteractionEnabled = false

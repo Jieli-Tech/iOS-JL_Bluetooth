@@ -75,6 +75,7 @@ class Gif2DeviceViewController: BaseViewController {
         items.map { $0.isEmpty }.bind(to: subTable.isEmpty).disposed(by: disposeBag)
         
         subTable.emptyStateLabelText = R.localStr.needToImportTheFileIntoDocumentGif2rgbFolder()
+        subTable.importDestinationPath = _R.path.gif2Rgb
 
         subTable.rx.modelSelected(String.self).subscribe(onNext: { [weak self] model in
             guard let `self` = self else { return }
@@ -162,6 +163,22 @@ class Gif2DeviceViewController: BaseViewController {
         super.initData()
         
         initDialMgr()
+        
+        // 文件导入后刷新列表
+        subTable.fileImported
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if let list = _R.path.gif2Rgb.listFile() {
+                    self.items.accept(list)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        subTable.fileImportError
+            .subscribe(onNext: { [weak self] error in
+                self?.view.makeToast(error.localizedDescription, duration: 2, position: .center)
+            })
+            .disposed(by: disposeBag)
         
         navigationView.leftBtn.rx.tap.subscribe { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)

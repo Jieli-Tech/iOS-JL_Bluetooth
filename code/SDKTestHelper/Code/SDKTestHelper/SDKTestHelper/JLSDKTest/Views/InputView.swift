@@ -68,8 +68,8 @@ class InputView: BaseView {
 
     /// 监听键盘事件，自动调整视图
     private func setupKeyboardHandling() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let _ = scene.windows.first else { return }
+        // iOS 12.0 兼容：获取当前 window
+        guard let _ = UIApplication.shared.keyWindow else { return }
 
         // 监听键盘弹出事件
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)

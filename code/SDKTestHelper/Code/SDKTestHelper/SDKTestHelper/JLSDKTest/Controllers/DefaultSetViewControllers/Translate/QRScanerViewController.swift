@@ -212,8 +212,8 @@ extension QRScanerViewController: UIImagePickerControllerDelegate, UINavigationC
                                       options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
 
             guard let features = detector?.features(in: ciImage) as? [CIQRCodeFeature], features.count > 0 else {
-                JLLogManager.logLevel( .INFO, content: "No QR codes found.")
-                AppDelegate.getCurrentWindows()?.makeToast("Failed to load QR code", position: .center)
+                JLLogManager.logLevel( .INFO, content: "No QR codes found in selected image.")
+                AppDelegate.getCurrentWindows()?.makeToast("No QR code detected in the image", position: .center)
                 return
             }
             for feature in features {

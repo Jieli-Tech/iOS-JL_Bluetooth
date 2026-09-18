@@ -183,7 +183,7 @@ class WeatherView: UIView, UITextFieldDelegate, UIPickerViewDelegate, UIPickerVi
         addSubview(subSwitch)
         dateSelectBtn.setTitle("日期选择", for: .normal)
         dateSelectBtn.addTarget(self, action: #selector(didSelectDate), for: .touchUpInside)
-        dateSelectBtn.backgroundColor = UIColor.systemGreen
+        dateSelectBtn.backgroundColor = UIColor.compatibleSystemGreen
         dateSelectBtn.setTitleColor(UIColor.white, for: .normal)
         dateSelectBtn.setTitleColor(UIColor.gray, for: .highlighted)
         dateSelectBtn.layer.cornerRadius = 6

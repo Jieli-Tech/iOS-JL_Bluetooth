@@ -32,7 +32,11 @@ class NrfDetailsViewController: BaseViewController {
     
     override func initData() {
         super.initData()
-        navigationView.leftBtn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        if #available(iOS 13.0, *) {
+            navigationView.leftBtn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        } else {
+            navigationView.leftBtn.setTitle("Back", for: .normal)
+        }
         navigationView.leftBtn.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)

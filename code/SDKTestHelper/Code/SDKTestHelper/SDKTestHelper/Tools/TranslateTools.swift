@@ -17,6 +17,8 @@ private extension TranslateLanType {
             return TranslateTools.syncLanguage
         case .face:
             return TranslateTools.faceLanguage
+        case .callRecord:
+            return TranslateTools.callRecordLanguage
         }
     }
 }
@@ -25,6 +27,7 @@ class TranslateTools: NSObject {
     static let syncLanguage = "SyncLanguage"
     static let callLanguage = "CallLanguage"
     static let faceLanguage = "FaceLanguage"
+    static let callRecordLanguage = "CallRecordLanguage"
 
     /// 计算语音时长
     /// - Parameters:

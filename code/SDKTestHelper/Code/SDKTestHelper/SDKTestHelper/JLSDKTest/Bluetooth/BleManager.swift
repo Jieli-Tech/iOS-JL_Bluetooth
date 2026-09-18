@@ -113,13 +113,15 @@ class BleManager: NSObject {
         super.init()
         /// 杰理 SDK 的日志
         JLLogManager.clearLog()
-        JLLogManager.setLog(true, isMore: false, level: .DEBUG)
+        JLLogManager.setLog(true, isMore: false, level: .COMPLETE)
         JLLogManager.log(withTimestamp: true)
         JLLogManager.saveLog(asFile: true)
 
         /// 启用 SDK 蓝牙连接时需要使用
         mBleMultiple.ble_FILTER_ENABLE = true
         mBleMultiple.ble_TIMEOUT = 7
+        mBleMultiple.allowEmptyBleName = SettingInfo.getAllowEmptyBleName()
+        mBleMultiple.emableHash = SettingInfo.getEnableHash()
         let status = SettingInfo.getAuthEnable()
         setAuthEnable(status)
         
@@ -134,24 +136,46 @@ class BleManager: NSObject {
         mBleMultiple.authEnable = status
         assist.mAuthEnable = status
     }
+    
+    /// 设置是否允许空设备名
+    /// - Parameter allow: 允许开关
+    func setAllowEmptyBleName(_ allow: Bool) {
+        SettingInfo.saveAllowEmptyBleName(allow)
+        mBleMultiple.allowEmptyBleName = allow
+    }
+    
+    /// 设置是否启用 Hash 适配
+    /// - Parameter enable: 启用开关
+    func setEnableHash(_ enable: Bool) {
+        SettingInfo.saveEnableHash(enable)
+        mBleMultiple.emableHash = enable
+    }
 
     /// 开始搜索
     func startSearchBle() {
         // 启用 GATT over EDR 时需要先连接上设备的 EDR 否则会搜索不到
         if SettingInfo.getATTComunication() {
             devices.removeAll()
-            let uuid = SettingInfo.getAttDevUUID() ?? "AE00"
-            let cbuuid = CBUUID(string: uuid)
-            let machingUUIDs = [CBConnectionEventMatchingOption.serviceUUIDs:
-                [cbuuid]]
-            centerManager.registerForConnectionEvents(options: machingUUIDs)
-            centerManager.scanForPeripherals(withServices: nil, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            if #available(iOS 13.0, *) {
+                let uuid = SettingInfo.getAttDevUUID() ?? "AE00"
+                let cbuuid = CBUUID(string: uuid)
+                let machingUUIDs = [CBConnectionEventMatchingOption.serviceUUIDs:
+                    [cbuuid]]
+                centerManager.registerForConnectionEvents(options: machingUUIDs)
+                centerManager.scanForPeripherals(withServices: nil, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            } else {
+                centerManager.scanForPeripherals(withServices: nil, options: nil)
+            }
             return
         }
         // 启用自定义蓝牙连接是开发者自行搜索设备
         if SettingInfo.getCustomerBleConnect() {
             devices.removeAll()
-            centerManager.scanForPeripherals(withServices: nil, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            if #available(iOS 13.0, *) {
+                centerManager.scanForPeripherals(withServices: nil, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            } else {
+                centerManager.scanForPeripherals(withServices: nil, options: nil)
+            }
             JLLogManager.logLevel(.DEBUG, content: "startSearchBle")
         } else {
             // 启用 SDK 蓝牙连接时，调用库里的方法直接搜索
@@ -182,8 +206,10 @@ class BleManager: NSObject {
     /// 连接设备
     /// - Parameter entity: 要连接的设备
     func connectEntity(_ entity: JL_EntityM) {
+        guard let peripheral = entity.mPeripheral else { return }
         if SettingInfo.getATTComunication() {
-            centerManager.connect(entity.mPeripheral)
+            centerManager.connect(peripheral)
+            JLLogManager.logLevel(.DEBUG, content: "BleManager connect with gatt over edr  entity:\(entity.mPeripheral?.name ?? "unKnow"), identify:\(entity.mPeripheral?.identifier.uuidString ?? "unKnow")")
             return
         }
 
@@ -192,7 +218,12 @@ class BleManager: NSObject {
         if SettingInfo.getCustomerBleConnect() {
             // 这里的连接增加了一个连接参数，用于设备支持 CTKD 协议时的，GATT OVER EDR 连接时可忽略
             // 连接的结果需要看 centerManager 的代理回调
-            centerManager.connect(entity.mPeripheral, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            if #available(iOS 13.0, *) {
+                centerManager.connect(peripheral, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+            } else {
+                centerManager.connect(peripheral, options: nil)
+            }
+            JLLogManager.logLevel(.DEBUG, content: "BleManager connect entity:\(entity.mPeripheral?.name ?? "unKnow"), identify:\(entity.mPeripheral?.identifier.uuidString ?? "unKnow")")
         } else {
             // SDK 蓝牙连接，连接结果会在这里返回
             connectBySDKEntity(entity)
@@ -271,6 +302,10 @@ class BleManager: NSObject {
     
     func sendData(_ data: Data) {
         guard let handleCbp = handleCbp, let write = assist.mRcspWrite else { return }
+        guard handleCbp.state == .connected else {
+            JLLogManager.logLevel(.WARN, content: "[BleManager] sendData skipped, peripheral not connected")
+            return
+        }
         let mtu = handleCbp.maximumWriteValueLength(for: .withoutResponse)
         var offset = 0
         while offset < data.count {
@@ -281,7 +316,30 @@ class BleManager: NSObject {
         }
         JLLogManager.logLevel(.DEBUG, content: "sendData: \(data.eHex)")
     }
-    
+
+    /// 获取设备拓展配置信息（0xD9）
+    /// 需先在连接成功后通过 cmdTargetFeatureResult 拿到设备信息（sdkType），
+    /// 再按 SDK 类型调用对应的查询方法，否则设备响应的 deviceType 与请求不匹配，
+    /// SDK 会报 "Device type is not match" 且不缓存配置。
+    func requestDeviceConfig() {
+        guard let manager = currentCmdMgr else { return }
+        let sdkType = manager.getDeviceModel().sdkType
+        switch sdkType {
+        case .type693xTWS, .type697xTWS, .type696xTWS, .typeManifestEarphone:
+            // TWS 系列
+            JLDeviceConfig.share().deviceTwsGet(manager) { _, _, _ in }
+        case .type696xSB, .type695xSC, .typeManifestSoundbox:
+            // 音箱/声卡系列
+            JLDeviceConfig.share().deviceSoundBoxGet(manager) { _, _, _ in }
+        case .typeDongle:
+            // Dongle（Auracast）
+            JLDeviceConfig.share().deviceDongleGet(manager) { _, _, _ in }
+        default:
+            // 手表类（695x/701x/707n/380n）、彩屏充电仓、带屏充电宝等走基础配置
+            JLDeviceConfig.share().deviceGet(manager) { _, _, _ in }
+        }
+    }
+
 
     private func connectBySDKEntity(_ entity: JL_EntityM) {
         mBleMultiple.connectEntity(entity) { st in
@@ -306,12 +364,13 @@ class BleManager: NSObject {
                 BleManager.shared.currentEntity = entity
                 self.handleCbp = entity.mPeripheral
                 BleManager.shared.currentCmdMgr?.cmdTargetFeatureResult({[weak self] _, _, _ in
-                    guard let self = self else { return }
+                    guard let self = self, let peripheral = entity.mPeripheral else { return }
                     SettingInfo.setToHistory(entity.mUUID)
-                    DevHistory.share.insert(entity.mPeripheral, entity.mAdvData, false)
+                    DevHistory.share.insert(peripheral, entity.mAdvData, false)
                     self.connectTimeoutBlock?(true)
                     self.connectTimeoutBlock = nil
                     TimerHelper.stopTimer(timerID: &self.connectTimeoutID)
+                    self.requestDeviceConfig()
                 })
             case .masterChanging:
                 break
@@ -358,7 +417,7 @@ extension BleManager: CBCentralManagerDelegate {
             newEntity.mUUID = peripheral.identifier.uuidString
             newEntity.setBlePeripheral(peripheral)
             if peripheral.name != nil {
-                if devices.contains(where: { $0.mPeripheral.name == peripheral.name }) {
+                if devices.contains(where: { $0.mPeripheral?.name == peripheral.name }) {
                 } else {
                     devices.append(newEntity)
                 }
@@ -374,12 +433,23 @@ extension BleManager: CBCentralManagerDelegate {
                 connectUUID = nil
             }
             
-            Task {
-                let list = await DevHistory.share.queryAll()
-                for item in list {
-                    if item.uuidStr == peripheral.identifier.uuidString {
-                        connectEntity(newEntity)
-                        break
+            if #available(iOS 13.0, *) {
+                Task {
+                    let list = await DevHistory.share.queryAll()
+                    for item in list {
+                        if item.uuidStr == peripheral.identifier.uuidString {
+                            connectEntity(newEntity)
+                            break
+                        }
+                    }
+                }
+            } else {
+                DevHistory.share.queryAll { [weak self] list in
+                    for item in list {
+                        if item.uuidStr == peripheral.identifier.uuidString {
+                            self?.connectEntity(newEntity)
+                            break
+                        }
                     }
                 }
             }
@@ -401,10 +471,12 @@ extension BleManager: CBCentralManagerDelegate {
         newEntity.mUUID = peripheral.identifier.uuidString
         newEntity.setBlePeripheral(peripheral)
         if peripheral.name != nil {
-            if devices.contains(where: { $0.mPeripheral.name == peripheral.name }) {
+            if devices.contains(where: { $0.mPeripheral?.name == peripheral.name }) {
             } else {
                 devices.append(newEntity)
             }
+        } else if SettingInfo.getAllowEmptyBleName() {
+            devices.append(newEntity)
         }
 
         if let connectUUID = connectUUID, connectUUID == peripheral.identifier.uuidString {
@@ -418,7 +490,11 @@ extension BleManager: CBCentralManagerDelegate {
                 if JL_BLEAction.otaBleMacAddress(pMac!, isEqualToCBAdvDataManufacturerData: blead) {
                     stopSearchBle()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: DispatchWorkItem(block: {
-                        self.centerManager.connect(peripheral, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+                        if #available(iOS 13.0, *) {
+                            self.centerManager.connect(peripheral, options: [CBConnectPeripheralOptionEnableTransportBridgingKey: true])
+                        } else {
+                            self.centerManager.connect(peripheral, options: nil)
+                        }
                         self.pMac = nil
                     }))
                 }
@@ -428,11 +504,14 @@ extension BleManager: CBCentralManagerDelegate {
     }
 
     func centralManager(_: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        JLLogManager.logLevel(.DEBUG, content: " GATT connect OK! \(peripheral.name ?? "unKnow")")
         peripheral.delegate = self
         peripheral.discoverServices(nil)
+        JLLogManager.logLevel(.DEBUG, content: "BleManager begin discover Services!")
     }
 
     func centralManager(_: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error _: Error?) {
+        JLLogManager.logLevel(.WARN, content: "[BleManager] didDisconnectPeripheral: \(peripheral.name ?? "unKnow")")
         if peripheral.identifier.uuidString == currentEntity?.mUUID {
             disConnectBlock?(peripheral.identifier.uuidString)
             disConnectBlock = nil
@@ -444,7 +523,8 @@ extension BleManager: CBCentralManagerDelegate {
         JL_Tools.post(kJL_BLE_M_ENTITY_DISCONNECTED, object: peripheral)
     }
 
-    func centralManager(_: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error _: Error?) {
+    func centralManager(_: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error err: Error?) {
+        JLLogManager.logLevel(.WARN, content: "[BleManager] didFailToConnect: \(peripheral.name ?? "unKnow") for error: \(err?.localizedDescription ?? "unKnow")")
         JL_Tools.post(kJL_CONNECT_FAILED, object: peripheral)
     }
 }
@@ -461,10 +541,15 @@ extension BleManager: CBPeripheralDelegate {
         discoverServices = []
         for service in peripheral.services! {
             peripheral.discoverCharacteristics(nil, for: service)
+            JLLogManager.logLevel(.DEBUG, content: "BleManager discover Services: \(service.uuid.uuidString)")
         }
+        JLLogManager.logLevel(.DEBUG, content: "BleManager begin discover Characteristics!")
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error _: Error?) {
+        for characteristic in service.characteristics ?? [] {
+            JLLogManager.logLevel(.DEBUG, content: "BleManager discover Characteristics: \(characteristic.uuid.uuidString)")
+        }
         assist.assistDiscoverCharacteristics(for: service, peripheral: peripheral)
         self.discoverServices.append(service)
     }
@@ -531,13 +616,34 @@ extension BleManager: CBPeripheralDelegate {
             TimerHelper.stopTimer(timerID: &self.connectTimeoutID)
             BleManager.shared.currentCmdMgr?.cmdGetSystemInfo(.COMMON) { _, _, _ in
             }
+            self.requestDeviceConfig()
         }
     }
 }
 
 extension BleManager: JL_AssistDelegate {
+    func assistDidWriteStreamData(_ data: Data) {
+        guard let write = assist.mRcspStreamWrite, let handleCbp = assist.mRcspPeripheral else { return }
+        guard handleCbp.state == .connected else {
+            JLLogManager.logLevel(.WARN, content: "[BleManager] assistDidWriteStreamData skipped, peripheral not connected")
+            return
+        }
+        let mtu = handleCbp.maximumWriteValueLength(for: .withoutResponse)
+        var offset = 0
+        while offset < data.count {
+            let seek = min(mtu, data.count - offset)
+            let chunk = data.subdata(in: offset..<offset+seek)
+            handleCbp.writeValue(chunk, for: write, type: .withoutResponse)
+            offset += seek
+        }
+    }
+    
     func assistDidWrite(_ data: Data) {
         guard let write = assist.mRcspWrite, let peripheral = assist.mRcspPeripheral else { return }
+        guard peripheral.state == .connected else {
+            JLLogManager.logLevel(.WARN, content: "[BleManager] assistDidWrite skipped, peripheral not connected")
+            return
+        }
         let mtu = peripheral.maximumWriteValueLength(for: .withoutResponse) - assist.mLimitMtu
         var offset = 0
         while offset < data.count {

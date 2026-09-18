@@ -1,0 +1,6 @@
+framework module JLVideoTool {
+  umbrella header "JLVideoTool.h"
+  export *
+
+  module * { export * }
+}

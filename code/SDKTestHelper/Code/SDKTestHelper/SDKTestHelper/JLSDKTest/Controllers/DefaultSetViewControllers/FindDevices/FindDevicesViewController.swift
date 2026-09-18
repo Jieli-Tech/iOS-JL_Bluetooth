@@ -42,7 +42,7 @@ class FindDevicesViewController: BaseViewController {
         navigationView.title = R.localStr.findDevice()
         navigationView.leftBtn.setTitle(R.localStr.back(), for: .normal)
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor.compatibleSystemBackground
         let stack = UIStackView(arrangedSubviews: [])
         stack.axis = .vertical
         stack.spacing = 16

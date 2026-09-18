@@ -14,10 +14,18 @@ class SpeechSigner {
     static let share = SpeechSigner()
     private static let baseUrl = "wss://translate.volces.com/api/translate/speech/v1/"
     private var accessKeyId: String {
-        KeyAuth.ByteDance.getAiAuth()?.accessKeyId ?? ""
+        if #available(iOS 13.0, *) {
+            return KeyAuth.ByteDance.getAiAuth()?.accessKeyId ?? ""
+        } else {
+            return ""
+        }
     }
     private var secretAccessKey: String {
-        KeyAuth.ByteDance.getAiAuth()?.secretAccessKey ?? ""
+        if #available(iOS 13.0, *) {
+            return KeyAuth.ByteDance.getAiAuth()?.secretAccessKey ?? ""
+        } else {
+            return ""
+        }
     }
     private static let api = "SpeechTranslate"
     private static let version = "2020-06-01"

@@ -29,7 +29,7 @@ class iNrfScanCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = UIColor.compatibleSystemBackground
         contentView.addSubview(iconView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(companyLabel)
@@ -42,37 +42,41 @@ class iNrfScanCell: UITableViewCell {
         iconView.contentMode = .scaleAspectFit
         
         nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        nameLabel.textColor = .label
+        nameLabel.textColor = UIColor.compatibleLabel
         
         companyLabel.font = .systemFont(ofSize: 12, weight: .bold)
-        companyLabel.textColor = .systemOrange
+        companyLabel.textColor = UIColor.compatibleSystemOrange
         
         subLabel.font = .systemFont(ofSize: 12)
-        subLabel.textColor = .secondaryLabel
+        subLabel.textColor = UIColor.compatibleSecondaryLabel
         subLabel.numberOfLines = 0
         
         rssiLabel.font = .systemFont(ofSize: 12, weight: .semibold)
-        rssiLabel.textColor = .systemBlue
+        rssiLabel.textColor = UIColor.compatibleSystemBlue
         
         expandBtn.setTitle("Broadcast Data: Show", for: .normal)
         expandBtn.setTitle("Broadcast Data: Hide", for: .selected)
         expandBtn.setTitleColor(.white, for: .normal)
-        expandBtn.setTitleColor(.systemBlue, for: .selected)
-        expandBtn.backgroundColor = .systemBlue
+        expandBtn.setTitleColor(UIColor.compatibleSystemBlue, for: .selected)
+        expandBtn.backgroundColor = UIColor.compatibleSystemBlue
         expandBtn.layer.cornerRadius = 8
         expandBtn.titleLabel?.font = .systemFont(ofSize: 12)
         expandBtn.contentHorizontalAlignment = .left
         expandBtn.addTarget(self, action: #selector(onExpandTapped), for: .touchUpInside)
         
-        broadcastLabel.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
-        broadcastLabel.textColor = .secondaryLabel
+        if #available(iOS 13.0, *) {
+            broadcastLabel.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
+        } else {
+            broadcastLabel.font = .systemFont(ofSize: 12)
+        }
+        broadcastLabel.textColor = UIColor.compatibleSecondaryLabel
         broadcastLabel.numberOfLines = 0
         broadcastLabel.isHidden = true
         
         
         connectBtn.setTitle("Connect", for: .normal)
         connectBtn.setTitleColor(.white, for: .normal)
-        connectBtn.backgroundColor = .systemBlue
+        connectBtn.backgroundColor = UIColor.compatibleSystemBlue
         connectBtn.layer.cornerRadius = 8
         connectBtn.layer.masksToBounds = true
         

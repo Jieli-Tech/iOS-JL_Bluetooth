@@ -34,6 +34,19 @@ enum TranslateLanguage: String {
             return "ja"
         }
     }
+
+    static func from(_ displayName: String) -> TranslateLanguage {
+        switch displayName {
+        case "中文":
+            return .zh
+        case "英文":
+            return .en
+        case "日文":
+            return .ja
+        default:
+            return .zh
+        }
+    }
 }
 
 class VolcesTranslateMgr: NSObject {

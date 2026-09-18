@@ -12,11 +12,6 @@ class FileTransportViewController: BaseViewController {
     let subFuncTable = UITableView()
     let itemsArray = BehaviorRelay<[String]>(value: [])
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
 
     override func initUI() {
         super.initUI()
@@ -45,14 +40,24 @@ class FileTransportViewController: BaseViewController {
         navigationView.leftBtn.rx.tap.subscribe { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
-        itemsArray.accept([R.localStr.file(),
-                           R.localStr.syncContacts(),
-                           R.localStr.watchDial(),
-                           R.localStr.smallFile(),
-                           R.localStr.fileBrowser(),
-                           R.localStr.gifToDevice(),
-                           R.localStr.convertImageToTheDevice(),
-                           R.localStr.sourcePackage()])
+        var items: [String] = [
+            R.localStr.file(),
+            R.localStr.syncContacts(),
+            R.localStr.watchDial(),
+            R.localStr.smallFile(),
+            R.localStr.fileBrowser(),
+            R.localStr.gifToDevice(),
+            R.localStr.convertImageToTheDevice(),
+            R.localStr.imageToJLJPEG(),
+            R.localStr.sourcePackage()
+        ]
+        if let uuid = BleManager.shared.currentCmdMgr?.mBLE_UUID {
+            let configModel = JLDeviceConfig.share().deviceGet(withUUID: uuid)
+            if configModel?.exportFunc.spStreamTransfer == true {
+                items.append(R.localStr.streamTransfer())
+            }
+        }
+        itemsArray.accept(items)
         subFuncTable.rx.itemSelected.subscribe { [weak self] index in
             guard let self = self else { return }
             switch index.element?.row {
@@ -87,7 +92,15 @@ class FileTransportViewController: BaseViewController {
                 vc.canNotPushBack = true
                 self.navigationController?.pushViewController(vc, animated: true)
             case 7:
+                let vc = Image2JLJpegVC()
+                vc.canNotPushBack = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            case 8:
                 let vc = ResPackageVC()
+                vc.canNotPushBack = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            case 9:
+                let vc = StreamModeSelectionViewController()
                 vc.canNotPushBack = true
                 self.navigationController?.pushViewController(vc, animated: true)
             default:

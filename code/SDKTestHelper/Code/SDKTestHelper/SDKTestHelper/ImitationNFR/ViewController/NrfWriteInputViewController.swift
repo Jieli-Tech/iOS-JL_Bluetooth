@@ -49,7 +49,7 @@ class NrfWriteInputViewController: UIViewController {
     }
     
     private func setupUI() {
-        container.backgroundColor = .systemBackground
+        container.backgroundColor = UIColor.compatibleSystemBackground
         container.layer.cornerRadius = 12
         container.clipsToBounds = true
         view.addSubview(container)
@@ -73,7 +73,11 @@ class NrfWriteInputViewController: UIViewController {
         
         textField.placeholder = "Please input data to write"
         textField.borderStyle = .roundedRect
-        textField.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
+        if #available(iOS 13.0, *) {
+            textField.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
+        } else {
+            textField.font = .systemFont(ofSize: 14)
+        }
         // 自动弹出键盘
         textField.becomeFirstResponder()
         container.addSubview(textField)
@@ -86,7 +90,7 @@ class NrfWriteInputViewController: UIViewController {
         
         typeLabel.text = "Data Type"
         typeLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        typeLabel.textColor = .secondaryLabel
+        typeLabel.textColor = UIColor.compatibleSecondaryLabel
         container.addSubview(typeLabel)
         
         typeLabel.snp.makeConstraints { make in
@@ -104,7 +108,7 @@ class NrfWriteInputViewController: UIViewController {
         
         writeTypeLabel.text = "Write Type"
         writeTypeLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        writeTypeLabel.textColor = .secondaryLabel
+        writeTypeLabel.textColor = UIColor.compatibleSecondaryLabel
         container.addSubview(writeTypeLabel)
         
         writeTypeLabel.snp.makeConstraints { make in
@@ -134,12 +138,12 @@ class NrfWriteInputViewController: UIViewController {
         }
         
         cancelBtn.setTitle("Cancel", for: .normal)
-        cancelBtn.backgroundColor = .systemGray5
+        cancelBtn.backgroundColor = UIColor.compatibleSystemGray
         cancelBtn.layer.cornerRadius = 8
-        cancelBtn.setTitleColor(.label, for: .normal)
+        cancelBtn.setTitleColor(UIColor.compatibleLabel, for: .normal)
         
         confirmBtn.setTitle("Write", for: .normal)
-        confirmBtn.backgroundColor = .systemBlue
+        confirmBtn.backgroundColor = UIColor.compatibleSystemBlue
         confirmBtn.layer.cornerRadius = 8
         confirmBtn.setTitleColor(.white, for: .normal)
     }

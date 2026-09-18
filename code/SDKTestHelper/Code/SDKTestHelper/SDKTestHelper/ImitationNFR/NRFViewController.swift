@@ -32,7 +32,7 @@ class NRFViewController: BaseViewController {
         
         filterBtn.setTitle("Filter", for: .normal)
         filterBtn.setTitleColor(.white, for: .normal)
-        filterBtn.backgroundColor = .systemTeal
+        filterBtn.backgroundColor = UIColor.compatibleSystemTeal
         filterBtn.layer.cornerRadius = 8
         view.addSubview(filterBtn)
         

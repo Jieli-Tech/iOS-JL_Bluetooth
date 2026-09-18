@@ -6,15 +6,15 @@
 	<dict>
 		<key>Headers/JLBmpConvert.h</key>
 		<data>
-		3ePH4R9kAf1G5PpN0m76txTvNu0=
+		S3bJ4oWbePblSBiO5xQusiv+MyE=
 		</data>
 		<key>Headers/JLBmpConvertKit.h</key>
 		<data>
-		rJo680NKOdjmobcOdHzU3oQ05lQ=
+		Y5iiZ54wjO1d+dkEUVgnOYbqx8M=
 		</data>
 		<key>Headers/JLBmpConvertOption.h</key>
 		<data>
-		bPMnU/cb1ZNEvx+6wLH+tNggsWM=
+		8AkIYrQIJcW/kSxfPbKOWa3JxCo=
 		</data>
 		<key>Headers/JLGifBin.h</key>
 		<data>
@@ -24,13 +24,33 @@
 		<data>
 		oTrRd0HS6yuPr1JxLpx1Qgr6sKw=
 		</data>
+		<key>Headers/JLJPEGConvert.h</key>
+		<data>
+		OU2xeJsBI1PUyC2TpoPtq2/hhuk=
+		</data>
+		<key>Headers/JLJPEGConvertOption.h</key>
+		<data>
+		w3mUYsWyASE9REHMb69esimLHlo=
+		</data>
+		<key>Headers/JLJPEGConvertResult.h</key>
+		<data>
+		/tjUpg/LdJ/p/wkD1S5Shx4oVYk=
+		</data>
+		<key>Headers/JLJPEGConvertTypes.h</key>
+		<data>
+		FJUSnnQ8+Ri7Flk/MPyP7BdGn3s=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		6v9VY7yVTv08nHqIeQxQHgEGqic=
+		5pyxvZ1qUYiAYrxvrMBHfQpgPtw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		VG59AHi+XKWb6IYCdGbZKHPgBbA=
+		</data>
+		<key>PrivacyInfo.xcprivacy</key>
+		<data>
+		ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -39,33 +59,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3ePH4R9kAf1G5PpN0m76txTvNu0=
+			S3bJ4oWbePblSBiO5xQusiv+MyE=
 			</data>
 			<key>hash2</key>
 			<data>
-			5MZQX2d9qm6moSk3xJ2Vi9JTd2se0QwEcH31sJKpAYI=
+			ToWYN3secjWi64AacMqeMVLCVlR9sWL3cZj2L7tTvsI=
 			</data>
 		</dict>
 		<key>Headers/JLBmpConvertKit.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			rJo680NKOdjmobcOdHzU3oQ05lQ=
+			Y5iiZ54wjO1d+dkEUVgnOYbqx8M=
 			</data>
 			<key>hash2</key>
 			<data>
-			9kChXiw3D4JFaLjgBlaq+/2FazTsVCbA3kfmrYQ+9/A=
+			bEP/RpYORBOElkX4ihW8FTuCvYy4UFR6r4mNL3k69Ak=
 			</data>
 		</dict>
 		<key>Headers/JLBmpConvertOption.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			bPMnU/cb1ZNEvx+6wLH+tNggsWM=
+			8AkIYrQIJcW/kSxfPbKOWa3JxCo=
 			</data>
 			<key>hash2</key>
 			<data>
-			4rgpTV2uvjOrNb0Bx7HOxoqBCtJjHaA7CcNBjIImXzY=
+			EITMSEp3lwi/qLy40fmCMTPwma0hPdn7XL2eNqTp/F0=
 			</data>
 		</dict>
 		<key>Headers/JLGifBin.h</key>
@@ -90,6 +110,50 @@
 			vacF3oh76vh4n8lafP3hAi/fYXjU4YoqA6CbjC05MYw=
 			</data>
 		</dict>
+		<key>Headers/JLJPEGConvert.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			OU2xeJsBI1PUyC2TpoPtq2/hhuk=
+			</data>
+			<key>hash2</key>
+			<data>
+			e4FXJ3gaGsYGrqHI3HWsH/2J9GMAOkYiqFwWEBM0Ayg=
+			</data>
+		</dict>
+		<key>Headers/JLJPEGConvertOption.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			w3mUYsWyASE9REHMb69esimLHlo=
+			</data>
+			<key>hash2</key>
+			<data>
+			nU8bhxUto5XQi4+FEH7fzKfqV6W7LN6+vv01jkVx0Zg=
+			</data>
+		</dict>
+		<key>Headers/JLJPEGConvertResult.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			/tjUpg/LdJ/p/wkD1S5Shx4oVYk=
+			</data>
+			<key>hash2</key>
+			<data>
+			N5BOpwRhdLd5YjpMKFZQvJMYTJHXFi9YAyl6r0uln6k=
+			</data>
+		</dict>
+		<key>Headers/JLJPEGConvertTypes.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FJUSnnQ8+Ri7Flk/MPyP7BdGn3s=
+			</data>
+			<key>hash2</key>
+			<data>
+			ofmc35aVNIrWhqAK8btfZ9ogR01awwSjezREjfXBTXA=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
@@ -99,6 +163,17 @@
 			<key>hash2</key>
 			<data>
 			nU2jpsOghgGuDPwpIFZ+hGnZ5Xj24fG1pjw1H8vpwEs=
+			</data>
+		</dict>
+		<key>PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
+			</data>
+			<key>hash2</key>
+			<data>
+			FiyglQKXEwJ9zfy9GDSopTTlVUHn85pk7JAKKd2aNj0=
 			</data>
 		</dict>
 	</dict>

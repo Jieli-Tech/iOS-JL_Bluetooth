@@ -33,13 +33,25 @@ class VolcesTTSMgr: NSObject {
     var isConnected = false
     var translateText: [String] = []
     private var appid:String {
-        KeyAuth.ByteDance.getAiAuth()?.appid ?? ""
+        if #available(iOS 13.0, *) {
+            return KeyAuth.ByteDance.getAiAuth()?.appid ?? ""
+        } else {
+            return ""
+        }
     }
     private var accessToken: String {
-        KeyAuth.ByteDance.getAiAuth()?.accessToken ?? ""
+        if #available(iOS 13.0, *) {
+            return KeyAuth.ByteDance.getAiAuth()?.accessToken ?? ""
+        } else {
+            return ""
+        }
     }
     private var secretKey: String {
-        KeyAuth.ByteDance.getAiAuth()?.secretKey ?? ""
+        if #available(iOS 13.0, *) {
+            return KeyAuth.ByteDance.getAiAuth()?.secretKey ?? ""
+        } else {
+            return ""
+        }
     }
     private let wssUrl = "wss://openspeech.bytedance.com/api/v1/tts/ws_binary"
     private var socket: Starscream.WebSocket?
@@ -91,7 +103,12 @@ class VolcesTTSMgr: NSObject {
         targetDict.updateValue(audioDict, forKey: "audio")
         let requestDict = ["reqid": NSUUID().uuidString, "text": text, "operation": "submit"]
         targetDict.updateValue(requestDict, forKey: "request")
-        let targetData = try! JSONSerialization.data(withJSONObject: targetDict, options: .withoutEscapingSlashes)
+        let targetData: Data
+        if #available(iOS 13.0, *) {
+            targetData = try! JSONSerialization.data(withJSONObject: targetDict, options: .withoutEscapingSlashes)
+        } else {
+            targetData = try! JSONSerialization.data(withJSONObject: targetDict, options: [])
+        }
         let jsonStr = String(data: targetData, encoding: .utf8)!
         let data = TTsDataSource().jsonToData(json: jsonStr)
         return data

@@ -19,42 +19,45 @@ class NrfCharacteristicCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = UIColor.compatibleSystemBackground
 
         titleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        titleLabel.textColor = .label
+        titleLabel.textColor = UIColor.compatibleLabel
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
 
         propLabel.font = .systemFont(ofSize: 12)
-        propLabel.textColor = .secondaryLabel
+        propLabel.textColor = UIColor.compatibleSecondaryLabel
         propLabel.numberOfLines = 0
         contentView.addSubview(propLabel)
 
         readBtn.setTitle("Read", for: .normal)
         readBtn.setTitleColor(.white, for: .normal)
-        readBtn.backgroundColor = .systemIndigo
+        readBtn.backgroundColor = UIColor.compatibleSystemIndigo
         readBtn.layer.cornerRadius = 6
         readBtn.addTarget(self, action: #selector(onRead), for: .touchUpInside)
         contentView.addSubview(readBtn)
 
         writeBtn.setTitle("Write", for: .normal)
         writeBtn.setTitleColor(.white, for: .normal)
-        writeBtn.backgroundColor = .systemBlue
+        writeBtn.backgroundColor = UIColor.compatibleSystemBlue
         writeBtn.layer.cornerRadius = 6
         writeBtn.addTarget(self, action: #selector(onWrite), for: .touchUpInside)
         contentView.addSubview(writeBtn)
 
         notifyBtn.setTitle("Subscribe", for: .normal)
         notifyBtn.setTitleColor(.white, for: .normal)
-        notifyBtn.backgroundColor = .systemTeal
+        notifyBtn.backgroundColor = UIColor.compatibleSystemTeal
         notifyBtn.layer.cornerRadius = 6
         notifyBtn.addTarget(self, action: #selector(onNotify), for: .touchUpInside)
         contentView.addSubview(notifyBtn)
 
-
-        valueLabel.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
-        valueLabel.textColor = .label
+        if #available(iOS 13.0, *) {
+            valueLabel.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
+        } else {
+            valueLabel.font = .systemFont(ofSize: 12)
+        }
+        valueLabel.textColor = UIColor.compatibleLabel
         valueLabel.numberOfLines = 0
         contentView.addSubview(valueLabel)
         layoutUI()

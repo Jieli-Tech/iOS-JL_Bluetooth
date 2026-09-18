@@ -105,6 +105,18 @@ typedef void(^JLBmpCovertCallBack2)(NSData *__nullable outFileData,NSError *__nu
 /// - Returns: 缩放后的图片
 +(NSData *)resizeImage:(UIImage*)image andResizeTo:(CGSize)newSize;
 
+
+
+/// 图片转换
+/// - Parameters:
+///   - option: 转换类型
+///   - width: bmap 的宽
+///   - height: bmap 的高
+///   - path: bmap 的存放路径
++ (JLImageConvertResult *)convertWithOption:(JLBmpConvertOption *)option
+                                            width:(int)width
+                                           height:(int)height bmapPath:(NSString *)path;
+
 #elif TARGET_OS_OSX
 /// 图片转换
 /// - Parameters:

@@ -48,6 +48,7 @@ class DefaultSetViewController: BaseViewController {
         itemsArray.accept([R.localStr.weatherTest(),
                            R.localStr.voiceTransmissionDecoding(),
                            R.localStr.eqSetting(),
+                           R.localStr.volumeSet(),
                            R.localStr.promptTonePacking(),
                            R.localStr.aiInfoHelper(),
                            R.localStr.dialInfoExtentedGet(),
@@ -67,12 +68,14 @@ class DefaultSetViewController: BaseViewController {
             case 2:
                 self.navigationController?.pushViewController(EQSettingViewController(), animated: true)
             case 3:
+                self.navigationController?.pushViewController(VolumeSetViewController(), animated: true)
+            case 4:
                 let vc = CreateVoicesViewController()
                 vc.canNotPushBack = true
                 self.navigationController?.pushViewController(vc, animated: true)
-            case 4:
-                self.navigationController?.pushViewController(AIInfoHelperViewController(), animated: true)
             case 5:
+                self.navigationController?.pushViewController(AIInfoHelperViewController(), animated: true)
+            case 6:
                 guard let currentCmd = BleManager.shared.currentCmdMgr else {
                     ECPrintError("current cmd manager is nil ,please connect first!", self, "\(#function)", #line)
                     return
@@ -90,15 +93,15 @@ class DefaultSetViewController: BaseViewController {
                         }
                     }
                 }
-            case 6:
-                self.navigationController?.pushViewController(AlarmViewController(), animated: true)
             case 7:
-                self.navigationController?.pushViewController(TranslateViewController(), animated: true)
+                self.navigationController?.pushViewController(AlarmViewController(), animated: true)
             case 8:
-                self.navigationController?.pushViewController(TwsInfoViewController(), animated: true)
+                self.navigationController?.pushViewController(TranslateViewController(), animated: true)
             case 9:
+                self.navigationController?.pushViewController(TwsInfoViewController(), animated: true)
+            case 11:
                 self.navigationController?.pushViewController(FindDevicesViewController(), animated: true)
-            case 10:
+            case 12:
                 self.navigationController?.pushViewController(AuracastViewController(), animated: true)
             default:
                 break

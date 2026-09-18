@@ -146,17 +146,18 @@ class ResPackageViewModel {
             for fileUrl in convertedFiles {
                 let info = JLPackageBaseInfo()
                 info.fileName = fileUrl.lastPathComponent
+                info.nickName = fileUrl.lastPathComponent
                 info.contentData = try! Data(contentsOf: fileUrl)
                 packageInfos.append(info)
             }
             
-            let packageData = JLPackageSourceMgr.makePks(packageInfos)
+            let packageData = JLPackageSourceMgr.makePks(packageInfos, packetName: "res")
             
             let timestamp = Int(Date().timeIntervalSince1970)
             let packageUrl = self.getPackagesDirectory().appendingPathComponent("\(timestamp).package")
             
             do {
-                try packageData.write(to: packageUrl)
+                try packageData?.write(to: packageUrl)
                 DispatchQueue.main.async {
                     self.packageFileUrl.accept(packageUrl)
                     self.startTransfer(packageUrl: packageUrl)

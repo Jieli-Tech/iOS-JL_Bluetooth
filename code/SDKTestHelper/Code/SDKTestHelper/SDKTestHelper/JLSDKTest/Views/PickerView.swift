@@ -24,7 +24,7 @@ class PickerView: UIView {
         didSet { updateColumnTitles() }
     }
     public private(set) var selectedIndexes: [Int] = []
-    public var confirmButtonConfig: (title: String, color: UIColor) = (R.localStr.oK(), .systemBlue) {
+    public var confirmButtonConfig: (title: String, color: UIColor) = (R.localStr.oK(), UIColor.compatibleSystemBlue) {
         didSet { updateConfirmButton() }
     }
     public var showsSelectionLabel: Bool = true {
@@ -60,7 +60,7 @@ class PickerView: UIView {
 
     // MARK: - UI Setup
     private func setupUI() {
-        backgroundColor = .systemBackground
+        backgroundColor = UIColor.compatibleSystemBackground
         setupPickerView()
         setupConfirmButton()
         setupSelectionLabel()
@@ -91,7 +91,7 @@ class PickerView: UIView {
         
         confirmButton.setTitle(R.localStr.oK(), for: .normal)
         confirmButton.setTitleColor(.white, for: .normal)
-        confirmButton.backgroundColor = .systemBlue
+        confirmButton.backgroundColor = UIColor.compatibleSystemBlue
         confirmButton.layer.cornerRadius = 8
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
     }
@@ -111,13 +111,13 @@ class PickerView: UIView {
 
     private func setupMagnifier() {
         let magnifier = UILabel()
-        magnifier.backgroundColor = UIColor.systemBackground
+        magnifier.backgroundColor = UIColor.compatibleSystemBackground
         magnifier.textAlignment = .center
         magnifier.font = UIFont.boldSystemFont(ofSize: 18)
         magnifier.layer.cornerRadius = 8
         magnifier.layer.masksToBounds = true
         magnifier.layer.borderWidth = 1
-        magnifier.layer.borderColor = UIColor.systemGray.cgColor
+        magnifier.layer.borderColor = UIColor.compatibleSystemGray.cgColor
         magnifier.alpha = 0
         addSubview(magnifier)
         magnifierView = magnifier
@@ -132,7 +132,7 @@ class PickerView: UIView {
 
     private func setupScrollIndicator() {
         let indicator = UIView()
-        indicator.backgroundColor = UIColor.systemGray.withAlphaComponent(0.5)
+        indicator.backgroundColor = UIColor.compatibleSystemGray.withAlphaComponent(0.5)
         indicator.layer.cornerRadius = 2
         pickerView.addSubview(indicator)
         scrollIndicator = indicator

@@ -88,7 +88,11 @@ class JLAudioRecoder {
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine?.stop()
         isRecording = false
-        try? fileHandle?.close()
+        if #available(iOS 13.0, *) {
+            try? fileHandle?.close()
+        } else {
+            fileHandle?.closeFile()
+        }
         fileHandle = nil
     }
     

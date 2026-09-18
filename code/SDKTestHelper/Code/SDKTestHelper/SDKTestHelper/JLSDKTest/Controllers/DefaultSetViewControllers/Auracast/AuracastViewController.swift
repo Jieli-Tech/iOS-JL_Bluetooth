@@ -31,8 +31,14 @@ class AuracastViewController: BaseViewController {
     private let loginStateLabel = UILabel()
 
     private let searchButton = UIButton(type: .system)
-    private let searchActivity = UIActivityIndicatorView(style: .medium)
-
+    private let searchActivity: UIActivityIndicatorView = {
+        if #available(iOS 13.0, *) {
+            return UIActivityIndicatorView(style: .medium)
+        } else {
+            return UIActivityIndicatorView(style: .gray)
+        }
+    }()
+    
     private let tableView = UITableView()
     private let refreshControl = UIRefreshControl()
     private var allBroadcasts: [JLBroadcastDataModel] = []
@@ -48,7 +54,13 @@ class AuracastViewController: BaseViewController {
     private let loginStack = UIStackView()
     private let passwordField = UITextField()
     private let loginButton = UIButton(type: .system)
-    private let loginLoading = UIActivityIndicatorView(style: .medium)
+    private let loginLoading: UIActivityIndicatorView = {
+        if #available(iOS 13.0, *) {
+            return UIActivityIndicatorView(style: .medium)
+        } else {
+            return UIActivityIndicatorView(style: .gray)
+        }
+    }()
     private let loginStatusLabel = UILabel()
 
     private let changePwdStack = UIStackView()
@@ -100,7 +112,7 @@ class AuracastViewController: BaseViewController {
         }
 
         emptyStateLabel.textAlignment = .center
-        emptyStateLabel.textColor = .secondaryLabel
+        emptyStateLabel.textColor = UIColor.compatibleSecondaryLabel
         emptyStateLabel.text = R.localStr.deviceNotSupport()
 
         setupReceiverUI()
@@ -174,7 +186,7 @@ class AuracastViewController: BaseViewController {
         passwordField.placeholder = R.localStr.inputPassword()
         loginButton.setTitle(R.localStr.login(), for: .normal)
         loginLoading.hidesWhenStopped = true
-        loginStatusLabel.textColor = .secondaryLabel
+        loginStatusLabel.textColor = UIColor.compatibleSecondaryLabel
         loginStack.addArrangedSubview(passwordField)
         loginStack.addArrangedSubview(loginButton)
         loginStack.addArrangedSubview(loginLoading)
@@ -190,7 +202,7 @@ class AuracastViewController: BaseViewController {
         newPwdField.borderStyle = .roundedRect
         newPwdField.placeholder = R.localStr.newPassword()
         changePwdButton.setTitle(R.localStr.changePassword(), for: .normal)
-        changePwdStatusLabel.textColor = .secondaryLabel
+        changePwdStatusLabel.textColor = UIColor.compatibleSecondaryLabel
         changePwdStack.addArrangedSubview(oldPwdField)
         changePwdStack.addArrangedSubview(newPwdField)
         changePwdStack.addArrangedSubview(changePwdButton)
@@ -598,8 +610,8 @@ extension AuracastViewController: UITableViewDataSource, UITableViewDelegate {
         let container = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 24))
         var x: CGFloat = 0
         if showLock {
-            let iv = UIImageView(image: UIImage(systemName: "lock.fill"))
-            iv.tintColor = .systemRed
+            let iv = UIImageView(image: UIImage(named: "lock") ?? UIImage())
+            iv.tintColor = UIColor.compatibleSystemRed
             iv.contentMode = .scaleAspectFit
             iv.frame = CGRect(x: x, y: 2, width: 20, height: 20)
             container.addSubview(iv)
@@ -609,10 +621,10 @@ extension AuracastViewController: UITableViewDataSource, UITableViewDelegate {
             let btn = UIButton(type: .system)
             btn.setTitle(R.localStr.remove(), for: .normal)
             btn.titleLabel?.font = .systemFont(ofSize: 13)
-            btn.setTitleColor(.systemRed, for: .normal)
+            btn.setTitleColor(UIColor.compatibleSystemRed, for: .normal)
             btn.frame = CGRect(x: x, y: 0, width: 64, height: 24)
             btn.layer.cornerRadius = 4
-            btn.layer.borderColor = UIColor.systemRed.cgColor
+            btn.layer.borderColor = UIColor.compatibleSystemRed.cgColor
             btn.layer.borderWidth = 1
             btn.tag = row
             btn.addTarget(self, action: #selector(onRemoveTapped(_:)), for: .touchUpInside)

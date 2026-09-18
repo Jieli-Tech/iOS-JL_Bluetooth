@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JLModel_SPEEX.h"
+#import <JL_BLEKit/JLModel_SPEEX.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +28,9 @@ typedef NS_ENUM(NSUInteger, JLTranslateSetModeType) {
     /// 通话翻译立体声模式
     JLTranslateSetModeTypeCallTranslateStereo = 0x06,
     /// 通话录音模式
-    JLTranslateSetModeTypeCallRecord = 0x07
+    JLTranslateSetModeTypeCallRecord = 0x07,
+    /// 同声翻译模式
+    JLTranslateSetModeTypeSimultaneous = 0x08
 };
 
 /// 录音策略

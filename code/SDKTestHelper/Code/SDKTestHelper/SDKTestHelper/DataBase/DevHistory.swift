@@ -109,6 +109,7 @@ class DevHistory: NSObject {
         }
     }
 
+    @available(iOS 13.0, *)
     func queryAll() async -> [DevHistoryModel] {
         var result = [DevHistoryModel]()
         return await withCheckedContinuation { continuation in
@@ -127,6 +128,26 @@ class DevHistory: NSObject {
                     continuation.resume(returning: result)
                 }
             }
+        }
+    }
+    
+    /// iOS 12.0 兼容的查询方法
+    func queryAll(completion: @escaping ([DevHistoryModel]) -> Void) {
+        var result = [DevHistoryModel]()
+        databaseQueue?.inDatabase { database in
+            let querySQL = "select * from devHistory"
+            if let queryResult = database.executeQuery(querySQL, withArgumentsIn: []) {
+                while queryResult.next() {
+                    let model = DevHistoryModel()
+                    model.name = queryResult.string(forColumn: "name") ?? "unKnow"
+                    model.uuidStr = queryResult.string(forColumn: "uuidStr") ?? "unKnow"
+                    model.advData = queryResult.data(forColumn: "advData")
+                    model.isAttDev = queryResult.bool(forColumn: "isAttDev")
+                    result.append(model)
+                    JLLogManager.logLevel(.DEBUG, content: "name:\(model.name), uuidStr:\(model.uuidStr), advData:\(model.advData?.eHex ?? ""), isAttDev:\(model.isAttDev)")
+                }
+            }
+            completion(result)
         }
     }
 }

@@ -44,6 +44,7 @@ extension _R {
         try? FileManager.default.createDirectory(atPath: _R.path.opusPath, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.createDirectory(atPath: _R.path.image2Bin, withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.createDirectory(atPath: _R.path.jlaV2Path, withIntermediateDirectories: true, attributes: nil)
+        try? FileManager.default.createDirectory(atPath: _R.path.image2JLJpeg, withIntermediateDirectories: true, attributes: nil)
     }
     
     enum path {
@@ -61,6 +62,7 @@ extension _R {
         static let pcmPath = path.document + "/pcmPath"
         static let opusPath = path.document + "/opusPath"
         static let jlaV2Path = path.document + "/jlaV2Path"
+        static let image2JLJpeg = path.document + "/Image2JLJpeg"
     }
     
     static func sizeForFilePath(_ filePath: String) -> UInt64 {
@@ -107,7 +109,11 @@ extension _R {
             let fileHandle = try FileHandle(forWritingTo: fileURL)
             fileHandle.seekToEndOfFile()
             fileHandle.write(data)
-            try fileHandle.close()
+            if #available(iOS 13.0, *) {
+                try fileHandle.close()
+            } else {
+                fileHandle.closeFile()
+            }
         } catch {
             
             JLLogManager.logLevel(.ERROR, content: "append data to filepath failed:\(error)")

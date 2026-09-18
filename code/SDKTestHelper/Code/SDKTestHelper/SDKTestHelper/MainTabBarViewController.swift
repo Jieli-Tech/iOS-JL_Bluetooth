@@ -19,27 +19,35 @@ class MainTabBarViewController: UITabBarController {
     
     private func setupTabs() {
         let mainVC = MainViewController()
-        mainVC.tabBarItem = UITabBarItem(title: "SDK", image: UIImage(systemName: "list.bullet"), tag: 0)
         let mainNavc = NavViewController(rootViewController: mainVC)
         mainNavc.setNavigationBarHidden(true, animated: false)
 
         let nrfVC = NRFViewController()
-        nrfVC.tabBarItem = UITabBarItem(title: "iNRf", image: UIImage(systemName: "antenna.radiowaves.left.and.right"), tag: 1)
         let nrfNavc = NavViewController(rootViewController: nrfVC)
         nrfNavc.setNavigationBarHidden(true, animated: false)
+        
+        if #available(iOS 13.0, *) {
+            mainVC.tabBarItem = UITabBarItem(title: "SDK", image: UIImage(systemName: "list.bullet"), tag: 0)
+            nrfVC.tabBarItem = UITabBarItem(title: "iNRf", image: UIImage(systemName: "antenna.radiowaves.left.and.right"), tag: 1)
+        } else {
+            mainVC.tabBarItem = UITabBarItem(title: "SDK", image: nil, tag: 0)
+            nrfVC.tabBarItem = UITabBarItem(title: "iNRf", image: nil, tag: 1)
+        }
         viewControllers = [mainNavc, nrfNavc]
     }
 
     private func configureTabBarAppearance() {
-        let appearance = UITabBarAppearance()
-        let normalTitleAttr: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkGray]
-        let selectedTitleAttr: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.systemBlue]
-        appearance.stackedLayoutAppearance.normal.iconColor = .darkGray
-        appearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
-        appearance.stackedLayoutAppearance.normal.titleTextAttributes = normalTitleAttr
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = selectedTitleAttr
-        tabBar.standardAppearance = appearance
-        tabBar.tintColor = .systemBlue
+        if #available(iOS 13.0, *) {
+            let appearance = UITabBarAppearance()
+            let normalTitleAttr: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkGray]
+            let selectedTitleAttr: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.compatibleSystemBlue]
+            appearance.stackedLayoutAppearance.normal.iconColor = .darkGray
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor.compatibleSystemBlue
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = normalTitleAttr
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = selectedTitleAttr
+            tabBar.standardAppearance = appearance
+        }
+        tabBar.tintColor = UIColor.compatibleSystemBlue
         tabBar.unselectedItemTintColor = .darkGray
     }
 

@@ -41,7 +41,8 @@ class SettingInfo {
     }
 
     class func getAuthEnable() -> Bool {
-        let state = UserDefaults.standard.bool(forKey: "pairEnable")
+        let state =  UserDefaults.standard.value(forKey: "pairEnable") as? Bool ?? true
+        saveAuthEnable(state)
         return state
     }
 
@@ -142,6 +143,26 @@ class SettingInfo {
     class func getKeyConfig() ->  String {
         let keyConfig = UserDefaults.standard.string(forKey: "keyConfig") ?? ""
         return keyConfig
+    }
+    
+    class func saveAllowEmptyBleName(_ status: Bool) {
+        UserDefaults.standard.set(status, forKey: "allowEmptyBleName")
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getAllowEmptyBleName() -> Bool {
+        return UserDefaults.standard.bool(forKey: "allowEmptyBleName")
+    }
+    
+    class func saveEnableHash(_ status: Bool) {
+        UserDefaults.standard.set(status, forKey: "enableHash")
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getEnableHash() -> Bool {
+        let state = UserDefaults.standard.value(forKey: "enableHash") as? Bool ?? true
+        saveEnableHash(state)
+        return state
     }
     
 }

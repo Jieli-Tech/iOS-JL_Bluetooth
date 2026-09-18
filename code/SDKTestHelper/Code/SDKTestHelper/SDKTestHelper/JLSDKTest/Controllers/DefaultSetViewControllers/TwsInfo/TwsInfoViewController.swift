@@ -14,8 +14,8 @@ class TwsInfoViewController: BaseViewController {
     let tableView = UITableView()
     let itemsArray = BehaviorRelay(value: [FuncCodeMode]())
     private var isOpenNotify = false
-    private var isNotifyAncChange = false
-    private var ancObc: NSKeyValueObservation?
+    private var isNotifyAncChange = true
+    private var ancObcs: [NSKeyValueObservation] = []
 
     override func initUI() {
         super.initUI()
@@ -100,9 +100,9 @@ class TwsInfoViewController: BaseViewController {
         
         let twsKeyFunction = FuncCodeMode()
         twsKeyFunction.title = R.localStr.headphoneButtonFunctions()
-        
 
         itemsArray.accept([getTwsInfo, anc, gameMode, openCloseNotify, notifyAncChange, rename, twsKeyFunction])
+        startAncMonitoring()
     }
 
     func handleAction(_ index: Int) {
@@ -139,11 +139,12 @@ class TwsInfoViewController: BaseViewController {
 
     private func ancSet() {
         guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
-        // 从设备端读取到当前的 ANC 模式
-        let modeInfo = mManager.getDeviceModel()
-        let currentAncMode = modeInfo.mAncModeCurrent
-        // 读取 tws 对象
+        // 读取当前的 ANC 模式（推荐从 mTwsManager 读取，也可从 getDeviceModel().mAncModeCurrent 读取）
         let twsMgr = mManager.mTwsManager
+        guard let currentAncMode = twsMgr.mAncModeCurrent else {
+            view.makeToast("尚未获取到 ANC 模式")
+            return
+        }
         if !twsMgr.supports.isSupportAnc {
             view.makeToast("设备不支持 ANC 模式")
             return
@@ -206,17 +207,40 @@ class TwsInfoViewController: BaseViewController {
         JLLogManager.logLevel(.DEBUG, content: "advInfo: \(advInfo)")
     }
 
+    /// 演示 ANC 模式变化的两种监听方式
+    /// - 方式一（推荐）：KVO 监听 `mTwsManager.mAncModeCurrent`（支持 delegate 通知）
+    /// - 方式二（兼容）：KVO 监听 `getDeviceModel().mAncModeCurrent`（原有接口，仍可用）
     private func notifyAncChange() {
         isNotifyAncChange.toggle()
         guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
-        let deviceModel = mManager.getDeviceModel()
         if isNotifyAncChange {
-            ancObc = deviceModel.observe(\.mAncModeCurrent) { deviceModel, change in
-                JLLogManager.logLevel(.DEBUG, content: "mAncModeCurrent: \(deviceModel.mAncModeCurrent.logProperties())")
-            }
+            startAncMonitoring()
+            JLLogManager.logLevel(.DEBUG, content: "[TwsManager] ANC notify ON")
         } else {
-            ancObc?.invalidate()
+            JLLogManager.logLevel(.DEBUG, content: "[TwsManager] ANC notify OFF")
+            stopAncMonitoring()
         }
+    }
+
+    /// 启动 ANC 模式变化的两种监听方式（进入页面默认开启）
+    private func startAncMonitoring() {
+        guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
+        // 方式一（推荐）：通过 TwsManager 监听（支持 KVO + Delegate + NSNotification 三种方式）
+        let twsMgr = mManager.mTwsManager
+        ancObcs.append(twsMgr.observe(\.mAncModeCurrent) { twsMgr, change in
+            JLLogManager.logLevel(.DEBUG, content: "[TwsManager] ANC: \(twsMgr.mAncModeCurrent?.logProperties())")
+        })
+        // 方式二（兼容）：通过 DeviceModel 监听（原有接口，保留向后兼容）
+        let deviceModel = mManager.getDeviceModel()
+        ancObcs.append(deviceModel.observe(\.mAncModeCurrent) { deviceModel, change in
+            JLLogManager.logLevel(.DEBUG, content: "[DeviceModel] ANC: \(deviceModel.mAncModeCurrent.logProperties())")
+        })
+    }
+
+    /// 停止所有 ANC 监听
+    private func stopAncMonitoring() {
+        ancObcs.forEach { $0.invalidate() }
+        ancObcs.removeAll()
     }
     
     // 设置高低音

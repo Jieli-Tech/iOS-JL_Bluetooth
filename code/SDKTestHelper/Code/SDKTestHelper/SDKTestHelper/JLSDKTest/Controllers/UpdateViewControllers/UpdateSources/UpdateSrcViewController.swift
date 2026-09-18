@@ -86,7 +86,7 @@ class UpdateSrcViewController: BaseViewController {
         
         // Configure progress view
         progressView.progress = 0.0
-        progressView.progressTintColor = .systemBlue
+        progressView.progressTintColor = UIColor.compatibleSystemBlue
         progressView.trackTintColor = .lightGray
         
         fileListView.isHidden = true

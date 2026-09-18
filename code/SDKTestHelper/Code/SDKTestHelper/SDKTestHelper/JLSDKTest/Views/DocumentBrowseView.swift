@@ -34,7 +34,7 @@ class DocumentBrowserView: BaseView, UITableViewDelegate, UITableViewDataSource 
         navBar.addSubview(backButton)
         navBar.addSubview(titleLabel)
 
-        navBar.backgroundColor = .systemGray6
+        navBar.backgroundColor = UIColor.compatibleSystemGray6
         navBar.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.height.equalTo(44)

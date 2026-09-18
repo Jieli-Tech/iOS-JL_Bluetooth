@@ -40,6 +40,11 @@ class VolcesBusManager: NSObject {
     var isTTSing: PublishRelay<Bool> = PublishRelay()
     var isSendSoon: Bool = true // 识别后语音后立即翻译成 tts 下发
 
+    /// 输入音频字节数统计（编码数据 / PCM 数据，按本实例一侧）
+    var statsInputBytes: BehaviorRelay<Int> = BehaviorRelay(value: 0)
+    /// 输入音频包数统计
+    var statsInputPackets: BehaviorRelay<Int> = BehaviorRelay(value: 0)
+
 
     init(_ languageType: JL_SpeakDataType, _ toLanguage: JL_SpeakDataType, _ from: TranslateLanguage, _ to: [TranslateLanguage], _ isUseA2dp: Bool, _ isOpusStereo: Bool = false, _ resultBlock: @escaping (Bool) -> Void) {
         super.init()
@@ -52,6 +57,7 @@ class VolcesBusManager: NSObject {
         translateMgr = VolcesTranslateMgr()
 
         if languageType == .OPUS || toLanguage == .OPUS {
+            JLLogManager.logLevel(.DEBUG, content: "VolcesBusManager init: creating coderOpus, languageType=\(languageType.rawValue), toLanguage=\(toLanguage.rawValue), isSupportOpusStereo=\(isSupportOpusStereo)")
             coderOpus = TranslateOpusHelper({ [weak self] pcmData in
                 guard let self = self else { return }
                 if !isSupportOpusStereo {
@@ -59,6 +65,7 @@ class VolcesBusManager: NSObject {
                 }
             }, { [weak self] opusData in
                 guard let self = self else { return }
+                JLLogManager.logLevel(.DEBUG, content: "VolcesBusManager encoder output: \(opusData.count) bytes → outPutData")
                     self.outPutData(opusData)
             }, { [weak self] pcmData, pcmData2 in
                 guard let self = self else { return }
@@ -85,6 +92,7 @@ class VolcesBusManager: NSObject {
                 self?.startTranslate(pcmData)
             }, { [weak self] jlav2Data in
                 guard let self = self else { return }
+                JLLogManager.logLevel(.COMPLETE, content: "Translate Log [Encode] JLA_V2 编码完成，输出 \(jlav2Data.count) bytes → targetData.accept")
                 self.targetData.accept(jlav2Data)
 //                let path = _R.path.jlaV2Path + "/test.jla"
 //                _R.appendToFile(filePath: path, data: jlav2Data)
@@ -102,6 +110,9 @@ class VolcesBusManager: NSObject {
     }
 
     func startTranslateData(_ decodeData: Data) {
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log [Encode] startTranslateData 输入 \(decodeData.count) bytes, audioType=\(audioType.rawValue)")
+        statsInputBytes.accept(statsInputBytes.value + decodeData.count)
+        statsInputPackets.accept(statsInputPackets.value + 1)
         if audioType == .OPUS {
             coderOpus?.decodeDataToPcm(decodeData)
         }
@@ -114,6 +125,9 @@ class VolcesBusManager: NSObject {
     }
 
     func startTranslatePcmData(_ pcmData: Data) {
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log [Encode] startTranslatePcmData 输入 \(pcmData.count) bytes")
+        statsInputBytes.accept(statsInputBytes.value + pcmData.count)
+        statsInputPackets.accept(statsInputPackets.value + 1)
         translateMgr?.sendAudioData(pcmData)
     }
 
@@ -179,22 +193,30 @@ class VolcesBusManager: NSObject {
                     let dt = Data(self?.tmpTtsPcmData ?? Data())
                     let translateText = self?.ttsMgr?.translateText ?? []
                     JLLogManager.logLevel(.DEBUG, content: "tts didFinish:\(translateText)")
+                    JLLogManager.logLevel(.DEBUG, content: "tts didFinish detail: pcmTotal=\(dt.count), isSendSoon=\(self?.isSendSoon ?? false), isUseA2dp=\(self?.isUseA2dp ?? false), toAudioType=\(self?.toAudioType.rawValue)")
                     self?.targetPcmData.accept((dt, translateText))
                     if self?.isSendSoon == true {
+                        JLLogManager.logLevel(.DEBUG, content: "tts encode branch enter: isUseA2dp=\(self?.isUseA2dp ?? false), toAudioType=\(self?.toAudioType.rawValue)")
                         if self?.isUseA2dp == true {
+                            JLLogManager.logLevel(.DEBUG, content: "tts encode branch: A2DP → outPutData, pcmLen=\(dt.count)")
                             self?.outPutData(dt)
                             self?.tmpTtsPcmData = Data()
                             return
                         }
                         if self?.toAudioType == .JLA_V2 {
+                            JLLogManager.logLevel(.DEBUG, content: "tts encode branch: JLA_V2 → coderJav2.pcmToEnCodeData, pcmLen=\(dt.count)")
                             self?.coderJav2?.pcmToEnCodeData(dt)
                         }
                         if self?.toAudioType == .OPUS {
+                            JLLogManager.logLevel(.DEBUG, content: "tts encode branch: OPUS → coderOpus.pcmToEnCodeData, pcmLen=\(dt.count), coderOpus=\(self?.coderOpus != nil ? "exist" : "NIL")")
                             self?.coderOpus?.pcmToEnCodeData(dt)
                         }
                         if self?.toAudioType == .PCM {
+                            JLLogManager.logLevel(.DEBUG, content: "tts encode branch: PCM → targetData.accept, pcmLen=\(dt.count)")
                             self?.targetData.accept(dt)
                         }
+                    } else {
+                        JLLogManager.logLevel(.DEBUG, content: "tts encode branch SKIP: isSendSoon=false")
                     }
                     self?.tmpTtsPcmData = Data()
                 }
@@ -242,10 +264,11 @@ class VolcesBusManager: NSObject {
     private func outPutData(_ opusData: Data) {
         lock.lock()
         subSendData.append(opusData)
+        let currentTotal = subSendData.count
         lock.unlock()
-        if subSendData.count >= 600 {
+        if currentTotal >= 600 {
             targetData.accept(Data(subSendData))
-            JLLogManager.logLevel(.DEBUG, content: "opus data:\(subSendData.count)")
+            JLLogManager.logLevel(.DEBUG, content: "opus data emitted:\(currentTotal) bytes")
             lock.lock()
             subSendData = Data()
             lock.unlock()
@@ -258,6 +281,7 @@ class VolcesBusManager: NSObject {
     
 
     func startTranslate(_ pcm: Data) {
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log [Encode] startTranslate 送入 ASR \(pcm.count) bytes")
         translateMgr?.sendAudioData(pcm)
         timer?.invalidate()
         countTime = 0
@@ -278,7 +302,7 @@ class VolcesBusManager: NSObject {
             cachetimer?.invalidate()
             cachetimer = nil
             targetData.accept(subSendData)
-            JLLogManager.logLevel(.DEBUG, content: "opus last data:\(subSendData.count)")
+            JLLogManager.logLevel(.DEBUG, content: "opus cache timeout flush, last data:\(subSendData.count)")
             cacheCountTime = 0
             lock.lock()
             subSendData = Data()

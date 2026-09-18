@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 音视频翻译是否下发报文音频
 @property(nonatomic,assign,readonly)BOOL isSendAudioForTranslate;
 
+/// 是否支持同声翻译功能
+@property(nonatomic,assign,readonly)BOOL isSupportSimultaneous;
+
 
 /// 是否支持耳机健康功能
 /// is support ear health

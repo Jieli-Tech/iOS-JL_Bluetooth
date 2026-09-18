@@ -58,6 +58,12 @@ typedef void(^FatfsFreeBlock)(uint32_t freeSize);
 /// @param result 操作回调
 +(void)listFile:(DialListBK __nullable)result;
 
+
+/// 重置超时时间
+/// 默认是 10s
+/// @param time 超时时间
++(void)resetTimeout:(NSTimeInterval) time;
+
 #pragma mark - 添加文件
 /// 添加文件
 /// @param file 文件名需要加斜杠，类似@“/WACTH1”。

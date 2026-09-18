@@ -25,7 +25,7 @@ class NRFFilterPopupView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        container.backgroundColor = .systemBackground
+        container.backgroundColor = UIColor.compatibleSystemBackground
         container.layer.cornerRadius = 12
         container.layer.masksToBounds = true
         addSubview(container)
@@ -43,14 +43,14 @@ class NRFFilterPopupView: UIView {
         container.addSubview(segment)
         
         confirmBtn.setTitle("Confirm", for: .normal)
-        confirmBtn.backgroundColor = .systemBlue
+        confirmBtn.backgroundColor = UIColor.compatibleSystemBlue
         confirmBtn.setTitleColor(.white, for: .normal)
         confirmBtn.layer.cornerRadius = 8
         container.addSubview(confirmBtn)
         
         cancelBtn.setTitle("Cancel", for: .normal)
-        cancelBtn.backgroundColor = .systemGray4
-        cancelBtn.setTitleColor(.label, for: .normal)
+        cancelBtn.backgroundColor = UIColor.compatibleSystemGray4
+        cancelBtn.setTitleColor(UIColor.compatibleLabel, for: .normal)
         cancelBtn.layer.cornerRadius = 8
         container.addSubview(cancelBtn)
         

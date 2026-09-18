@@ -46,7 +46,7 @@ class WeatherTestViewController: BaseViewController, UIPickerViewDelegate, UIPic
         view.addSubview(sendBtn)
         sendBtn.setTitle("send/start", for: .normal)
         sendBtn.addTarget(self, action: #selector(didSend), for: .touchUpInside)
-        sendBtn.backgroundColor = UIColor.systemBlue
+        sendBtn.backgroundColor = UIColor.compatibleSystemBlue
         sendBtn.setTitleColor(UIColor.white, for: .normal)
         sendBtn.setTitleColor(UIColor.gray, for: .highlighted)
         sendBtn.layer.cornerRadius = 6
@@ -93,14 +93,14 @@ class WeatherTestViewController: BaseViewController, UIPickerViewDelegate, UIPic
         dismiss(animated: true, completion: nil)
         timeSender.invalidate()
         sendBtn.setTitle("send/start", for: .normal)
-        sendBtn.backgroundColor = UIColor.systemBlue
+        sendBtn.backgroundColor = UIColor.compatibleSystemBlue
     }
 
     @objc func didSend() {
         if isSendding == true && selecterView.subSwitch.isOn == true {
             timeSender.invalidate()
             sendBtn.setTitle("send/start", for: .normal)
-            sendBtn.backgroundColor = UIColor.systemBlue
+            sendBtn.backgroundColor = UIColor.compatibleSystemBlue
             return
         }
         sendBtn.setTitle("sending...", for: .normal)
@@ -116,7 +116,7 @@ class WeatherTestViewController: BaseViewController, UIPickerViewDelegate, UIPic
             JLWearable.sharedInstance().w_syncWeather(selecterView.weatherObjc, withEntity: BleManager.shared.currentEntity!) { status in
                 self.isSendding = false
                 self.sendBtn.setTitle("send/start", for: .normal)
-                self.sendBtn.backgroundColor = UIColor.systemBlue
+                self.sendBtn.backgroundColor = UIColor.compatibleSystemBlue
                 if !status {
                     self.view.makeToast("send success")
                 } else {
@@ -131,7 +131,7 @@ class WeatherTestViewController: BaseViewController, UIPickerViewDelegate, UIPic
         if sendNumber < 0 {
             isSendding = false
             sendBtn.setTitle("send/start", for: .normal)
-            sendBtn.backgroundColor = UIColor.systemBlue
+            sendBtn.backgroundColor = UIColor.compatibleSystemBlue
             timeSender.invalidate()
             view.makeToast("send over")
             return

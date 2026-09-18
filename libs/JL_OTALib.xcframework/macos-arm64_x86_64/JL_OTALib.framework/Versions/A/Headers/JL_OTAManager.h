@@ -84,6 +84,13 @@ typedef NS_ENUM(UInt8, JL_OTAReconnectType) {
     JL_OTAReconnectTypeMACAddr = 0x01, // OTA升级回连使用mac地址
 };
 
+/// OTA升级传输通道类型
+typedef NS_ENUM(UInt8, JL_OTATransportType) {
+    JL_OTATransportTypeBLE = 0x00, // BLE通道（默认）
+    JL_OTATransportTypeSPP = 0x01, // SPP通道
+    JL_OTATransportTypeHID = 0x02, // HID通道
+};
+
 typedef NS_ENUM(UInt8, JL_OtaStatus) {
     JL_OtaStatusNormal = 0, // 正常升级
     JL_OtaStatusForce = 1,  // 强制升级
@@ -197,6 +204,9 @@ typedef void (^JL_OTA_RESULT)(uint8_t status, uint8_t sn, NSData *__nullable dat
 
 /// OTA升级回连方式
 @property(assign, nonatomic) JL_OTAReconnectType otaReconnectType;
+
+/// OTA升级传输通道类型（默认BLE）
+@property(assign, nonatomic) JL_OTATransportType otaTransportType;
 
 /// OTA升级内容大小（设备通知的）
 @property(assign, nonatomic, readonly) int64_t otaLength;

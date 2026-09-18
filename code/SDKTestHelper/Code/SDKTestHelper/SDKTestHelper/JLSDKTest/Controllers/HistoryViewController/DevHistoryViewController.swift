@@ -45,17 +45,31 @@ class DevHistoryViewController: BaseViewController {
 
     override func initData() {
         super.initData()
-        Task {
-            let list = await DevHistory.share.queryAll()
-            devHistoryArray.accept(list)
-            var historyUUIDs: [UUID] = []
-            for item in list {
-                if let udid = UUID(uuidString: item.uuidStr) {
-                    historyUUIDs.append(udid)
+        if #available(iOS 13.0, *) {
+            Task {
+                let list = await DevHistory.share.queryAll()
+                devHistoryArray.accept(list)
+                var historyUUIDs: [UUID] = []
+                for item in list {
+                    if let udid = UUID(uuidString: item.uuidStr) {
+                        historyUUIDs.append(udid)
+                    }
                 }
+                let sysHistory = BleManager.shared.centerManager.retrievePeripherals(withIdentifiers: historyUUIDs)
+                systemHistoryArray.accept(sysHistory)
             }
-            let sysHistory = BleManager.shared.centerManager.retrievePeripherals(withIdentifiers: historyUUIDs)
-            systemHistoryArray.accept(sysHistory)
+        } else {
+            DevHistory.share.queryAll { [weak self] list in
+                self?.devHistoryArray.accept(list)
+                var historyUUIDs: [UUID] = []
+                for item in list {
+                    if let udid = UUID(uuidString: item.uuidStr) {
+                        historyUUIDs.append(udid)
+                    }
+                }
+                let sysHistory = BleManager.shared.centerManager.retrievePeripherals(withIdentifiers: historyUUIDs)
+                self?.systemHistoryArray.accept(sysHistory)
+            }
         }
         watchConnectTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(watchConnectAction), userInfo: nil, repeats: true)
         watchConnectTimer?.fire()

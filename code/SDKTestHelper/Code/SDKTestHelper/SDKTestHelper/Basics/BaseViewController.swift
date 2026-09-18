@@ -131,7 +131,9 @@ final class DeviceOrientation {
 
     func set(orientation: UIInterfaceOrientationMask) {
         if #available(iOS 16.0, *) {
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
+            if #available(iOS 13.0, *) {
+                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
+            }
         } else {
             UIDevice.current.setValue(orientation.toUIInterfaceOrientation.rawValue, forKey: "orientation")
         }
@@ -139,14 +141,20 @@ final class DeviceOrientation {
 
     var isLandscape: Bool {
         if #available(iOS 16.0, *) {
-            return windowScene?.interfaceOrientation.isLandscape ?? false
+            if #available(iOS 13.0, *) {
+                return windowScene?.interfaceOrientation.isLandscape ?? false
+            }
+            return false
         }
         return UIDevice.current.orientation.isLandscape
     }
 
     var isPortrait: Bool {
         if #available(iOS 16.0, *) {
-            return windowScene?.interfaceOrientation.isPortrait ?? false
+            if #available(iOS 13.0, *) {
+                return windowScene?.interfaceOrientation.isPortrait ?? false
+            }
+            return false
         }
         return UIDevice.current.orientation.isPortrait
     }

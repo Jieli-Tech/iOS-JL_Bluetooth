@@ -12,7 +12,13 @@ import RxSwift
 import RxCocoa
 
 class TwsHealthViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let tableView: UITableView = {
+        if #available(iOS 13.0, *) {
+            return UITableView(frame: .zero, style: .insetGrouped)
+        } else {
+            return UITableView(frame: .zero, style: .grouped)
+        }
+    }()
     private let bag = DisposeBag()
     private let vm = TwsHealthViewModel()
     private let statusStack = UIStackView()

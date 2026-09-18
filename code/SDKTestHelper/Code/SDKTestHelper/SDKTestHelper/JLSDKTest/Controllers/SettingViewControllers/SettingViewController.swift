@@ -9,7 +9,7 @@ import UIKit
 
 class SettingViewController: BaseViewController {
     let subtable = UITableView()
-    var itemArray: [String] = [R.localStr.customizeBLEConnection(), R.localStr.authenticationPairing(), R.localStr.customizeTransportPath(), R.localStr.usingATTCommunication()]
+    var itemArray: [String] = [R.localStr.customizeBLEConnection(), R.localStr.authenticationPairing(), R.localStr.customizeTransportPath(), R.localStr.usingATTCommunication(), R.localStr.allowEmptyBLEName(), R.localStr.skipHashAdapter(), R.localStr.logView()]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,16 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         itemArray.count
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row == 6 {
+            // 跳转到日志查看页面
+            let logVC = LogViewController()
+            navigationController?.pushViewController(logVC, animated: true)
+        }
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingViewCell", for: indexPath) as! SettingViewCell
@@ -51,6 +61,15 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         cell.useInterfaceEnable(enable: true)
         cell.setDetailText(str: "")
         cell.switchBtn.tag = indexPath.row
+        
+        if indexPath.row == 6 {
+            // 日志查看选项，隐藏开关按钮
+            cell.switchBtn.isHidden = true
+            return cell
+        }
+        
+        cell.switchBtn.isHidden = false
+        
         if indexPath.row == 0 {
             cell.switchBtn.isOn = SettingInfo.getCustomerBleConnect()
             if let entity = BleManager.shared.currentEntity {
@@ -76,6 +95,12 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.setDetailText(str: "")
             }
         }
+        if indexPath.row == 4 {
+            cell.switchBtn.isOn = SettingInfo.getAllowEmptyBleName()
+        }
+        if indexPath.row == 5 {
+            cell.switchBtn.isOn = SettingInfo.getEnableHash()
+        }
         cell.handler = { [weak self] btn in
             self?.handleBtn(switchBtn: btn)
         }
@@ -97,6 +122,10 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 SettingInfo.saveATTComunication(false)
             }
             subtable.reloadData()
+        case 4:
+            BleManager.shared.setAllowEmptyBleName(switchBtn.isOn)
+        case 5:
+            BleManager.shared.setEnableHash(switchBtn.isOn)
         default:
             break
         }
@@ -105,7 +134,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     func showInputEditView() {
         let alertView = UIAlertController(title: R.localStr.tips(), message: R.localStr.enterTheUUIDOfTheConnectedPeripheral(), preferredStyle: .alert)
         alertView.addTextField { textField in
-            textField.text = SettingInfo.getAttDevUUID()
+            textField.text = SettingInfo.getAttDevUUID() ?? "AE00"
         }
         alertView.addAction(UIAlertAction(title: R.localStr.cancel(), style: .cancel))
         alertView.addAction(UIAlertAction(title: R.localStr.confirm(), style: .default, handler: { [weak self] _ in

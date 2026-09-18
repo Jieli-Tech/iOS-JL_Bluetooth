@@ -9,7 +9,6 @@
 import UIKit
 import SnapKit
 import JL_BLEKit
-import JLPackageResKit
 import JLBmpConvertKit
 import RxSwift
 import RxCocoa
@@ -64,8 +63,9 @@ class ResPackageVC: BaseViewController {
         subTable.tableFooterView = UIView()
         subTable.register(UITableViewCell.self, forCellReuseIdentifier: "imageCell")
         subTable.emptyStateLabelText = "No PNG files in image2bin folder"
+        subTable.importDestinationPath = _R.path.image2Bin
         subTable.allowsMultipleSelection = true
-        subTable.tintColor = .systemBlue // 设置鲜明的系统蓝色，让选中状态的✅更加明显
+        subTable.tintColor = UIColor.compatibleSystemBlue // 设置鲜明的系统蓝色，让选中状态的✅更加明显
         
         modeSelectViewInit()
         modePackageTypeViewInit()
@@ -174,6 +174,19 @@ class ResPackageVC: BaseViewController {
     
     override func initData() {
         super.initData()
+        
+        // 文件导入后刷新列表
+        subTable.fileImported
+            .subscribe(onNext: { [weak self] _ in
+                self?.loadAvailableFiles()
+            })
+            .disposed(by: disposeBag)
+        
+        subTable.fileImportError
+            .subscribe(onNext: { [weak self] error in
+                self?.view.makeToast(error.localizedDescription, duration: 2, position: .center)
+            })
+            .disposed(by: disposeBag)
         
         navigationView.leftBtn.rx.tap.subscribe { [weak self] _ in
             self?.navigationController?.popViewController(animated: true)

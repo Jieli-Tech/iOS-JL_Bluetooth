@@ -32,6 +32,7 @@ class TranslateOpusHelper: NSObject, TranslateDeEncodePtl {
         ops.hasDataHeader = false
         opusToPcm = JLOpusDecoder(decoder: ops, delegate: self)
         pcmToOpus = JLOpusEncoder(format: JLOpusEncodeConfig.default(), delegate: self)
+        JLLogManager.logLevel(.DEBUG, content: "opus encoder init")
     }
     
     func resetDecoderByFormat(_ format: JLOpusFormat) {
@@ -45,6 +46,7 @@ class TranslateOpusHelper: NSObject, TranslateDeEncodePtl {
     }
 
     func pcmToEnCodeData(_ pcmData: Data) {
+        JLLogManager.logLevel(.DEBUG, content: "TranslateOpusHelper pcmToEnCodeData: input=\(pcmData.count) bytes, encoder=\(pcmToOpus != nil ? "exist" : "NIL")")
         pcmToOpus?.opusEncode(pcmData)
     }
 
@@ -63,18 +65,22 @@ class TranslateOpusHelper: NSObject, TranslateDeEncodePtl {
 extension TranslateOpusHelper: JLOpusDecoderDelegate {
     func opusDecoder(_: JLOpusDecoder, data: Data?, error: (any Error)?) {
         if error != nil {
-            JLLogManager.logLevel(.ERROR, content: "opusDecoder error:\(String(describing: error))")
+            JLLogManager.logLevel(.ERROR, content: "Translate Log opusDecoder error:\(String(describing: error))")
             return
         }
-        guard let data = data else { return }
+        guard let data = data else {
+            JLLogManager.logLevel(.WARN, content: "Translate Log opusDecoder data 为 nil")
+            return
+        }
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log opusDecoder 单声道回调，数据长度: \(data.count)")
         pcmResultBlock?(data)
-//        JLLogManager.logLevel(.INFO, content: "opusDecoder data:\(data.count)")
     }
     func opusDecoderStereo(_ decoder: JLOpusDecoder, left: Data?, right: Data?, error: (any Error)?) {
         if error != nil {
-            JLLogManager.logLevel(.ERROR, content: "opusDecoderStereo error:\(String(describing: error))")
+            JLLogManager.logLevel(.ERROR, content: "Translate Log opusDecoderStereo error:\(String(describing: error))")
             return
         }
+        JLLogManager.logLevel(.DEBUG, content: "Translate Log opusDecoderStereo 回调，left: \(left?.count ?? 0), right: \(right?.count ?? 0)")
         pcmLRResultBlock?(left, right)
     }
 
@@ -86,8 +92,11 @@ extension TranslateOpusHelper: JLOpusEncoderDelegate {
             JLLogManager.logLevel(.ERROR, content: "opusEncoder error:\(String(describing: error))")
             return
         }
-        guard let data = data else { return }
+        guard let data = data else {
+            JLLogManager.logLevel(.WARN, content: "opusEncoder callback: data is nil")
+            return
+        }
+        JLLogManager.logLevel(.COMPLETE, content: "opusEncoder callback: output=\(data.count) bytes → opusResultBlock")
         opusResultBlock?(data)
-//        JLLogManager.logLevel(.INFO, content: "opusEncoder data:\(data.count)")
     }
 }

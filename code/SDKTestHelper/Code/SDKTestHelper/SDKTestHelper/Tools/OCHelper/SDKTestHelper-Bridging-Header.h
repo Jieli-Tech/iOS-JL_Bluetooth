@@ -8,7 +8,6 @@
 #import <JL_OTALib/JL_OTALib.h>
 #import <JLDialUnit/JLDialUnit.h>
 #import <JL_HashPair/JL_HashPair.h>
-#import <SpeexKit/SpeexKit.h>
 #import "PlotView.h"
 #import "PersonModel.h"
 #import "ContactsTool.h"
@@ -18,3 +17,4 @@
 #import "FMDB/FMDB.h"
 #import "JLAV2Codec.h"
 #import "JLAV2CodeInfo.h"
+#import "turbojpeg.h"

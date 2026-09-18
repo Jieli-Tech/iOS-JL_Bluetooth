@@ -10,6 +10,7 @@ import UIKit
 import CryptoKit
 
 /// AI 密钥授权工具类：负责 Doubao 等平台的授权信息解析、存取与校验
+@available(iOS 13.0, *)
 class KeyAuth {
     /// 抖音系授权AES信息(一般发布时会使用脚本生成另一个）
     static let saveSecretKey = "YT19f-A1lWr5nmE7BYpsFy39VBccawiE"

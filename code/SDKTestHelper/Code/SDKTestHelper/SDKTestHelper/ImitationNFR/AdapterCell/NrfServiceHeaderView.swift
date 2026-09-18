@@ -9,9 +9,9 @@ class NrfServiceHeaderView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .secondarySystemBackground
+        contentView.backgroundColor = UIColor.compatibleSecondarySystemBackground
         titleLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        titleLabel.textColor = .label
+        titleLabel.textColor = UIColor.compatibleLabel
         titleLabel.numberOfLines = 0
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

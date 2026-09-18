@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/DialManager.h</key>
 		<data>
-		Mb2jV1CnOQ8OFCZUBx0Z3/6vUx4=
+		GwMId13BSa+AJrDMcCB5SmXzM4c=
 		</data>
 		<key>Headers/FatfsObject.h</key>
 		<data>
@@ -50,11 +50,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		d/rUnsn93jBVfz1bL0TRVt1XfY8=
+		rNe3V59hFIbPFVY8kngNrlnzBmU=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		X9AQ9UbZdsaQnmASvtGbwRKrbwY=
+		</data>
+		<key>PrivacyInfo.xcprivacy</key>
+		<data>
+		ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -63,11 +67,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Mb2jV1CnOQ8OFCZUBx0Z3/6vUx4=
+			GwMId13BSa+AJrDMcCB5SmXzM4c=
 			</data>
 			<key>hash2</key>
 			<data>
-			DWCDneg/KpcPLEMS9W0V8GS8NAJRJQ3xU2vQ9wDNKGI=
+			gBcQ77N0FtOq+sStfJnNUqE03QGKmj/pRcAaLVIFNLc=
 			</data>
 		</dict>
 		<key>Headers/FatfsObject.h</key>
@@ -189,6 +193,17 @@
 			<key>hash2</key>
 			<data>
 			XvC1qrDmDLbId8N8voUZDEjYELULS2EUMos/IW53IuU=
+			</data>
+		</dict>
+		<key>PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ThwIGa4z1VNRIN6Gp4Ac8tIgvAk=
+			</data>
+			<key>hash2</key>
+			<data>
+			FiyglQKXEwJ9zfy9GDSopTTlVUHn85pk7JAKKd2aNj0=
 			</data>
 		</dict>
 	</dict>

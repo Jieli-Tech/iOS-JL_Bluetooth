@@ -50,11 +50,12 @@ class SearchBleViewController: BaseViewController {
         currentAttDeviceTable.isScrollEnabled = false
         view.addSubview(currentAttDeviceTable)
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BleCell")
+        tableView.register(BleSearchCell.self, forCellReuseIdentifier: "BleCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        tableView.rowHeight = 60
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 90
         view.addSubview(tableView)
 
         textLab.snp.makeConstraints { make in
@@ -130,7 +131,7 @@ class SearchBleViewController: BaseViewController {
     private func fillter() {
         let arr: [JL_EntityM] = BleManager.shared.blesArray
         itemsArray = arr.filter { item in
-            let name = item.mPeripheral.name ?? ""
+            let name = item.mPeripheral?.name ?? "unKnow"
             // ECPrintInfo(item.mPeripheral, self, "\(#function)", #line)
             let str = (textField.text == "" ? name : textField.text!)
             return name.contains(str)
@@ -161,8 +162,9 @@ extension SearchBleViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BleCell", for: indexPath)
-        cell.textLabel?.text = itemsArray[indexPath.row].mPeripheral.name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BleCell", for: indexPath) as! BleSearchCell
+        let item = itemsArray[indexPath.row]
+        cell.config(item)
         return cell
     }
 

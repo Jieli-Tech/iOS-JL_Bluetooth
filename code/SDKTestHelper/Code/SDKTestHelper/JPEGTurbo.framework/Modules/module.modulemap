@@ -1,6 +1,0 @@
-framework module JPEGTurbo {
-  umbrella header "JPEGTurbo.h"
-  export *
-
-  module * { export * }
-}

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JLVideoTool
 
 class MainViewController: BaseViewController {
     let historyBtn = UIButton()
@@ -85,7 +86,8 @@ class MainViewController: BaseViewController {
             navigationView.leftBtn.setTitle(R.localStr.connected(), for: .normal)
             view.makeToast(R.localStr.initializing(), duration: 5, position: .center)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: DispatchWorkItem(block: {
-                DialManager.openDialFileSystem(withCmdManager: BleManager.shared.currentCmdMgr!) { _, _ in
+                guard let manager = BleManager.shared.currentCmdMgr else { return }
+                DialManager.openDialFileSystem(withCmdManager: manager) { _, _ in
                     self.view.hideToast()
                 }
             }))
@@ -100,12 +102,13 @@ class MainViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        subFuncTable.reloadData()
     }
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in _: UITableView) -> Int {
-        if BleManager.shared.currentPeripheral != nil {
+        if BleManager.shared.currentEntity != nil {
             return 2
         } else {
             return 1
@@ -113,9 +116,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if BleManager.shared.currentPeripheral != nil  {
+        if BleManager.shared.currentEntity != nil  {
             if section == 0 {
-                return (BleManager.shared.currentEntity?.mPeripheral.name ?? "") + R.localStr.deviceInfo()
+                return (BleManager.shared.currentEntity?.mPeripheral?.name ?? "") + R.localStr.deviceInfo()
             } else {
                 return R.localStr.functions()
             }
@@ -137,7 +140,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if BleManager.shared.currentPeripheral != nil  {
+        if BleManager.shared.currentEntity != nil  {
             if section == 0 {
                 return 1
             } else {
@@ -153,7 +156,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = FuncSelectCell(style: .default, reuseIdentifier: "FUNCCell")
         }
-        if indexPath.section == 0, BleManager.shared.currentPeripheral != nil {
+        if indexPath.section == 0, BleManager.shared.currentEntity != nil {
             if indexPath.row == 0 {
                 cell?.titleLab.text = R.localStr.disconnect()
             }
@@ -165,7 +168,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0, BleManager.shared.currentPeripheral != nil {
+        if indexPath.section == 0, BleManager.shared.currentEntity != nil {
             if indexPath.row == 0 {
                 BleManager.shared.disconnectEntity()
             }
@@ -187,17 +190,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 break
             }
             return 
-        }
-        if BleManager.shared.currentPeripheral != nil, BleManager.shared.currentEntity == nil {
-            if indexPath.section == 0 {
-                return
-            }
-            switch indexPath.row {
-            case 0:
-                pushHidingTabBar(NormalViewController())
-            default:
-                break
-            }
         }
     }
     

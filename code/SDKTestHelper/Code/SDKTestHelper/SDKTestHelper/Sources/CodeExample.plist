@@ -3,17 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>Notify/Close ANC Change</key>
-	<string> private var ancObc: NSKeyValueObservation?
+	<string> // 方式一（推荐）：通过 mTwsManager 监听 ANC 变化，支持 KVO + Delegate + NSNotification
         isNotifyAncChange.toggle()
         guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
-        let deviceModel = mManager.getDeviceModel()
+        let twsMgr = mManager.mTwsManager
         if isNotifyAncChange {
-            ancObc = deviceModel.observe(\.mAncModeCurrent) { deviceModel, change in
-                JLLogManager.logLevel(.DEBUG, content: &quot;mAncModeCurrent: \(deviceModel.mAncModeCurrent.logProperties())&quot;)
+            ancObc = twsMgr.observe(\.mAncModeCurrent) { twsMgr, change in
+                JLLogManager.logLevel(.DEBUG, content: &quot;[TwsManager] ANC: \(String(describing: twsMgr.mAncModeCurrent?.logProperties()))&quot;)
             }
         } else {
             ancObc?.invalidate()
-        }</string>
+        }
+        // 方式二（兼容）：也可通过 getDeviceModel() 监听（原有接口仍可用）
+        // let deviceModel = mManager.getDeviceModel()
+        // ancObc = deviceModel.observe(\.mAncModeCurrent) { ... }</string>
 	<key>Open/Close Notify</key>
 	<string>  private func openCloseNotify() {
         guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
@@ -37,11 +40,9 @@
         }</string>
 	<key>Game Mode Set</key>
 	<string> guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
-        // 从设备端读取到当前的 ANC 模式
-        let modeInfo = mManager.getDeviceModel()
-        let currentAncMode = modeInfo.mAncModeCurrent
-        // 读取 tws 对象
+        // 从 TWS 管理器读取当前的 ANC 模式
         let twsMgr = mManager.mTwsManager
+        guard var currentAncMode = twsMgr.mAncModeCurrent else { return }
         if !twsMgr.supports.isSupportAnc {
             view.makeToast(&quot;设备不支持 ANC 模式&quot;)
             return
@@ -57,11 +58,9 @@
         twsMgr.cmdSetANC(currentAncMode)</string>
 	<key>ANC Set</key>
 	<string>guard let mManager: JL_ManagerM = BleManager.shared.currentCmdMgr else { return }
-        // 从设备端读取到当前的 ANC 模式
-        let modeInfo = mManager.getDeviceModel()
-        let currentAncMode = modeInfo.mAncModeCurrent
-        // 读取 tws 对象
+        // 从 TWS 管理器读取当前的 ANC 模式
         let twsMgr = mManager.mTwsManager
+        guard var currentAncMode = twsMgr.mAncModeCurrent else { return }
         if !twsMgr.supports.isSupportAnc {
             view.makeToast(&quot;设备不支持 ANC 模式&quot;)
             return

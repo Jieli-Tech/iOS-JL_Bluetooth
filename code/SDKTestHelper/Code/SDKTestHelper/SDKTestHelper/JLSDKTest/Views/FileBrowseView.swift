@@ -64,10 +64,14 @@ class FileBrowseView: BaseView, UICollectionViewDelegateFlowLayout {
         { _, model, cell in
             cell.textLabel1.text = model.fileName
             cell.centerView.backgroundColor = UIColor.random()
-            if model.fileType == .folder {
-                cell.imgv.image = UIImage(systemName: "folder.fill")
+            if #available(iOS 13.0, *) {
+                if model.fileType == .folder {
+                    cell.imgv.image = UIImage(systemName: "folder.fill")
+                } else {
+                    cell.imgv.image = UIImage(systemName: "music.note")
+                }
             } else {
-                cell.imgv.image = UIImage(systemName: "music.note")
+                cell.imgv.image = nil
             }
         }.disposed(by: disposeBag)
 
