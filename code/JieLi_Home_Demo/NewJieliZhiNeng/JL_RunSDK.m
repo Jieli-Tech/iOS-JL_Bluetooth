@@ -350,7 +350,7 @@ NSString *kUI_TURN_TO_DEVICEVC          = @"UI_TURN_TO_DEVICEVC";
             }
         }else{
             self.mBleUUID = nil;
-            kJLLog(JLLOG_INFO, @"reset:%@",self.mBleEntityM);
+            kJLLog(JLLOG_INFO, @"[EntityTrace] noteEntityDisconnected: mBleEntityM = nil, uuid=%@, entity=%@", uuid, self.mBleEntityM);
             self.mBleEntityM = nil;
             [linkedUuidArr removeAllObjects];
         }

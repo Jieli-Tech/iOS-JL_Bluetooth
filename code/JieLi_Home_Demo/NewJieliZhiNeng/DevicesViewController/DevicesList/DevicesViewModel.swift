@@ -36,9 +36,10 @@ class DevicesViewModel: NSObject {
     let subArray = BehaviorRelay<[DevicesInfoModel]>(value: [])
     let bleDeviceDict = BehaviorRelay<[AnyHashable : Any]>(value: [:])
     
-    private var maxReconnected = 3
+    private var maxReconnected = 2
     private var currentConnectIndex = 0
     private var isConnecting = false
+    private var connectTimeoutWorkItem: DispatchWorkItem?
     private var powerDict = NSMutableDictionary()
     private var dataArray = [String]()
     
@@ -127,8 +128,27 @@ class DevicesViewModel: NSObject {
         if isConnecting { return }
         currentConnectIndex += 1
         isConnecting = true
+
+        // 超时防护：若 connectEntity 回调始终不触发，15s 后自动隐藏等待弹窗
+        connectTimeoutWorkItem?.cancel()
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self, self.isConnecting else { return }
+            self.isConnecting = false
+            self.currentConnectIndex = 0
+            AlertManager.hideWaitting()
+            AlertManager
+                .windows()?
+                .makeToast(
+                    LanguageCls.localizableTxt("bt_connect_failed"),
+                    position: .center
+                )
+        }
+        connectTimeoutWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: workItem)
+
         JL_RunSDK.sharedMe().connectEntity(entity) { [weak self] status in
             guard let self = self else { return }
+            self.connectTimeoutWorkItem?.cancel()
             self.isConnecting = false
             if status == .paired {
                 AlertManager.hideWaitting()

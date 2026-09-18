@@ -150,10 +150,13 @@
 
 -(void)startSearch{
     [[JLUI_Cache sharedInstance] setIsSearchView:YES];
-    
+
     isConnectOK = YES;
-    
+
     bleSDK = [JL_RunSDK sharedMe];
+
+    [bleSDK.mBleMultiple scanStart];
+
     self.foundArray = [self filterDevices];
     
     [JL_Tools add:kJL_BLE_M_FOUND Action:@selector(noteBleFoundDevice:) Own:self];
@@ -170,9 +173,9 @@
 -(NSMutableArray *)filterDevices{
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JL_EntityM * entity in bleSDK.mBleMultiple.blePeripheralArr) {
-        if (entity.mIsSupportLeAudio && entity.mLeAudioConnected) {
-            continue;
-        }
+         if (entity.mIsSupportLeAudio && entity.mLeAudioConnected && entity.mLeAudioIsReUseRCSPAddr) {
+             continue;
+         }
         [tmpArray addObject:entity];
     }
     return tmpArray;

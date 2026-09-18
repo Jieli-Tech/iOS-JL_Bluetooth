@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00747BF03BF80F087CF63637 /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		03DE5898BF848B2348B0A05F /* DebugBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E96012A8B86A305E567D08 /* DebugBasicViewController.swift */; };
-		0484C31128FE50A3F76B54A5 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		044CA1942C9AF6A5997796FF /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		0C03EFFB35D49A7E0FDA584C /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		0D43ED18C31976375BD5E6CB /* AppAboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5C53B71F21E69DF59391BF /* AppAboutVC.swift */; };
+		158348B850AF6749A8021669 /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B156523A71D787C2F887681B /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		15EE25F226C76CC9C91776AC /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		19D509CB6B76DC7D8CBC6709 /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1D036C6E2DEEE92B009C1369 /* ProtectPreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D036C6D2DEEE92B009C1369 /* ProtectPreviewVC.swift */; };
 		1D036C702DEEF0D3009C1369 /* ProtectUpdateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D036C6F2DEEF0D3009C1369 /* ProtectUpdateVC.swift */; };
 		1D05644D246E326B00CEDF6C /* LocalMusicVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D05644B246E326B00CEDF6C /* LocalMusicVC.m */; };
@@ -355,8 +360,6 @@
 		1DFF8EF62E70256100D20A75 /* FaceToFaceRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF8EF52E70256100D20A75 /* FaceToFaceRecordVC.swift */; };
 		1DFF8EF82E7025D700D20A75 /* FaceToFaceRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF8EF72E7025D700D20A75 /* FaceToFaceRecordViewModel.swift */; };
 		20C5AC6597E95F236653AD00 /* CSTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C4FF7959BA012371AE1D03 /* CSTokenManager.swift */; };
-		20E50AAF90DC44AAD85C8F50 /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		21E1D00443CAE98A5A3BB01A /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		22240BCE2580BDE5002F741E /* ac695x_soundbox_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 22240BCC2580BDE4002F741E /* ac695x_soundbox_json.txt */; };
 		22337AD924976ED500078665 /* User_Http.m in Sources */ = {isa = PBXBuildFile; fileRef = 22337AD824976ED500078665 /* User_Http.m */; };
 		2234E04C247665A800CC4F6D /* ReNameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2234E04A247665A800CC4F6D /* ReNameView.m */; };
@@ -413,7 +416,9 @@
 		22C4F822248650E000064810 /* IACircularSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C4F81F248650E000064810 /* IACircularSliderTrackLayer.m */; };
 		22C4F82C248674B200064810 /* EQCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C4F82A248674B200064810 /* EQCell.m */; };
 		22C4F82D248674B200064810 /* EQCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22C4F82B248674B200064810 /* EQCell.xib */; };
-		3AA32EC35871C869A13CF107 /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2A608F5F756DC6E251E8FCE1 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		3DC00E0093CCF09FD05290FE /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		4476F3883CFE884FF1B920F7 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		4A04354424C7E5F900872D54 /* ac696x_soundbox_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A04354324C7E5F900872D54 /* ac696x_soundbox_json.txt */; };
 		4A04357B24C82EF400872D54 /* RSColorFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A04354D24C82EF400872D54 /* RSColorFunctions.m */; };
 		4A04357C24C82EF400872D54 /* RSGenerateOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A04354E24C82EF400872D54 /* RSGenerateOperation.m */; };
@@ -510,33 +515,22 @@
 		4ACC3F99246FE67F009CD850 /* DeviceChangeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACC3F98246FE67F009CD850 /* DeviceChangeModel.m */; };
 		4AE208562473E7400060473A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE208552473E73F0060473A /* WebKit.framework */; };
 		56AF432D598536574BFCA3D9 /* TipsDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAE3DE5ED576A529689B30B /* TipsDeleteView.swift */; };
-		56B579183973A3F898F8548F /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		574F317735F64F8A325E7595 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		5B8CC9BB613C8F25CD3F4C58 /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		63F75006AF9DF05B6EE6E398 /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		65536AB333BBEA9D49588398 /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		6750CD5B8E0433B39660E860 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		6B74530BBD7060D72E0E34CB /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		590F31D08C047FDCAB89EF93 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		60AFEDCE842BD28ED6D67965 /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		690468B3C5283AE45DB10224 /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6F7CB09E31616398C9A76DC2 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B156523A71D787C2F887681B /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		718056BD9B205C67BE97E464 /* JLShareLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86FF00B51AADC004BEBC5E1 /* JLShareLogViewController.swift */; };
-		761CB4AA57FE1DA13685F40E /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		79D2AAD1BB323EDB14C8D424 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		79F4F46E3291B67D6F68FAEB /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		7AB06002176B193E2E53AEC8 /* JLDialUnit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		7FDE66CCE0F22D9C71610DA8 /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		8963CA75C6462B55CB852CEC /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		73B60B7CF35C3ED2A8A79CAC /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		80176F5A05C7E9FEA29EF03A /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		8873A8A592D8585A531C96A2 /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		8E134F8F6610F3242A6FE8FD /* CSResourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88DAA81BD423046D6A36E018 /* CSResourceService.swift */; };
-		8F21D976291EA09344AABCCE /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		911266B4BB111067E6B9AAA3 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		967B2760F3DE3865C81B96A7 /* KvoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E819E7373DC5DAAE08F95 /* KvoManager.swift */; };
-		9BE2D75520A5F4512AB1557A /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		A046330864E23AF1E26BCD2C /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		98C317BFDDFF5FE0710DEB88 /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		98F0A148B4D919C34154E334 /* JL_AdvParse.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		AAE0SC0100000001 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE0SC0000000001 /* SceneDelegate.m */; };
-		AAE3FA359677A064A0442032 /* JLBmpConvertKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		B0EF5E723F4E736B31F8FE1A /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B3123F270F7514C41392E909 /* DebugFuncsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE11F955960914E735B2FB1 /* DebugFuncsViewController.swift */; };
 		B4226966D2D168D39BFB8E90 /* libPods-JLPiHome.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 251ABE10663DEC8664992D49 /* libPods-JLPiHome.a */; };
-		B4E6F94EB17DA4B93784F467 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		B747A8430FF936625378E7D3 /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		B6F557B198F783CDCF29C0FC /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BE4E455C29E640B8002262CA /* manifest_soundbox_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE4E455B29E640B8002262CA /* manifest_soundbox_json.txt */; };
 		BE4E455E29E6411F002262CA /* manifest_headset_json.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE4E455D29E6411F002262CA /* manifest_headset_json.txt */; };
 		C2698B82260C662C007F42E4 /* DenoiseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C2698B80260C662C007F42E4 /* DenoiseVC.m */; };
@@ -544,20 +538,26 @@
 		C2698B9F260C747A007F42E4 /* TongTouPick.m in Sources */ = {isa = PBXBuildFile; fileRef = C2698B9B260C747A007F42E4 /* TongTouPick.m */; };
 		C2698BA0260C747A007F42E4 /* TongTouPlate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2698B9E260C747A007F42E4 /* TongTouPlate.m */; };
 		C276D17C260D7C6C005F08FD /* ANCModeView.m in Sources */ = {isa = PBXBuildFile; fileRef = C276D17B260D7C6C005F08FD /* ANCModeView.m */; };
+		C2BBDA8C7E66D921D54ECDF4 /* JL_HashPair.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B156523A71D787C2F887681B /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C2D15F072D2E9C31001E3D51 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D15EFE2D2E9C30001E3D51 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		C98F20D71A90FA5F60BB0385 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		CAA350CDA6A9DA4968943D91 /* JL_BLEKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C569EB6E342AED18DCEB7849 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B156523A71D787C2F887681B /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		C5A7B3C693F44D0669A3E549 /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		D11599AE33A78C6229819B34 /* JLBmpConvertKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		D1C55C54E748F930D511DAA5 /* CSNetworkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD07AED81D02EDC1445F9C6C /* CSNetworkModels.swift */; };
-		D26C9BCAAE5FE8C5610D4FE4 /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		D3B68E5607BD7B0995353ACA /* CustomerCmdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A3E769480E20159F3B070 /* CustomerCmdViewController.swift */; };
+		D85EC52C2E026C7F48F137A6 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D8703E7341F1F92841A20F93 /* JL_OTALib.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D98B2896F91FD656FBE9B339 /* JL_AdvParse.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		DF41C7A1B27881264F0CB1DD /* JLDialUnit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E19FD5FA661A7C5463BCBFBB /* CSNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D498C50A0A5DB4EADA5839 /* CSNetworkManager.swift */; };
-		E6C10ECF982098DA65415D17 /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		E28F13A495246C5CA59BE0B3 /* JLPackageResKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		E973521513898F7ECDDBA49E /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		EB4FE4CF3D9B73FE5AF65934 /* JLShareDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8480AB5519F1FDDCB0129BB6 /* JLShareDetailViewController.swift */; };
+		EFAF7C03625032D2C49F4935 /* JLLogHelper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F02032B1159A9197E116AAD4 /* JLPackageResKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F28150039E9C81A5B40C3068 /* CSResourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA57E0580EC0AB3A9C73746 /* CSResourceViewModel.swift */; };
 		F4EAD4C6EC12599F4D0C43A9 /* CSApiConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7BEFBB1C51D0286AE10CF8 /* CSApiConst.swift */; };
-		F558675EE873BE86D1C6A943 /* JLLogHelper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		F5E118C8A00163B3AA0FFADC /* JL_OTALib.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
-		FD081DED166FFF67657B62A1 /* JL_HashPair.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
+		F52E834A0E0F41A48DBA0E33 /* JL_BLEKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -572,32 +572,32 @@
 				1D9DD63F24F8E01E004B07BF /* IJKMediaFrameworkWithSSL.framework in Embed Frameworks */,
 				1D8EE3992E155A6500D2824C /* JLAV2Lib.framework in Embed Frameworks */,
 				1D46B3CF286EFCE700A8DC8A /* TYCoreText.framework in Embed Frameworks */,
-				7AB06002176B193E2E53AEC8 /* JLDialUnit.xcframework in Embed Frameworks */,
-				63F75006AF9DF05B6EE6E398 /* JLBmpConvertKit.xcframework in Embed Frameworks */,
-				20E50AAF90DC44AAD85C8F50 /* JL_BLEKit.xcframework in Embed Frameworks */,
-				6750CD5B8E0433B39660E860 /* JL_OTALib.xcframework in Embed Frameworks */,
-				0484C31128FE50A3F76B54A5 /* JLLogHelper.xcframework in Embed Frameworks */,
-				6B74530BBD7060D72E0E34CB /* JLPackageResKit.xcframework in Embed Frameworks */,
-				8963CA75C6462B55CB852CEC /* JL_HashPair.xcframework in Embed Frameworks */,
-				B0EF5E723F4E736B31F8FE1A /* JL_AdvParse.xcframework in Embed Frameworks */,
+				19D509CB6B76DC7D8CBC6709 /* JLDialUnit.xcframework in Embed Frameworks */,
+				00747BF03BF80F087CF63637 /* JLBmpConvertKit.xcframework in Embed Frameworks */,
+				15EE25F226C76CC9C91776AC /* JL_BLEKit.xcframework in Embed Frameworks */,
+				D8703E7341F1F92841A20F93 /* JL_OTALib.xcframework in Embed Frameworks */,
+				EFAF7C03625032D2C49F4935 /* JLLogHelper.xcframework in Embed Frameworks */,
+				3DC00E0093CCF09FD05290FE /* JLPackageResKit.xcframework in Embed Frameworks */,
+				158348B850AF6749A8021669 /* JL_HashPair.xcframework in Embed Frameworks */,
+				044CA1942C9AF6A5997796FF /* JL_AdvParse.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DE9275DA5B8F651DAEECF6F8 /* Embed Frameworks */ = {
+		B0E61D3BC4E0947D3C0E7944 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				21E1D00443CAE98A5A3BB01A /* JLDialUnit.xcframework in Embed Frameworks */,
-				AAE3FA359677A064A0442032 /* JLBmpConvertKit.xcframework in Embed Frameworks */,
-				CAA350CDA6A9DA4968943D91 /* JL_BLEKit.xcframework in Embed Frameworks */,
-				761CB4AA57FE1DA13685F40E /* JL_OTALib.xcframework in Embed Frameworks */,
-				8F21D976291EA09344AABCCE /* JLLogHelper.xcframework in Embed Frameworks */,
-				5B8CC9BB613C8F25CD3F4C58 /* JLPackageResKit.xcframework in Embed Frameworks */,
-				A046330864E23AF1E26BCD2C /* JL_HashPair.xcframework in Embed Frameworks */,
-				65536AB333BBEA9D49588398 /* JL_AdvParse.xcframework in Embed Frameworks */,
+				60AFEDCE842BD28ED6D67965 /* JLDialUnit.xcframework in Embed Frameworks */,
+				73B60B7CF35C3ED2A8A79CAC /* JLBmpConvertKit.xcframework in Embed Frameworks */,
+				690468B3C5283AE45DB10224 /* JL_BLEKit.xcframework in Embed Frameworks */,
+				D85EC52C2E026C7F48F137A6 /* JL_OTALib.xcframework in Embed Frameworks */,
+				E973521513898F7ECDDBA49E /* JLLogHelper.xcframework in Embed Frameworks */,
+				F02032B1159A9197E116AAD4 /* JLPackageResKit.xcframework in Embed Frameworks */,
+				C2BBDA8C7E66D921D54ECDF4 /* JL_HashPair.xcframework in Embed Frameworks */,
+				D98B2896F91FD656FBE9B339 /* JL_AdvParse.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -605,7 +605,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
+		1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
 		1D036C6D2DEEE92B009C1369 /* ProtectPreviewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectPreviewVC.swift; sourceTree = "<group>"; };
 		1D036C6F2DEEF0D3009C1369 /* ProtectUpdateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectUpdateVC.swift; sourceTree = "<group>"; };
 		1D05644A246E326B00CEDF6C /* LocalMusicVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalMusicVC.h; sourceTree = "<group>"; };
@@ -1146,7 +1146,6 @@
 		22C4F82B248674B200064810 /* EQCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EQCell.xib; sourceTree = "<group>"; };
 		251ABE10663DEC8664992D49 /* libPods-JLPiHome.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JLPiHome.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA57E0580EC0AB3A9C73746 /* CSResourceViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSResourceViewModel.swift; sourceTree = "<group>"; };
-		4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
 		4A04354324C7E5F900872D54 /* ac696x_soundbox_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ac696x_soundbox_json.txt; sourceTree = "<group>"; };
 		4A04354B24C82EF400872D54 /* FlashCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashCell.h; sourceTree = "<group>"; };
 		4A04354D24C82EF400872D54 /* RSColorFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSColorFunctions.m; sourceTree = "<group>"; };
@@ -1310,16 +1309,19 @@
 		4ACC3F98246FE67F009CD850 /* DeviceChangeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceChangeModel.m; sourceTree = "<group>"; };
 		4AE208552473E73F0060473A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		4AE82B5524E0F2D30076E86E /* JieLiAppHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JieLiAppHeader.pch; sourceTree = "<group>"; };
-		548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
+		4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLBmpConvertKit.xcframework; path = Frameworks/JLBmpConvertKit.xcframework; sourceTree = "<group>"; };
 		5D3E819E7373DC5DAAE08F95 /* KvoManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KvoManager.swift; sourceTree = "<group>"; };
-		65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
-		742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
+		6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLPackageResKit.xcframework; path = Frameworks/JLPackageResKit.xcframework; sourceTree = "<group>"; };
 		8480AB5519F1FDDCB0129BB6 /* JLShareDetailViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JLShareDetailViewController.swift; sourceTree = "<group>"; };
+		84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_OTALib.xcframework; path = Frameworks/JL_OTALib.xcframework; sourceTree = "<group>"; };
 		88DAA81BD423046D6A36E018 /* CSResourceService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSResourceService.swift; sourceTree = "<group>"; };
+		9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
 		A57579D6878062330F90C043 /* Pods-JLPiHome.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLPiHome.release.xcconfig"; path = "Target Support Files/Pods-JLPiHome/Pods-JLPiHome.release.xcconfig"; sourceTree = "<group>"; };
 		A86FF00B51AADC004BEBC5E1 /* JLShareLogViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JLShareLogViewController.swift; sourceTree = "<group>"; };
 		AAE0SC0000000000 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		AAE0SC0000000001 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLLogHelper.xcframework; path = Frameworks/JLLogHelper.xcframework; sourceTree = "<group>"; };
+		B156523A71D787C2F887681B /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
 		BD07AED81D02EDC1445F9C6C /* CSNetworkModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSNetworkModels.swift; sourceTree = "<group>"; };
 		BE4E455B29E640B8002262CA /* manifest_soundbox_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = manifest_soundbox_json.txt; sourceTree = "<group>"; };
 		BE4E455D29E6411F002262CA /* manifest_headset_json.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = manifest_headset_json.txt; sourceTree = "<group>"; };
@@ -1337,15 +1339,13 @@
 		C2D15EFE2D2E9C30001E3D51 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C2D498C50A0A5DB4EADA5839 /* CSNetworkManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSNetworkManager.swift; sourceTree = "<group>"; };
 		C9C4FF7959BA012371AE1D03 /* CSTokenManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSTokenManager.swift; sourceTree = "<group>"; };
-		CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_HashPair.xcframework; path = Frameworks/JL_HashPair.xcframework; sourceTree = "<group>"; };
+		CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_BLEKit.xcframework; path = Frameworks/JL_BLEKit.xcframework; sourceTree = "<group>"; };
 		D6E96012A8B86A305E567D08 /* DebugBasicViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DebugBasicViewController.swift; sourceTree = "<group>"; };
-		D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JL_AdvParse.xcframework; path = Frameworks/JL_AdvParse.xcframework; sourceTree = "<group>"; };
 		DEAE3DE5ED576A529689B30B /* TipsDeleteView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TipsDeleteView.swift; sourceTree = "<group>"; };
 		DF7BEFBB1C51D0286AE10CF8 /* CSApiConst.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CSApiConst.swift; sourceTree = "<group>"; };
 		EE5C53B71F21E69DF59391BF /* AppAboutVC.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppAboutVC.swift; sourceTree = "<group>"; };
 		F2BFA04B12A233CBE5971581 /* Pods-JLPiHome.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLPiHome.debug.xcconfig"; path = "Target Support Files/Pods-JLPiHome/Pods-JLPiHome.debug.xcconfig"; sourceTree = "<group>"; };
 		F39A3E769480E20159F3B070 /* CustomerCmdViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CustomerCmdViewController.swift; sourceTree = "<group>"; };
-		FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = JLDialUnit.xcframework; path = Frameworks/JLDialUnit.xcframework; sourceTree = "<group>"; };
 		FDE11F955960914E735B2FB1 /* DebugFuncsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DebugFuncsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1355,14 +1355,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DCA1FB82876E62400F73BDF /* DFUnits.framework in Frameworks */,
-				B747A8430FF936625378E7D3 /* JLDialUnit.xcframework in Frameworks */,
-				7FDE66CCE0F22D9C71610DA8 /* JLBmpConvertKit.xcframework in Frameworks */,
-				574F317735F64F8A325E7595 /* JL_BLEKit.xcframework in Frameworks */,
-				D26C9BCAAE5FE8C5610D4FE4 /* JL_OTALib.xcframework in Frameworks */,
-				B4E6F94EB17DA4B93784F467 /* JLLogHelper.xcframework in Frameworks */,
-				3AA32EC35871C869A13CF107 /* JLPackageResKit.xcframework in Frameworks */,
-				FD081DED166FFF67657B62A1 /* JL_HashPair.xcframework in Frameworks */,
-				79D2AAD1BB323EDB14C8D424 /* JL_AdvParse.xcframework in Frameworks */,
+				DF41C7A1B27881264F0CB1DD /* JLDialUnit.xcframework in Frameworks */,
+				8873A8A592D8585A531C96A2 /* JLBmpConvertKit.xcframework in Frameworks */,
+				F52E834A0E0F41A48DBA0E33 /* JL_BLEKit.xcframework in Frameworks */,
+				2A608F5F756DC6E251E8FCE1 /* JL_OTALib.xcframework in Frameworks */,
+				B6F557B198F783CDCF29C0FC /* JLLogHelper.xcframework in Frameworks */,
+				E28F13A495246C5CA59BE0B3 /* JLPackageResKit.xcframework in Frameworks */,
+				C569EB6E342AED18DCEB7849 /* JL_HashPair.xcframework in Frameworks */,
+				98F0A148B4D919C34154E334 /* JL_AdvParse.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,14 +1392,14 @@
 				1D5E6CB424AEC52200F68B7C /* SystemConfiguration.framework in Frameworks */,
 				1DEE9670287FC2A0002C919C /* Bugly.framework in Frameworks */,
 				B4226966D2D168D39BFB8E90 /* libPods-JLPiHome.a in Frameworks */,
-				56B579183973A3F898F8548F /* JLDialUnit.xcframework in Frameworks */,
-				9BE2D75520A5F4512AB1557A /* JLBmpConvertKit.xcframework in Frameworks */,
-				C98F20D71A90FA5F60BB0385 /* JL_BLEKit.xcframework in Frameworks */,
-				F5E118C8A00163B3AA0FFADC /* JL_OTALib.xcframework in Frameworks */,
-				F558675EE873BE86D1C6A943 /* JLLogHelper.xcframework in Frameworks */,
-				E6C10ECF982098DA65415D17 /* JLPackageResKit.xcframework in Frameworks */,
-				911266B4BB111067E6B9AAA3 /* JL_HashPair.xcframework in Frameworks */,
-				79F4F46E3291B67D6F68FAEB /* JL_AdvParse.xcframework in Frameworks */,
+				C5A7B3C693F44D0669A3E549 /* JLDialUnit.xcframework in Frameworks */,
+				D11599AE33A78C6229819B34 /* JLBmpConvertKit.xcframework in Frameworks */,
+				4476F3883CFE884FF1B920F7 /* JL_BLEKit.xcframework in Frameworks */,
+				0C03EFFB35D49A7E0FDA584C /* JL_OTALib.xcframework in Frameworks */,
+				80176F5A05C7E9FEA29EF03A /* JLLogHelper.xcframework in Frameworks */,
+				98C317BFDDFF5FE0710DEB88 /* JLPackageResKit.xcframework in Frameworks */,
+				6F7CB09E31616398C9A76DC2 /* JL_HashPair.xcframework in Frameworks */,
+				590F31D08C047FDCAB89EF93 /* JL_AdvParse.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3233,14 +3233,14 @@
 				1D50E2402EB889440026B607 /* JLAudioUnitKit.xcframework */,
 				1D8EE3842E154DCE00D2824C /* JLAV2Lib.framework */,
 				251ABE10663DEC8664992D49 /* libPods-JLPiHome.a */,
-				FAFC7390F55818A3D7589322 /* JLDialUnit.xcframework */,
-				4967D33E5A43EB9CF156BA15 /* JLBmpConvertKit.xcframework */,
-				548D88ECACE6DEBC094F2637 /* JL_BLEKit.xcframework */,
-				18A48C1E0DFAB5E310461B77 /* JL_OTALib.xcframework */,
-				742E19167BD6616944C16CE2 /* JLLogHelper.xcframework */,
-				65EC51C7D3D4F97A0F651DE2 /* JLPackageResKit.xcframework */,
-				CC6E05B2A24C306E2B9EB8FD /* JL_HashPair.xcframework */,
-				D995F453385A8FF5694290E6 /* JL_AdvParse.xcframework */,
+				9EB1F679EA33E0AE4128EB3D /* JLDialUnit.xcframework */,
+				4B9EB4A77CF19E4C012478F6 /* JLBmpConvertKit.xcframework */,
+				CDD26E75E8BEA3B6C482B6B5 /* JL_BLEKit.xcframework */,
+				84ABBA66046736048C5350F1 /* JL_OTALib.xcframework */,
+				AD95EF650832E946D786CAE6 /* JLLogHelper.xcframework */,
+				6756B73EBC18066CC677403B /* JLPackageResKit.xcframework */,
+				B156523A71D787C2F887681B /* JL_HashPair.xcframework */,
+				1C59A7DA734B5C82F89E5700 /* JL_AdvParse.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3562,7 +3562,7 @@
 				1DCA1FAB2876E4D800F73BDF /* Sources */,
 				1DCA1FAC2876E4D800F73BDF /* Frameworks */,
 				1DCA1FAD2876E4D800F73BDF /* Resources */,
-				DE9275DA5B8F651DAEECF6F8 /* Embed Frameworks */,
+				B0E61D3BC4E0947D3C0E7944 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4278,9 +4278,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NewJieliZhiNeng",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.DbTest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4302,9 +4303,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NewJieliZhiNeng",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zh-jieli.DbTest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4368,7 +4370,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4424,7 +4426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -4441,7 +4443,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4450,6 +4452,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/NewJieliZhiNeng",
 					"$(PROJECT_DIR)/Pods/Bugly",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4459,7 +4462,7 @@
 					"COCOAPODS=1",
 				);
 				INFOPLIST_FILE = NewJieliZhiNeng/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4490,7 +4493,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = J8GU9SL7NG;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4499,6 +4502,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/NewJieliZhiNeng",
 					"$(PROJECT_DIR)/Pods/Bugly",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -4508,7 +4512,7 @@
 					"COCOAPODS=1",
 				);
 				INFOPLIST_FILE = NewJieliZhiNeng/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -551,7 +551,7 @@ NSString *kUI_JL_ELSATICVIEW_BTN = @"UI_JL_ELSATICVIEW_BTN";
     if (!canBeShow) return;//延时禁止弹窗
     kJLLog(JLLOG_DEBUG,@"JL_Entity Found --->[%p] %@ sence:%d seq:%d edr:%@",entity,entity.mItem,entity.mScene,entity.mSeq,entity.mEdr);
     // 判断是否支持leAudio 和 leAudio 是否已连接
-    if (entity.mIsSupportLeAudio && entity.mLeAudioConnected) return;
+    if (entity.mIsSupportLeAudio && entity.mLeAudioConnected && entity.mLeAudioIsReUseRCSPAddr) return;
     
     if (nowEntity == nil) {//这里判断是否已经开启了窗口，如果是第一次开启，那就添加一个连接成功的监听
         if (entity.mScene == 0) return;//第一次搜到0状态不处理

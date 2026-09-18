@@ -65,7 +65,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     /*--- 记录NSLOG ---*/
-    [JLLogManager setLog:true IsMore:false Level:JLLOG_DEBUG];
+    [JLLogManager setLog:true IsMore:false Level:JLLOG_COMPLETE];
     [JLLogManager clearLog];
     [JLLogManager logWithTimestamp:true];
     [JLLogManager saveLogAsFile:true];

@@ -12,7 +12,7 @@ import CryptoKit
 /// AI 密钥授权工具类：负责 Doubao 等平台的授权信息解析、存取与校验
 class KeyAuth {
     /// 抖音系授权AES信息(一般发布时会使用脚本生成另一个）
-    static let saveSecretKey = "0E36k5TflUljZ4lC0kc8R3tlyLPxa4La"
+    static let saveSecretKey = "xvfwfNII-gS2y0UagDrpAUthn8pJ1B79"
     /// 抖音系授权信息结构体：包括翻译与 TTS 所需的关键字段，以及有效期与更新时间
     struct ByteDance {
         let accessKeyId: String
